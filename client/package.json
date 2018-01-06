@@ -1,0 +1,21 @@
+{
+  "name": "smart-home-panel-client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.1.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom"
+  },
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "babel-plugin-import": "^1.6.3",
+    "react-app-rewired": "^1.4.0"
+  }
+}
