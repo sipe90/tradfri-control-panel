@@ -47,8 +47,7 @@
 }
 
 .ant-layout-sider-collapsed .App-title,
-.ant-menu-inline-collapsed > .ant-menu-item .App-menu-icon + span {
+.ant-layout-sider-collapsed .App-menu-icon + span {
   max-width: 0;
-  /* display: inline-block; */
   opacity: 0;
 }
