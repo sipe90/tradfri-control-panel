@@ -9,19 +9,48 @@ import FaCog from 'react-icons/lib/fa/cog'
 import './App.css'
 
 const { Header, Sider, Content, Footer } = Layout
+const { Item } = Menu
 
 class App extends Component {
+
+    constructor() {
+        super()
+
+        this.state = {
+            collapsed: false
+        }
+    }
+
+    collapse(collapsed) {
+        this.setState({ collapsed: collapsed })
+    }
+
     render() {
         return (
-            <Layout>
-                <Sider>
+            <Layout className="App-root">
+                <Sider collapsed={this.state.collapsed} collapsedWidth={80} collapsible={true} onCollapse={(collapsed) => this.collapse(collapsed)}>
                     <div className="App-title">Smart Home Panel</div>
                     <Menu theme="dark">
-                        <Menu.Item><FaLightbulbO className="App-menu-icon"/><span>Lights</span></Menu.Item>
-                        <Menu.Item><FaPlug className="App-menu-icon"/><span>Sockets</span></Menu.Item>
-                        <Menu.Item><FaFeed className="App-menu-icon"/><span>Sensors</span></Menu.Item>
-                        <Menu.Item><FaHddO className="App-menu-icon"/><span>Hub</span></Menu.Item>
-                        <Menu.Item><FaCog className="App-menu-icon"/><span>Settings</span></Menu.Item>
+                        <Item>
+                            <FaLightbulbO className="App-menu-icon"/>
+                            <span>Lights</span>
+                        </Item>
+                        <Item>
+                            <FaPlug className="App-menu-icon"/>
+                            <span>Sockets</span>
+                        </Item>
+                        <Item>
+                            <FaFeed className="App-menu-icon"/>
+                            <span>Sensors</span>
+                        </Item>
+                        <Item>
+                            <FaHddO className="App-menu-icon"/>
+                            <span>Hub</span>
+                        </Item>
+                        <Item>
+                            <FaCog className="App-menu-icon"/>
+                            <span>Settings</span>
+                        </Item>
                     </Menu>
                 </Sider>
                 <Layout>
@@ -32,7 +61,7 @@ class App extends Component {
                         </Badge>
                     </Header>
                     <Content></Content>
-                    <Footer></Footer>
+                    <Footer className="App-footer">Smart Home Panel ©2018</Footer>
                 </Layout>
             </Layout>
         )
