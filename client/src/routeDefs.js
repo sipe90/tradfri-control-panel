@@ -15,45 +15,45 @@ const routes = [
         exact: true,
         icon: FaDashboard,
         text: 'Dashboard',
-        component: () => <div>Dashboard</div>
+        container: () => <div>Dashboard</div>
     },
     { 
         path: '/lights',
         exact: true,
         icon: FaLightbulbO,
         text: 'Lights',
-        component:  () => <div>Lights</div>
+        container:  () => <div>Lights</div>
     },
     { 
         path: '/sockets',
         exact: true,
         icon: FaPlug,
         text: 'Sockets',
-        component:  () => <div>Sockets</div>
+        container:  () => <div>Sockets</div>
     },
     { 
         path: '/sensors',
         exact: true,
         icon: FaFeed,
         text: 'Sensors',
-        component:  () => <div>Sensors</div>
+        container:  () => <div>Sensors</div>
     },
     { 
         path: '/hub',
         exact: true,
         icon: FaHddO,
         text: 'Hub',
-        component:  () => <div>Hub</div>
+        container:  () => <div>Hub</div>
     },
     { 
         path: '/settings',
         exact: true,
         icon: FaCog,
         text: 'Settings',
-        component:  () => <div>Settings</div>
+        container:  () => <div>Settings</div>
     }
 ]
 
-/* eslint-enable react/display-name: 2 */
+/* eslint-enable react/display-name */
 
 export default routes

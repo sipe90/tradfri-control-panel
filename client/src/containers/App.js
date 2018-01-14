@@ -7,6 +7,8 @@ import Navigation from 'components/Navigation'
 import Routes from 'components/Routes'
 import './App.css'
 
+import routeDefs from 'routeDefs'
+
 const { Header, Sider, Content, Footer } = Layout
 
 class App extends Component {
@@ -26,27 +28,27 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <Layout className="App-root">
+                <Layout className="app-root">
                     <Sider
                         collapsed={this.state.collapsed}
                         collapsedWidth={80}
                         collapsible={true}
                         onCollapse={(collapsed) => this.collapse(collapsed)}
                     >
-                        <div className="App-title">{this.state.collapsed ? null : 'Smart Home Panel'}</div>
-                        <Navigation collapsed={this.state.collapsed}/>
+                        <div className="app-title">{this.state.collapsed ? null : 'Smart Home Panel'}</div>
+                        <Navigation collapsed={this.state.collapsed} routes={routeDefs}/>
                     </Sider>
                     <Layout>
-                        <Header className="App-header">
-                            <Avatar className="App-header-avatar" size="large">PH</Avatar>
-                            <Badge count={5} className="App-header-badge">
-                                <FaBellO className="App-header-icon"/>
+                        <Header className="app-header">
+                            <Avatar className="app-header-avatar" size="large">PH</Avatar>
+                            <Badge count={5} className="app-header-badge">
+                                <FaBellO className="app-header-icon"/>
                             </Badge>
                         </Header>
                         <Content>
-                            <Routes/>
+                            <Routes routes={routeDefs}/>
                         </Content>
-                        <Footer className="App-footer">Smart Home Panel ©2018</Footer>
+                        <Footer className="app-footer">Smart Home Panel ©2018</Footer>
                     </Layout>
                 </Layout>
             </Router>
