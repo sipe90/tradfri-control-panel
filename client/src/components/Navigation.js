@@ -31,7 +31,10 @@ Navigation.propTypes = {
     collapsed: PropTypes.bool.isRequired,
     routes: PropTypes.arrayOf(
         PropTypes.shape({
-            icon: PropTypes.element.isRequired,
+            icon: PropTypes.oneOfType([
+                PropTypes.func.isRequired,
+                PropTypes.element.isRequired
+            ]),
             text: PropTypes.string.isRequired
         })
     ).isRequired

@@ -18,7 +18,10 @@ const Routes = (props) => {
 Routes.propTypes = {
     routes: PropTypes.arrayOf(
         PropTypes.shape({
-            container: PropTypes.element.isRequired,
+            container: PropTypes.oneOfType([
+                PropTypes.func.isRequired,
+                PropTypes.element.isRequired
+            ]),
             exact:  PropTypes.bool.isRequired,
             path: PropTypes.string.isRequired
         })
