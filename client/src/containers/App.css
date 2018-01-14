@@ -45,9 +45,3 @@
   width: 1.5em;
   margin-right: 10px;
 }
-
-.ant-layout-sider-collapsed .App-title,
-.ant-layout-sider-collapsed .App-menu-icon + span {
-  max-width: 0;
-  opacity: 0;
-}

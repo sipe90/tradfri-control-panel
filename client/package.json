@@ -11,9 +11,9 @@
     "react-scripts": "1.0.17"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom"
+    "start": "NODE_PATH=src react-app-rewired start",
+    "build": "NODE_PATH=src react-app-rewired build",
+    "test": "NODE_PATH=src:test react-app-rewired test --env=jsdom"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {

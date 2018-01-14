@@ -3,8 +3,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Layout, Badge, Avatar } from 'antd'
 import FaBellO from 'react-icons/lib/fa/bell-o'
 
-import Navigation from './components/Navigation'
-import Routes from './components/Routes'
+import Navigation from 'components/Navigation'
+import Routes from 'components/Routes'
 import './App.css'
 
 const { Header, Sider, Content, Footer } = Layout
@@ -33,8 +33,8 @@ class App extends Component {
                         collapsible={true}
                         onCollapse={(collapsed) => this.collapse(collapsed)}
                     >
-                        <div className="App-title">Smart Home Panel</div>
-                        <Navigation/>
+                        <div className="App-title">{this.state.collapsed ? null : 'Smart Home Panel'}</div>
+                        <Navigation collapsed={this.state.collapsed}/>
                     </Sider>
                     <Layout>
                         <Header className="App-header">
