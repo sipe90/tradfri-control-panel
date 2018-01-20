@@ -2,6 +2,8 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+import ModuleWrapper from 'components/ModuleWrapper'
+
 const Routes = (props) => {
     return (
         props.routes.map((route, index) => (
@@ -9,7 +11,10 @@ const Routes = (props) => {
                 key={index}
                 path={route.path}
                 exact={route.exact}
-                component={route.container}
+                render={() => <ModuleWrapper                 
+                    title={route.text}
+                    module={route.container}
+                />}
             />
         ))
     )

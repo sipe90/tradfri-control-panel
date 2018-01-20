@@ -1,0 +1,10 @@
+.card-container {
+    display: flex;
+    flex-flow: row wrap
+}
+
+.card {
+    margin: 10px 10px;
+    max-width: 200px;
+    overflow-wrap: break-word;
+}
