@@ -1,11 +1,10 @@
-let express = require('express')
-let path = require('path')
-let favicon = require('serve-favicon')
-let logger = require('morgan')
-let cookieParser = require('cookie-parser')
-let bodyParser = require('body-parser')
+const express = require('express')
+const path = require('path')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 
-let index = require('./routes/index')
+const { hub } = require('routes')
 
 let app = express()
 
@@ -16,7 +15,11 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use('/', index)
+app.get('/', (req, res) => {
+    res.json({ message: 'Hello there' })
+})
+
+app.use('/api/hub', hub)
 
 app.use((req, res) => {
     res.status = 404
