@@ -1,25 +1,34 @@
 const express = require('express')
 const path = require('path')
-const logger = require('morgan')
+const httpLogger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
-const { hub } = require('routes')
+const logger = require('logger')
+const { gateway } = require('routes')
+const mongo = require('mongo')
 
 let app = express()
 
 let isDevEnv = app.get('env') === 'development'
 
-app.use(logger('dev'))
+app.use(httpLogger('dev'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+mongo.connect()
+    .then(() => logger.info('Successfully connected to MongoDB'))
+    .catch((err) => { 
+        logger.error('Failed to connect to MongoDB, the application will now exit.', err)
+        process.exit(1)
+    })
 
 app.get('/', (req, res) => {
     res.json({ message: 'Hello there' })
 })
 
-app.use('/api/hub', hub)
+app.use('/api/gateways', gateway)
 
 app.use((req, res) => {
     res.status = 404

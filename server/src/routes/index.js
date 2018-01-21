@@ -1,4 +1,4 @@
 
-const hub = require('routes/hub')
+const gateway = require('routes/gateways')
 
-module.exports = { hub }
+module.exports = { gateway }

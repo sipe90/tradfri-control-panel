@@ -3,16 +3,21 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "start-db": "docker-compose up mongo-express",
     "start": "NODE_PATH=src nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
+    "config": "^1.29.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "jade": "~1.11.0",
+    "mongoose": "^5.0.1",
     "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5"
+    "node-tradfri-client": "^0.6.0",
+    "serve-favicon": "~2.4.5",
+    "winston": "^2.4.0"
   },
   "eslintConfig": {
     "extends": "../.eslintrc.js"

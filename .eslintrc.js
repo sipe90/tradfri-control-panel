@@ -11,6 +11,7 @@ module.exports = {
         "plugin:jest/recommended"
     ],
     "parserOptions": {
+        "ecmaVersion": 8,
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
             "jsx": true
