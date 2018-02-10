@@ -8,6 +8,10 @@ const app = require('app')
 const debug = require('debug')
 const http = require('http')
 
+const bluebird = require('bluebird')
+
+global.Promise = bluebird
+
 /**
  * Get port from environment and store in Express.
  */
