@@ -5,10 +5,15 @@ const logger = require('logger')
 
 let gateways = {}
 
-const createTradfriGateway = async ({hostname, identity, psk}) => {
-    const gateway = await new TradfriGateway(hostname).connect(identity, psk)
-    gateways.tradfri.push(gateway)
-    await new models.TradfriGateway({ hostname, identity, psk}).save()
+const createTradfriGateway = async ({name, hostname, identity, psk}) => {
+    const gateway = new TradfriGateway(hostname)
+    const connected = await gateway.connect(identity, psk)
+    if (connected) {
+        gateways.tradfri.push(gateway)
+        await new models.TradfriGateway({ name, hostname, identity, psk}).save()
+        return true
+    }
+    return false
 }
 
 const fetchGateways = async () => {
@@ -26,13 +31,21 @@ const connectToGateway = async ({_type, hostname, auth}) => {
     if (_type === 'tradfri') {
         logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
         const gateway = new TradfriGateway(hostname)
-        if (await gateway.connect(auth.identity, auth.psk)) {
-            logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
+        const connected = await gateway.connect(auth.identity, auth.psk)
+        if (connected) {
+            const groups = gateway.getGroups()
+            const devices = gateway.getDevices()
+            logger.info(`Successfully connected to trådfri gateway at ${hostname} ` +
+                `with ${Object.keys(groups).length} groups and ${Object.keys(devices).length} devices`)
+            logger.debug(`Groups: ${JSON.stringify(groups, null, 2)}`)
+            logger.debug(`Devices: ${JSON.stringify(devices, null, 2)}`)
         } else {
             logger.error(`Failed to connect to trådfri gateway at ${hostname}`)
         }
+
         return gateway
     }
+    logger.error(`Unknown gateway type: ${_type}`)
 }
 
 module.exports = {
