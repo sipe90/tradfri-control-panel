@@ -3,26 +3,31 @@ const  { TradfriClient, Accessory, AccessoryTypes } = require('node-tradfri-clie
 class TradfriGateway {
 
     constructor(hostName) {
-        this.tradfri = new TradfriClient(hostName)
+        this.client = new TradfriClient(hostName)
     }
 
     async authenticate(securityCode) {
-        return await this.tradfri.authenticate(securityCode)
+        return await this.client.authenticate(securityCode)
     }
 
     async connect(identity, psk) {
-        const success = await this.tradfri.connect(identity, psk)
+        const success = await this.client.connect(identity, psk)
         if (success) {
             this.connected = true
         }
+        return success
+    }
+
+    isConnected() {
+        return this.connected
     }
 
     getGroups() {
-        return this.tradfri.groups
+        return this.client.groups
     }
 
     getDevices() {
-        return this.tradfri.devices
+        return this.client.devices
     }
 }
 

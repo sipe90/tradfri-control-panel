@@ -4,7 +4,7 @@ const router = express.Router()
 const gatewayService = require('service/gateway-service')
 
 router.get('/', (req, res, next) => 
-    gatewayService.getGateways()
+    gatewayService.fetchGateways()
         .then((result) => res.json(result))
         .catch(next)
 )

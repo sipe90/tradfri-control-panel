@@ -5,24 +5,25 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 const logger = require('logger')
+const init = require('init')
 const { gateway } = require('routes')
-const mongo = require('mongo')
 
 let app = express()
 
-let isDevEnv = app.get('env') === 'development'
+const env =  app.get('env')
+let isDevEnv = env === 'development'
 
 app.use(httpLogger('dev'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-mongo.connect()
-    .then(() => logger.info('Successfully connected to MongoDB'))
-    .catch((err) => { 
-        logger.error('Failed to connect to MongoDB, the application will now exit.', err)
+init(env).then((success) => {
+    if (!success) {
+        logger.error('Failed to initialize application. The process will now exit')
         process.exit(1)
-    })
+    }
+})
 
 app.get('/', (req, res) => {
     res.json({ message: 'Hello there' })
