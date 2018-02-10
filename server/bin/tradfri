@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+
+const TradfriGateway = require('../src/gateway/tradfri')
+
+const argv = process.argv.slice(2)
+
+if (!argv.length) {
+    printUsageAndExit()
+}
+
+const action = argv[0]
+
+switch (action) {
+    case 'authenticate':
+        authenticate(argv.slice(1))
+        break
+    default:
+        printUsageAndExit()
+}
+
+function printUsageAndExit(action) {
+    switch (action) {
+        case 'authenticate':
+            console.log('Usage: tradfri authenticate HOSTNAME SECURITY_CODE')
+            break
+        default:
+            console.log('Usage: tradfri ACTION [ARGS...]')
+    }
+    process.exit(1)
+}
+
+async function authenticate(argv) {
+    if (argv.length != 2) {
+        printUsageAndExit('authenticate')
+    }
+
+    const hostname = argv[0]
+    const securityCode = argv[1]
+
+    const gateway = new TradfriGateway(hostname)
+
+    try {
+        const { identity, psk } = await gateway.authenticate(securityCode)
+
+        console.log(`Identity: ${identity}`)
+        console.log(`PSK: ${psk}`)
+
+        process.exit()
+    } catch (err) {
+        console.error(`Trådfri authentication failed: ${err.message}`)
+
+        process.exit(1)
+    }
+}
