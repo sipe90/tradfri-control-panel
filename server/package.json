@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start-db": "docker-compose up mongo-express",
+    "start-db": "docker-compose up -d mongo-express",
     "start": "NODE_PATH=src nodemon ./bin/www"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "config": "^1.29.2",
     "cookie-parser": "~1.4.3",
@@ -16,6 +17,7 @@
     "mongoose": "^5.0.1",
     "morgan": "~1.9.0",
     "node-tradfri-client": "^0.6.0",
+    "ramda": "^0.25.0",
     "serve-favicon": "~2.4.5",
     "winston": "^2.4.0"
   },
