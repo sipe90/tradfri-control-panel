@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 const config = require('config')
 
-const { Schema, SchemaTypes: { Mixed, ObjectId} } = mongoose
+const { Schema, SchemaTypes: { Mixed, ObjectId } } = mongoose
 const { gateways } = config.get('database.collections')
 
 const tradfriGatewaySchema = new Schema({
-    _type: { type: String, default: 'tradfri'},
+    _type: { type: String, default: 'tradfri' },
+    name: String,
     hostname: String,
     auth: {
         identity: String,
