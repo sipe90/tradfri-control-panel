@@ -13,6 +13,7 @@ class TradfriGateway {
     async connect(identity, psk) {
         const success = await this.client.connect(identity, psk)
         if (success) {
+            await this.client.observeDevices()
             this.connected = true
         }
         return success
