@@ -1,4 +1,5 @@
 const  { TradfriClient, Accessory, AccessoryTypes } = require('node-tradfri-client')
+const R = require('ramda')
 
 class TradfriGateway {
 
@@ -29,6 +30,14 @@ class TradfriGateway {
 
     getDevices() {
         return this.client.devices
+    }
+
+    getLights() {
+        return R.filter((device) => device.type === AccessoryTypes.lightbulb || device.type === 1, R.values(this.getDevices()))
+    }
+
+    getSensors() {
+        return R.filter((device) => device.type === AccessoryTypes.motionSensor, R.values(this.getDevices()))
     }
 }
 
