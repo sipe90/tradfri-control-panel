@@ -18,6 +18,10 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+if (isDevEnv) {
+    app.set('json spaces', 2)
+}
+
 init(env).then((success) => {
     if (!success) {
         logger.error('Failed to initialize application. The process will now exit')
