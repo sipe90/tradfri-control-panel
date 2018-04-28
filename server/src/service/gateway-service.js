@@ -78,11 +78,16 @@ const connectToGateway = async ({id, _type, name, hostname, auth}) => {
     if (_type === 'tradfri') {
         logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
         const gateway = new TradfriGateway(hostname)
-        const connected = await gateway.connect(auth.identity, auth.psk)
-        if (connected) {
+        
+        let connected
+        try {
+            await gateway.connect(auth.identity, auth.psk)
+            connected = true
             logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
-        } else {
+        } catch (err) {
+            connected = false
             logger.error(`Failed to connect to trådfri gateway at ${hostname}`)
+            logger.error(err)
         }
 
         gateways = gateways.set(id, Map({ id, type: _type, name, hostname, connected}))

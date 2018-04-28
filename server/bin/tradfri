@@ -14,6 +14,9 @@ switch (action) {
     case 'authenticate':
         authenticate(argv.slice(1))
         break
+    case 'discover':
+        discover()
+        break
     default:
         printUsageAndExit()
 }
@@ -51,4 +54,19 @@ async function authenticate(argv) {
 
         process.exit(1)
     }
+}
+
+async function discover() {
+
+    console.log('Looking for Trådfri gateways in the network...')
+
+    const discoverResult = await TradfriGateway.discover()
+
+    if (discoverResult) {
+        console.log(JSON.stringify(discoverResult, null, 2))
+    } else {
+        console.log('No Trådfri gateways found')
+    }
+
+    process.exit()
 }

@@ -1,4 +1,4 @@
-const  { TradfriClient, Accessory, AccessoryTypes } = require('node-tradfri-client')
+const  { TradfriClient, Accessory, AccessoryTypes, discoverGateway  } = require('node-tradfri-client')
 const R = require('ramda')
 
 class TradfriGateway {
@@ -7,17 +7,18 @@ class TradfriGateway {
         this.client = new TradfriClient(hostName)
     }
 
+    static discover() {
+        return discoverGateway()
+    }
+
     async authenticate(securityCode) {
         return await this.client.authenticate(securityCode)
     }
 
     async connect(identity, psk) {
-        const success = await this.client.connect(identity, psk)
-        if (success) {
-            await this.client.observeDevices()
-            this.connected = true
-        }
-        return success
+        await this.client.connect(identity, psk)
+        await this.client.observeDevices()
+        this.connected = true
     }
 
     isConnected() {
