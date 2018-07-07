@@ -18,9 +18,7 @@ const createTradfriGateway = async ({name, hostname, identity, psk}) => {
     return false
 }
 
-const fetchGateways = async () => {
-    return models.TradfriGateway.find()
-}
+const fetchGateways = async () =>  models.TradfriGateway.find()
 
 const getGateways = async () => R.values(gateways)
 
@@ -37,9 +35,7 @@ const getDevices = async (gatewayId) => {
     }
 }
 
-const getAllDevices = async () => {
-    return Promise.all(gateways.keySeq().map(getDevices))
-}
+const getAllDevices = async () => Promise.all(R.keys(gateways).map(getDevices))
 
 const connectToGateways = async () => {
     const gatewayDocs =  await fetchGateways()
