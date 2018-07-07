@@ -5,7 +5,11 @@ const { getGateways, getDevices } = require('service/gateway-service')
 const getLights =
     R.map((gateway) => 
         R.pipeP(
-            (gateway) => getDevices(gateway.id),
+            R.ifElse(
+                R.prop('connected'),
+                (gateway) => getDevices(gateway.id),
+                R.always({ lights: []})
+            ),
             (devices) => R.assoc('lights', devices.lights, gateway)
         )(gateway),
     )
