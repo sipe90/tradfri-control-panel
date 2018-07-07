@@ -33,7 +33,7 @@ class App extends Component {
                         collapsed={this.state.collapsed}
                         collapsedWidth={80}
                         collapsible={true}
-                        onCollapse={(collapsed) => this.collapse(collapsed)}
+                        onCollapse={this.collapse.bind(this)}
                     >
                         <div className="app-title">{this.state.collapsed ? null : 'Smart Home Panel'}</div>
                         <Navigation collapsed={this.state.collapsed} routes={routeDefs}/>

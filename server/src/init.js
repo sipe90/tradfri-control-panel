@@ -2,14 +2,18 @@ const mongo = require('mongo')
 const logger = require('logger')
 const gatewayService = require('service/gateway-service')
 
+const logError = (logMsg) => (err) => {
+    logger.error(logMsg, err)
+    return Promise.reject(err)
+}
 
 module.exports = async () => {
     try {
-        await mongo.connect().catch((err) => error('Failed to connect to MongoDB.', err))
+        await mongo.connect().catch(logError('Failed to connect to MongoDB.'))
 
         logger.info('Successfully connected to MongoDB')
 
-        await gatewayService.connectToGateways().catch((err) => error('Failed to connect to Gateways.', err))
+        await gatewayService.connectToGateways().catch(logError('Failed to connect to Gateways.'))
 
         logger.info('Finished connecting to gateways')
 
@@ -18,9 +22,3 @@ module.exports = async () => {
         return false
     }
 }
-
-const error = (logMsg, err) => {
-    logger.error(logMsg, err)
-    return Promise.reject(err)
-}
-

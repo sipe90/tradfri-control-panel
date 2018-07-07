@@ -7,7 +7,7 @@ import FaFeed from 'react-icons/lib/fa/feed'
 import FaHddO from 'react-icons/lib/fa/hdd-o'
 import FaCog from 'react-icons/lib/fa/cog'
 
-import Lights from 'containers/modules/Lights'
+import LightsContainer from 'containers/modules/LightsContainer'
 
 /* eslint-disable  react/display-name */
 
@@ -24,7 +24,7 @@ const routes = [
         exact: true,
         icon: FaLightbulbO,
         text: 'Lights',
-        container: Lights
+        container: LightsContainer
     },
     { 
         path: '/sockets',

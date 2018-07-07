@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 
 const logger = require('logger')
 const init = require('init')
-const { gateway } = require('routes')
+const { gateways, lights } = require('routes')
 
 let app = express()
 
@@ -29,11 +29,12 @@ init(env).then((success) => {
     }
 })
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => 
     res.json({ message: 'Hello there' })
-})
+)
 
-app.use('/api/gateways', gateway)
+app.use('/api/gateways', gateways)
+app.use('/api/lights', lights)
 
 app.use((req, res) => {
     res.status = 404

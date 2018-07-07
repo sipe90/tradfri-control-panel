@@ -1,4 +1,5 @@
 
-const gateway = require('routes/gateways')
+const gateways = require('routes/gateways')
+const lights = require('routes/lights')
 
-module.exports = { gateway }
+module.exports = { gateways, lights }

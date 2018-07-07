@@ -1,18 +1,18 @@
 const R = require('ramda')
-const { Map } = require('immutable')
 const { models } = require('mongo')
 const TradfriGateway = require('gateway/tradfri')
 const logger = require('logger')
+const { normalize } = require('data/tradfri')
 
-let gateways = Map()
-let connections = Map()
+let gateways = {}
+let connections = {}
 
 const createTradfriGateway = async ({name, hostname, identity, psk}) => {
     const gateway = new TradfriGateway(hostname)
     const connected = await gateway.connect(identity, psk)
     if (connected) {
         const { id } = await new models.TradfriGateway({ name, hostname, identity, psk}).save()
-        gateways = gateways.set(id, Map({ id: id, type: 'tradfri', name, hostname, connected}))
+        gateways = R.assoc(id, { id: id, type: 'tradfri', name, hostname, connected}, gateways)
         return true
     }
     return false
@@ -22,55 +22,30 @@ const fetchGateways = async () => {
     return models.TradfriGateway.find()
 }
 
-const getGateways = async () => Promise.resolve(gateways.valueSeq())
+const getGateways = async () => R.values(gateways)
 
-const getGateway = async (id) => Promise.resolve(gateways.get(id))
+const getGateway = async (id) => R.prop(id, gateways)
 
-const getDevices = async (gatewayId) => new Promise((resolve) => {
-    const gateway = connections.get(gatewayId)
+const getDevices = async (gatewayId) => {
+    const gateway = connections[gatewayId]
     if (!gateway) {
-        return resolve()
+        throw Error(`Uknown gateway id: ${gatewayId}`)
     }
+    logger.debug(`Loading devices for gateway ${R.path([gatewayId, 'name'], gateways)}`)
     if (gateway instanceof TradfriGateway) {
-        return resolve(normalizeTradfriDevices(gateway.getLights(), gateway.getSensors()))
+        return normalize(gateway)
     }
-})
+}
 
-const normalizeTradfriDevices = (lights, sensors) => ({
-    lights: R.map(
-        (light) => ({
-            id: light.instanceId,
-            name: light.name,
-            alive: light.alive,
-            manufacturer: light.deviceInfo.manufacturer,
-            model: light.deviceInfo.modelNumber,
-            power: light.deviceInfo.power,
-            battery: light.deviceInfo.battery,
-            color: R.path(['lightList', 0, 'color'], light),
-            colorTemperature: R.path(['lightList', 0, 'colorTemperature'], light),
-            brightness:  R.path(['lightList', 0, 'dimmer'], light)
-        }),
-        lights
-    ),
-    sensors: R.map(
-        (sensor) => ({
-            id: sensor.instanceId,
-            name: sensor.name,
-            alive: sensor.alive,
-            manufacturer: sensor.deviceInfo.manufacturer,
-            model: sensor.deviceInfo.modelNumber,
-            power: sensor.deviceInfo.power,
-            battery: sensor.deviceInfo.battery
-        }),
-        sensors
-    )
-})
+const getAllDevices = async () => {
+    return Promise.all(gateways.keySeq().map(getDevices))
+}
 
 const connectToGateways = async () => {
     const gatewayDocs =  await fetchGateways()
     logger.info(`Found ${gatewayDocs.length} gateways from database`)
-    gateways.clear()
-    connections.clear() 
+    gateways = R.empty(gateways)
+    connections = R.empty(connections)
     await Promise.all(R.map(connectToGateway, gatewayDocs))
 }
 
@@ -90,8 +65,8 @@ const connectToGateway = async ({id, _type, name, hostname, auth}) => {
             logger.error(err)
         }
 
-        gateways = gateways.set(id, Map({ id, type: _type, name, hostname, connected}))
-        connections = connections.set(id, gateway)
+        gateways = R.assoc(id, { id, type: _type, name, hostname, connected}, gateways)
+        connections = R.assoc(id, gateway, connections)
     } else {
         logger.error(`Unknown gateway type: ${_type}`)
     }
@@ -102,5 +77,6 @@ module.exports = {
     connectToGateways,
     getGateways,
     getGateway,
-    getDevices
+    getDevices,
+    getAllDevices
 }
