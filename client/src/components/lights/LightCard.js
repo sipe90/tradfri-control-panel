@@ -56,7 +56,7 @@ class LightCard extends Component {
         return (
             <div style={{ display: 'flex' }}>
                 <div style={{ overflow: 'hidden', textOverflow: 'ellipsis'}}>{light.name}</div>
-                <Popover title='Edit name' trigger='click' content={this.editName(light)} onVisibleChange={(visible) => visible && console.log(this)}>
+                <Popover title='Edit name' trigger='click' content={this.editName(light)} >
                     <div style={{ float: 'right', paddingTop: '4px'}}>
                         <PencilIcon size={18}/>
                     </div>
@@ -68,7 +68,7 @@ class LightCard extends Component {
     editName(light) {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
-                <Input defaultValue={light.name} ref={this.nameInput}/>
+                <Input defaultValue={light.name} />
                 <Button type='primary' size='small' style={{ marginTop: '12px', width: '40%' }}>Update</Button>
             </div>
         )
