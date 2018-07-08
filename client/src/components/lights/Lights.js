@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import * as R from 'ramda'
 
 import LightGroupCard from 'components/lights/LightGroupCard'
 
@@ -14,21 +15,32 @@ class Lights extends Component {
     render() {
         return (
             <div className="card-container">
-                { this.props.lightsByGateway.length ? this.props.lightsByGateway.map((gateway, idx) =>
-                    <LightGroupCard key={idx} gateway={gateway} updateLight={this.props.updateLight} />)
+                { !R.isEmpty(this.props.gatewaysById) ? R.values(this.props.gatewaysById).map((gateway, idx) => 
+                    <LightGroupCard
+                        key={idx}
+                        gateway={gateway}
+                        lights={this.getLightsForGateway(gateway)}
+                        lightStateChanged={this.props.lightStateChanged}
+                        updateLight={this.props.updateLight}
+                    />)
                     : 'No lights found' 
                 }
             </div>
         )
     }
 
+    getLightsForGateway({ id }) {
+        return R.pickAll(this.props.gatewayLights[id], this.props.lightsById)
+    }
+
 }
 
 Lights.propTypes = {
-    lightsByGateway: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired
-    })).isRequired,
+    gatewaysById: PropTypes.object.isRequired,
+    lightsById: PropTypes.object.isRequired,
+    gatewayLights: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
+    lightStateChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired
 }
 

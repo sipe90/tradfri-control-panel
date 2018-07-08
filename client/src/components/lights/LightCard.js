@@ -82,6 +82,14 @@ class LightCard extends Component {
         )
     }
 
+    brightnessChanged(newValue) {
+        this.props.lightStateChanged({ ...this.props.light, brightness: newValue })
+    }
+
+    temperatureChanged(newValue) {
+        this.props.lightStateChanged({ ...this.props.light, colorTemperature: newValue })
+    }
+
     controlTable({light}) {
         return (            
             <table className='light-card-table'>
@@ -104,8 +112,10 @@ class LightCard extends Component {
                             <Slider 
                                 min={0}
                                 max={100}
-                                defaultValue={light.brightness}
+                                value={light.brightness}
                                 disabled={!light.dimmable}
+                                onChange={this.brightnessChanged.bind(this)}
+                                onAfterChange={() => null}
                                 tipFormatter={percentFormatter}
                             />
                         </td>
@@ -117,7 +127,9 @@ class LightCard extends Component {
                             <Slider
                                 min={0}
                                 max={100}
-                                defaultValue={light.colorTemperature}
+                                value={light.colorTemperature}
+                                onChange={this.temperatureChanged.bind(this)}
+                                onAfterChange={() => null}
                                 tipFormatter={percentFormatter}
                             />
                         </td>
@@ -140,6 +152,7 @@ LightCard.propTypes = {
         spectrum: PropTypes.string.isRequired,
         colorTemperature: PropTypes.number,
     }),
+    lightStateChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired
 }
 

@@ -9,31 +9,38 @@ export const UPDATE_LIGHT_REQUEST = 'UPDATE_LIGHT_REQUEST'
 export const UPDATE_LIGHT_SUCCESS = 'UPDATE_LIGHT_SUCCESS'
 export const UPDATE_LIGHT_FAILURE = 'UPDATE_LIGHT_FAILURE'
 
-export const loadLightsRequest = () => ({
+export const LIGHT_STATE_CHANGED = 'LIGHT_STATE_CHANGED'
+
+const loadLightsRequest = () => ({
     type: LOAD_LIGHTS_REQUEST
 })
 
-export const loadLightsSuccess = (lights) => ({
+const loadLightsSuccess = (lights) => ({
     type: LOAD_LIGHTS_SUCCESS,
     payload: lights
 })
 
-export const loadLightsFailure = (error) => ({
+const loadLightsFailure = (error) => ({
     type: LOAD_LIGHTS_FAILURE,
     payload: error
 })
 
-export const updateLightRequest = () => ({
+const updateLightRequest = () => ({
     type: UPDATE_LIGHT_REQUEST
 })
 
-export const updateLightSuccess = () => ({
+const updateLightSuccess = () => ({
     type: UPDATE_LIGHT_SUCCESS
 })
 
-export const updateLightFailure = (error) => ({
+const updateLightFailure = (error) => ({
     type: UPDATE_LIGHT_FAILURE,
     payload: error
+})
+
+export const lightStateChanged = (lightProps) => ({
+    type: LIGHT_STATE_CHANGED,
+    payload: lightProps
 })
 
 const handleErrors = (response) => {
