@@ -15,7 +15,7 @@ class Lights extends Component {
         return (
             <div className="card-container">
                 { this.props.lightsByGateway.length ? this.props.lightsByGateway.map((gateway, idx) =>
-                    <LightGroupCard key={idx} gateway={gateway} />)
+                    <LightGroupCard key={idx} gateway={gateway} updateLight={this.props.updateLight} />)
                     : 'No lights found' 
                 }
             </div>
@@ -28,7 +28,8 @@ Lights.propTypes = {
     lightsByGateway: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired
     })).isRequired,
-    loadLights: PropTypes.func.isRequired
+    loadLights: PropTypes.func.isRequired,
+    updateLight: PropTypes.func.isRequired
 }
 
 export default Lights

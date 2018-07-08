@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { fetchLights } from 'actions/lights'
+import { fetchLights, updateLight } from 'actions/lights'
 
 import Lights from 'components/lights/Lights'
 
@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadLights: () => dispatch(fetchLights())
+    loadLights: () => dispatch(fetchLights()),
+    updateLight: (gatewayId, light) => dispatch(updateLight(gatewayId, light))
 })
 
 const LightsContainer = connect(
