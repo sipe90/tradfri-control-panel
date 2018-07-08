@@ -1,34 +1,27 @@
 .light-card {
     margin: 10px 10px;
-    max-width: 240px;
-    overflow-wrap: break-word;
-}
-
-.color {
-    vertical-align: middle;
-    display: inline-block;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    height: 16px;
-    width: 16px;
-    border-radius: 100px;
+    max-width: 300px;
 }
 
 .color-green {
-    background-color: #00CC00
-}
-
-.color-red {
-    background-color: #CC0000
-}
-
-.power-on:hover {
-    color: #CC0000
-}
-
-.power-off:hover {
     color: #00CC00
 }
 
-.brightness:hover {
-    color: #F0E68C
+.color-red {
+    color: #CC0000
+}
+
+.light-card-table {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.light-card-table > tbody > tr > td {
+    vertical-align: middle;
+    height: 30px;
+}
+
+.light-card-table > tbody > tr > td:last-of-type {
+    width: 40%;
+    text-align: right;
 }

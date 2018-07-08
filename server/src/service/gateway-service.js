@@ -50,13 +50,12 @@ const connectToGateway = async ({id, _type, name, hostname, auth}) => {
         logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
         const gateway = new TradfriGateway(hostname)
         
-        let connected
+        let connected = false
         try {
             await gateway.connect(auth.identity, auth.psk)
             connected = true
             logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
         } catch (err) {
-            connected = false
             logger.error(`Failed to connect to trådfri gateway at ${hostname}`)
             logger.error(err)
         }
