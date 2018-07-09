@@ -3,6 +3,44 @@
     max-width: 300px;
 }
 
+/* Card cover */
+
+.light-card-cover {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Card title */
+
+.light-card-title {
+    display: flex;
+}
+
+.light-card-title > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.light-card-title-edit {
+    float: right;
+    padding-top: 4px;
+}
+
+/* Card title popover */
+
+.light-card-title-popover {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.light-card-title-popover > button {
+    margin-top: 12px;
+    width: 40%;
+}
+
+/* Card status indicator */
+
 .color-green {
     color: #00CC00
 }
@@ -11,17 +49,19 @@
     color: #CC0000
 }
 
+/* Card control table */
+
 .light-card-table {
     width: 100%;
     margin-top: 24px;
 }
 
-.light-card-table > tbody > tr > td {
+.light-card-table td {
     vertical-align: middle;
     height: 30px;
 }
 
-.light-card-table > tbody > tr > td:last-of-type {
+.light-card-table td:last-of-type {
     width: 40%;
     text-align: right;
 }

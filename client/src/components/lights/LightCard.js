@@ -36,7 +36,7 @@ class LightCard extends Component {
                 <Meta 
                     title={this.title(this.props)}
                     avatar={this.statusIndicator(this.props)}
-                    description={getDescription(this.props)}/>
+                    description={getDescription(this.props.light)}/>
                 {this.controlTable(this.props)}
             </Card>
         )
@@ -44,9 +44,9 @@ class LightCard extends Component {
 
     cardCover({light}) {
         return (
-            <div style={{ textAlign: 'center', marginTop: '10px'}}>
+            <div className='light-card-cover'>
                 <Tooltip title={light.model}>
-                    <img alt="bulb" src={`/${getPicture(light.model)}`}  width={180} height={180} />
+                    <img alt={light.model} src={`/${getPicture(light.model)}`}  width={180} height={180} />
                 </Tooltip>
             </div>
         )
@@ -54,10 +54,10 @@ class LightCard extends Component {
 
     title({light}) {
         return (
-            <div style={{ display: 'flex' }}>
-                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis'}}>{light.name}</div>
+            <div className='light-card-title'>
+                <div>{light.name}</div>
                 <Popover title='Edit name' trigger='click' content={this.editName(light)} >
-                    <div style={{ float: 'right', paddingTop: '4px'}}>
+                    <div className='light-card-title-edit'>
                         <PencilIcon size={18}/>
                     </div>
                 </Popover>
@@ -67,9 +67,9 @@ class LightCard extends Component {
 
     editName(light) {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+            <div className='light-card-title-popover'>
                 <Input defaultValue={light.name} />
-                <Button type='primary' size='small' style={{ marginTop: '12px', width: '40%' }}>Update</Button>
+                <Button type='primary' size='small'>Update</Button>
             </div>
         )
     }
