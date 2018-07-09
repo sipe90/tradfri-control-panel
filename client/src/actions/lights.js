@@ -57,11 +57,11 @@ export const fetchLights = () => (dispatch) => {
     return fetch('/api/lights')
         .then(handleErrors)
         .then(res => res.json())
-        .then(json => {
-            dispatch(loadLightsSuccess(json))
-            return json
+        .then(json =>  dispatch(loadLightsSuccess(json)))
+        .catch(error => { 
+            message.error(error)
+            dispatch(loadLightsFailure(error))
         })
-        .catch(error => message.error(error) || dispatch(loadLightsFailure(error)))
 }
 
 export const updateLight = (gatewayId, light) => (dispatch) => {
@@ -72,9 +72,9 @@ export const updateLight = (gatewayId, light) => (dispatch) => {
         { method: 'POST', body: light, headers: { 'content-type': 'application/json'}})
         .then(handleErrors)
         .then(res => res.json())
-        .then(json => {
-            dispatch(updateLightSuccess(json))
-            return json
+        .then(json => dispatch(updateLightSuccess(json)))
+        .catch(error => {
+            message.error(error)
+            dispatch(updateLightFailure(error))
         })
-        .catch(error => message.error(error) || dispatch(updateLightFailure(error)))
 }

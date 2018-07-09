@@ -5,7 +5,9 @@ import { fetchLights, lightStateChanged, updateLight } from 'actions/lights'
 import Lights from 'components/lights/Lights'
 
 const mapStateToProps = state => ({
-    ...state.lights
+    gateways: state.entities.gateways,
+    lights: state.entities.lights,
+    dataLoading: state.modules.lights.dataLoading
 })
 
 const mapDispatchToProps = dispatch => ({

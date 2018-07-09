@@ -1,51 +1,63 @@
 
-import { combineReducers } from 'redux'
 import * as R from 'ramda'
+import { normalize } from 'normalizr'
+
+import schemas from 'schemas'
 
 import { LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS, LOAD_LIGHTS_FAILURE } from 'actions/lights'
-import { LIGHT_STATE_CHANGED } from './actions/lights';
+import { LIGHT_STATE_CHANGED } from './actions/lights'
 
 const initialState = {
-    loading: false,
-    gatewaysById: {},
-    lightsById: {},
-    gatewayLights: {},
-    error: null
+    entities: {
+        gateways: {},
+        lights: {}
+    },
+    modules: {
+        lights: {
+            dataLoading: false
+        }
+    }
 }
 
-const indexById = R.indexBy(R.prop('id'))
-const pluckById = R.pluck('id')
+const normalizeGateways = R.flip(normalize)(schemas.gateways)
 const gatewaysWithLights = R.filter((gateway) => gateway.lights.length)
 
-const mapLights2 = R.pipe(
+const mapEntities = R.pipe(
     gatewaysWithLights,
-    (gateways) => ({
-        gatewaysById: indexById(gateways),
-        lightsById: indexById(R.flatten(R.map(R.prop('lights'), gateways))),
-        gatewayLights: R.reduce((acc, gateway) => 
-            R.assoc(gateway.id, pluckById(gateway.lights), acc), {}, gateways)
-    })
+    normalizeGateways,
+    R.pick(['entities'])
 )
 
-const updateLight = (previousState, payload) => ({
-    lightsById: { 
-        ...previousState.lightsById, 
-        [payload.id]: {
-            ...previousState.lightsById[payload.id],
-            ...payload 
-        } 
+const updateLight = (previousState, light) => ({
+    entities: {
+        ...previousState.entities,
+        lights: { 
+            ...previousState.lights, 
+            [light.id]: {
+                ...previousState.lightsById[light.id],
+                ...light 
+            } 
+        }
     }
 })
 
-const lights = (previousState = initialState, { type, payload }) => 
+const updateDataLoading = (previousState, loading) => ({
+    modules: {
+        ...previousState.modules,
+        lights: {
+            ...previousState.modules.lights,
+            dataLoading: loading
+        }
+    }
+})
+
+const reducer = (previousState = initialState, { type, payload }) => 
     R.cond([
-        [R.equals(LOAD_LIGHTS_REQUEST), () => ({ ...previousState, loading: true })],
-        [R.equals(LOAD_LIGHTS_SUCCESS), () => ({ ...previousState, ...mapLights2(payload), loading: false })],
-        [R.equals(LOAD_LIGHTS_FAILURE), () => ({ ...previousState, error: payload, loading: false })],
+        [R.equals(LOAD_LIGHTS_REQUEST), () => ({ ...previousState, ...updateDataLoading(previousState, true) })],
+        [R.equals(LOAD_LIGHTS_SUCCESS), () => ({ ...previousState, ...mapEntities(payload), ...updateDataLoading(previousState, false) })],
+        [R.equals(LOAD_LIGHTS_FAILURE), () => ({ ...previousState, ...updateDataLoading(previousState, false) })],
         [R.equals(LIGHT_STATE_CHANGED), () => ({ ...previousState, ...updateLight(previousState, payload) })],
         [R.T, R.always(previousState)]
     ])(type)
 
-const reducers = combineReducers({ lights })
-
-export default reducers
+export default reducer
