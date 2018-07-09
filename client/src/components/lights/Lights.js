@@ -22,7 +22,9 @@ class Lights extends Component {
                             key={idx}
                             gateway={gateway}
                             lights={this.getLightsForGateway(gateway)}
+                            nameEdit={this.props.nameEdit}
                             lightStateChanged={this.props.lightStateChanged}
+                            nameEditChanged={this.props.nameEditChanged}
                             updateLight={this.props.updateLight}
                         />)
                         : !this.props.dataLoading ? 'No lights found' : null
@@ -41,9 +43,11 @@ class Lights extends Component {
 Lights.propTypes = {
     gateways: PropTypes.object.isRequired,
     lights: PropTypes.object.isRequired,
+    nameEdit: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
     dataLoading: PropTypes.bool.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
+    nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired
 }
 

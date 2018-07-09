@@ -16,14 +16,14 @@
     display: flex;
 }
 
-.light-card-title > div {
+.light-card-title > span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .light-card-title-edit {
-    float: right;
     padding-top: 4px;
+    cursor: pointer;
 }
 
 /* Card title popover */

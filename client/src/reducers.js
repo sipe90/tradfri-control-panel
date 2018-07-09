@@ -4,8 +4,10 @@ import { normalize } from 'normalizr'
 
 import schemas from 'schemas'
 
-import { LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS, LOAD_LIGHTS_FAILURE } from 'actions/lights'
-import { LIGHT_STATE_CHANGED } from './actions/lights'
+import { 
+    LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS, LOAD_LIGHTS_FAILURE,
+    LIGHT_STATE_CHANGED, LIGHT_NAME_EDIT_CHANGED 
+} from 'actions/lights'
 
 const initialState = {
     entities: {
@@ -14,7 +16,8 @@ const initialState = {
     },
     modules: {
         lights: {
-            dataLoading: false
+            dataLoading: false,
+            nameEdit: {}
         }
     }
 }
@@ -41,6 +44,19 @@ const updateLight = (previousState, light) => ({
     }
 })
 
+const updateNameEdit = (previousState, { lightId, name }) => ({
+    modules: {
+        ...previousState.modules,
+        lights: {
+            ...previousState.modules.lights,
+            nameEdit: {
+                ...previousState.modules.lights.nameEdit,
+                [lightId] : name
+            }
+        }
+    }
+})
+
 const updateDataLoading = (previousState, loading) => ({
     modules: {
         ...previousState.modules,
@@ -53,10 +69,27 @@ const updateDataLoading = (previousState, loading) => ({
 
 const reducer = (previousState = initialState, { type, payload }) => 
     R.cond([
-        [R.equals(LOAD_LIGHTS_REQUEST), () => ({ ...previousState, ...updateDataLoading(previousState, true) })],
-        [R.equals(LOAD_LIGHTS_SUCCESS), () => ({ ...previousState, ...mapEntities(payload), ...updateDataLoading(previousState, false) })],
-        [R.equals(LOAD_LIGHTS_FAILURE), () => ({ ...previousState, ...updateDataLoading(previousState, false) })],
-        [R.equals(LIGHT_STATE_CHANGED), () => ({ ...previousState, ...updateLight(previousState, payload) })],
+        [R.equals(LOAD_LIGHTS_REQUEST), () => ({ 
+            ...previousState,
+            ...updateDataLoading(previousState, true)
+        })],
+        [R.equals(LOAD_LIGHTS_SUCCESS), () => ({ 
+            ...previousState, 
+            ...mapEntities(payload),
+            ...updateDataLoading(previousState, false),
+        })],
+        [R.equals(LOAD_LIGHTS_FAILURE), () => ({
+            ...previousState,
+            ...updateDataLoading(previousState, false)
+        })],
+        [R.equals(LIGHT_STATE_CHANGED), () => ({
+            ...previousState,
+            ...updateLight(previousState, payload)
+        })],
+        [R.equals(LIGHT_NAME_EDIT_CHANGED), () => ({ 
+            ...previousState, 
+            ...updateNameEdit(previousState, payload) 
+        })],
         [R.T, R.always(previousState)]
     ])(type)
 

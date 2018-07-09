@@ -11,6 +11,8 @@ export const UPDATE_LIGHT_FAILURE = 'UPDATE_LIGHT_FAILURE'
 
 export const LIGHT_STATE_CHANGED = 'LIGHT_STATE_CHANGED'
 
+export const LIGHT_NAME_EDIT_CHANGED = 'LIGHT_NAME_EDIT_CHANGED'
+
 const loadLightsRequest = () => ({
     type: LOAD_LIGHTS_REQUEST
 })
@@ -43,6 +45,11 @@ export const lightStateChanged = (lightProps) => ({
     payload: lightProps
 })
 
+export const nameEditChanged = (lightId, name) => ({
+    type: LIGHT_NAME_EDIT_CHANGED,
+    payload: { lightId, name }
+})
+
 const handleErrors = (response) => {
     if (!response.ok) {
         throw Error(response.statusText)
@@ -57,7 +64,7 @@ export const fetchLights = () => (dispatch) => {
     return fetch('/api/lights')
         .then(handleErrors)
         .then(res => res.json())
-        .then(json =>  dispatch(loadLightsSuccess(json)))
+        .then(json => dispatch(loadLightsSuccess(json)))
         .catch(error => { 
             message.error(error)
             dispatch(loadLightsFailure(error))

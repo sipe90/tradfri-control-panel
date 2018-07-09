@@ -55,8 +55,13 @@ class LightCard extends Component {
     title({light}) {
         return (
             <div className='light-card-title'>
-                <div>{light.name}</div>
-                <Popover title='Edit name' trigger='click' content={this.editName(light)} >
+                <span>{light.name}</span>
+                <Popover
+                    title='Edit name'
+                    trigger='click'
+                    onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
+                    content={this.editName()}
+                >
                     <div className='light-card-title-edit'>
                         <PencilIcon size={18}/>
                     </div>
@@ -65,10 +70,10 @@ class LightCard extends Component {
         )
     }
 
-    editName(light) {
+    editName() {
         return (
             <div className='light-card-title-popover'>
-                <Input defaultValue={light.name} />
+                <Input value={this.props.nameEdit} onChange={this.nameEditChanged.bind(this)} />
                 <Button type='primary' size='small'>Update</Button>
             </div>
         )
@@ -80,6 +85,14 @@ class LightCard extends Component {
                 <MdBrightness1 className={light.alive ? 'color-green' : 'color-red'}/>
             </Tooltip>
         )
+    }
+
+    onEditNameVisibleChanged(visible) {
+        visible && this.props.nameEditChanged(this.props.light.id, this.props.light.name)
+    }
+
+    nameEditChanged(event) {
+        this.props.nameEditChanged(this.props.light.id, event.target.value)
     }
 
     powerSwitched(newValue) {
@@ -147,6 +160,7 @@ class LightCard extends Component {
 
 LightCard.propTypes = {
     light: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         alive: PropTypes.bool.isRequired,
         on: PropTypes.bool.isRequired,
@@ -157,7 +171,9 @@ LightCard.propTypes = {
         spectrum: PropTypes.string.isRequired,
         colorTemperature: PropTypes.number,
     }),
+    nameEdit: PropTypes.string.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
+    nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired
 }
 
