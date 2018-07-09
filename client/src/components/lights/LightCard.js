@@ -82,6 +82,10 @@ class LightCard extends Component {
         )
     }
 
+    powerSwitched(newValue) {
+        this.props.lightStateChanged({ ...this.props.light, on: newValue })
+    }
+
     brightnessChanged(newValue) {
         this.props.lightStateChanged({ ...this.props.light, brightness: newValue })
     }
@@ -100,8 +104,9 @@ class LightCard extends Component {
                         <td>
                             <Switch
                                 size='small'
-                                defaultChecked={light.on}
+                                checked={light.on}
                                 disabled={!light.switchable}
+                                onChange={this.powerSwitched.bind(this)}
                             />
                         </td>
                     </tr>
