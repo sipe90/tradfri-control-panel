@@ -23,6 +23,16 @@ All fetch-requests are proxied to `localhost:3001` by default. You can change th
 
 Back-end API built on top of express
 
+### Database server
+
+The server requires a running MongoDB server to function. A `docker-compose.yml` is provided to set it up. Also mongo-express server will be launched and can be accessed from `http://localhost:8081`
+
+### Registering gateways
+
+You can discover gateways or create authentication keys with the `bin/tradfri` utility.
+
+*TODO: Saving gateway information to database*
+
 ### Running the server
 
 ```
