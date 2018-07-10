@@ -94,5 +94,25 @@
       "connected": true,
       "lights": []
     }
+  ],
+  "sensors": [
+    {
+      "id": "zs09hnmmf59kdnciurjp4h32",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 1",
+      "hostname": "mock-gateway1.local",
+      "connected": true,
+      "sensors": [
+        {
+          "id": 3832,
+          "name": "Kitchen motion sensor",
+          "alive": true,
+          "manufacturer": "IKEA of Sweden",
+          "model": "TRADFRI motion sensor",
+          "power": 3,
+          "battery": 11
+        }
+      ]
+    }
   ]
 }
