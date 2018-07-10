@@ -19,6 +19,10 @@ npm start
 The client application runs on port 3000 by default. You can run the app in a different port by launching the app like this: `PORT=<PORT_NUMBER> npm start`
 All fetch-requests are proxied to `localhost:3001` by default. You can change this behavior by modifying the proxy-attribute in package.json
 
+### Mock JSON server
+
+A mock `json-server` can be used instead by running `npm run mock-api`. The contents of `test/mock/db.json` will be served on `http://localhost:3001`
+
 ## Server
 
 Back-end API built on top of express

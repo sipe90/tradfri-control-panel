@@ -1,0 +1,98 @@
+{
+  "gateways": [
+    {
+      "id": "zs09hnmmf59kdnciurjp4h32",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 1",
+      "hostname": "mock-gateway1.local",
+      "connected": true
+    },
+    {
+      "id": "qzwakpkeibz36hqbjjju2ksv",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 2",
+      "hostname": "mock-gateway2.local",
+      "connected": true
+    },
+    {
+      "id": "bfpqmxpdi5frisumlpeb",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 3",
+      "hostname": "mock-gateway3.local",
+      "connected": false
+    }
+  ],
+  "lights": [
+    {
+      "id": "zs09hnmmf59kdnciurjp4h32",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 1",
+      "hostname": "mock-gateway1.local",
+      "connected": true,
+      "lights": [
+        {
+          "id": 53755,
+          "name": "Kitchen light",
+          "alive": true,
+          "manufacturer": "IKEA of Sweden",
+          "model": "TRADFRI bulb E27 WS opal 980lm",
+          "power": 1,
+          "color": "f1e0b5",
+          "colorTemperature": 58.8,
+          "brightness": 100,
+          "spectrum": "white",
+          "dimmable": true,
+          "switchable": true,
+          "on": true
+        }
+      ]
+    },
+    {
+      "id": "qzwakpkeibz36hqbjjju2ksv",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 2",
+      "hostname": "mock-gateway2.local",
+      "connected": true,
+      "lights": [
+        {
+          "id": 26511,
+          "name": "Living room light 1",
+          "alive": true,
+          "manufacturer": "IKEA of Sweden",
+          "model": "TRADFRI bulb E27 WS opal 980lm",
+          "power": 1,
+          "color": "f1e0b5",
+          "colorTemperature": 58.8,
+          "brightness": 100,
+          "spectrum": "white",
+          "dimmable": true,
+          "switchable": true,
+          "on": true
+        },
+        {
+          "id": 86388,
+          "name": "Living room light 2",
+          "alive": false,
+          "manufacturer": "IKEA of Sweden",
+          "model": "TRADFRI bulb E27 WS opal 980lm",
+          "power": 1,
+          "color": "f1e0b5",
+          "colorTemperature": 58.8,
+          "brightness": 100,
+          "spectrum": "white",
+          "dimmable": true,
+          "switchable": true,
+          "on": true
+        }
+      ]
+    },
+    {
+      "id": "qzwakpkeibz36hqbjjju2ksv",
+      "type": "tradfri",
+      "name": "Mock Trådfri Gateway 2",
+      "hostname": "mock-gateway2.local",
+      "connected": true,
+      "lights": []
+    }
+  ]
+}
