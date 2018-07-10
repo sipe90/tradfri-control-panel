@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 
 const logger = require('logger')
 const init = require('init')
-const { gateways, lights } = require('routes')
+const { gateways, lights, sensors } = require('routes')
 
 let app = express()
 
@@ -35,6 +35,7 @@ app.get('/', (req, res) =>
 
 app.use('/api/gateways', gateways)
 app.use('/api/lights', lights)
+app.use('/api/sensors', sensors)
 
 app.use((req, res) => {
     res.status = 404
