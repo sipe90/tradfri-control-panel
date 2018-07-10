@@ -46,7 +46,7 @@ class LightCard extends Component {
         return (
             <div className='light-card-cover'>
                 <Tooltip title={light.model}>
-                    <img alt={light.model} src={`/${getPicture(light.model)}`}  width={180} height={180} />
+                    <img alt={light.model} src={`/${getPicture(light.model)}`} />
                 </Tooltip>
             </div>
         )
