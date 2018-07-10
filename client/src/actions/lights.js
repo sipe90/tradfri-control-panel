@@ -66,7 +66,7 @@ export const fetchLights = () => (dispatch) => {
         .then(res => res.json())
         .then(json => dispatch(loadLightsSuccess(json)))
         .catch(error => { 
-            message.error(error)
+            message.error(error.message)
             dispatch(loadLightsFailure(error))
         })
 }
@@ -81,7 +81,7 @@ export const updateLight = (gatewayId, light) => (dispatch) => {
         .then(res => res.json())
         .then(json => dispatch(updateLightSuccess(json)))
         .catch(error => {
-            message.error(error)
+            message.error(error.message)
             dispatch(updateLightFailure(error))
         })
 }
