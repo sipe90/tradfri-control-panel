@@ -35,9 +35,9 @@ const updateLight = (previousState, light) => ({
     entities: {
         ...previousState.entities,
         lights: { 
-            ...previousState.lights, 
+            ...previousState.entities.lights, 
             [light.id]: {
-                ...previousState.lightsById[light.id],
+                ...previousState.entities.lights[light.id],
                 ...light 
             } 
         }
