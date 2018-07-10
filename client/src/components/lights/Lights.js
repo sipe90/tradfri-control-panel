@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import * as R from 'ramda'
 
 import LightGroupCard from 'components/lights/LightGroupCard'
+import LightCard from 'components/lights/LightCard'
 
 import 'components/lights/Lights.css'
 
@@ -21,12 +22,17 @@ class Lights extends Component {
                         <LightGroupCard
                             key={idx}
                             gateway={gateway}
-                            lights={this.getLightsForGateway(gateway)}
-                            nameEdit={this.props.nameEdit}
-                            lightStateChanged={this.props.lightStateChanged}
-                            nameEditChanged={this.props.nameEditChanged}
-                            updateLight={this.props.updateLight}
-                        />)
+                        >
+                            {R.values(this.getLightsForGateway(gateway)).map((light, idx) =>
+                                <LightCard 
+                                    key={idx}
+                                    light={light}
+                                    nameEdit={this.props.nameEdit[light.id] || ''}
+                                    lightStateChanged={this.props.lightStateChanged}
+                                    nameEditChanged={this.props.nameEditChanged}
+                                    updateLight={this.props.updateLight}/>
+                            )}
+                        </LightGroupCard>)
                         : !this.props.dataLoading ? 'No lights found' : null
                     }
                 </div>
