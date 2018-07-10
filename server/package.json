@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start-db": "docker-compose up -d mongo-express",
-    "start": "NODE_PATH=src PORT=3001 nodemon ./bin/www",
+    "start": "NODE_PATH=src nodemon ./bin/www",
     "tradfri-auth": "./bin/tradfri authenticate",
     "tradfri-discover": "./bin/tradfri discover"
   },
