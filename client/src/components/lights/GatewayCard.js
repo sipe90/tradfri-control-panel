@@ -2,16 +2,16 @@ import React from 'react'
 import { Card } from 'antd'
 import PropTypes from 'prop-types'
 
-import 'components/lights/LightGroupCard.css'
+import 'components/lights/GatewayCard.css'
 
-const LightGroupCard = ({ gateway, children }) => 
+const GatewayCard = ({ gateway, children }) => 
     <Card className="group-card" title={gateway.name}>
         {children}
     </Card>
 
-LightGroupCard.propTypes = {
+GatewayCard.propTypes = {
     gateway: PropTypes.object.isRequired,
     children: PropTypes.arrayOf(PropTypes.element).isRequired
 }
 
-export default LightGroupCard
+export default GatewayCard

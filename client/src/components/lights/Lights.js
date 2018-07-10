@@ -3,7 +3,7 @@ import { Spin, Icon } from 'antd'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 
-import LightGroupCard from 'components/lights/LightGroupCard'
+import GatewayCard from 'components/lights/GatewayCard'
 import LightCard from 'components/lights/LightCard'
 
 import 'components/lights/Lights.css'
@@ -19,7 +19,7 @@ class Lights extends Component {
             <Spin spinning={this.props.dataLoading} style={{ marginTop: '240px'}} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
                 <div className="card-container">
                     { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) => 
-                        <LightGroupCard
+                        <GatewayCard
                             key={idx}
                             gateway={gateway}
                         >
@@ -32,7 +32,7 @@ class Lights extends Component {
                                     nameEditChanged={this.props.nameEditChanged}
                                     updateLight={this.props.updateLight}/>
                             )}
-                        </LightGroupCard>)
+                        </GatewayCard>)
                         : !this.props.dataLoading ? 'No lights found' : null
                     }
                 </div>
