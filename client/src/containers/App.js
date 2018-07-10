@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Layout, Badge, Avatar } from 'antd'
-import FaBellO from 'react-icons/lib/fa/bell-o'
+import BellIcon from 'mdi-react/BellIcon'
 
 import Navigation from 'components/Navigation'
 import Routes from 'components/Routes'
@@ -42,7 +42,7 @@ class App extends Component {
                         <Header className="app-header">
                             <Avatar className="app-header-avatar" size="large">PH</Avatar>
                             <Badge count={5} className="app-header-badge">
-                                <FaBellO className="app-header-icon"/>
+                                <BellIcon className="app-header-icon" size={28}/>
                             </Badge>
                         </Header>
                         <Content>

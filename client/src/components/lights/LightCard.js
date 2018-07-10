@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Card, Switch, Slider, Tooltip, Popover, Input } from 'antd'
 import PropTypes from 'prop-types'
-import MdBrightness1 from 'react-icons/lib/md/brightness-1'
+import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
@@ -82,7 +82,7 @@ class LightCard extends Component {
     statusIndicator({light}) {
         return(
             <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
-                <MdBrightness1 className={light.alive ? 'color-green' : 'color-red'}/>
+                <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={18}/>
             </Tooltip>
         )
     }

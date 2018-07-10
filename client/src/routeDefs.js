@@ -1,11 +1,10 @@
 import React from 'react'
 
-import FaDashboard from 'react-icons/lib/fa/dashboard'
-import FaLightbulbO from 'react-icons/lib/fa/lightbulb-o'
-import FaPlug from 'react-icons/lib/fa/plug'
-import FaFeed from 'react-icons/lib/fa/feed'
-import FaHddO from 'react-icons/lib/fa/hdd-o'
-import FaCog from 'react-icons/lib/fa/cog'
+import GaugeIcon from 'mdi-react/GaugeIcon'
+import LightbulbOutlineIcon from 'mdi-react/LightbulbOutlineIcon'
+import RssIcon from 'mdi-react/RssIcon'
+import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
+import SettingsIcon from 'mdi-react/SettingsIcon'
 
 import LightsContainer from 'containers/modules/LightsContainer'
 
@@ -15,42 +14,35 @@ const routes = [
     { 
         path: '/dashboard',
         exact: true,
-        icon: FaDashboard,
+        icon: <GaugeIcon size={28}/>,
         text: 'Dashboard',
         container: () => <div>Dashboard</div>
     },
     { 
         path: '/lights',
         exact: true,
-        icon: FaLightbulbO,
+        icon: <LightbulbOutlineIcon size={28}/>,
         text: 'Lights',
         container: LightsContainer
     },
     { 
-        path: '/sockets',
-        exact: true,
-        icon: FaPlug,
-        text: 'Sockets',
-        container:  () => <div>Sockets</div>
-    },
-    { 
         path: '/sensors',
         exact: true,
-        icon: FaFeed,
+        icon: <RssIcon size={28}/>,
         text: 'Sensors',
         container:  () => <div>Sensors</div>
     },
     { 
-        path: '/hub',
+        path: '/gateways',
         exact: true,
-        icon: FaHddO,
-        text: 'Hub',
-        container:  () => <div>Hub</div>
+        icon: <HomeAutomationIcon size={28}/>,
+        text: 'Gateways',
+        container:  () => <div>Gateways</div>
     },
     { 
         path: '/settings',
         exact: true,
-        icon: FaCog,
+        icon: <SettingsIcon size={28}/>,
         text: 'Settings',
         container:  () => <div>Settings</div>
     }

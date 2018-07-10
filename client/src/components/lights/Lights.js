@@ -23,7 +23,7 @@ class Lights extends Component {
                             key={idx}
                             gateway={gateway}
                         >
-                            {R.values(this.getLightsForGateway(gateway)).map((light, idx) =>
+                            {this.getLightsForGateway(gateway).map((light, idx) =>
                                 <LightCard 
                                     key={idx}
                                     light={light}
@@ -41,7 +41,7 @@ class Lights extends Component {
     }
 
     getLightsForGateway({ id }) {
-        return R.pickAll(this.props.gateways[id].lights, this.props.lights)
+        return R.values(R.pickAll(this.props.gateways[id].lights, this.props.lights))
     }
 
 }

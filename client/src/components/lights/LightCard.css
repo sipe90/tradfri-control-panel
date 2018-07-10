@@ -42,10 +42,12 @@
 /* Card status indicator */
 
 .color-green {
+    margin-top: 4px;
     color: #00CC00
 }
 
 .color-red {
+    margin-top: 4px;
     color: #CC0000
 }
 

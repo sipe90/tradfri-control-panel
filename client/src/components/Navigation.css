@@ -1,5 +1,7 @@
-.nav-menu-icon {
-    height: 1.5em;
-    width: 1.5em;
-    margin-right: 10px;
+.nav-item > * {
+    vertical-align: middle;
+}
+
+.nav-item > span {
+    margin-left: 12px;
 }

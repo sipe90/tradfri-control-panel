@@ -14,8 +14,8 @@ const Navigation = (props) => {
             {
                 props.routes.map((route, index) => (
                     <Item key={index}>
-                        <Link to={route.path}>
-                            <route.icon className="nav-menu-icon"/>
+                        <Link to={route.path} className='nav-item'>
+                            {route.icon}
                             { !props.collapsed &&
                                 <span>{route.text}</span>
                             }
