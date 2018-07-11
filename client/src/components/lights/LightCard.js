@@ -30,15 +30,16 @@ class LightCard extends Component {
 
     render() {
         return (
-            <Card 
-                className='light-card'
-                cover={this.cardCover(this.props)}>
-                <Meta 
-                    title={this.title(this.props)}
-                    avatar={this.statusIndicator(this.props)}
-                    description={getDescription(this.props.light)}/>
-                {this.controlTable(this.props)}
-            </Card>
+            <div className='light-card'>
+                <Card
+                    cover={this.cardCover(this.props)}>
+                    <Meta 
+                        title={this.title(this.props)}
+                        avatar={this.statusIndicator(this.props)}
+                        description={getDescription(this.props.light)}/>
+                    {this.controlTable(this.props)}
+                </Card>
+            </div>
         )
     }
 

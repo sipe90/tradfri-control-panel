@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 
 import 'components/lights/GatewayCard.css'
 
-const GatewayCard = ({ gateway, children }) => 
-    <Card className="group-card" title={gateway.name}>
-        {children}
-    </Card>
+const GatewayCard = ({ gateway, children }) =>
+    <div className='gateway-card'>
+        <Card title={gateway.name}>
+            {children}
+        </Card>
+    </div>
 
 GatewayCard.propTypes = {
     gateway: PropTypes.object.isRequired,

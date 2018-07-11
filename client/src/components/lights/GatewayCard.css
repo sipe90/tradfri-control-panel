@@ -1,5 +1,4 @@
-.group-card {
-    margin: 10px 10px;
-    width: 100%;
-    overflow-wrap: break-word;
+.gateway-card {
+    display: flex;
+    margin: 12px;
 }
