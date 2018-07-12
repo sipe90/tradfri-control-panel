@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Spin, Icon } from 'antd'
+import { Card, Spin, Icon } from 'antd'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 
-import GatewayCard from 'components/lights/GatewayCard'
 import LightCard from 'components/lights/LightCard'
 
 import 'components/lights/Lights.css'
@@ -18,21 +17,21 @@ class Lights extends Component {
         return (
             <Spin spinning={this.props.dataLoading} style={{ marginTop: '240px'}} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
                 <div className="card-container">
-                    { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) => 
-                        <GatewayCard
-                            key={idx}
-                            gateway={gateway}
-                        >
-                            {this.getLightsForGateway(gateway).map((light, idx) =>
-                                <LightCard 
-                                    key={idx}
-                                    light={light}
-                                    nameEdit={this.props.nameEdit[light.id] || ''}
-                                    lightStateChanged={this.props.lightStateChanged}
-                                    nameEditChanged={this.props.nameEditChanged}
-                                    updateLight={this.props.updateLight}/>
-                            )}
-                        </GatewayCard>)
+                    { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) =>
+                        this.gatewayHasLights(gateway) ?
+                        <div className='gateway-card' key={idx}>
+                            <Card title={gateway.name}>
+                                {this.getLightsForGateway(gateway).map((light, idx) =>
+                                    <LightCard 
+                                        key={idx}
+                                        light={light}
+                                        nameEdit={this.props.nameEdit[light.id] || ''}
+                                        lightStateChanged={this.props.lightStateChanged}
+                                        nameEditChanged={this.props.nameEditChanged}
+                                        updateLight={this.props.updateLight}/>
+                                )}
+                            </Card>
+                        </div> : null)
                         : !this.props.dataLoading ? 'No lights found' : null
                     }
                 </div>
@@ -40,8 +39,16 @@ class Lights extends Component {
         )
     }
 
+    gatewayHasLights({ id }) {
+        return !R.isEmpty(this.props.gateways[id].lights)
+    }
+
     getLightsForGateway({ id }) {
-        return R.values(R.pickAll(this.props.gateways[id].lights, this.props.lights))
+        return R.pipe(
+            R.pickAll(this.props.gateways[id].lights),
+            R.values,
+            R.filter(Boolean)
+        )(this.props.lights)
     }
 
 }

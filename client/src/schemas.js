@@ -1,11 +1,11 @@
 import { schema } from 'normalizr'
 
+const gateways = new schema.Entity('gateways')
 const lights = new schema.Entity('lights')
-
-const gateways = new schema.Entity('gateways', {
-    lights: [lights]
-})
+const sensors = new schema.Entity('sensors')
 
 export default {
-    gateways: [gateways]
+    gateways: [gateways],
+    lights: [lights],
+    sensors: [sensors]
 }

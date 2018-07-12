@@ -1,6 +1,8 @@
 
 import { message } from 'antd'
 
+import { fetchGateways } from 'actions/gateways'
+
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
 export const LOAD_LIGHTS_FAILURE = 'LOAD_LIGHTS_FAILURE'
@@ -57,11 +59,10 @@ const handleErrors = (response) => {
     return response
 }
 
-export const fetchLights = () => (dispatch) => {
-
-    dispatch(loadLightsRequest())
-
-    return fetch('/api/lights')
+export const fetchLights = () => (dispatch) =>
+    dispatch(fetchGateways())
+        .then(() => dispatch(loadLightsRequest()))
+        .then(() => fetch('/api/lights'))
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(loadLightsSuccess(json)))
@@ -69,7 +70,6 @@ export const fetchLights = () => (dispatch) => {
             message.error(error.message)
             dispatch(loadLightsFailure(error))
         })
-}
 
 export const updateLight = (gatewayId, light) => (dispatch) => {
 
