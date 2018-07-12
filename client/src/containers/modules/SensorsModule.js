@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
     gateways: state.entities.gateways,
     sensors: state.entities.sensors,
     nameEdit: state.modules.sensors.nameEdit,
-    dataLoading: state.modules.sensors.dataLoading
+    initialDataLoading: state.modules.sensors.initialDataLoading
 })
 
 const mapDispatchToProps = dispatch => ({

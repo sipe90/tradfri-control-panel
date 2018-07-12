@@ -6,7 +6,7 @@ import {
 } from 'actions/lights'
 
 const initialState = {
-    dataLoading: false,
+    initialDataLoading: true,
     nameEdit: {}
 }
 
@@ -20,16 +20,15 @@ const updateNameEdit = (previousState, { lightId, name }) => ({
 const reducer = (previousState = initialState, { type, payload }) => 
     R.cond([
         [R.equals(LOAD_LIGHTS_REQUEST), () => ({ 
-            ...previousState,
-            dataLoading: true
+            ...previousState
         })],
         [R.equals(LOAD_LIGHTS_SUCCESS), () => ({ 
             ...previousState, 
-            dataLoading: false
+            initialDataLoading: false
         })],
         [R.equals(LOAD_LIGHTS_FAILURE), () => ({
             ...previousState,
-            dataLoading: false
+            initialDataLoading: false
         })],
         [R.equals(LIGHT_NAME_EDIT_CHANGED), () => ({ 
             ...previousState, 

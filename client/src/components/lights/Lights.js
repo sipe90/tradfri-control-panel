@@ -20,7 +20,7 @@ class Lights extends Component {
     
     render() {
         return (
-            <Spin spinning={this.props.dataLoading} style={{ marginTop: '240px'}} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
+            <Spin spinning={this.props.initialDataLoading} style={{ marginTop: '240px'}} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
                 <div className="card-container">
                     { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) =>
                         this.gatewayHasLights(gateway) ?
@@ -37,7 +37,7 @@ class Lights extends Component {
                                 )}
                             </Card>
                         </div> : null)
-                        : !this.props.dataLoading ? 'No lights found' : null
+                        : !this.props.initialDataLoading ? 'No lights found' : null
                     }
                 </div>
             </Spin>
@@ -63,7 +63,7 @@ Lights.propTypes = {
     lights: PropTypes.object.isRequired,
     nameEdit: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
-    dataLoading: PropTypes.bool.isRequired,
+    initialDataLoading: PropTypes.bool.initialDataLoading,
     lightStateChanged: PropTypes.func.isRequired,
     nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired,

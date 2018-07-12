@@ -20,7 +20,7 @@ class Sensors extends Component {
     
     render() {
         return (
-            <Spin spinning={this.props.dataLoading} style={{ marginTop: '240px'}} indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />}>
+            <Spin spinning={this.props.initialDataLoading} style={{ marginTop: '240px'}} indicator={<Icon type='loading' style={{ fontSize: 24 }} spin />}>
                 <div className='card-container'>
                     { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) =>
                         this.gatewayHasSensors(gateway) ?
@@ -61,7 +61,7 @@ Sensors.propTypes = {
     gateways: PropTypes.object.isRequired,
     sensors: PropTypes.object.isRequired,
     loadSensors: PropTypes.func.isRequired,
-    dataLoading: PropTypes.bool.isRequired,
+    initialDataLoading: PropTypes.bool.isRequired,
     nameEditChanged: PropTypes.func.isRequired,
     updateSensor: PropTypes.func.isRequired,
     startSensorPolling: PropTypes.func.isRequired,
