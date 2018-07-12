@@ -63,9 +63,9 @@ class LightCard extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <div className='light-card-title-edit'>
+                    <span className='light-card-title-edit'>
                         <PencilIcon size={18}/>
-                    </div>
+                    </span>
                 </Popover>
             </div>
         )
