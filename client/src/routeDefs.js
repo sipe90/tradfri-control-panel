@@ -6,6 +6,7 @@ import RssIcon from 'mdi-react/RssIcon'
 import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
 import SettingsIcon from 'mdi-react/SettingsIcon'
 
+import GatewaysModule from 'containers/modules/GatewaysModule'
 import LightsModule from 'containers/modules/LightsModule'
 import SensorsModule from 'containers/modules/SensorsModule'
 
@@ -20,6 +21,13 @@ const routes = [
         container: () => <div>Dashboard</div>
     },
     { 
+        path: '/gateways',
+        exact: true,
+        icon: <HomeAutomationIcon size={28}/>,
+        text: 'Gateways',
+        container: GatewaysModule
+    },
+    { 
         path: '/lights',
         exact: true,
         icon: <LightbulbOutlineIcon size={28}/>,
@@ -32,13 +40,6 @@ const routes = [
         icon: <RssIcon size={28}/>,
         text: 'Sensors',
         container: SensorsModule
-    },
-    { 
-        path: '/gateways',
-        exact: true,
-        icon: <HomeAutomationIcon size={28}/>,
-        text: 'Gateways',
-        container:  () => <div>Gateways</div>
     },
     { 
         path: '/settings',
