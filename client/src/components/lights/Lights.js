@@ -11,6 +11,11 @@ class Lights extends Component {
 
     componentDidMount() {
         this.props.loadLights()
+        this.props.startLightPolling()
+    }
+
+    componentWillUnmount() {
+        this.props.stopLightPolling()
     }
     
     render() {
@@ -61,7 +66,9 @@ Lights.propTypes = {
     dataLoading: PropTypes.bool.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
     nameEditChanged: PropTypes.func.isRequired,
-    updateLight: PropTypes.func.isRequired
+    updateLight: PropTypes.func.isRequired,
+    startLightPolling: PropTypes.func.isRequired,
+    stopLightPolling: PropTypes.func.isRequired
 }
 
 export default Lights

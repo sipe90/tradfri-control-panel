@@ -1,6 +1,7 @@
 
 import { message } from 'antd'
 
+import { START_TIMER, STOP_TIMER } from 'redux-timers'
 import { fetchGateways } from 'actions/gateways'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
@@ -58,6 +59,25 @@ const handleErrors = (response) => {
     }
     return response
 }
+
+export const startSensorPolling = () => (dispatch) =>
+    dispatch({
+        type: START_TIMER,
+        payload: {
+            timerName: 'pollSensors',
+            dispatchFunc: fetchSensors(),
+            timerInterval: 5000 
+        }
+    })
+
+
+export const stopSensorPolling = () => (dispatch) => 
+    dispatch({
+        type: STOP_TIMER,
+        payload: {
+            timerName: 'pollSensors'
+        }
+    })
 
 export const fetchSensors = () => (dispatch) =>
     dispatch(fetchGateways())

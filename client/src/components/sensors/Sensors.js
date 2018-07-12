@@ -11,6 +11,11 @@ class Sensors extends Component {
 
     componentDidMount() {
         this.props.loadSensors()
+        this.props.startSensorPolling()
+    }
+
+    componentWillUnmount() {
+        this.props.stopSensorPolling()
     }
     
     render() {
@@ -58,7 +63,9 @@ Sensors.propTypes = {
     loadSensors: PropTypes.func.isRequired,
     dataLoading: PropTypes.bool.isRequired,
     nameEditChanged: PropTypes.func.isRequired,
-    updateSensor: PropTypes.func.isRequired
+    updateSensor: PropTypes.func.isRequired,
+    startSensorPolling: PropTypes.func.isRequired,
+    stopSensorPolling: PropTypes.func.isRequired
 }
 
 export default Sensors

@@ -10,10 +10,10 @@ const initialState = {
     nameEdit: {}
 }
 
-const updateNameEdit = (previousState, { lightId, name }) => ({
+const updateNameEdit = (previousState, { sensorId, name }) => ({
     nameEdit: {
         ...previousState.nameEdit,
-        [lightId] : name
+        [sensorId] : name
     }
 })
 

@@ -1,6 +1,8 @@
 
 import { message } from 'antd'
 
+import { START_TIMER, STOP_TIMER } from 'redux-timers'
+
 export const LOAD_GATEWAYS_REQUEST = 'LOAD_GATEWAYS_REQUEST'
 export const LOAD_GATEWAYS_SUCCESS = 'LOAD_GATEWAYS_SUCCESS'
 export const LOAD_GATEWAYS_FAILURE = 'LOAD_GATEWAYS_FAILURE'
@@ -25,6 +27,26 @@ const handleErrors = (response) => {
     }
     return response
 }
+
+export const startGatewayPolling = () => (dispatch) =>
+    dispatch({
+        type: START_TIMER,
+        payload: {
+            timerName: 'pollGateways',
+            dispatchFunc: fetchGateways(),
+            timerInterval: 5000 
+        }
+    })
+
+
+export const stopGatewayPolling = () => (dispatch) => 
+    dispatch({
+        type: STOP_TIMER,
+        payload: {
+            timerName: 'pollGateways'
+        }
+    })
+
 
 export const fetchGateways = () => (dispatch) => {
 

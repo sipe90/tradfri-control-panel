@@ -3,6 +3,8 @@ import { message } from 'antd'
 
 import { fetchGateways } from 'actions/gateways'
 
+import { START_TIMER, STOP_TIMER } from 'redux-timers'
+
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
 export const LOAD_LIGHTS_FAILURE = 'LOAD_LIGHTS_FAILURE'
@@ -58,6 +60,25 @@ const handleErrors = (response) => {
     }
     return response
 }
+
+export const startLightPolling = () => (dispatch) =>
+    dispatch({
+        type: START_TIMER,
+        payload: {
+            timerName: 'pollLights',
+            dispatchFunc: fetchLights(),
+            timerInterval: 5000 
+        }
+    })
+
+
+export const stopLightPolling = () => (dispatch) => 
+    dispatch({
+        type: STOP_TIMER,
+        payload: {
+            timerName: 'pollLights'
+        }
+    })
 
 export const fetchLights = () => (dispatch) =>
     dispatch(fetchGateways())
