@@ -6,7 +6,7 @@ import RssIcon from 'mdi-react/RssIcon'
 import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
 import SettingsIcon from 'mdi-react/SettingsIcon'
 
-import LightsContainer from 'containers/modules/LightsContainer'
+import LightsModule from 'containers/modules/LightsModule'
 
 /* eslint-disable  react/display-name */
 
@@ -23,7 +23,7 @@ const routes = [
         exact: true,
         icon: <LightbulbOutlineIcon size={28}/>,
         text: 'Lights',
-        container: LightsContainer
+        container: LightsModule
     },
     { 
         path: '/sensors',

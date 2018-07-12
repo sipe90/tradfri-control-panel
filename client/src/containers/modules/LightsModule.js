@@ -18,9 +18,9 @@ const mapDispatchToProps = dispatch => ({
     updateLight: (gatewayId, light) => dispatch(updateLight(gatewayId, light))
 })
 
-const LightsContainer = connect(
+const LightsModule = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Lights)
 
-export default LightsContainer
+export default LightsModule
