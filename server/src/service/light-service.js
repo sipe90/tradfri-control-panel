@@ -1,23 +1,21 @@
 const R = require('ramda')
-const { getGateways, getDevices } = require('service/gateway-service')
+const { getGateways, getLights } = require('service/gateway-service')
 
 
-const getLights =
-    R.map((gateway) => 
-        R.pipeP(
-            R.ifElse(
-                R.prop('connected'),
-                (gateway) => getDevices(gateway.id),
-                R.always({ lights: []})
-            ),
-            (devices) => R.assoc('lights', devices.lights, gateway)
-        )(gateway),
+const collectLights =
+    R.map( 
+        R.ifElse(
+            R.prop('connected'),
+            (gateway) => getLights(gateway.id),
+            R.always([])
+        )
     )
 
 const getAllLights = R.pipeP(
     getGateways,
-    getLights,
-    Promise.all.bind(Promise)
+    collectLights,
+    Promise.all.bind(Promise),
+    R.flatten
 )
 
 module.exports = {

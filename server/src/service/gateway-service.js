@@ -1,8 +1,8 @@
 const R = require('ramda')
 const { models } = require('mongo')
-const TradfriGateway = require('gateway/tradfri')
+const TradfriGateway = require('gateway/TradfriGateway')
 const logger = require('logger')
-const { normalize } = require('data/tradfri')
+const { normalizeGateway, normalizeLights, normalizeSensors } = require('data/tradfri')
 
 let gateways = {}
 let connections = {}
@@ -18,27 +18,37 @@ const createTradfriGateway = async ({name, hostname, identity, psk}) => {
     return false
 }
 
-const fetchGateways = async () =>  models.TradfriGateway.find()
+const gatewayExists = (id) => R.has(id, gateways)
 
-const getGateways = async () => R.values(gateways)
+const getGateways = async () => Promise.all(
+    R.map(getGateway, R.keys(gateways))
+)
 
-const getGateway = async (id) => R.prop(id, gateways)
+const getGateway = async (id) => gatewayExists(id) ? ({
+    ...gateways[id],
+    ...normalizeGateway(connections[id])
+}) : null
 
-const getDevices = async (gatewayId) => {
+const getLights = async (gatewayId) => {
     const gateway = connections[gatewayId]
     if (!gateway) {
         throw Error(`Uknown gateway id: ${gatewayId}`)
     }
-    logger.debug(`Loading devices for gateway ${R.path([gatewayId, 'name'], gateways)}`)
-    if (gateway instanceof TradfriGateway) {
-        return normalize(gateway)
-    }
+    logger.debug(`Loading lights for gateway ${R.path([gatewayId, 'name'], gateways)}`)
+    return normalizeLights(gateway)
 }
 
-const getAllDevices = async () => Promise.all(R.keys(gateways).map(getDevices))
+const getSensors = async (gatewayId) => {
+    const gateway = connections[gatewayId]
+    if (!gateway) {
+        throw Error(`Uknown gateway id: ${gatewayId}`)
+    }
+    logger.debug(`Loading sensors for gateway ${R.path([gatewayId, 'name'], gateways)}`)
+    return normalizeSensors(gateway)
+}
 
 const connectToGateways = async () => {
-    const gatewayDocs =  await fetchGateways()
+    const gatewayDocs =  await models.TradfriGateway.find()
     logger.info(`Found ${gatewayDocs.length} gateways from database`)
     gateways = R.empty(gateways)
     connections = R.empty(connections)
@@ -72,6 +82,6 @@ module.exports = {
     connectToGateways,
     getGateways,
     getGateway,
-    getDevices,
-    getAllDevices
+    getLights,
+    getSensors,
 }

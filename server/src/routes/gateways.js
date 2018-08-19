@@ -15,12 +15,6 @@ router.get('/:id', (req, res, next) =>
         .catch(next)
 )
 
-router.get('/:id/devices', (req, res, next) =>
-    gatewayService.getDevices(req.params.id)
-        .then((result) => res.json(result))
-        .catch(next)
-)
-
 router.post('/tradfri', (req, res, next) => 
     gatewayService.createTradfriGateway(req.body)
         .then(() => res.status(201).send())

@@ -1,4 +1,4 @@
-const  { TradfriClient, Accessory, AccessoryTypes, discoverGateway  } = require('node-tradfri-client')
+const  { TradfriClient, AccessoryTypes, discoverGateway  } = require('node-tradfri-client')
 const R = require('ramda')
 
 class TradfriGateway {
