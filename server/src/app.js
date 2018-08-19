@@ -37,19 +37,17 @@ app.use('/api/gateways', gateways)
 app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
 
-app.use((req, res) => {
-    res.status = 404
-    res.json({
+app.use((req, res) =>
+    res.status(404).json({
         error: 'Not Found'
     })
-})
+)
 
-app.use((err, req, res) => {
-    res.status(err.status || 500)
-    res.json({
+app.use((err, req, res) =>
+    res.status(err.status || 500).json({
         error: isDevEnv ? err.message : 'Internal server error',
         stack: isDevEnv ? err.stack : undefined
     })
-})
+)
 
 module.exports = app
