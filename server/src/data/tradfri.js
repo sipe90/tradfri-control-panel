@@ -1,13 +1,13 @@
 const R = require('ramda')
 
-const normalizeGateway = (gateway) => ({
-    lights: R.map(R.prop('instanceId'), gateway.getLights()),
-    sensors: R.map(R.prop('instanceId'), gateway.getSensors()),
+const normalizeDevices = (lights, sensors) => ({
+    lights: R.map(R.prop('instanceId'), lights),
+    sensors: R.map(R.prop('instanceId'), sensors),
 })
 
-const normalizeLights = (gateway) => R.map(normalizeLight, gateway.getLights())
+const normalizeLights = (lights) => R.map(normalizeLight, lights)
 
-const normalizeSensors = (gateway) => R.map(normalizeSensor, gateway.getSensors())
+const normalizeSensors = (sensors) => R.map(normalizeSensor, sensors)
 
 const normalizeLight = (light) => ({
     id: light.instanceId,
@@ -37,7 +37,7 @@ const normalizeSensor = (sensor) => ({
 })
 
 module.exports = {
-    normalizeGateway,
+    normalizeDevices,
     normalizeLights,
     normalizeSensors
 }

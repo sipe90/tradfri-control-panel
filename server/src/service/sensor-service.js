@@ -1,6 +1,14 @@
 const R = require('ramda')
-const { getGateways, getSensors } = require('service/gateway-service')
+const { getGateways } = require('service/gateway-service')
+const { getConnection } = require('service/gateway-connection-manager')
+const { normalizeSensors } = require('data/tradfri')
+const logger = require('logger')
 
+const getSensors = async (gatewayId) => {
+    const gateway = getConnection(gatewayId)
+    logger.debug(`Loading sensors for gateway ${gateway.getHostname()}`)
+    return normalizeSensors(gateway.getSensors())
+}
 
 const collectSensors =
     R.map( 

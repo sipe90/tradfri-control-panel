@@ -21,6 +21,10 @@ class TradfriGateway {
         this.connected = true
     }
 
+    getHostname() {
+        return this.hostName
+    }
+
     isConnected() {
         return this.connected
     }
@@ -39,6 +43,19 @@ class TradfriGateway {
 
     getSensors() {
         return R.filter((device) => device.type === AccessoryTypes.motionSensor, R.values(this.getDevices()))
+    }
+
+    updateLight(light) {
+        const lightAccessory = this.getLights().find((accessory => accessory.instanceId === light.id))
+        if (!light) {
+            throw Error(`No light with id ${light.id} found`)
+        }
+        const lightOperation = {
+            onOff: light.on || lightAccessory.onOff,
+            dimmer: light.brightness || lightAccessory.dimmer,
+            colorTemperature: light.colorTemperature || lightAccessory.colorTemperature
+        }
+        this.client.operateLight(lightAccessory, lightOperation)
     }
 }
 
