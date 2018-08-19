@@ -35,7 +35,24 @@ The server requires a running MongoDB server to function. A `docker-compose.yml`
 
 You can discover gateways or create authentication keys with the `bin/tradfri` utility.
 
-*TODO: Saving gateway information to database*
+Currently the backend application expects the Mongo database to contain a collection named `gateways` which contain documents describing the gateways to connec to.
+Example gateway document:
+
+```
+{
+    "_id": ObjectID("5a64b49311b745014492be27"),
+    "_type": "tradfri",
+    "name": "Trådfri Gateway",
+    "hostname": "192.168.0.9",
+    "auth": {
+        "identity": "XXXXXX",
+        "psk": "XXXXXXX"
+    },
+    "__v": 0
+}
+```
+
+The `auth` property contains the identity and pre shared key generated with the `bin/tradfri` utility.
 
 ### Running the server
 
