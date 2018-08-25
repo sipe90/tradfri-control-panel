@@ -65,7 +65,7 @@ export const startGatewayPolling = () => (dispatch) =>
         payload: {
             timerName: 'pollGateways',
             dispatchFunc: fetchGateways(),
-            timerInterval: 5000 
+            timerInterval: 30000 
         }
     })
 

@@ -67,7 +67,7 @@ export const startLightPolling = () => (dispatch) =>
         payload: {
             timerName: 'pollLights',
             dispatchFunc: fetchLights(),
-            timerInterval: 5000 
+            timerInterval: 30000 
         }
     })
 

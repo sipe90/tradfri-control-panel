@@ -66,7 +66,7 @@ export const startSensorPolling = () => (dispatch) =>
         payload: {
             timerName: 'pollSensors',
             dispatchFunc: fetchSensors(),
-            timerInterval: 5000 
+            timerInterval: 30000 
         }
     })
 
