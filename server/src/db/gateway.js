@@ -9,10 +9,10 @@ const ins = async (sql) => (await run(sql)).lastID
 const del = async (sql) => (await run(sql)).changes > 0
 
 const selectAllGateways = async () =>
-    all(SQL`SELECT name, hostname, identity, psk FROM tradfri_gateway`)
+    all(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway`)
 
 const selectGatewayById = async (gatewayId) =>
-    get(SQL`SELECT name, hostname, identity, psk FROM tradfri_gateway WHERE id = ${gatewayId}`)
+    get(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway WHERE id = ${gatewayId}`)
 
 const insertGateway = async ({ name, hostname, identity, psk }) => 
     ins(SQL`INSERT INTO tradfri_gateway (name, hostname, identity, psk) VALUES (${name}, ${hostname}, ${identity}, ${psk})`)
