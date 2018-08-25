@@ -27,7 +27,7 @@ A mock `json-server` can be used instead by running `npm run mock-api`. The cont
 
 Back-end API built on top of express
 
-### Database server
+### Database
 
 The server uses SQLite3 for storing persistent data. A `docker-compose.yml` is provided to set up a web interface for managing the data. It can be accessed from `http://localhost:8080`.
 
