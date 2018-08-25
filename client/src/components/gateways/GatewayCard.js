@@ -16,7 +16,7 @@ const getDescription = R.cond([
 ])
 
 const getPicture = R.cond([
-    [R.equals('tradfri'), R.always('todo.png')],
+    [R.equals('tradfri'), R.always('tradfri_gateway.png')],
     [R.T,  R.always('todo.png')]
 ])
 
