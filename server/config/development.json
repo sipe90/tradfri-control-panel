@@ -1,12 +1,6 @@
 {
     "database": {
-        "host": "localhost",
-        "port": 27017,
-        "dbName": "smart-home",
-        "username": "",
-        "password": "",
-        "collections": {
-            "gateways": "gateways"
-        }
+        "dbFolder": "data",
+        "dbName": "smart_home_panel.db"
     }
 }

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start-db": "docker-compose up -d mongo-express",
+    "web-client": "docker-compose up -d sqliteweb",
     "start": "NODE_PATH=src nodemon ./bin/www",
     "tradfri-auth": "./bin/tradfri authenticate",
     "tradfri-discover": "./bin/tradfri discover"
@@ -16,11 +16,12 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "immutable": "^3.8.2",
-    "mongoose": "^5.0.1",
     "morgan": "~1.9.0",
     "node-tradfri-client": "^1.2.1",
     "ramda": "^0.25.0",
     "serve-favicon": "~2.4.5",
+    "sql-template-strings": "^2.2.2",
+    "sqlite": "^3.0.0",
     "winston": "^2.4.0"
   },
   "eslintConfig": {

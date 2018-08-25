@@ -1,4 +1,4 @@
-const mongo = require('mongo')
+const db = require('db')
 const logger = require('logger')
 const { fetchGateways } = require('service/gateway-service')
 const { connectToGateways } = require('service/gateway-connection-manager') 
@@ -8,22 +8,26 @@ const logError = (logMsg) => (err) => {
     return Promise.reject(err)
 }
 
-module.exports = async () => {
+module.exports = async (env) => {
     try {
-        await mongo.connect().catch(logError('Failed to connect to MongoDB.'))
+        logger.info('Initializing application')
 
-        logger.info('Successfully connected to MongoDB')
+        await db.init(env).catch(logError('Failed to connect to SQLite database.'))
 
-        const gatewayDocs = await fetchGateways()
+        logger.info('Successfully connected to SQLite database')
 
-        logger.info(`Found ${gatewayDocs.length} gateways from database`)
+        const gatewayRows = await fetchGateways()
 
-        await connectToGateways(gatewayDocs).catch(logError('Failed to connect to Gateways.'))
+        logger.info(`Found ${gatewayRows.length} gateways from database`)
+
+        await connectToGateways(gatewayRows).catch(logError('Failed to connect to Gateways.'))
 
         logger.info('Finished connecting to gateways')
 
         return true
     } catch (err) {
+        logger.error('Initialization failed')
+        logger.error(err)
         return false
     }
 }

@@ -29,30 +29,20 @@ Back-end API built on top of express
 
 ### Database server
 
-The server requires a running MongoDB server to function. A `docker-compose.yml` is provided to set it up. Also mongo-express server will be launched and can be accessed from `http://localhost:8081`
+The server uses SQLite3 for storing persistent data. A `docker-compose.yml` is provided to set up a web interface for managing the data. It can be accessed from `http://localhost:8080`.
 
 ### Registering gateways
 
 You can discover gateways or create authentication keys with the `bin/tradfri` utility.
 
-Currently the backend application expects the Mongo database to contain a collection named `gateways` which contain documents describing the gateways to connec to.
-Example gateway document:
+Currently the backend application expects the SQLite database to contain a table named `tradfri_gateway` which contain rows describing the gateways to connect to.
+Example gateway:
 
-```
-{
-    "_id": ObjectID("5a64b49311b745014492be27"),
-    "_type": "tradfri",
-    "name": "Trådfri Gateway",
-    "hostname": "192.168.0.9",
-    "auth": {
-        "identity": "XXXXXX",
-        "psk": "XXXXXXX"
-    },
-    "__v": 0
-}
-```
+| id    | name              | hostname      | identity  | psk       |
+|-------|-------------------|---------------|-----------|-----------|
+| 1     | Trådfri gateway   | 192.168.0.9   | XXXXXX    | XXXXXX    |
 
-The `auth` property contains the identity and pre shared key generated with the `bin/tradfri` utility.
+The `identity` and `psk` properties contain the identity and pre shared key generated with the `bin/tradfri` utility.
 
 ### Running the server
 
