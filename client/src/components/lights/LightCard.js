@@ -97,15 +97,21 @@ class LightCard extends Component {
     }
 
     powerSwitched(newValue) {
-        this.props.lightStateChanged({ ...this.props.light, on: newValue })
+        const newLightState = { ...this.props.light, on: newValue }
+        this.props.lightStateChanged(newLightState)
+        this.props.updateLight(this.props.gateway.id, newLightState)
     }
 
     brightnessChanged(newValue) {
-        this.props.lightStateChanged({ ...this.props.light, brightness: newValue })
+        const newLightState = { ...this.props.light, brightness: newValue }
+        this.props.lightStateChanged(newLightState)
+        this.props.updateLight(this.props.gateway.id, newLightState)
     }
 
     temperatureChanged(newValue) {
-        this.props.lightStateChanged({ ...this.props.light, colorTemperature: newValue })
+        const newLightState = { ...this.props.light, colorTemperature: newValue }
+        this.props.lightStateChanged(newLightState)
+        this.props.updateLight(this.props.gateway.id, newLightState)
     }
 
     controlTable({light}) {
@@ -129,7 +135,7 @@ class LightCard extends Component {
                         <td><span>Brightness</span></td>
                         <td>
                             <Slider 
-                                min={0}
+                                min={1}
                                 max={100}
                                 value={light.brightness}
                                 disabled={!light.dimmable}
@@ -144,7 +150,7 @@ class LightCard extends Component {
                         <td><span>Temperature</span></td>
                         <td>
                             <Slider
-                                min={0}
+                                min={1}
                                 max={100}
                                 value={light.colorTemperature}
                                 onChange={this.temperatureChanged.bind(this)}
@@ -171,6 +177,15 @@ LightCard.propTypes = {
         model: PropTypes.string.isRequired,
         spectrum: PropTypes.string.isRequired,
         colorTemperature: PropTypes.number,
+    }),
+    gateway: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        connected: PropTypes.bool.isRequired,
+        hostname: PropTypes.string.isRequired,
+        lights: PropTypes.arrayOf(PropTypes.number).isRequired,
+        sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
     nameEdit: PropTypes.string.isRequired,
     lightStateChanged: PropTypes.func.isRequired,

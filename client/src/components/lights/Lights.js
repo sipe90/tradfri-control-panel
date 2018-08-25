@@ -24,19 +24,20 @@ class Lights extends Component {
                 <div className="card-container">
                     { !R.isEmpty(this.props.gateways) ? R.values(this.props.gateways).map((gateway, idx) =>
                         this.gatewayHasLights(gateway) ?
-                        <div className='gateway-card' key={idx}>
-                            <Card title={gateway.name}>
-                                {this.getLightsForGateway(gateway).map((light, idx) =>
-                                    <LightCard 
-                                        key={idx}
-                                        light={light}
-                                        nameEdit={this.props.nameEdit[light.id] || ''}
-                                        lightStateChanged={this.props.lightStateChanged}
-                                        nameEditChanged={this.props.nameEditChanged}
-                                        updateLight={this.props.updateLight}/>
-                                )}
-                            </Card>
-                        </div> : null)
+                            <div className='gateway-card' key={idx}>
+                                <Card title={gateway.name}>
+                                    {this.getLightsForGateway(gateway).map((light, idx) =>
+                                        <LightCard 
+                                            key={idx}
+                                            light={light}
+                                            gateway={gateway}
+                                            nameEdit={this.props.nameEdit[light.id] || ''}
+                                            lightStateChanged={this.props.lightStateChanged}
+                                            nameEditChanged={this.props.nameEditChanged}
+                                            updateLight={this.props.updateLight}/>
+                                    )}
+                                </Card>
+                            </div> : null)
                         : !this.props.initialDataLoading ? 'No lights found' : null
                     }
                 </div>
@@ -63,7 +64,7 @@ Lights.propTypes = {
     lights: PropTypes.object.isRequired,
     nameEdit: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
-    initialDataLoading: PropTypes.bool.initialDataLoading,
+    initialDataLoading: PropTypes.bool.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
     nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired,

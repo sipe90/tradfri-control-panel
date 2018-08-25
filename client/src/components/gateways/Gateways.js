@@ -30,7 +30,7 @@ class Gateways extends Component {
                             gatewayStateChanged={this.props.gatewayStateChanged}
                             nameEditChanged={this.props.nameEditChanged}
                             updateGateway={this.props.updateGateway}/>
-                        )
+                    )
                         : !this.props.initialDataLoading ? 'No gateways found' : null }
                 </div>
             </Spin>

@@ -97,10 +97,9 @@ export const updateLight = (gatewayId, light) => (dispatch) => {
     dispatch(updateLightRequest())
 
     return fetch(`/api/gateways/${gatewayId}/lights/${light.id}`, 
-        { method: 'POST', body: light, headers: { 'content-type': 'application/json'}})
+        { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json'}})
         .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(updateLightSuccess(json)))
+        .then(() => dispatch(updateLightSuccess()))
         .catch(error => {
             message.error(error.message)
             dispatch(updateLightFailure(error))

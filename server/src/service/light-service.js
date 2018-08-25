@@ -1,5 +1,5 @@
 const R = require('ramda')
-const { getGateways } = require('service/gateway-service')
+const { getGateways, getGateway } = require('service/gateway-service')
 const { getConnection } = require('service/gateway-connection-manager')
 const { normalizeLights } = require('data/tradfri')
 const logger = require('logger')
@@ -26,13 +26,18 @@ const getAllLights = R.pipeP(
     R.flatten
 )
 
-const updateLight = async (light) => {
-    const gateways = await getGateways()
-    const gateway = gateways.find((gateway) => R.contains(light.id, gateway.lights))
+const updateLight = async (gatewayId, light) => {
+    const gateway = await getGateway(gatewayId)
     if (!gateway) {
-        throw new Error(`No light found with id: ${light.id}`)
+        throw new Error(`No gateway found with id: ${gatewayId}`)
     }
-    const gatewayConnection = getConnection(gateway.id)
+    if (!R.contains(light.id, gateway.lights)) {
+        throw new Error(`No light found with id: ${light.id} for gateway id: ${gatewayId}`)
+    }
+    const gatewayConnection = getConnection(gatewayId)
+    if (!gatewayConnection.isConnected()) {
+        throw new Error(`Gateway id: ${gatewayId} is not connected`)
+    }
     gatewayConnection.updateLight(light)
 }
 

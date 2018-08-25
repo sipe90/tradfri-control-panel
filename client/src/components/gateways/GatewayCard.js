@@ -92,7 +92,7 @@ class GatewayCard extends Component {
 
 GatewayCard.propTypes = {
     gateway: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         connected: PropTypes.bool.isRequired,

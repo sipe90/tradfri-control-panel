@@ -1,14 +1,14 @@
 const R = require('ramda')
 const { models } = require('mongo')
 const TradfriGateway = require('gateway/TradfriGateway')
-const { getConnection, connectToGateway, connectToGateways } = require('service/gateway-connection-manager')
+const { getConnection, connectToGateway } = require('service/gateway-connection-manager')
 const { normalizeDevices } = require('data/tradfri')
 
 const fetchGateways = async () =>
     await models.TradfriGateway.find().exec()
 
 const fetchGateway = async (gatewayId) =>
-    await models.TradfriGateway.findOne(gatewayId).exec()
+    await models.TradfriGateway.findById(gatewayId).exec()
 
 const createTradfriGateway = async ({name, hostname, identity, psk}) => {
     const gateway = new TradfriGateway(hostname)
