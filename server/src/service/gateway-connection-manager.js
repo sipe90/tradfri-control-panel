@@ -14,27 +14,23 @@ const getConnection = (gatewayId) => {
 
 const connectToGateways = async (gatewayDocs) => {
     connections = {}
-    Promise.all(R.map(connectToGateway, gatewayDocs))
+    return Promise.all(R.map(connectToGateway, gatewayDocs))
 }
 
-const connectToGateway = async ({id, _type, hostname, auth}) => {
-    if (_type === 'tradfri') {
-        logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
-        const gateway = new TradfriGateway(hostname)
-        
-        try {
-            await gateway.connect(auth.identity, auth.psk)
-            logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
-        } catch (err) {
-            logger.error(`Failed to connect to trådfri gateway at ${hostname}`)
-            logger.error(err)
-        }
-
-        connections = R.assoc(id, gateway, connections)
-        return gateway
-    } else {
-        logger.error(`Unknown gateway type: ${_type}`)
+const connectToGateway = async ({id, hostname, identity, psk}) => {
+    logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
+    const gateway = new TradfriGateway(hostname)
+    
+    try {
+        await gateway.connect(identity, psk)
+        logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
+    } catch (err) {
+        logger.error(`Failed to connect to trådfri gateway at ${hostname}`)
+        logger.error(err)
     }
+
+    connections = R.assoc(id, gateway, connections)
+    return gateway
 }
 
 module.exports = {

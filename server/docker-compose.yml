@@ -1,18 +1,10 @@
 version: "3"
 services:
-  mongo:
-    image: mongo
-    command: -smallfiles -nojournal
+  sqliteweb:
+    image: coleifer/sqlite-web
     ports:
-      - "27017:27017"
+      - 8080:8080
     volumes:
-      - db-data:/data/db
-  mongo-express:
-    depends_on:
-      - "mongo"
-    image: mongo-express
-    ports:
-      - "8081:8081"
-
-volumes:
-  db-data:
+      - ./data:/data
+    environment:
+      SQLITE_DATABASE: "smart_home_panel.db"
