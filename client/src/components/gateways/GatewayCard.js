@@ -4,21 +4,9 @@ import PropTypes from 'prop-types'
 import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 
-import * as R from 'ramda'
-
 import 'components/gateways/GatewayCard.css'
 
 const { Meta } = Card
-
-const getDescription = R.cond([
-    [R.propEq('type', 'tradfri'), R.always('IKEA Trådfri gateway')],
-    [R.T,  R.always('Gateway')]
-])
-
-const getPicture = R.cond([
-    [R.equals('tradfri'), R.always('tradfri_gateway.png')],
-    [R.T,  R.always('todo.png')]
-])
 
 class GatewayCard extends Component {
 
@@ -30,7 +18,7 @@ class GatewayCard extends Component {
                     <Meta 
                         title={this.title(this.props)}
                         avatar={this.statusIndicator(this.props)}
-                        description={getDescription(this.props.gateway)}/>
+                        description='IKEA Trådfri gateway'/>
                 </Card>
             </div>
         )
@@ -40,7 +28,7 @@ class GatewayCard extends Component {
         return (
             <div className='gateway-card-cover'>
                 <Tooltip title={gateway.type}>
-                    <img alt={gateway.type} src={`/${getPicture(gateway.type)}`} />
+                    <img alt={gateway.type} src={'/tradfri_gateway.png'} />
                 </Tooltip>
             </div>
         )
@@ -94,7 +82,6 @@ GatewayCard.propTypes = {
     gateway: PropTypes.shape({
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
         connected: PropTypes.bool.isRequired,
         hostname: PropTypes.string.isRequired,
         lights: PropTypes.arrayOf(PropTypes.number).isRequired,

@@ -24,12 +24,11 @@ const createTradfriGateway = async ({name, hostname, identity, psk}) => {
 const getGateways = async () => {
     const gateways = await fetchGateways()
 
-    return Promise.all(R.map(async (gatewayDoc) => {
-        const gateway = mapGatewayFields(gatewayDoc)
+    return Promise.all(R.map(async (gateway) => {
         let gatewayConnection = getConnection(gateway.id)
 
         if (!gatewayConnection) {
-            await connectToGateway(gatewayDoc)
+            await connectToGateway(gateway)
             gatewayConnection = getConnection(gateway.id)
         }
 
@@ -42,14 +41,12 @@ const getGateways = async () => {
 }
 
 const getGateway = async (id) => { 
-    const gatewayDoc = await fetchGateway(id)
+    const gateway = await fetchGateway(id)
     const gatewayConnection = getConnection(id)
 
-    if (!gatewayDoc || !gatewayConnection) {
+    if (!gatewayConnection) {
         return null
     } 
-
-    const gateway = mapGatewayFields(gatewayDoc)
     
     return ({
         ...gateway,
@@ -57,13 +54,6 @@ const getGateway = async (id) => {
         ...normalizeDevices(gatewayConnection.getLights(), gatewayConnection.getSensors())
     })
 }
-
-const mapGatewayFields = ({_id, _type, name, hostname }) => ({ 
-    id: _id, 
-    type: _type,
-    name, 
-    hostname
-})
 
 module.exports = {
     fetchGateways,
