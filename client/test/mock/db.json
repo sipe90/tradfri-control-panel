@@ -2,7 +2,6 @@
   "gateways": [
     {
       "id": "zs09hnmmf59kdnciurjp4h32",
-      "type": "tradfri",
       "name": "Mock Trådfri Gateway 1",
       "hostname": "mock-gateway1.local",
       "connected": true,
@@ -15,7 +14,6 @@
     },
     {
       "id": "qzwakpkeibz36hqbjjju2ksv",
-      "type": "tradfri",
       "name": "Mock Trådfri Gateway 2",
       "hostname": "mock-gateway2.local",
       "connected": true,
@@ -27,7 +25,6 @@
     },
     {
       "id": "bfpqmxpdi5frisumlpeb",
-      "type": "tradfri",
       "name": "Mock Trådfri Gateway 3",
       "hostname": "mock-gateway3.local",
       "connected": false,
