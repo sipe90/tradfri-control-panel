@@ -1,4 +1,4 @@
-const  { TradfriClient, AccessoryTypes, discoverGateway  } = require('node-tradfri-client')
+const { TradfriClient, AccessoryTypes, discoverGateway } = require('node-tradfri-client')
 const R = require('ramda')
 
 class TradfriGateway {
@@ -50,14 +50,15 @@ class TradfriGateway {
         if (!light) {
             throw Error(`No light with id ${light.id} found`)
         }
-        lightAccessory.name = light.name || lightAccessory.name
+        const updatedAccessory = lightAccessory.clone()
+        updatedAccessory.name = light.name || lightAccessory.name
         const lightOperation = {
             onOff: light.on || lightAccessory.onOff,
             dimmer: light.brightness || lightAccessory.dimmer,
             colorTemperature: light.colorTemperature || lightAccessory.colorTemperature
         }
-        this.client.updateDevice(lightAccessory)
-        this.client.operateLight(lightAccessory, lightOperation)
+        this.client.updateDevice(updatedAccessory)
+        this.client.operateLight(updatedAccessory, lightOperation)
     }
 }
 
