@@ -55,10 +55,13 @@ const getGateway = async (id) => {
     })
 }
 
+const discoverGateway = async () => TradfriGateway.discover()
+
 module.exports = {
     fetchGateways,
     fetchGateway,
     createTradfriGateway,
     getGateways,
-    getGateway
+    getGateway,
+    discoverGateway
 }
