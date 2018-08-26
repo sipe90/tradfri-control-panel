@@ -26,9 +26,7 @@ class Gateways extends Component {
                         <GatewayCard 
                             key={idx}
                             gateway={gateway}
-                            nameEdit={this.props.nameEdit[gateway.id] || ''}
                             gatewayStateChanged={this.props.gatewayStateChanged}
-                            nameEditChanged={this.props.nameEditChanged}
                             updateGateway={this.props.updateGateway}/>
                     )
                         : !this.props.initialDataLoading ? 'No gateways found' : null }
@@ -41,11 +39,9 @@ class Gateways extends Component {
 
 Gateways.propTypes = {
     gateways: PropTypes.object.isRequired,
-    nameEdit: PropTypes.object.isRequired,
     loadGateways: PropTypes.func.isRequired,
-    initialDataLoading: PropTypes.bool.initialDataLoading,
+    initialDataLoading: PropTypes.bool.isRequired,
     gatewayStateChanged: PropTypes.func.isRequired,
-    nameEditChanged: PropTypes.func.isRequired,
     updateGateway: PropTypes.func.isRequired,
     startGatewayPolling: PropTypes.func.isRequired,
     stopGatewayPolling: PropTypes.func.isRequired

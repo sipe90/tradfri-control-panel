@@ -14,8 +14,6 @@ export const UPDATE_SENSOR_FAILURE = 'UPDATE_SENSOR_FAILURE'
 
 export const SENSOR_STATE_CHANGED = 'SENSOR_STATE_CHANGED'
 
-export const SENSOR_NAME_EDIT_CHANGED = 'SENSOR_NAME_EDIT_CHANGED'
-
 const loadSensorsRequest = () => ({
     type: LOAD_SENSORS_REQUEST
 })
@@ -46,11 +44,6 @@ const updateSensorFailure = (error) => ({
 export const sensorStateChanged = (sensorProps) => ({
     type: SENSOR_STATE_CHANGED,
     payload: sensorProps
-})
-
-export const nameEditChanged = (sensorId, name) => ({
-    type: SENSOR_NAME_EDIT_CHANGED,
-    payload: { sensorId, name }
 })
 
 const handleErrors = (response) => {
@@ -96,7 +89,7 @@ export const updateSensor = (gatewayId, sensor) => (dispatch) => {
     dispatch(updateSensorRequest())
 
     return fetch(`/api/gateways/${gatewayId}/sensors/${sensor.id}`, 
-        { method: 'POST', body: sensor, headers: { 'content-type': 'application/json'}})
+        { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json'}})
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(updateSensorSuccess(json)))

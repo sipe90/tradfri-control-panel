@@ -15,8 +15,6 @@ export const UPDATE_LIGHT_FAILURE = 'UPDATE_LIGHT_FAILURE'
 
 export const LIGHT_STATE_CHANGED = 'LIGHT_STATE_CHANGED'
 
-export const LIGHT_NAME_EDIT_CHANGED = 'LIGHT_NAME_EDIT_CHANGED'
-
 const loadLightsRequest = () => ({
     type: LOAD_LIGHTS_REQUEST
 })
@@ -47,11 +45,6 @@ const updateLightFailure = (error) => ({
 export const lightStateChanged = (lightProps) => ({
     type: LIGHT_STATE_CHANGED,
     payload: lightProps
-})
-
-export const nameEditChanged = (lightId, name) => ({
-    type: LIGHT_NAME_EDIT_CHANGED,
-    payload: { lightId, name }
 })
 
 const handleErrors = (response) => {

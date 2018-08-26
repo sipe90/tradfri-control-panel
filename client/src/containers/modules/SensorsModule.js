@@ -1,19 +1,18 @@
 import { connect } from 'react-redux'
 
-import { fetchSensors, nameEditChanged, updateSensor, startSensorPolling, stopSensorPolling } from 'actions/sensors'
+import { fetchSensors, updateSensor, startSensorPolling, stopSensorPolling, sensorStateChanged } from 'actions/sensors'
 
 import Sensors from 'components/sensors/Sensors'
 
 const mapStateToProps = state => ({
     gateways: state.entities.gateways,
     sensors: state.entities.sensors,
-    nameEdit: state.modules.sensors.nameEdit,
     initialDataLoading: state.modules.sensors.initialDataLoading
 })
 
 const mapDispatchToProps = dispatch => ({
     loadSensors: () => dispatch(fetchSensors()),
-    nameEditChanged: (sensorId, name) => dispatch(nameEditChanged(sensorId, name)),
+    sensorStateChanged: (sensor) => dispatch(sensorStateChanged(sensor)),
     updateSensor: (gatewayId, sensor) => dispatch(updateSensor(gatewayId, sensor)),
     startSensorPolling: () => dispatch(startSensorPolling()),
     stopSensorPolling: () => dispatch(stopSensorPolling())

@@ -2,20 +2,12 @@
 import * as R from 'ramda'
 
 import { 
-    LOAD_GATEWAYS_REQUEST, LOAD_GATEWAYS_SUCCESS, LOAD_GATEWAYS_FAILURE, GATEWAY_NAME_EDIT_CHANGED 
+    LOAD_GATEWAYS_REQUEST, LOAD_GATEWAYS_SUCCESS, LOAD_GATEWAYS_FAILURE 
 } from 'actions/gateways'
 
 const initialState = {
-    initialDataLoading: true,
-    nameEdit: {}
+    initialDataLoading: true
 }
-
-const updateNameEdit = (previousState, { sensorId, name }) => ({
-    nameEdit: {
-        ...previousState.nameEdit,
-        [sensorId] : name
-    }
-})
 
 const reducer = (previousState = initialState, { type, payload }) => 
     R.cond([
@@ -29,10 +21,6 @@ const reducer = (previousState = initialState, { type, payload }) =>
         [R.equals(LOAD_GATEWAYS_FAILURE), () => ({
             ...previousState,
             initialDataLoading: false
-        })],
-        [R.equals(GATEWAY_NAME_EDIT_CHANGED), () => ({ 
-            ...previousState, 
-            ...updateNameEdit(previousState, payload) 
         })],
         [R.T, R.always(previousState)]
     ])(type)

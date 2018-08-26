@@ -8,7 +8,17 @@ import 'components/gateways/GatewayCard.css'
 
 const { Meta } = Card
 
+const initialState = {
+    editNameVisible: false,
+    editNameText: ''
+}
+
 class GatewayCard extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = initialState
+    }
 
     render() {
         return (
@@ -41,6 +51,7 @@ class GatewayCard extends Component {
                 <Popover
                     title='Edit name'
                     trigger='click'
+                    visible={this.state.editNameVisible}
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
@@ -55,8 +66,8 @@ class GatewayCard extends Component {
     editName() {
         return (
             <div className='gateway-card-title-popover'>
-                <Input value={this.props.nameEdit} onChange={this.nameEditChanged.bind(this)} />
-                <Button type='primary' size='small'>Update</Button>
+                <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
+                <Button type='primary' size='small' onClick={this.updateName.bind(this)}>Update</Button>
             </div>
         )
     }
@@ -70,26 +81,32 @@ class GatewayCard extends Component {
     }
 
     onEditNameVisibleChanged(visible) {
-        visible && this.props.nameEditChanged(this.props.gateway.id, this.props.gateway.name)
+        visible && this.setState({ editNameText: this.props.gateway.name })
+        this.setState({ editNameVisible: visible })
     }
 
-    nameEditChanged(event) {
-        this.props.nameEditChanged(this.props.gateway.id, event.target.value)
+    editNameChanged(event) {
+        this.setState({ editNameText: event.target.value })
+    }
+
+    updateName() {
+        const newGatewayState = { ...this.props.gateway, name: this.state.editNameText }
+        this.props.updateGateway(newGatewayState)
+        this.props.gatewayStateChanged(newGatewayState)
+        this.setState({ editNameVisible: false })
     }
 }
 
 GatewayCard.propTypes = {
     gateway: PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         connected: PropTypes.bool.isRequired,
         hostname: PropTypes.string.isRequired,
         lights: PropTypes.arrayOf(PropTypes.number).isRequired,
         sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
-    nameEdit: PropTypes.string.isRequired,
     gatewayStateChanged: PropTypes.func.isRequired,
-    nameEditChanged: PropTypes.func.isRequired,
     updateGateway: PropTypes.func.isRequired
 }
 

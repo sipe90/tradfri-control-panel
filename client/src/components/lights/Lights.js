@@ -31,9 +31,7 @@ class Lights extends Component {
                                             key={idx}
                                             light={light}
                                             gateway={gateway}
-                                            nameEdit={this.props.nameEdit[light.id] || ''}
                                             lightStateChanged={this.props.lightStateChanged}
-                                            nameEditChanged={this.props.nameEditChanged}
                                             updateLight={this.props.updateLight}/>
                                     )}
                                 </Card>
@@ -62,11 +60,9 @@ class Lights extends Component {
 Lights.propTypes = {
     gateways: PropTypes.object.isRequired,
     lights: PropTypes.object.isRequired,
-    nameEdit: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
     initialDataLoading: PropTypes.bool.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
-    nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired,
     startLightPolling: PropTypes.func.isRequired,
     stopLightPolling: PropTypes.func.isRequired

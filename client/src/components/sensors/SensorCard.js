@@ -17,7 +17,17 @@ const getPicture = R.cond([
     [R.T,  R.always('motion_sensor.png')]
 ])
 
+const initialState = {
+    editNameVisible: false,
+    editNameText: ''
+}
+
 class SensorCard extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = initialState
+    }
 
     render() {
         return (
@@ -50,6 +60,7 @@ class SensorCard extends Component {
                 <Popover
                     title='Edit name'
                     trigger='click'
+                    visible={this.state.editNameVisible}
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
@@ -64,8 +75,8 @@ class SensorCard extends Component {
     editName() {
         return (
             <div className='sensor-card-title-popover'>
-                <Input value={this.props.nameEdit} onChange={this.nameEditChanged.bind(this)} />
-                <Button type='primary' size='small'>Update</Button>
+                <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
+                <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
         )
     }
@@ -79,11 +90,19 @@ class SensorCard extends Component {
     }
 
     onEditNameVisibleChanged(visible) {
-        visible && this.props.nameEditChanged(this.props.sensor.id, this.props.sensor.name)
+        visible && this.setState({ editNameText: this.props.sensor.name })
+        this.setState({ editNameVisible: visible })
     }
 
-    nameEditChanged(event) {
-        this.props.nameEditChanged(this.props.sensor.id, event.target.value)
+    editNameChanged(event) {
+        this.setState({ editNameText: event.target.value })
+    }
+
+    updateName() {
+        const newSensorState = { ...this.props.sensor, name: this.state.editNameText }
+        this.props.updateSensor(this.props.gateway.id, newSensorState)
+        this.props.sensorStateChanged(newSensorState)
+        this.setState({ editNameVisible: false })
     }
 }
 
@@ -96,8 +115,15 @@ SensorCard.propTypes = {
         power: PropTypes.number.isRequired,
         battery: PropTypes.number.isRequired,
     }),
-    nameEdit: PropTypes.string.isRequired,
-    nameEditChanged: PropTypes.func.isRequired,
+    gateway: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        connected: PropTypes.bool.isRequired,
+        hostname: PropTypes.string.isRequired,
+        lights: PropTypes.arrayOf(PropTypes.number).isRequired,
+        sensors: PropTypes.arrayOf(PropTypes.number).isRequired
+    }),
+    sensorStateChanged: PropTypes.func.isRequired,
     updateSensor: PropTypes.func.isRequired
 }
 

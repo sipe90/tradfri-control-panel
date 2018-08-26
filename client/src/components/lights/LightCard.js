@@ -26,7 +26,17 @@ const getPicture = R.cond([
 
 const percentFormatter = (v) => `${v}%`
 
+const initialState = {
+    editNameVisible: false,
+    editNameText: ''
+}
+
 class LightCard extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = initialState
+    }
 
     render() {
         return (
@@ -60,6 +70,7 @@ class LightCard extends Component {
                 <Popover
                     title='Edit name'
                     trigger='click'
+                    visible={this.state.editNameVisible}
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
@@ -74,8 +85,8 @@ class LightCard extends Component {
     editName() {
         return (
             <div className='light-card-title-popover'>
-                <Input value={this.props.nameEdit} onChange={this.nameEditChanged.bind(this)} />
-                <Button type='primary' size='small'>Update</Button>
+                <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
+                <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
         )
     }
@@ -89,11 +100,19 @@ class LightCard extends Component {
     }
 
     onEditNameVisibleChanged(visible) {
-        visible && this.props.nameEditChanged(this.props.light.id, this.props.light.name)
+        visible && this.setState({ editNameText: this.props.light.name })
+        this.setState({ editNameVisible: visible })
     }
 
-    nameEditChanged(event) {
-        this.props.nameEditChanged(this.props.light.id, event.target.value)
+    editNameChanged(event) {
+        this.setState({ editNameText: event.target.value })
+    }
+
+    updateName() {
+        const newLightState = { ...this.props.light, name: this.state.editNameText }
+        this.props.updateLight(this.props.gateway.id, newLightState)
+        this.props.lightStateChanged(newLightState)
+        this.setState({ editNameVisible: false })
     }
 
     powerSwitched(newValue) {
@@ -179,17 +198,14 @@ LightCard.propTypes = {
         colorTemperature: PropTypes.number,
     }),
     gateway: PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
         connected: PropTypes.bool.isRequired,
         hostname: PropTypes.string.isRequired,
         lights: PropTypes.arrayOf(PropTypes.number).isRequired,
         sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
-    nameEdit: PropTypes.string.isRequired,
     lightStateChanged: PropTypes.func.isRequired,
-    nameEditChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired
 }
 
