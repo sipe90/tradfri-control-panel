@@ -77,13 +77,14 @@ export const fetchGateway = () => (dispatch) => {
     dispatch(loadGatewayRequest())
 
     return fetch('/api/gateway')
-        .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(loadGatewaySuccess(json)))
-        .catch(error => {
-            message.error(error.message)
-            dispatch(loadGatewayFailure(error))
-        })
+        .then(res => res.status === 404 ?
+            dispatch(loadGatewaySuccess()) :
+            res.json()
+                .then(json => dispatch(loadGatewaySuccess(json)))
+                .catch(error => {
+                    message.error(error.message)
+                    dispatch(loadGatewayFailure(error))
+                }))
 }
 
 export const updateGateway = (gateway) => (dispatch) => {

@@ -19,6 +19,11 @@ const createTradfriGateway = async ({ name, hostname, identity, psk }) => {
 
 const getGateway = async () => {
     const gateway = await fetchGateway()
+
+    if (!gateway) {
+        return null
+    }
+
     const gatewayConnection = getConnection()
 
     if (!gatewayConnection) {

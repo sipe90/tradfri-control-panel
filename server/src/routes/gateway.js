@@ -5,7 +5,7 @@ const gatewayService = require('service/gateway-service')
 
 router.get('/', (req, res, next) =>
     gatewayService.getGateway()
-        .then((result) => res.json(result))
+        .then((result) => result ? res.json(result) : res.status(404).send())
         .catch(next)
 )
 

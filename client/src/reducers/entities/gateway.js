@@ -7,9 +7,9 @@ const initialState = null
 
 const reducer = (previousState = initialState, { type, payload }) =>
     R.cond([
-        [R.equals(LOAD_GATEWAY_SUCCESS), () => ({
+        [R.equals(LOAD_GATEWAY_SUCCESS), () => payload ? ({
             ...payload
-        })],
+        }) : null],
         [R.T, R.always(previousState)]
     ])(type)
 
