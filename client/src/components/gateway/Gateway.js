@@ -7,16 +7,7 @@ import AddGateway from 'components/gateway/add-gateway/AddGateway'
 
 import 'components/gateway/Gateway.css'
 
-const initialState = {
-    addGatewayModalOpen: false
-}
-
 class Gateway extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = initialState
-    }
 
     componentDidMount() {
         this.props.loadGateway()
