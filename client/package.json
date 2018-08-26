@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "antd": "^3.6.5",
+    "antd": "^3.8.3",
     "mdi-react": "^4.0.0",
     "normalizr": "^3.2.4",
     "ramda": "^0.25.0",
