@@ -6,47 +6,47 @@ import RssIcon from 'mdi-react/RssIcon'
 import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
 import SettingsIcon from 'mdi-react/SettingsIcon'
 
-import GatewaysModule from 'containers/modules/GatewaysModule'
+import GatewayModule from 'containers/modules/GatewayModule'
 import LightsModule from 'containers/modules/LightsModule'
 import SensorsModule from 'containers/modules/SensorsModule'
 
 /* eslint-disable  react/display-name */
 
 const routes = [
-    { 
+    {
         path: '/dashboard',
         exact: true,
-        icon: <GaugeIcon size={28}/>,
+        icon: <GaugeIcon size={28} />,
         text: 'Dashboard',
         container: () => <div>Dashboard</div>
     },
-    { 
-        path: '/gateways',
+    {
+        path: '/gateway',
         exact: true,
-        icon: <HomeAutomationIcon size={28}/>,
-        text: 'Gateways',
-        container: GatewaysModule
+        icon: <HomeAutomationIcon size={28} />,
+        text: 'Gateway',
+        container: GatewayModule
     },
-    { 
+    {
         path: '/lights',
         exact: true,
-        icon: <LightbulbOutlineIcon size={28}/>,
+        icon: <LightbulbOutlineIcon size={28} />,
         text: 'Lights',
         container: LightsModule
     },
-    { 
+    {
         path: '/sensors',
         exact: true,
-        icon: <RssIcon size={28}/>,
+        icon: <RssIcon size={28} />,
         text: 'Sensors',
         container: SensorsModule
     },
-    { 
+    {
         path: '/settings',
         exact: true,
-        icon: <SettingsIcon size={28}/>,
+        icon: <SettingsIcon size={28} />,
         text: 'Settings',
-        container:  () => <div>Settings</div>
+        container: () => <div>Settings</div>
     }
 ]
 

@@ -1,16 +1,15 @@
 const express = require('express')
-const path = require('path')
 const httpLogger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
 const logger = require('logger')
 const init = require('init')
-const { gateways, lights, sensors } = require('routes')
+const { gateway, lights, sensors } = require('routes')
 
 let app = express()
 
-const env =  app.get('env')
+const env = app.get('env')
 let isDevEnv = env === 'development'
 
 app.use(httpLogger('dev'))
@@ -29,11 +28,11 @@ init(env).then((success) => {
     }
 })
 
-app.get('/', (req, res) => 
+app.get('/', (req, res) =>
     res.json({ message: 'Hello there' })
 )
 
-app.use('/api/gateways', gateways)
+app.use('/api/gateway', gateway)
 app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
 

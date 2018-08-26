@@ -3,14 +3,14 @@ const router = express.Router()
 
 const lightService = require('service/light-service')
 
-router.get('/', (req, res, next) => 
-    lightService.getAllLights()
+router.get('/', (req, res, next) =>
+    lightService.getLights()
         .then((result) => res.json(result))
         .catch(next)
 )
 
-router.post('/:id', (req, res, next) => 
-    lightService.updateLight({ ...req.body, id: parseInt(req.params.id, 10)})
+router.post('/:id', (req, res, next) =>
+    lightService.updateLight({ ...req.body, id: parseInt(req.params.id, 10) })
         .then((result) => res.json(result))
         .catch(next)
 )

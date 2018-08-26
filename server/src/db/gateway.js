@@ -11,10 +11,13 @@ const del = async (sql) => (await run(sql)).changes > 0
 const selectAllGateways = async () =>
     all(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway`)
 
+const selectGateway = async () =>
+    get(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway LIMIT 1`)
+
 const selectGatewayById = async (gatewayId) =>
     get(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway WHERE id = ${gatewayId}`)
 
-const insertGateway = async ({ name, hostname, identity, psk }) => 
+const insertGateway = async ({ name, hostname, identity, psk }) =>
     ins(SQL`INSERT INTO tradfri_gateway (name, hostname, identity, psk) VALUES (${name}, ${hostname}, ${identity}, ${psk})`)
 
 const deleteGatewayById = async (gatewayId) =>
@@ -22,6 +25,7 @@ const deleteGatewayById = async (gatewayId) =>
 
 module.exports = {
     selectAllGateways,
+    selectGateway,
     selectGatewayById,
     insertGateway,
     deleteGatewayById

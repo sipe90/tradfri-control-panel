@@ -1,7 +1,7 @@
 const db = require('db')
 const logger = require('logger')
-const { fetchGateways } = require('service/gateway-service')
-const { connectToGateways } = require('service/gateway-connection-manager') 
+const { fetchGateway } = require('service/gateway-service')
+const { connectToGateway } = require('service/gateway-connection-manager')
 
 const logError = (logMsg) => (err) => {
     logger.error(logMsg, err)
@@ -16,13 +16,18 @@ module.exports = async (env) => {
 
         logger.info('Successfully connected to SQLite database')
 
-        const gatewayRows = await fetchGateways()
+        const gateway = await fetchGateway()
 
-        logger.info(`Found ${gatewayRows.length} gateways from database`)
+        if (!gateway) {
+            logger.info('No gateway found from database')
+            return true
+        }
 
-        await connectToGateways(gatewayRows).catch(logError('Failed to connect to Gateways.'))
+        logger.info('Found gateway from database')
 
-        logger.info('Finished connecting to gateways')
+        await connectToGateway(gateway).catch(logError('Failed to connect to Gateway'))
+
+        logger.info('Finished connecting to gateway')
 
         return true
     } catch (err) {

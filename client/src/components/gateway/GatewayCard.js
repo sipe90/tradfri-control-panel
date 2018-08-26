@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 
-import 'components/gateways/GatewayCard.css'
+import 'components/gateway/GatewayCard.css'
 
 const { Meta } = Card
 
@@ -25,16 +25,16 @@ class GatewayCard extends Component {
             <div className='gateway-card'>
                 <Card
                     cover={this.cardCover(this.props)}>
-                    <Meta 
+                    <Meta
                         title={this.title(this.props)}
                         avatar={this.statusIndicator(this.props)}
-                        description='IKEA Trådfri gateway'/>
+                        description='IKEA Trådfri gateway' />
                 </Card>
             </div>
         )
     }
 
-    cardCover({gateway}) {
+    cardCover({ gateway }) {
         return (
             <div className='gateway-card-cover'>
                 <Tooltip title={gateway.type}>
@@ -44,7 +44,7 @@ class GatewayCard extends Component {
         )
     }
 
-    title({gateway}) {
+    title({ gateway }) {
         return (
             <div className='gateway-card-title'>
                 <span>{gateway.name}</span>
@@ -56,7 +56,7 @@ class GatewayCard extends Component {
                     content={this.editName()}
                 >
                     <span className='gateway-card-title-edit'>
-                        <PencilIcon size={18}/>
+                        <PencilIcon size={18} />
                     </span>
                 </Popover>
             </div>
@@ -72,10 +72,10 @@ class GatewayCard extends Component {
         )
     }
 
-    statusIndicator({gateway}) {
-        return(
+    statusIndicator({ gateway }) {
+        return (
             <Tooltip title={gateway.connected ? 'Gateway is online' : 'Gateway is offline'}>
-                <CircleIcon className={gateway.connected ? 'color-green' : 'color-red'} size={18}/>
+                <CircleIcon className={gateway.connected ? 'color-green' : 'color-red'} size={18} />
             </Tooltip>
         )
     }

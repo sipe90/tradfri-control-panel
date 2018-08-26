@@ -1,26 +1,19 @@
-const R = require('ramda')
 const TradfriGateway = require('gateway/TradfriGateway')
 const logger = require('logger')
 
-let connections = {}
+let connection
 
-const getConnection = (gatewayId) => {
-    const gateway = connections[gatewayId]
-    if (!gateway) {
-        throw Error(`Uknown gateway id: ${gatewayId}`)
+const getConnection = () => {
+    if (!connection) {
+        throw Error('Not connected to any gateway')
     }
-    return gateway
+    return connection
 }
 
-const connectToGateways = async (gatewayDocs) => {
-    connections = {}
-    return Promise.all(R.map(connectToGateway, gatewayDocs))
-}
-
-const connectToGateway = async ({id, hostname, identity, psk}) => {
+const connectToGateway = async ({ hostname, identity, psk }) => {
     logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
     const gateway = new TradfriGateway(hostname)
-    
+
     try {
         await gateway.connect(identity, psk)
         logger.info(`Successfully connected to trådfri gateway at ${hostname}`)
@@ -29,12 +22,11 @@ const connectToGateway = async ({id, hostname, identity, psk}) => {
         logger.error(err)
     }
 
-    connections = R.assoc(id, gateway, connections)
-    return gateway
+    connection = gateway
+    return connection
 }
 
 module.exports = {
-    connectToGateways,
     connectToGateway,
     getConnection
 }

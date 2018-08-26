@@ -2,7 +2,7 @@
 import { message } from 'antd'
 
 import { START_TIMER, STOP_TIMER } from 'redux-timers'
-import { fetchGateways } from 'actions/gateways'
+import { fetchGateway } from 'actions/gateway'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -59,12 +59,12 @@ export const startSensorPolling = () => (dispatch) =>
         payload: {
             timerName: 'pollSensors',
             dispatchFunc: fetchSensors(),
-            timerInterval: 30000 
+            timerInterval: 30000
         }
     })
 
 
-export const stopSensorPolling = () => (dispatch) => 
+export const stopSensorPolling = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
         payload: {
@@ -73,23 +73,23 @@ export const stopSensorPolling = () => (dispatch) =>
     })
 
 export const fetchSensors = () => (dispatch) =>
-    dispatch(fetchGateways())
+    dispatch(fetchGateway())
         .then(() => dispatch(loadSensorsRequest()))
         .then(() => fetch('/api/sensors'))
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(loadSensorsSuccess(json)))
-        .catch(error => { 
+        .catch(error => {
             message.error(error.message)
             dispatch(loadSensorsFailure(error))
         })
 
-export const updateSensor = (gatewayId, sensor) => (dispatch) => {
+export const updateSensor = (sensor) => (dispatch) => {
 
     dispatch(updateSensorRequest())
 
-    return fetch(`/api/gateways/${gatewayId}/sensors/${sensor.id}`, 
-        { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json'}})
+    return fetch(`/api/sensors/${sensor.id}`,
+        { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json' } })
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(updateSensorSuccess(json)))

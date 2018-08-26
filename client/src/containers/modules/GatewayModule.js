@@ -1,25 +1,25 @@
 import { connect } from 'react-redux'
 
-import { fetchGateways, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, updateGateway } from 'actions/gateways'
+import { fetchGateway, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, updateGateway } from 'actions/gateway'
 
-import Gateways from 'components/gateways/Gateways'
+import Gateway from 'components/gateway/Gateway'
 
 const mapStateToProps = state => ({
-    gateways: state.entities.gateways,
-    initialDataLoading: state.modules.gateways.initialDataLoading
+    gateway: state.entities.gateway,
+    initialDataLoading: state.modules.gateway.initialDataLoading
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadGateways: () => dispatch(fetchGateways()),
+    loadGateway: () => dispatch(fetchGateway()),
     gatewayStateChanged: (gateway) => dispatch(gatewayStateChanged(gateway)),
     startGatewayPolling: () => dispatch(startGatewayPolling()),
     stopGatewayPolling: () => dispatch(stopGatewayPolling()),
     updateGateway: (gatewayId, gateway) => dispatch(updateGateway(gatewayId, gateway))
 })
 
-const GatewaysModule = connect(
+const GatewayModule = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Gateways)
+)(Gateway)
 
-export default GatewaysModule
+export default GatewayModule

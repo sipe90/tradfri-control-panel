@@ -1,31 +1,30 @@
 const R = require('ramda')
-const { getGateways } = require('service/gateway-service')
+const { getGateway } = require('service/gateway-service')
 const { getConnection } = require('service/gateway-connection-manager')
 const { normalizeSensors } = require('data/tradfri')
-const logger = require('logger')
 
-const getSensors = async (gatewayId) => {
-    const gateway = getConnection(gatewayId)
-    logger.debug(`Loading sensors for gateway ${gateway.getHostname()}`)
-    return normalizeSensors(gateway.getSensors())
+const getSensors = async () => {
+    const gateway = await getGateway()
+    if (!gateway || !gateway.connected)
+        return []
+    return normalizeSensors(getConnection().getSensors())
 }
 
-const collectSensors =
-    R.map( 
-        R.ifElse(
-            R.prop('connected'),
-            (gateway) => getSensors(gateway.id),
-            R.always([])
-        )
-    )
-
-const getAllSensors = R.pipeP(
-    getGateways,
-    collectSensors,
-    Promise.all.bind(Promise),
-    R.flatten
-)
+const updateSensor = async (sensor) => {
+    const gateway = await getGateway()
+    if (!gateway) {
+        throw new Error('No gateway found')
+    }
+    if (!gateway.connected) {
+        throw new Error('Gateway is not connected')
+    }
+    if (!R.contains(sensor.id, gateway.sensors)) {
+        throw new Error(`No sensor found with id: ${sensor.id}`)
+    }
+    getConnection().updateSensor(sensor)
+}
 
 module.exports = {
-    getAllSensors
+    getSensors,
+    updateSensor
 }

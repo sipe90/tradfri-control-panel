@@ -15,13 +15,13 @@ const { Meta } = Card
 
 const getDescription = R.cond([
     [R.propEq('spectrum', 'white'), R.always('White spectrum light bulb')],
-    [R.propEq('spectrum', 'rgb'),  R.always('RGB spectrum light bulb')],
-    [R.T,  R.always('Light bulb')]
+    [R.propEq('spectrum', 'rgb'), R.always('RGB spectrum light bulb')],
+    [R.T, R.always('Light bulb')]
 ])
 
 const getPicture = R.cond([
     [R.equals('TRADFRI bulb E27 WS opal 980lm'), R.always('e27_ws_opal_980lm.png')],
-    [R.T,  R.always('e27_ws_opal_980lm.png')]
+    [R.T, R.always('e27_ws_opal_980lm.png')]
 ])
 
 const percentFormatter = (v) => `${v}%`
@@ -43,17 +43,17 @@ class LightCard extends Component {
             <div className='light-card'>
                 <Card
                     cover={this.cardCover(this.props)}>
-                    <Meta 
+                    <Meta
                         title={this.title(this.props)}
                         avatar={this.statusIndicator(this.props)}
-                        description={getDescription(this.props.light)}/>
+                        description={getDescription(this.props.light)} />
                     {this.controlTable(this.props)}
                 </Card>
             </div>
         )
     }
 
-    cardCover({light}) {
+    cardCover({ light }) {
         return (
             <div className='light-card-cover'>
                 <Tooltip title={light.model}>
@@ -63,7 +63,7 @@ class LightCard extends Component {
         )
     }
 
-    title({light}) {
+    title({ light }) {
         return (
             <div className='light-card-title'>
                 <span>{light.name}</span>
@@ -75,7 +75,7 @@ class LightCard extends Component {
                     content={this.editName()}
                 >
                     <span className='light-card-title-edit'>
-                        <PencilIcon size={18}/>
+                        <PencilIcon size={18} />
                     </span>
                 </Popover>
             </div>
@@ -91,10 +91,10 @@ class LightCard extends Component {
         )
     }
 
-    statusIndicator({light}) {
-        return(
+    statusIndicator({ light }) {
+        return (
             <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
-                <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={18}/>
+                <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={18} />
             </Tooltip>
         )
     }
@@ -110,7 +110,7 @@ class LightCard extends Component {
 
     updateName() {
         const newLightState = { ...this.props.light, name: this.state.editNameText }
-        this.props.updateLight(this.props.gateway.id, newLightState)
+        this.props.updateLight(newLightState)
         this.props.lightStateChanged(newLightState)
         this.setState({ editNameVisible: false })
     }
@@ -118,27 +118,27 @@ class LightCard extends Component {
     powerSwitched(newValue) {
         const newLightState = { ...this.props.light, on: newValue }
         this.props.lightStateChanged(newLightState)
-        this.props.updateLight(this.props.gateway.id, newLightState)
+        this.props.updateLight(newLightState)
     }
 
     brightnessChanged(newValue) {
         const newLightState = { ...this.props.light, brightness: newValue }
         this.props.lightStateChanged(newLightState)
-        this.props.updateLight(this.props.gateway.id, newLightState)
+        this.props.updateLight(newLightState)
     }
 
     temperatureChanged(newValue) {
         const newLightState = { ...this.props.light, colorTemperature: newValue }
         this.props.lightStateChanged(newLightState)
-        this.props.updateLight(this.props.gateway.id, newLightState)
+        this.props.updateLight(newLightState)
     }
 
-    controlTable({light}) {
-        return (            
+    controlTable({ light }) {
+        return (
             <table className='light-card-table'>
                 <tbody>
                     <tr>
-                        <td><LightbulbOnOutlineIcon/></td>
+                        <td><LightbulbOnOutlineIcon /></td>
                         <td><span>Power</span></td>
                         <td>
                             <Switch
@@ -150,10 +150,10 @@ class LightCard extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td><Brightness5Icon/></td>
+                        <td><Brightness5Icon /></td>
                         <td><span>Brightness</span></td>
                         <td>
-                            <Slider 
+                            <Slider
                                 min={1}
                                 max={100}
                                 value={light.brightness}
@@ -165,7 +165,7 @@ class LightCard extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td><ThermometerIcon/></td>
+                        <td><ThermometerIcon /></td>
                         <td><span>Temperature</span></td>
                         <td>
                             <Slider
@@ -196,14 +196,6 @@ LightCard.propTypes = {
         model: PropTypes.string.isRequired,
         spectrum: PropTypes.string.isRequired,
         colorTemperature: PropTypes.number,
-    }),
-    gateway: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        connected: PropTypes.bool.isRequired,
-        hostname: PropTypes.string.isRequired,
-        lights: PropTypes.arrayOf(PropTypes.number).isRequired,
-        sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
     lightStateChanged: PropTypes.func.isRequired,
     updateLight: PropTypes.func.isRequired

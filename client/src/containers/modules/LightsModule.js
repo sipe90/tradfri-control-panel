@@ -5,7 +5,6 @@ import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, up
 import Lights from 'components/lights/Lights'
 
 const mapStateToProps = state => ({
-    gateways: state.entities.gateways,
     lights: state.entities.lights,
     initialDataLoading: state.modules.lights.initialDataLoading
 })

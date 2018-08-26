@@ -3,9 +3,9 @@ import { message } from 'antd'
 
 import { START_TIMER, STOP_TIMER } from 'redux-timers'
 
-export const LOAD_GATEWAYS_REQUEST = 'LOAD_GATEWAYS_REQUEST'
-export const LOAD_GATEWAYS_SUCCESS = 'LOAD_GATEWAYS_SUCCESS'
-export const LOAD_GATEWAYS_FAILURE = 'LOAD_GATEWAYS_FAILURE'
+export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
+export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'
+export const LOAD_GATEWAY_FAILURE = 'LOAD_GATEWAY_FAILURE'
 
 export const UPDATE_GATEWAY_REQUEST = 'UPDATE_GATEWAY_REQUEST'
 export const UPDATE_GATEWAY_SUCCESS = 'UPDATE_GATEWAY_SUCCESS'
@@ -13,17 +13,17 @@ export const UPDATE_GATEWAY_FAILURE = 'UPDATE_GATEWAY_FAILURE'
 
 export const GATEWAY_STATE_CHANGED = 'GATEWAY_STATE_CHANGED'
 
-const loadGatewaysRequest = () => ({
-    type: LOAD_GATEWAYS_REQUEST
+const loadGatewayRequest = () => ({
+    type: LOAD_GATEWAY_REQUEST
 })
 
-const loadGatewaysSuccess = (gateways) => ({
-    type: LOAD_GATEWAYS_SUCCESS,
-    payload: gateways
+const loadGatewaySuccess = (gateway) => ({
+    type: LOAD_GATEWAY_SUCCESS,
+    payload: gateway
 })
 
-const loadGatewaysFailure = (error) => ({
-    type: LOAD_GATEWAYS_FAILURE,
+const loadGatewayFailure = (error) => ({
+    type: LOAD_GATEWAY_FAILURE,
     payload: error
 })
 
@@ -56,33 +56,33 @@ export const startGatewayPolling = () => (dispatch) =>
     dispatch({
         type: START_TIMER,
         payload: {
-            timerName: 'pollGateways',
-            dispatchFunc: fetchGateways(),
-            timerInterval: 30000 
+            timerName: 'pollGateway',
+            dispatchFunc: fetchGateway(),
+            timerInterval: 30000
         }
     })
 
 
-export const stopGatewayPolling = () => (dispatch) => 
+export const stopGatewayPolling = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
         payload: {
-            timerName: 'pollGateways'
+            timerName: 'pollGateway'
         }
     })
 
 
-export const fetchGateways = () => (dispatch) => {
+export const fetchGateway = () => (dispatch) => {
 
-    dispatch(loadGatewaysRequest())
+    dispatch(loadGatewayRequest())
 
-    return fetch('/api/gateways')
+    return fetch('/api/gateway')
         .then(handleErrors)
         .then(res => res.json())
-        .then(json => dispatch(loadGatewaysSuccess(json)))
-        .catch(error => { 
+        .then(json => dispatch(loadGatewaySuccess(json)))
+        .catch(error => {
             message.error(error.message)
-            dispatch(loadGatewaysFailure(error))
+            dispatch(loadGatewayFailure(error))
         })
 }
 
@@ -90,8 +90,8 @@ export const updateGateway = (gateway) => (dispatch) => {
 
     dispatch(updateGatewayRequest())
 
-    return fetch(`/api/gateways/${gateway.id}`, 
-        { method: 'POST', body: JSON.stringify(gateway), headers: { 'content-type': 'application/json'}})
+    return fetch('/api/gateway',
+        { method: 'POST', body: JSON.stringify(gateway), headers: { 'content-type': 'application/json' } })
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(updateGatewaySuccess(json)))

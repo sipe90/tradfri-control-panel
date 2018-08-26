@@ -14,7 +14,7 @@ const getDescription = R.always('Motion sensor')
 
 const getPicture = R.cond([
     [R.equals('TRADFRI motion sensor'), R.always('motion_sensor.png')],
-    [R.T,  R.always('motion_sensor.png')]
+    [R.T, R.always('motion_sensor.png')]
 ])
 
 const initialState = {
@@ -34,16 +34,16 @@ class SensorCard extends Component {
             <div className='sensor-card'>
                 <Card
                     cover={this.cardCover(this.props)}>
-                    <Meta 
+                    <Meta
                         title={this.title(this.props)}
                         avatar={this.statusIndicator(this.props)}
-                        description={getDescription(this.props.sensor)}/>
+                        description={getDescription(this.props.sensor)} />
                 </Card>
             </div>
         )
     }
 
-    cardCover({sensor}) {
+    cardCover({ sensor }) {
         return (
             <div className='sensor-card-cover'>
                 <Tooltip title={sensor.model}>
@@ -53,7 +53,7 @@ class SensorCard extends Component {
         )
     }
 
-    title({sensor}) {
+    title({ sensor }) {
         return (
             <div className='sensor-card-title'>
                 <span>{sensor.name}</span>
@@ -65,7 +65,7 @@ class SensorCard extends Component {
                     content={this.editName()}
                 >
                     <span className='sensor-card-title-edit'>
-                        <PencilIcon size={18}/>
+                        <PencilIcon size={18} />
                     </span>
                 </Popover>
             </div>
@@ -81,10 +81,10 @@ class SensorCard extends Component {
         )
     }
 
-    statusIndicator({sensor}) {
-        return(
+    statusIndicator({ sensor }) {
+        return (
             <Tooltip title={sensor.alive ? 'Sensor is connected' : 'Sensor is disconnected'}>
-                <CircleIcon className={sensor.alive ? 'color-green' : 'color-red'} size={18}/>
+                <CircleIcon className={sensor.alive ? 'color-green' : 'color-red'} size={18} />
             </Tooltip>
         )
     }
@@ -100,7 +100,7 @@ class SensorCard extends Component {
 
     updateName() {
         const newSensorState = { ...this.props.sensor, name: this.state.editNameText }
-        this.props.updateSensor(this.props.gateway.id, newSensorState)
+        this.props.updateSensor(newSensorState)
         this.props.sensorStateChanged(newSensorState)
         this.setState({ editNameVisible: false })
     }
@@ -114,14 +114,6 @@ SensorCard.propTypes = {
         model: PropTypes.string.isRequired,
         power: PropTypes.number.isRequired,
         battery: PropTypes.number.isRequired,
-    }),
-    gateway: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        connected: PropTypes.bool.isRequired,
-        hostname: PropTypes.string.isRequired,
-        lights: PropTypes.arrayOf(PropTypes.number).isRequired,
-        sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
     sensorStateChanged: PropTypes.func.isRequired,
     updateSensor: PropTypes.func.isRequired

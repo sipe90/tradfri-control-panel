@@ -1,7 +1,7 @@
 
 import { message } from 'antd'
 
-import { fetchGateways } from 'actions/gateways'
+import { fetchGateway } from 'actions/gateway'
 
 import { START_TIMER, STOP_TIMER } from 'redux-timers'
 
@@ -60,12 +60,12 @@ export const startLightPolling = () => (dispatch) =>
         payload: {
             timerName: 'pollLights',
             dispatchFunc: fetchLights(),
-            timerInterval: 30000 
+            timerInterval: 30000
         }
     })
 
 
-export const stopLightPolling = () => (dispatch) => 
+export const stopLightPolling = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
         payload: {
@@ -74,23 +74,23 @@ export const stopLightPolling = () => (dispatch) =>
     })
 
 export const fetchLights = () => (dispatch) =>
-    dispatch(fetchGateways())
+    dispatch(fetchGateway())
         .then(() => dispatch(loadLightsRequest()))
         .then(() => fetch('/api/lights'))
         .then(handleErrors)
         .then(res => res.json())
         .then(json => dispatch(loadLightsSuccess(json)))
-        .catch(error => { 
+        .catch(error => {
             message.error(error.message)
             dispatch(loadLightsFailure(error))
         })
 
-export const updateLight = (gatewayId, light) => (dispatch) => {
+export const updateLight = (light) => (dispatch) => {
 
     dispatch(updateLightRequest())
 
-    return fetch(`/api/gateways/${gatewayId}/lights/${light.id}`, 
-        { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json'}})
+    return fetch(`/api/lights/${light.id}`,
+        { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json' } })
         .then(handleErrors)
         .then(() => dispatch(updateLightSuccess()))
         .catch(error => {
