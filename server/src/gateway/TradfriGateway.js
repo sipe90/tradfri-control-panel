@@ -50,11 +50,13 @@ class TradfriGateway {
         if (!light) {
             throw Error(`No light with id ${light.id} found`)
         }
+        lightAccessory.name = light.name || lightAccessory.name
         const lightOperation = {
             onOff: light.on || lightAccessory.onOff,
             dimmer: light.brightness || lightAccessory.dimmer,
             colorTemperature: light.colorTemperature || lightAccessory.colorTemperature
         }
+        this.client.updateDevice(lightAccessory)
         this.client.operateLight(lightAccessory, lightOperation)
     }
 }
