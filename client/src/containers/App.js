@@ -35,20 +35,20 @@ class App extends Component {
                         collapsible={true}
                         onCollapse={this.collapse.bind(this)}
                     >
-                        <div className="app-title">{this.state.collapsed ? null : 'Smart Home Panel'}</div>
-                        <Navigation collapsed={this.state.collapsed} routes={routeDefs}/>
+                        <div className="app-title">{this.state.collapsed ? null : 'Trådfri Control Panel'}</div>
+                        <Navigation collapsed={this.state.collapsed} routes={routeDefs} />
                     </Sider>
                     <Layout>
                         <Header className="app-header">
                             <Avatar className="app-header-avatar" size="large">PH</Avatar>
                             <Badge count={5} className="app-header-badge">
-                                <BellIcon className="app-header-icon" size={28}/>
+                                <BellIcon className="app-header-icon" size={28} />
                             </Badge>
                         </Header>
                         <Content>
-                            <Routes routes={routeDefs}/>
+                            <Routes routes={routeDefs} />
                         </Content>
-                        <Footer className="app-footer">Smart Home Panel ©2018</Footer>
+                        <Footer className="app-footer">Trådfri Control Panel ©2018</Footer>
                     </Layout>
                 </Layout>
             </Router>

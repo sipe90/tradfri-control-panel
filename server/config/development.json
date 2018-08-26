@@ -1,6 +1,6 @@
 {
-    "database": {
-        "dbFolder": "data",
-        "dbName": "smart_home_panel.db"
-    }
+  "database": {
+    "dbFolder": "data",
+    "dbName": "tradfri_control_panel.db"
+  }
 }

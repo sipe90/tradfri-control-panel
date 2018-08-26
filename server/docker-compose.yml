@@ -7,4 +7,4 @@ services:
     volumes:
       - ./data:/data
     environment:
-      SQLITE_DATABASE: "smart_home_panel.db"
+      SQLITE_DATABASE: "tradfri_control_panel.db"
