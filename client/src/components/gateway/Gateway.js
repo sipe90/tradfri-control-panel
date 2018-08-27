@@ -3,7 +3,7 @@ import { Spin, Icon } from 'antd'
 import PropTypes from 'prop-types'
 
 import GatewayCard from 'components/gateway/GatewayCard'
-import AddGateway from 'components/gateway/add-gateway/AddGateway'
+import AddGateway from 'components/gateway/AddGateway'
 
 import 'components/gateway/Gateway.css'
 

@@ -3,7 +3,7 @@ import { formValueSelector } from 'redux-form'
 
 import { discoverGateway, generateIdentity } from 'actions/gateway'
 
-import GatewayForm from 'components/gateway/add-gateway/GatewayForm'
+import GatewayForm from 'components/gateway/GatewayForm'
 
 const selector = formValueSelector('GATEWAY')
 
