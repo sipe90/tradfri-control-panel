@@ -12,17 +12,16 @@ const initialState = {
 const steps = [{
     stepName: 'Discover',
     title: 'Discover a gateway on your local network',
-    content: function () { return this.renderDiscoveryStep() }
+    navigation: function () { return this.discoveryNavigation() }
 }, {
     stepName: 'Authenticate',
     title: 'Generate authentication credentials',
-    content: function () { return this.renderAuthenticationStep() }
+    navigation: function () { return this.authenticationNavigation() }
 }, {
     stepName: 'Test connection',
     title: 'Test gateway connection',
-    content: function () { return this.renderTestStep() }
+    navigation: function () { return this.testNavigation() }
 }]
-
 
 class AddGateway extends Component {
 
@@ -32,7 +31,7 @@ class AddGateway extends Component {
     }
 
     render() {
-        const currentStep = steps[this.state.step]
+        const { title, navigation } = steps[this.state.step]
         return <div style={{ width: 720, padding: 24 }}>
             <div style={{ marginBottom: 24 }}>
                 <Steps current={this.state.step}>
@@ -40,71 +39,33 @@ class AddGateway extends Component {
                 </Steps>
             </div>
             <div style={{ marginBottom: 16, color: 'rgba(0, 0, 0, 0.85)', fontWeight: 500 }}>
-                {currentStep.title}
+                {title}
             </div>
-            {currentStep.content.call(this)}
+            <div style={{ height: 340 }}>
+                <GatewayForm step={this.state.step} />
+            </div>
+            {navigation.call(this)}
         </div>
     }
 
-    renderDiscoveryStep() {
-        return <div>
-            <div style={{ height: 340 }}>
-                <div style={{ marginBottom: 16 }}>
-                    <p>
-                        You can try to discover your trådfri gateway by clicking the discovery button or input the gateway address manually yourself.
-                        You can freely rename the gateway if you wish.
-                    </p>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                    <Button type='primary' >Discover</Button>
-                </div>
-                <div>
-                    <GatewayForm step={0} />
-                </div>
-            </div>
-            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-                <Button type="primary" onClick={() => this.nextStep()}>Next</Button>
-            </div>
+    discoveryNavigation() {
+        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button type="primary" onClick={() => this.nextStep()}>Next</Button>
         </div>
     }
 
-    renderAuthenticationStep() {
-        return <div>
-            <div style={{ height: 340 }}>
-                <div style={{ marginBottom: 16 }}>
-                    <p>
-                        You will need to generate an identity to authenticate Trådfri Control Panel with your gateway.
-                        You can generate an identity/psk pair by inputting the security code imprinted in the gateway and clicking the authenticate button.
-                    </p>
-                    <p>
-                        If you already have a generated identity, you can input them directly.
-                    </p>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                    <Button type='primary' >Authenticate</Button>
-                </div>
-                <div>
-                    <GatewayForm step={1} />
-                </div>
-            </div>
-            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-                <Button onClick={() => this.previousStep()}>Previous</Button>
-                <Button style={{ marginLeft: 8 }} type="primary" onClick={() => this.nextStep()}>Next</Button>
-            </div>
+    authenticationNavigation() {
+        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button onClick={() => this.previousStep()}>Previous</Button>
+            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => this.nextStep()}>Next</Button>
         </div>
+
     }
 
-    renderTestStep() {
-        return <div>
-            <div style={{ height: 340 }}>
-                <div>
-                    <GatewayForm step={2} />
-                </div>
-            </div>
-            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-                <Button onClick={() => this.previousStep()}>Previous</Button>
-                <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
-            </div>
+    testNavigation() {
+        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button onClick={() => this.previousStep()}>Previous</Button>
+            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
         </div>
     }
 

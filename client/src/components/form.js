@@ -8,7 +8,7 @@ const InputField = ({ input, label, colon }) =>
     <FormItem
         label={label}
         colon={colon}>
-        <Input value={input.value} />
+        <Input value={input.value} onChange={input.onChange} />
     </FormItem>
 
 InputField.propTypes = {
