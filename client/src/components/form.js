@@ -4,11 +4,26 @@ import PropTypes from 'prop-types'
 
 const FormItem = Form.Item
 
-const InputField = ({ input, label, colon }) =>
+const { Search } = Input
+
+const InputField = ({ label, colon, hasFeedback, validateStatus, help, input, ...rest }) =>
     <FormItem
         label={label}
-        colon={colon}>
-        <Input value={input.value} onChange={input.onChange} />
+        colon={colon}
+        hasFeedback={hasFeedback}
+        validateStatus={validateStatus}
+        help={help}>
+        <Input value={input.value} onChange={input.onChange} {...rest} />
+    </FormItem>
+
+const SearchField = ({ label, colon, hasFeedback, validateStatus, help, input, ...rest }) =>
+    <FormItem
+        label={label}
+        colon={colon}
+        hasFeedback={hasFeedback}
+        validateStatus={validateStatus}
+        help={help}>
+        <Search value={input.value} onChange={input.onChange} {...rest} />
     </FormItem>
 
 InputField.propTypes = {
@@ -19,5 +34,6 @@ InputField.propTypes = {
 }
 
 export {
-    InputField as Input
+    InputField as Input,
+    SearchField as Search
 }

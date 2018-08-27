@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Steps } from 'antd'
 
-import GatewayForm from 'components/gateway/add-gateway/GatewayForm'
+import GatewayFormContainer from 'containers/modules/GatewayFormContainer'
 
 const { Step } = Steps
 
@@ -42,7 +42,7 @@ class AddGateway extends Component {
                 {title}
             </div>
             <div style={{ height: 340 }}>
-                <GatewayForm step={this.state.step} />
+                <GatewayFormContainer step={this.state.step} />
             </div>
             {navigation.call(this)}
         </div>

@@ -11,6 +11,12 @@ router.get('/', (req, res, next) =>
 
 router.get('/discover', (req, res, next) =>
     gatewayService.discoverGateway()
+        .then((result) => result ? res.json(result) : res.status(404).send())
+        .catch(next)
+)
+
+router.post('/identity', (req, res, next) =>
+    gatewayService.generateIdentity(req.body)
         .then((result) => res.json(result))
         .catch(next)
 )

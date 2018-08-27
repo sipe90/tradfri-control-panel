@@ -3,6 +3,7 @@ const httpLogger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
+const { ValidationError } = require('error')
 const logger = require('logger')
 const init = require('init')
 const { gateway, lights, sensors } = require('routes')
@@ -42,11 +43,24 @@ app.use((req, res) =>
     })
 )
 
-app.use((err, req, res) =>
-    res.status(err.status || 500).json({
-        error: isDevEnv ? err.message : 'Internal server error',
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err)
+    }
+
+    if (err instanceof ValidationError) {
+        return res.status(err.status).json({
+            field: err.field,
+            message: err.message
+        })
+    }
+
+    logger.error(err)
+
+    return res.status(err.status || 500).json({
+        message: isDevEnv ? err.message : 'Internal server error',
         stack: isDevEnv ? err.stack : undefined
     })
-)
+})
 
 module.exports = app

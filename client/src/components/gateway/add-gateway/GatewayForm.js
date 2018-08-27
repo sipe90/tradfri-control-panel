@@ -1,14 +1,18 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
-import { Button, Spin } from 'antd'
+import { Button, Spin, Icon } from 'antd'
 
-import { Input } from 'components/form'
+import { Input, Search } from 'components/form'
 
 const fieldProps = {
     securityCode: {
         label: 'Security code',
-        colon: false
+        colon: false,
+        enterButton: 'Generate',
+        style: {
+            width: 240
+        }
     },
     name: {
         label: 'Gateway name',
@@ -28,7 +32,9 @@ const fieldProps = {
     }
 }
 
-const renderDiscoveryStep = () =>
+const Spinner = <Icon type="loading" style={{ fontSize: 24 }} spin />
+
+const renderDiscoveryStep = (props) =>
     <div>
         <div style={{ marginBottom: 16 }}>
             <p>
@@ -38,11 +44,14 @@ const renderDiscoveryStep = () =>
         </div>
         <div>
             <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
-                <Button type='primary' >Discover</Button>
+                <Button type='primary' onClick={() => props.discoverGateway()}>Discover</Button>
             </div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
-                <Spin />
-            </div>
+            {props.discoveryInProgress &&
+                <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+                    <Spin indicator={Spinner} />
+                    <span style={{ marginLeft: 16, color: '#1890ff' }}>Looking for a gateway...</span>
+                </div>
+            }
         </div>
         <div>
             <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
@@ -54,7 +63,7 @@ const renderDiscoveryStep = () =>
         </div>
     </div>
 
-const renderAuthenticationStep = () =>
+const renderAuthenticationStep = (props) =>
     <div>
         <div style={{ marginBottom: 16 }}>
             <p>
@@ -67,14 +76,19 @@ const renderAuthenticationStep = () =>
         </div>
         <div>
             <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
-                <Field name="securityCode" component={Input} type="text" props={fieldProps.securityCode} />
+                <Field name="securityCode" component={Search} type="text" props={{
+                    validateStatus: props.identityGenerationError ? 'error' : null,
+                    help: props.identityGenerationError ? props.identityGenerationError.message : null,
+                    onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
+                    ...fieldProps.securityCode
+                }} />
             </div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
-                <Button type='primary' >Authenticate</Button>
-            </div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
-                <Spin />
-            </div>
+            {props.identityGenerationInProgress &&
+                <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+                    <Spin indicator={Spinner} />
+                    <span style={{ marginLeft: 16, color: '#1890ff' }}>Generating identity...</span>
+                </div>
+            }
         </div>
         <div>
             <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
@@ -93,15 +107,25 @@ const renderTestConnectionStep = () =>
 const GatewayForm = (props) => {
     const { handleSubmit, step } = props
     return <form onSubmit={handleSubmit}>
-        {step === 0 && renderDiscoveryStep()}
-        {step === 1 && renderAuthenticationStep()}
-        {step === 2 && renderTestConnectionStep()}
+        {step === 0 && renderDiscoveryStep(props)}
+        {step === 1 && renderAuthenticationStep(props)}
+        {step === 2 && renderTestConnectionStep(props)}
     </form>
 }
 
-GatewayForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    step: PropTypes.number.isRequired
-}
+GatewayForm.propTypes =
+    renderDiscoveryStep.propTypes =
+    renderAuthenticationStep.propTypes =
+    renderTestConnectionStep.propTypes = {
+        handleSubmit: PropTypes.func.isRequired,
+        step: PropTypes.number.isRequired,
+        discoverGateway: PropTypes.func.isRequired,
+        generateIdentity: PropTypes.func.isRequired,
+        discoveryInProgress: PropTypes.bool.isRequired,
+        identityGenerationInProgress: PropTypes.bool.isRequired,
+        securityCodeValue: PropTypes.string,
+        hostnameValue: PropTypes.string,
+        identityGenerationError: PropTypes.object
+    }
 
 export default reduxForm({ form: 'GATEWAY', destroyOnUnmount: false })(GatewayForm)
