@@ -42,22 +42,22 @@ const renderDiscoveryStep = (props) =>
                 You can freely rename the gateway if you wish.
             </p>
         </div>
-        <div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+        <div style={{ display: 'flex' }}>
+            <div>
                 <Button type='primary' onClick={() => props.discoverGateway()}>Discover</Button>
             </div>
             {props.discoveryInProgress &&
-                <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+                <div style={{ marginLeft: 16, marginTop: 4 }}>
                     <Spin indicator={Spinner} />
                     <span style={{ marginLeft: 16, color: '#1890ff' }}>Looking for a gateway...</span>
                 </div>
             }
         </div>
-        <div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+        <div style={{ display: 'flex' }}>
+            <div>
                 <Field name="name" component={Input} type="text" props={fieldProps.name} />
             </div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+            <div style={{ marginLeft: 16 }}>
                 <Field name="hostname" component={Input} type="text" props={fieldProps.hostname} />
             </div>
         </div>
@@ -74,8 +74,8 @@ const renderAuthenticationStep = (props) =>
                 If you already have a generated identity, you can input them directly.
             </p>
         </div>
-        <div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+        <div style={{ display: 'flex' }}>
+            <div>
                 <Field name="securityCode" component={Search} type="text" props={{
                     validateStatus: props.identityGenerationError ? 'error' : null,
                     help: props.identityGenerationError ? props.identityGenerationError.message : null,
@@ -84,17 +84,17 @@ const renderAuthenticationStep = (props) =>
                 }} />
             </div>
             {props.identityGenerationInProgress &&
-                <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+                <div style={{ marginLeft: 16, marginTop: 46 }}>
                     <Spin indicator={Spinner} />
                     <span style={{ marginLeft: 16, color: '#1890ff' }}>Generating identity...</span>
                 </div>
             }
         </div>
-        <div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+        <div style={{ display: 'flex' }}>
+            <div>
                 <Field name="identity" component={Input} type="text" props={fieldProps.identity} />
             </div>
-            <div style={{ display: 'inline-block', marginRight: 16, marginBottom: 0 }}>
+            <div style={{ marginLeft: 16 }}>
                 <Field name="psk" component={Input} type="text" props={fieldProps.psk} />
             </div>
         </div>
