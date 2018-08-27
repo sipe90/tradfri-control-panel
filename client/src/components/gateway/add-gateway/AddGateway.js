@@ -33,7 +33,7 @@ class AddGateway extends Component {
 
     render() {
         const currentStep = steps[this.state.step]
-        return <div>
+        return <div style={{ width: 720, padding: 24 }}>
             <div style={{ marginBottom: 24 }}>
                 <Steps current={this.state.step}>
                     {steps.map(({ stepName }, idx) => <Step key={idx} title={stepName} />)}
@@ -48,18 +48,21 @@ class AddGateway extends Component {
 
     renderDiscoveryStep() {
         return <div>
-            <div style={{ marginBottom: 16 }}>
-                You can try to discover your trådfri gateway by clicking the discovery button or input the values manually yourself. You can freely rename the gateway.
-            </div>
-            <div style={{ marginBottom: 16 }}>
-                <div style={{ display: 'inline-block' }}>
-                    <GatewayForm step={0} />
+            <div style={{ height: 340 }}>
+                <div style={{ marginBottom: 16 }}>
+                    <p>
+                        You can try to discover your trådfri gateway by clicking the discovery button or input the gateway address manually yourself.
+                        You can freely rename the gateway if you wish.
+                    </p>
                 </div>
-                <div style={{ display: 'inline-block' }}>
+                <div style={{ marginBottom: 16 }}>
                     <Button type='primary' >Discover</Button>
                 </div>
+                <div>
+                    <GatewayForm step={0} />
+                </div>
             </div>
-            <div>
+            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
                 <Button type="primary" onClick={() => this.nextStep()}>Next</Button>
             </div>
         </div>
@@ -67,23 +70,40 @@ class AddGateway extends Component {
 
     renderAuthenticationStep() {
         return <div>
-            <div style={{ marginBottom: 16 }}>
-                <GatewayForm step={1} />
+            <div style={{ height: 340 }}>
+                <div style={{ marginBottom: 16 }}>
+                    <p>
+                        You will need to generate an identity to authenticate Trådfri Control Panel with your gateway.
+                        You can generate an identity/psk pair by inputting the security code imprinted in the gateway and clicking the authenticate button.
+                    </p>
+                    <p>
+                        If you already have a generated identity, you can input them directly.
+                    </p>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                    <Button type='primary' >Authenticate</Button>
+                </div>
+                <div>
+                    <GatewayForm step={1} />
+                </div>
             </div>
-            <div>
-                <Button type="primary" onClick={() => this.nextStep()}>Next</Button>
-                <Button style={{ marginLeft: 8 }} onClick={() => this.previousStep()}>Previous</Button>
+            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+                <Button onClick={() => this.previousStep()}>Previous</Button>
+                <Button style={{ marginLeft: 8 }} type="primary" onClick={() => this.nextStep()}>Next</Button>
             </div>
         </div>
     }
 
     renderTestStep() {
         return <div>
-            <div style={{ marginBottom: 16 }}>
-                <GatewayForm step={2} />
+            <div style={{ height: 340 }}>
+                <div>
+                    <GatewayForm step={2} />
+                </div>
             </div>
-            <div>
-                <Button style={{ marginLeft: 8 }} onClick={() => this.previousStep()}>Previous</Button>
+            <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+                <Button onClick={() => this.previousStep()}>Previous</Button>
+                <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
             </div>
         </div>
     }

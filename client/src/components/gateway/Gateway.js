@@ -22,15 +22,13 @@ class Gateway extends Component {
         return (
             <div>
                 <Spin spinning={this.props.initialDataLoading} style={{ marginTop: '240px' }} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
-                    <div className='card-container'>
-                        {this.props.gateway ?
-                            <GatewayCard
-                                gateway={this.props.gateway}
-                                gatewayStateChanged={this.props.gatewayStateChanged}
-                                updateGateway={this.props.updateGateway} />
-                            :
-                            <AddGateway />}
-                    </div>
+                    {this.props.gateway ?
+                        <GatewayCard
+                            gateway={this.props.gateway}
+                            gatewayStateChanged={this.props.gatewayStateChanged}
+                            updateGateway={this.props.updateGateway} />
+                        :
+                        <AddGateway />}
                 </Spin>
             </div>
         )
