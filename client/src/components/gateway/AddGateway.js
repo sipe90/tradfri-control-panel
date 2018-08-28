@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Steps } from 'antd'
+import { Steps } from 'antd'
 
 import GatewayFormContainer from 'containers/modules/GatewayFormContainer'
 
@@ -11,16 +11,13 @@ const initialState = {
 
 const steps = [{
     stepName: 'Discover',
-    title: 'Discover a gateway on your local network',
-    navigation: function () { return this.discoveryNavigation() }
+    title: 'Discover a gateway on your local network'
 }, {
     stepName: 'Authenticate',
-    title: 'Generate authentication credentials',
-    navigation: function () { return this.authenticationNavigation() }
+    title: 'Generate authentication credentials'
 }, {
     stepName: 'Test connection',
-    title: 'Test gateway connection',
-    navigation: function () { return this.testNavigation() }
+    title: 'Test gateway connection'
 }]
 
 class AddGateway extends Component {
@@ -31,7 +28,7 @@ class AddGateway extends Component {
     }
 
     render() {
-        const { title, navigation } = steps[this.state.step]
+        const { title } = steps[this.state.step]
         return <div style={{ width: 720, padding: 24 }}>
             <div style={{ marginBottom: 24 }}>
                 <Steps current={this.state.step}>
@@ -41,40 +38,21 @@ class AddGateway extends Component {
             <div style={{ marginBottom: 16, color: 'rgba(0, 0, 0, 0.85)', fontWeight: 500 }}>
                 {title}
             </div>
-            <div style={{ height: 340 }}>
-                <GatewayFormContainer step={this.state.step} />
+            <div>
+                <GatewayFormContainer
+                    step={this.state.step}
+                    nextStep={() => this.nextStep()}
+                    previousStep={() => this.previousStep()} />
             </div>
-            {navigation.call(this)}
-        </div>
-    }
-
-    discoveryNavigation() {
-        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-            <Button type="primary" onClick={() => this.nextStep()}>Next</Button>
-        </div>
-    }
-
-    authenticationNavigation() {
-        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-            <Button onClick={() => this.previousStep()}>Previous</Button>
-            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => this.nextStep()}>Next</Button>
-        </div>
-
-    }
-
-    testNavigation() {
-        return <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-            <Button onClick={() => this.previousStep()}>Previous</Button>
-            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
         </div>
     }
 
     nextStep() {
-        this.setState({ step: this.state.step + 1 })
+        this.setState({ step: Math.min(this.state.step + 1, 2) })
     }
 
     previousStep() {
-        this.setState({ step: this.state.step - 1 })
+        this.setState({ step: Math.max(this.state.step - 1, 0) })
     }
 }
 

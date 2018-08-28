@@ -2,8 +2,10 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
 import { Button, Spin, Icon } from 'antd'
+import * as R from 'ramda'
 
 import { Input, Search } from 'components/form'
+import { required } from 'validators'
 
 const fieldProps = {
     securityCode: {
@@ -36,72 +38,89 @@ const Spinner = <Icon type="loading" style={{ fontSize: 24 }} spin />
 
 const renderDiscoveryStep = (props) =>
     <div>
-        <div style={{ marginBottom: 16 }}>
-            <p>
-                You can try to discover your trådfri gateway by clicking the discovery button or input the gateway address manually yourself.
-                You can freely rename the gateway if you wish.
-            </p>
-        </div>
-        <div style={{ display: 'flex' }}>
-            <div>
-                <Button type='primary' onClick={() => props.discoverGateway()}>Discover</Button>
+        <div style={{ height: 340 }}>
+            <div style={{ marginBottom: 16 }}>
+                <p>
+                    You can try to discover your trådfri gateway by clicking the discovery button or input the gateway address manually yourself.
+                    You can freely rename the gateway if you wish.
+                </p>
             </div>
-            {props.discoveryInProgress &&
-                <div style={{ marginLeft: 16, marginTop: 4 }}>
-                    <Spin indicator={Spinner} />
-                    <span style={{ marginLeft: 16, color: '#1890ff' }}>Looking for a gateway...</span>
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <Button type='primary' onClick={() => props.discoverGateway()}>Discover</Button>
                 </div>
-            }
+                {props.discoveryInProgress &&
+                    <div style={{ marginLeft: 16, marginTop: 4 }}>
+                        <Spin indicator={Spinner} />
+                        <span style={{ marginLeft: 16, color: '#1890ff' }}>Looking for a gateway...</span>
+                    </div>
+                }
+            </div>
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <Field name="name" validate={required} component={Input} type="text" props={fieldProps.name} />
+                </div>
+                <div style={{ marginLeft: 16 }}>
+                    <Field name="hostname" validate={required} component={Input} type="text" props={fieldProps.hostname} />
+                </div>
+            </div>
         </div>
-        <div style={{ display: 'flex' }}>
-            <div>
-                <Field name="name" component={Input} type="text" props={fieldProps.name} />
-            </div>
-            <div style={{ marginLeft: 16 }}>
-                <Field name="hostname" component={Input} type="text" props={fieldProps.hostname} />
-            </div>
+        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button type="primary" onClick={props.nextStep} disabled={!R.isEmpty(props.validationErrors)}>Next</Button>
         </div>
     </div>
 
 const renderAuthenticationStep = (props) =>
     <div>
-        <div style={{ marginBottom: 16 }}>
-            <p>
-                You will need to generate an identity to authenticate Trådfri Control Panel with your gateway.
-                You can generate an identity/psk pair by inputting the security code imprinted in the gateway and clicking the authenticate button.
-            </p>
-            <p>
-                If you already have a generated identity, you can input them directly.
-            </p>
-        </div>
-        <div style={{ display: 'flex' }}>
-            <div>
-                <Field name="securityCode" component={Search} type="text" props={{
-                    validateStatus: props.identityGenerationError ? 'error' : null,
-                    help: props.identityGenerationError ? props.identityGenerationError.message : null,
-                    onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
-                    ...fieldProps.securityCode
-                }} />
+        <div style={{ height: 340 }}>
+            <div style={{ marginBottom: 16 }}>
+                <p>
+                    You will need to generate an identity to authenticate Trådfri Control Panel with your gateway.
+                    You can generate an identity/psk pair by inputting the security code imprinted in the gateway and clicking the authenticate button.
+                </p>
+                <p>
+                    If you already have a generated identity, you can input them directly.
+                </p>
             </div>
-            {props.identityGenerationInProgress &&
-                <div style={{ marginLeft: 16, marginTop: 46 }}>
-                    <Spin indicator={Spinner} />
-                    <span style={{ marginLeft: 16, color: '#1890ff' }}>Generating identity...</span>
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <Field name="securityCode" component={Search} type="text" props={{
+                        validateStatus: props.identityGenerationError ? 'error' : null,
+                        help: props.identityGenerationError ? props.identityGenerationError.message : null,
+                        onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
+                        ...fieldProps.securityCode
+                    }} />
                 </div>
-            }
+                {props.identityGenerationInProgress &&
+                    <div style={{ marginLeft: 16, marginTop: 46 }}>
+                        <Spin indicator={Spinner} />
+                        <span style={{ marginLeft: 16, color: '#1890ff' }}>Generating identity...</span>
+                    </div>
+                }
+            </div>
+            <div style={{ display: 'flex' }}>
+                <div>
+                    <Field name="identity" validate={required} component={Input} type="text" props={fieldProps.identity} />
+                </div>
+                <div style={{ marginLeft: 16 }}>
+                    <Field name="psk" validate={required} component={Input} type="text" props={fieldProps.psk} />
+                </div>
+            </div>
         </div>
-        <div style={{ display: 'flex' }}>
-            <div>
-                <Field name="identity" component={Input} type="text" props={fieldProps.identity} />
-            </div>
-            <div style={{ marginLeft: 16 }}>
-                <Field name="psk" component={Input} type="text" props={fieldProps.psk} />
-            </div>
+        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button onClick={props.previousStep}>Previous</Button>
+            <Button style={{ marginLeft: 8 }} type="primary" onClick={props.nextStep} disabled={!R.isEmpty(props.validationErrors)}>Next</Button>
         </div>
     </div>
 
-const renderTestConnectionStep = () =>
+const renderTestConnectionStep = (props) =>
     <div>
+        <div style={{ height: 340 }}>
+        </div>
+        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+            <Button onClick={props.previousStep}>Previous</Button>
+            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
+        </div>
     </div>
 
 const GatewayForm = (props) => {
@@ -119,13 +138,16 @@ GatewayForm.propTypes =
     renderTestConnectionStep.propTypes = {
         handleSubmit: PropTypes.func.isRequired,
         step: PropTypes.number.isRequired,
+        nextStep: PropTypes.func.isRequired,
+        previousStep: PropTypes.func.isRequired,
         discoverGateway: PropTypes.func.isRequired,
         generateIdentity: PropTypes.func.isRequired,
         discoveryInProgress: PropTypes.bool.isRequired,
         identityGenerationInProgress: PropTypes.bool.isRequired,
         securityCodeValue: PropTypes.string,
         hostnameValue: PropTypes.string,
-        identityGenerationError: PropTypes.object
+        identityGenerationError: PropTypes.object,
+        validationErrors: PropTypes.object
     }
 
 export default reduxForm({ form: 'GATEWAY', destroyOnUnmount: false })(GatewayForm)

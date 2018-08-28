@@ -1,19 +1,21 @@
 import { connect } from 'react-redux'
-import { formValueSelector } from 'redux-form'
+import { formValueSelector, getFormSyncErrors } from 'redux-form'
 
 import { discoverGateway, generateIdentity } from 'actions/gateway'
 
 import GatewayForm from 'components/gateway/GatewayForm'
 
-const selector = formValueSelector('GATEWAY')
+const valueSelector = formValueSelector('GATEWAY')
+const validationErrorSelector = getFormSyncErrors('GATEWAY')
 
 const mapStateToProps = state => ({
     discoveryInProgress: state.modules.gateway.discoveryInProgress,
     identityGenerationInProgress: state.modules.gateway.identityGenerationInProgress,
     identityGenerationError: state.modules.gateway.identityGenerationError,
     discoveredGateway: state.modules.gateway.discoveredGateway,
-    securityCodeValue: selector(state, 'securityCode'),
-    hostnameValue: selector(state, 'hostname')
+    securityCodeValue: valueSelector(state, 'securityCode'),
+    hostnameValue: valueSelector(state, 'hostname'),
+    validationErrors: validationErrorSelector(state)
 })
 
 const mapDispatchToProps = dispatch => ({

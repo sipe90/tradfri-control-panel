@@ -6,31 +6,34 @@ const FormItem = Form.Item
 
 const { Search } = Input
 
-const InputField = ({ label, colon, hasFeedback, validateStatus, help, input, ...rest }) =>
+const InputField = (props) => Field(props, Input)
+
+const SearchField = (props) => Field(props, Search)
+
+const Field = ({ label, colon, hasFeedback, validateStatus, help, input, meta: { touched, error, warning }, ...rest }, FieldComponent) =>
     <FormItem
         label={label}
         colon={colon}
         hasFeedback={hasFeedback}
-        validateStatus={validateStatus}
-        help={help}>
-        <Input value={input.value} onChange={input.onChange} {...rest} />
+        validateStatus={(touched && error) ? 'error' : (touched && warning) ? 'warning' : validateStatus}
+        help={(touched && error) ? error : (touched && warning) ? warning : help}>
+        <FieldComponent value={input.value} onChange={input.onChange} onBlur={input.onBlur} {...rest} />
     </FormItem>
 
-const SearchField = ({ label, colon, hasFeedback, validateStatus, help, input, ...rest }) =>
-    <FormItem
-        label={label}
-        colon={colon}
-        hasFeedback={hasFeedback}
-        validateStatus={validateStatus}
-        help={help}>
-        <Search value={input.value} onChange={input.onChange} {...rest} />
-    </FormItem>
 
-InputField.propTypes = {
+Field.propTypes = {
     input: PropTypes.object.isRequired,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     colon: PropTypes.bool,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    hasFeedback: PropTypes.bool,
+    validateStatus: PropTypes.string,
+    help: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    meta: PropTypes.shape({
+        touched: PropTypes.bool.isRequired,
+        error: PropTypes.string,
+        warning: PropTypes.string
+    })
 }
 
 export {
