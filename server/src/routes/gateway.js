@@ -21,6 +21,12 @@ router.post('/identity', (req, res, next) =>
         .catch(next)
 )
 
+router.post('/test', (req, res, next) =>
+    gatewayService.testConnect(req.body)
+        .then((result) => res.json(result))
+        .catch(next)
+)
+
 router.post('/', (req, res, next) =>
     gatewayService.createTradfriGateway(req.body)
         .then(() => res.status(201).send())

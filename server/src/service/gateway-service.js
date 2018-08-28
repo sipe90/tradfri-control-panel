@@ -60,10 +60,35 @@ const generateIdentity = async ({ hostname, securityCode }) => {
     }
 }
 
+const testConnect = async ({ hostname, identity, psk }) => {
+    if (!hostname) {
+        throw new ValidationError('Hostname is required', 'hostname')
+    }
+    if (!identity) {
+        throw new ValidationError('Identity is required', 'identity')
+    }
+    if (!psk) {
+        throw new ValidationError('Pre-saher key is required', 'psk')
+    }
+    const gateway = new TradfriGateway(hostname)
+
+    try {
+        gateway.connect(identity, psk, false)
+        gateway.disconnect()
+        return { success: true }
+    } catch (err) {
+        return {
+            success: false,
+            error: err.message
+        }
+    }
+}
+
 module.exports = {
     fetchGateway,
     createTradfriGateway,
     getGateway,
     discoverGateway,
-    generateIdentity
+    generateIdentity,
+    testConnect
 }

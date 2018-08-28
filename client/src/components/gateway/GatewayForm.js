@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
-import { Button, Spin, Icon } from 'antd'
+import { Button, Spin, Icon, Table } from 'antd'
 import * as R from 'ramda'
 
 import { Input, Search } from 'components/form'
@@ -34,6 +34,21 @@ const fieldProps = {
     }
 }
 
+const columns = [{
+    title: 'Name',
+    dataIndex: 'name'
+}, {
+    title: 'Host',
+    dataIndex: 'host'
+}, {
+    title: 'Addresses',
+    dataIndex: 'addresses',
+    render: function renderAddresses([ipv4, ipv6]) { return <span>{ipv4}<br />{ipv6}</span> }
+}, {
+    title: 'Version',
+    dataIndex: 'version'
+}]
+
 const Spinner = <Icon type="loading" style={{ fontSize: 24 }} spin />
 
 const renderDiscoveryStep = (props) =>
@@ -45,9 +60,9 @@ const renderDiscoveryStep = (props) =>
                     You can freely rename the gateway if you wish.
                 </p>
             </div>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', marginBottom: 16 }}>
                 <div>
-                    <Button type='primary' onClick={() => props.discoverGateway()}>Discover</Button>
+                    <Button type='primary' onClick={() => props.discoverGateway()} disabled={props.discoveryInProgress}>Discover</Button>
                 </div>
                 {props.discoveryInProgress &&
                     <div style={{ marginLeft: 16, marginTop: 4 }}>
@@ -55,6 +70,12 @@ const renderDiscoveryStep = (props) =>
                         <span style={{ marginLeft: 16, color: '#1890ff' }}>Looking for a gateway...</span>
                     </div>
                 }
+            </div>
+            <div style={{ marginBottom: 16 }}>
+                <div style={{ color: 'rgba(0, 0, 0, 0.85)', fontWeight: 500, marginBottom: 16 }}>Discovered gateway</div>
+                <div style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
+                    <Table size='small' columns={columns} dataSource={props.discoveredGateway ? [props.discoveredGateway] : []} pagination={false} rowKey='name' />
+                </div>
             </div>
             <div style={{ display: 'flex' }}>
                 <div>
@@ -65,8 +86,8 @@ const renderDiscoveryStep = (props) =>
                 </div>
             </div>
         </div>
-        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
-            <Button type="primary" onClick={props.nextStep} disabled={!R.isEmpty(props.validationErrors)}>Next</Button>
+        <div style={{ textAlign: 'right' }}>
+            <Button type="primary" onClick={props.nextStep} disabled={props.validationErrors.name || props.validationErrors.hostname}>Next</Button>
         </div>
     </div>
 
@@ -107,7 +128,7 @@ const renderAuthenticationStep = (props) =>
                 </div>
             </div>
         </div>
-        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+        <div style={{ textAlign: 'right' }}>
             <Button onClick={props.previousStep}>Previous</Button>
             <Button style={{ marginLeft: 8 }} type="primary" onClick={props.nextStep} disabled={!R.isEmpty(props.validationErrors)}>Next</Button>
         </div>
@@ -116,10 +137,33 @@ const renderAuthenticationStep = (props) =>
 const renderTestConnectionStep = (props) =>
     <div>
         <div style={{ height: 340 }}>
+            <div style={{ marginBottom: 16 }}>
+                <p>
+                    Finished! Now finish by trying to connect to the gateway. Clicking finish will save the gateway information.
+                </p>
+            </div>
+            <div style={{ padding: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                <div style={{ marginBottom: 16 }}>
+                    <Button type='primary' onClick={() => props.testConnection(props.hostnameValue, props.identityValue, props.pskValue)}>Test connection</Button>
+                </div>
+                {props.connectionTestInProgress &&
+                    <div>
+                        <Spin indicator={Spinner} />
+                        <span style={{ marginLeft: 16, color: '#1890ff' }}>Connecting to gateway...</span>
+                    </div>
+                }
+                {props.connectionTestResult &&
+                    <div>
+                        {props.connectionTestResult.success ?
+                            <span style={{ color: '#48c300' }}>Successfully connected to gateway!</span> : <span style={{ color: '#f5222d' }}>Failed to connect to gateway</span>
+                        }
+                    </div>
+                }
+            </div>
         </div>
-        <div style={{ textAlign: 'right', padding: '10px 16px' }}>
+        <div style={{ textAlign: 'right' }}>
             <Button onClick={props.previousStep}>Previous</Button>
-            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined}>Finish</Button>
+            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined} disabled={!R.path(['connectionTestResult', 'success'], props)}>Finish</Button>
         </div>
     </div>
 
@@ -142,11 +186,17 @@ GatewayForm.propTypes =
         previousStep: PropTypes.func.isRequired,
         discoverGateway: PropTypes.func.isRequired,
         generateIdentity: PropTypes.func.isRequired,
+        testConnection: PropTypes.func.isRequired,
         discoveryInProgress: PropTypes.bool.isRequired,
         identityGenerationInProgress: PropTypes.bool.isRequired,
+        connectionTestInProgress: PropTypes.bool.isRequired,
         securityCodeValue: PropTypes.string,
         hostnameValue: PropTypes.string,
+        identityValue: PropTypes.string,
+        pskValue: PropTypes.string,
         identityGenerationError: PropTypes.object,
+        discoveredGateway: PropTypes.object,
+        connectionTestResult: PropTypes.object,
         validationErrors: PropTypes.object
     }
 

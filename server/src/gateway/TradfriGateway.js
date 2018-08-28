@@ -15,10 +15,15 @@ class TradfriGateway {
         return await this.client.authenticate(securityCode)
     }
 
-    async connect(identity, psk) {
+    async connect(identity, psk, observe = true) {
         await this.client.connect(identity, psk)
-        await this.client.observeDevices()
+        observe && await this.client.observeDevices()
         this.connected = true
+    }
+
+    disconnect() {
+        this.client.destroy()
+        this.connected = false
     }
 
     getHostname() {
