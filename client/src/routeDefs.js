@@ -1,6 +1,5 @@
 import React from 'react'
 
-import GaugeIcon from 'mdi-react/GaugeIcon'
 import LightbulbOutlineIcon from 'mdi-react/LightbulbOutlineIcon'
 import RssIcon from 'mdi-react/RssIcon'
 import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
@@ -13,13 +12,6 @@ import SensorsModule from 'containers/modules/SensorsModule'
 /* eslint-disable  react/display-name */
 
 const routes = [
-    {
-        path: '/dashboard',
-        exact: true,
-        icon: <GaugeIcon size={28} />,
-        text: 'Dashboard',
-        container: () => <div>Dashboard</div>
-    },
     {
         path: '/gateway',
         exact: true,
