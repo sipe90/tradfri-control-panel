@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import { fetchGateway, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, updateGateway } from 'actions/gateway'
+import { fetchGateway, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, saveGateway } from 'actions/gateway'
 
 import Gateway from 'components/gateway/Gateway'
 
@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => ({
     gatewayStateChanged: (gateway) => dispatch(gatewayStateChanged(gateway)),
     startGatewayPolling: () => dispatch(startGatewayPolling()),
     stopGatewayPolling: () => dispatch(stopGatewayPolling()),
-    updateGateway: (gatewayId, gateway) => dispatch(updateGateway(gatewayId, gateway))
+    saveGateway: (gatewayId, gateway) => dispatch(saveGateway(gatewayId, gateway))
 })
 
 const GatewayModule = connect(

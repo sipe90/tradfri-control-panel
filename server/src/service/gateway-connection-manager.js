@@ -26,14 +26,6 @@ const connectToGateway = async ({ hostname, identity, psk }) => {
     return connection
 }
 
-process.on('exit', function () {
-    if (connection) {
-        logger.info('Terminating connection to gateway')
-        connection.disconnect()
-        connection = null
-    }
-})
-
 module.exports = {
     connectToGateway,
     getConnection

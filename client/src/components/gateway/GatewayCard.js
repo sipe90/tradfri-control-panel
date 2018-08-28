@@ -91,7 +91,7 @@ class GatewayCard extends Component {
 
     updateName() {
         const newGatewayState = { ...this.props.gateway, name: this.state.editNameText }
-        this.props.updateGateway(newGatewayState)
+        this.props.saveGateway(newGatewayState)
         this.props.gatewayStateChanged(newGatewayState)
         this.setState({ editNameVisible: false })
     }
@@ -107,7 +107,7 @@ GatewayCard.propTypes = {
         sensors: PropTypes.arrayOf(PropTypes.number).isRequired
     }),
     gatewayStateChanged: PropTypes.func.isRequired,
-    updateGateway: PropTypes.func.isRequired
+    saveGateway: PropTypes.func.isRequired
 }
 
 export default GatewayCard

@@ -4,19 +4,30 @@ const TradfriGateway = require('gateway/TradfriGateway')
 const { getConnection, connectToGateway } = require('service/gateway-connection-manager')
 const { normalizeDevices } = require('data/tradfri')
 const { ValidationError } = require('error')
+const logger = require('logger')
 
 const fetchGateway = async () =>
     db.selectGateway()
 
 const createTradfriGateway = async ({ name, hostname, identity, psk }) => {
-    const gateway = new TradfriGateway(hostname)
-    const connected = await gateway.connect(identity, psk)
-    if (connected) {
-        const id = await db.insertGateway({ name, hostname, identity, psk })
-        await connectToGateway({ id, hostname, identity, psk })
-        return true
+    if (!name) {
+        throw new ValidationError('Name is required', 'name')
     }
-    return false
+    if (!hostname) {
+        throw new ValidationError('Hostname is required', 'hostname')
+    }
+    if (!identity) {
+        throw new ValidationError('Identity is required', 'identity')
+    }
+    if (!psk) {
+        throw new ValidationError('Pre-shared key is required', 'psk')
+    }
+    logger.info(`Creating a new gateway name: ${name}, hostname: ${hostname}, identity: ${identity}, psk: ${psk}`)
+    const gateway = new TradfriGateway(hostname)
+    await gateway.connect(identity, psk)
+    const id = await db.insertGateway({ name, hostname, identity, psk })
+    logger.info('Successfully saved gateway to database')
+    await connectToGateway({ id, hostname, identity, psk })
 }
 
 const getGateway = async () => {
@@ -68,12 +79,12 @@ const testConnect = async ({ hostname, identity, psk }) => {
         throw new ValidationError('Identity is required', 'identity')
     }
     if (!psk) {
-        throw new ValidationError('Pre-saher key is required', 'psk')
+        throw new ValidationError('Pre-shared key is required', 'psk')
     }
     const gateway = new TradfriGateway(hostname)
 
     try {
-        gateway.connect(identity, psk, false)
+        await gateway.connect(identity, psk, false)
         gateway.disconnect()
         return { success: true }
     } catch (err) {

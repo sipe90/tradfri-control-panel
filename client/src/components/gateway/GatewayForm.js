@@ -163,7 +163,7 @@ const renderTestConnectionStep = (props) =>
         </div>
         <div style={{ textAlign: 'right' }}>
             <Button onClick={props.previousStep}>Previous</Button>
-            <Button style={{ marginLeft: 8 }} type="primary" onClick={() => undefined} disabled={!R.path(['connectionTestResult', 'success'], props)}>Finish</Button>
+            <Button onClick={props.handleSubmit(props.saveGateway)} style={{ marginLeft: 8 }} type="primary" htmlType='submit' disabled={props.submitting || !R.path(['connectionTestResult', 'success'], props)}>Finish</Button>
         </div>
     </div>
 
@@ -181,12 +181,14 @@ GatewayForm.propTypes =
     renderAuthenticationStep.propTypes =
     renderTestConnectionStep.propTypes = {
         handleSubmit: PropTypes.func.isRequired,
+        submitting: PropTypes.bool.isRequired,
         step: PropTypes.number.isRequired,
         nextStep: PropTypes.func.isRequired,
         previousStep: PropTypes.func.isRequired,
         discoverGateway: PropTypes.func.isRequired,
         generateIdentity: PropTypes.func.isRequired,
         testConnection: PropTypes.func.isRequired,
+        saveGateway: PropTypes.func.isRequired,
         discoveryInProgress: PropTypes.bool.isRequired,
         identityGenerationInProgress: PropTypes.bool.isRequired,
         connectionTestInProgress: PropTypes.bool.isRequired,

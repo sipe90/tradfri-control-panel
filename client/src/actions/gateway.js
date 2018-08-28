@@ -9,9 +9,9 @@ export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'
 export const LOAD_GATEWAY_FAILURE = 'LOAD_GATEWAY_FAILURE'
 
-export const UPDATE_GATEWAY_REQUEST = 'UPDATE_GATEWAY_REQUEST'
-export const UPDATE_GATEWAY_SUCCESS = 'UPDATE_GATEWAY_SUCCESS'
-export const UPDATE_GATEWAY_FAILURE = 'UPDATE_GATEWAY_FAILURE'
+export const SAVE_GATEWAY_REQUEST = 'SAVE_GATEWAY_REQUEST'
+export const SAVE_GATEWAY_SUCCESS = 'SAVE_GATEWAY_SUCCESS'
+export const SAVE_GATEWAY_FAILURE = 'SAVE_GATEWAY_FAILURE'
 
 export const GATEWAY_STATE_CHANGED = 'GATEWAY_STATE_CHANGED'
 
@@ -41,16 +41,16 @@ const loadGatewayFailure = (error) => ({
     payload: error
 })
 
-const updateGatewayRequest = () => ({
-    type: UPDATE_GATEWAY_REQUEST
+const saveGatewayRequest = () => ({
+    type: SAVE_GATEWAY_REQUEST
 })
 
-const updateGatewaySuccess = () => ({
-    type: UPDATE_GATEWAY_SUCCESS
+const saveGatewaySuccess = () => ({
+    type: SAVE_GATEWAY_SUCCESS
 })
 
-const updateGatewayFailure = (error) => ({
-    type: UPDATE_GATEWAY_FAILURE,
+const saveGatewayFailure = (error) => ({
+    type: SAVE_GATEWAY_FAILURE,
     payload: error
 })
 
@@ -144,18 +144,18 @@ export const fetchGateway = () => (dispatch) => {
                 }))
 }
 
-export const updateGateway = (gateway) => (dispatch) => {
+export const saveGateway = (gateway) => (dispatch) => {
 
-    dispatch(updateGatewayRequest())
+    dispatch(saveGatewayRequest())
 
     return fetch('/api/gateway',
         { method: 'POST', body: JSON.stringify(gateway), headers: { 'content-type': 'application/json' } })
         .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(updateGatewaySuccess(json)))
+        .then(() => dispatch(saveGatewaySuccess()))
+        .then(() => dispatch(fetchGateway()))
         .catch(error => {
             message.error(error.message)
-            dispatch(updateGatewayFailure(error))
+            dispatch(saveGatewayFailure(error))
         })
 }
 

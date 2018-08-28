@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { formValueSelector, getFormSyncErrors } from 'redux-form'
 
-import { discoverGateway, generateIdentity, testConnection } from 'actions/gateway'
+import { discoverGateway, generateIdentity, testConnection, saveGateway } from 'actions/gateway'
 
 import GatewayForm from 'components/gateway/GatewayForm'
 
@@ -25,7 +25,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     discoverGateway: () => dispatch(discoverGateway()),
     generateIdentity: (hostname, securityCode) => dispatch(generateIdentity(hostname, securityCode)),
-    testConnection: (hostname, identity, psk) => dispatch(testConnection(hostname, identity, psk))
+    testConnection: (hostname, identity, psk) => dispatch(testConnection(hostname, identity, psk)),
+    saveGateway: (gateway) => dispatch(saveGateway(gateway))
 })
 
 const GatewayFormContainer = connect(

@@ -26,7 +26,7 @@ class Gateway extends Component {
                         <GatewayCard
                             gateway={this.props.gateway}
                             gatewayStateChanged={this.props.gatewayStateChanged}
-                            updateGateway={this.props.updateGateway} />
+                            saveGateway={this.props.saveGateway} />
                         :
                         <AddGateway />}
                 </Spin>
@@ -40,7 +40,7 @@ Gateway.propTypes = {
     loadGateway: PropTypes.func.isRequired,
     initialDataLoading: PropTypes.bool.isRequired,
     gatewayStateChanged: PropTypes.func.isRequired,
-    updateGateway: PropTypes.func.isRequired,
+    saveGateway: PropTypes.func.isRequired,
     startGatewayPolling: PropTypes.func.isRequired,
     stopGatewayPolling: PropTypes.func.isRequired
 }
