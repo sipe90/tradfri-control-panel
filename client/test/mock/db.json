@@ -1,18 +1,4 @@
 {
-  "gateway": {
-    "id": 2,
-    "name": "Mock Trådfri Gateway",
-    "hostname": "mock-gateway.local",
-    "connected": true,
-    "lights": [
-      53755,
-      26511,
-      86388
-    ],
-    "sensors": [
-      38329
-    ]
-  },
   "lights": [{
       "id": 53755,
       "name": "Kitchen light",

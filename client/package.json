@@ -20,7 +20,7 @@
   "scripts": {
     "start": "NODE_PATH=src react-app-rewired start",
     "build": "NODE_PATH=src react-app-rewired build",
-    "mock-api": "json-server --port 3001 --watch test/mock/db.json --routes test/mock/routes.json",
+    "mock-api": "node test/mock/server.js",
     "test": "NODE_PATH=src:test react-app-rewired test --env=jsdom"
   },
   "proxy": "http://localhost:3001",
