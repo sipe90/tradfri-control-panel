@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "web-client": "docker-compose up -d sqliteweb",
-    "start": "NODE_PATH=src nodemon ./bin/www",
+    "start": "cross-env NODE_PATH=src nodemon ./bin/www",
     "tradfri-auth": "./bin/tradfri authenticate",
     "tradfri-discover": "./bin/tradfri discover"
   },
@@ -28,6 +28,7 @@
     "extends": "../.eslintrc.js"
   },
   "devDependencies": {
+    "cross-env": "^5.2.0",
     "eslint": "^4.14.0",
     "eslint-plugin-jest": "^21.6.2",
     "eslint-plugin-react": "^7.5.1",
