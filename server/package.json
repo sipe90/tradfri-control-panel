@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "web-client": "docker-compose up -d sqliteweb",
-    "start": "cross-env NODE_PATH=src nodemon ./bin/www",
+    "start": "cross-env NODE_PATH=src nodemon ./bin/www --host 0.0.0.0",
     "tradfri-auth": "./bin/tradfri authenticate",
     "tradfri-discover": "./bin/tradfri discover"
   },
