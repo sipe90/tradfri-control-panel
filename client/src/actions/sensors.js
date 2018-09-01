@@ -80,8 +80,9 @@ export const fetchSensors = () => (dispatch) =>
         .then(res => res.json())
         .then(json => dispatch(loadSensorsSuccess(json)))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to fetch sensors: ${error.message}`)
             dispatch(loadSensorsFailure(error))
+            dispatch(stopSensorPolling())
         })
 
 export const updateSensor = (sensor) => (dispatch) => {
@@ -94,7 +95,7 @@ export const updateSensor = (sensor) => (dispatch) => {
         .then(res => res.json())
         .then(json => dispatch(updateSensorSuccess(json)))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to update sensor: ${error.message}`)
             dispatch(updateSensorFailure(error))
         })
 }

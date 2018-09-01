@@ -81,8 +81,9 @@ export const fetchLights = () => (dispatch) =>
         .then(res => res.json())
         .then(json => dispatch(loadLightsSuccess(json)))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to fetch lights: ${error.message}`)
             dispatch(loadLightsFailure(error))
+            dispatch(stopLightPolling())
         })
 
 export const updateLight = (light) => (dispatch) => {
@@ -94,7 +95,7 @@ export const updateLight = (light) => (dispatch) => {
         .then(handleErrors)
         .then(() => dispatch(updateLightSuccess()))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to update light: ${error.message}`)
             dispatch(updateLightFailure(error))
         })
 }

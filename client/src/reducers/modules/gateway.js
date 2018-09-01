@@ -73,7 +73,7 @@ const reducer = (previousState = initialState, { type, payload }) =>
         [R.equals(TEST_CONNECTION_FAILURE), () => ({
             ...previousState,
             connectionTestInProgress: false,
-            connectionTestResult: null
+            connectionTestResult: payload
         })],
         [R.T, R.always(previousState)]
     ])(type)

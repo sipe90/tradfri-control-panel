@@ -101,7 +101,7 @@ export const gatewayStateChanged = (gatewayProps) => ({
 })
 
 const handleErrors = (response) => {
-    if (!response.status >= 500) {
+    if (response.status >= 500) {
         throw Error(response.statusText)
     }
     return response
@@ -138,10 +138,11 @@ export const fetchGateway = () => (dispatch) => {
                 .then(() => dispatch(stopGatewayPolling())) :
             res.json()
                 .then(json => dispatch(loadGatewaySuccess(json)))
-                .catch(error => {
-                    message.error(error.message)
-                    dispatch(loadGatewayFailure(error))
-                }))
+        ).catch(error => {
+            message.error(`Failed to fetch gateway: ${error.message}`)
+            dispatch(loadGatewayFailure(error))
+            dispatch(stopGatewayPolling())
+        })
 }
 
 export const saveGateway = (gateway) => (dispatch) => {
@@ -154,7 +155,7 @@ export const saveGateway = (gateway) => (dispatch) => {
         .then(() => dispatch(saveGatewaySuccess()))
         .then(() => dispatch(fetchGateway()))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to save or update gateway: ${error.message}`)
             dispatch(saveGatewayFailure(error))
         })
 }
@@ -172,10 +173,10 @@ export const discoverGateway = () => (dispatch) => {
                     dispatch(change('GATEWAY', 'hostname', json.addresses[0]))
                     dispatch(discoverGatewaySuccess(json))
                 })
-                .catch(error => {
-                    message.error(error.message)
-                    dispatch(discoverGatewayFailure())
-                }))
+        ).catch(error => {
+            message.error(`Failed to discover gateway: ${error.message}`)
+            dispatch(discoverGatewayFailure())
+        })
 }
 
 export const generateIdentity = (hostname, securityCode) => (dispatch) => {
@@ -192,7 +193,7 @@ export const generateIdentity = (hostname, securityCode) => (dispatch) => {
             })
             : res.json().then(json => dispatch(generateIdentityFailure(json))))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to generate identity: ${error.message}`)
             dispatch(generateIdentityFailure(error))
         })
 }
@@ -207,7 +208,7 @@ export const testConnection = (hostname, identity, psk) => (dispatch) => {
         .then(res => res.json())
         .then(json => dispatch(testConnectionSuccess(json)))
         .catch(error => {
-            message.error(error.message)
+            message.error(`Failed to test connection: ${error.message}`)
             dispatch(testConnectionFailure(error))
         })
 }
