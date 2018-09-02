@@ -53,7 +53,7 @@ const Spinner = <Icon type="loading" style={{ fontSize: 24 }} spin />
 
 const renderDiscoveryStep = (props) =>
     <div>
-        <div style={{ height: 340 }}>
+        <div>
             <div style={{ marginBottom: 16 }}>
                 <p>
                     You can try to discover your trådfri gateway by clicking the discovery button or input the gateway address manually yourself.
@@ -93,7 +93,7 @@ const renderDiscoveryStep = (props) =>
 
 const renderAuthenticationStep = (props) =>
     <div>
-        <div style={{ height: 340 }}>
+        <div>
             <div style={{ marginBottom: 16 }}>
                 <p>
                     You will need to generate an identity to authenticate Trådfri Control Panel with your gateway.
@@ -136,7 +136,7 @@ const renderAuthenticationStep = (props) =>
 
 const renderTestConnectionStep = (props) =>
     <div>
-        <div style={{ height: 340 }}>
+        <div>
             <div style={{ marginBottom: 16 }}>
                 <p>
                     Finished! Now finish by trying to connect to the gateway. Clicking finish will save the gateway information.
