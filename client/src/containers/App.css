@@ -1,39 +1,20 @@
-/* @import '~antd/dist/antd.css'; */
-
 .app-root {
+  background-color: #5dabcf
+}
+
+.app-content {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   min-height: 100vh;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .app-header {
-  height: 64px;
+  padding: 0;
 }
 
 .app-footer {
+  background-color: rgb(255, 255, 255);
   text-align: center;
-}
-
-.app-title {
-  height: 64px;
-  line-height: 64px;
-  color: rgb(255, 255, 255);
-  font-size: 1.25em;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.app-header-badge {
-  float: right;
-  margin-top: 24px;
-  margin-left: 30px;
-}
-
-.app-header-icon {
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.app-header-avatar {
-  background-color: rgb(135, 208, 104);
-  float: right;
-  margin-top: 12px;
-  margin-left: 30px;
 }
