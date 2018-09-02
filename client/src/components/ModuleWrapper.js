@@ -9,8 +9,8 @@ const ModuleWrapper = (props) => {
     return (
         <div className="content-wrap">
             <h1>{props.title}</h1>
-            <Divider/>
-            <props.module/>
+            <Divider />
+            <props.module />
         </div>
     )
 }
