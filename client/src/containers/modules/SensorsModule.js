@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import { fetchSensors, updateSensor, startSensorPolling, stopSensorPolling, sensorStateChanged } from 'actions/sensors'
 
-import Sensors from 'components/sensors/Sensors'
+import SensorList from 'components/sensors/SensorList'
 
 const mapStateToProps = state => ({
     sensors: state.entities.sensors,
@@ -20,6 +20,6 @@ const mapDispatchToProps = dispatch => ({
 const SensorsModule = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Sensors)
+)(SensorList)
 
 export default SensorsModule

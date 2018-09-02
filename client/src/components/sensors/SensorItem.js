@@ -1,28 +1,21 @@
 import React, { Component } from 'react'
-import { Button, Card, Tooltip, Popover, Input } from 'antd'
+import { Button, List, Tooltip, Popover, Input } from 'antd'
 import PropTypes from 'prop-types'
 import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 
 import * as R from 'ramda'
 
-import 'components/sensors/SensorCard.css'
-
-const { Meta } = Card
+import 'components/sensors/SensorItem.css'
 
 const getDescription = R.always('Motion sensor')
-
-const getPicture = R.cond([
-    [R.equals('TRADFRI motion sensor'), R.always('motion_sensor.png')],
-    [R.T, R.always('motion_sensor.png')]
-])
 
 const initialState = {
     editNameVisible: false,
     editNameText: ''
 }
 
-class SensorCard extends Component {
+class SensorItem extends Component {
 
     constructor(props) {
         super(props)
@@ -31,31 +24,18 @@ class SensorCard extends Component {
 
     render() {
         return (
-            <div className='sensor-card'>
-                <Card
-                    cover={this.cardCover(this.props)}>
-                    <Meta
-                        title={this.title(this.props)}
-                        avatar={this.statusIndicator(this.props)}
-                        description={getDescription(this.props.sensor)} />
-                </Card>
-            </div>
-        )
-    }
-
-    cardCover({ sensor }) {
-        return (
-            <div className='sensor-card-cover'>
-                <Tooltip title={sensor.model}>
-                    <img alt={sensor.model} src={`/${getPicture(sensor.model)}`} />
-                </Tooltip>
-            </div>
+            <List.Item>
+                <List.Item.Meta
+                    title={this.title(this.props)}
+                    description={getDescription(this.props.sensor)} />
+            </List.Item>
         )
     }
 
     title({ sensor }) {
         return (
-            <div className='sensor-card-title'>
+            <div className='sensor-item-title'>
+                {this.statusIndicator(sensor)}
                 <span>{sensor.name}</span>
                 <Popover
                     title='Edit name'
@@ -64,8 +44,8 @@ class SensorCard extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <span className='sensor-card-title-edit'>
-                        <PencilIcon size={18} />
+                    <span className='sensor-item-title-edit'>
+                        <PencilIcon size={12} />
                     </span>
                 </Popover>
             </div>
@@ -74,18 +54,20 @@ class SensorCard extends Component {
 
     editName() {
         return (
-            <div className='sensor-card-title-popover'>
+            <div className='sensor-item-title-popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
         )
     }
 
-    statusIndicator({ sensor }) {
+    statusIndicator(sensor) {
         return (
-            <Tooltip title={sensor.alive ? 'Sensor is connected' : 'Sensor is disconnected'}>
-                <CircleIcon className={sensor.alive ? 'color-green' : 'color-red'} size={18} />
-            </Tooltip>
+            <span style={{ marginRight: 10 }}>
+                <Tooltip title={sensor.alive ? 'Sensor is connected' : 'Sensor is disconnected'}>
+                    <CircleIcon className={sensor.alive ? 'color-green' : 'color-red'} size={12} />
+                </Tooltip>
+            </span>
         )
     }
 
@@ -106,7 +88,7 @@ class SensorCard extends Component {
     }
 }
 
-SensorCard.propTypes = {
+SensorItem.propTypes = {
     sensor: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
@@ -119,4 +101,4 @@ SensorCard.propTypes = {
     updateSensor: PropTypes.func.isRequired
 }
 
-export default SensorCard
+export default SensorItem

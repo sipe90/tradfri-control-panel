@@ -1,47 +1,32 @@
-.sensor-card {
-    display: inline-block;
-    margin: 0 12px;
-}
-
-/* Card cover */
-
-.sensor-card-cover {
-    text-align: center;
-    margin-top: 10px;
-}
-
-/* Card title */
-
-.sensor-card-title {
+/* Item Meta title */
+.sensor-item-title {
     display: flex;
 }
 
-.sensor-card-title > span {
+.sensor-item-title>span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.sensor-card-title-edit {
+.sensor-item-title-edit {
     margin-left: 4px;
     margin-top: 2px;
     cursor: pointer;
 }
 
-/* Card title popover */
-
-.sensor-card-title-popover {
+/* Item Meta title popover */
+.sensor-item-title-popover {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.sensor-card-title-popover > button {
+.sensor-item-title-popover>button {
     margin-top: 12px;
     width: 40%;
 }
 
-/* Card status indicator */
-
+/* Item status indicator */
 .color-green {
     margin-top: 4px;
     color: #00CC00
