@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Spin, Icon } from 'antd'
+import { Spin, Icon, List } from 'antd'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 
-import LightCard from 'components/lights/LightCard'
+import LightItem from 'components/lights/LightItem'
 
 import 'components/lights/Lights.css'
 
@@ -21,17 +21,19 @@ class Lights extends Component {
     render() {
         return (
             <Spin spinning={this.props.initialDataLoading} style={{ marginTop: '240px' }} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
-                {!R.isEmpty(this.props.lights) ?
-                    R.values(this.props.lights).map((light, idx) =>
-                        <LightCard
-                            key={idx}
-                            light={light}
-                            lightStateChanged={this.props.lightStateChanged}
-                            updateLight={this.props.updateLight} />
-                    )
-                    : !this.props.initialDataLoading ? 'No lights found' : null}
-
+                <List itemLayout='vertical'
+                    dataSource={R.values(this.props.lights)}
+                    renderItem={this.renderItem.bind(this)} />
             </Spin>
+        )
+    }
+
+    renderItem(light) {
+        return (
+            <LightItem key={light.id}
+                light={light}
+                lightStateChanged={this.props.lightStateChanged}
+                updateLight={this.props.updateLight} />
         )
     }
 }
