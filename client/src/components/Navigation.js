@@ -10,8 +10,12 @@ const Navigation = (props) => {
             {
                 props.routes.map((route, index) => (
                     <NavLink key={index} to={route.path} className='nav-item' activeClassName='nav-item-active'>
-                        {route.icon}
-                        <span>{route.text}</span>
+                        <div>
+                            {route.icon}
+                        </div>
+                        <div>
+                            {route.text}
+                        </div>
                     </NavLink>
                 ))
             }
