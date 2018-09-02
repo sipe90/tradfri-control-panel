@@ -29,9 +29,9 @@ class AddGateway extends Component {
 
     render() {
         const { title } = steps[this.state.step]
-        return <div style={{ width: 720, padding: 24 }}>
+        return <div ref={(e) => this.scrollAnchor = e} style={{ padding: 24 }}>
             <div style={{ marginBottom: 24 }}>
-                <Steps current={this.state.step}>
+                <Steps size='small' current={this.state.step}>
                     {steps.map(({ stepName }, idx) => <Step key={idx} title={stepName} />)}
                 </Steps>
             </div>
@@ -49,10 +49,12 @@ class AddGateway extends Component {
 
     nextStep() {
         this.setState({ step: Math.min(this.state.step + 1, 2) })
+        this.scrollAnchor.scrollIntoView(true)
     }
 
     previousStep() {
         this.setState({ step: Math.max(this.state.step - 1, 0) })
+        this.scrollAnchor.scrollIntoView(true)
     }
 }
 
