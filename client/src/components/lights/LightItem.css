@@ -1,47 +1,32 @@
-.light-card {
-    display: inline-block;
-    margin: 0 12px;
-}
-
-/* Card cover */
-
-.light-card-cover {
-    text-align: center;
-    margin-top: 10px;
-}
-
-/* Card title */
-
-.light-card-title {
+/* Item Meta title */
+.light-item-title {
     display: flex;
 }
 
-.light-card-title > span {
+.light-item-title>span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.light-card-title-edit {
+.light-item-title-edit {
     margin-left: 4px;
     margin-top: 2px;
     cursor: pointer;
 }
 
-/* Card title popover */
-
-.light-card-title-popover {
+/* Item Meta title popover */
+.light-item-title-popover {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.light-card-title-popover > button {
+.light-item-title-popover>button {
     margin-top: 12px;
     width: 40%;
 }
 
-/* Card status indicator */
-
+/* Item Meta title status indicator */
 .color-green {
     margin-top: 4px;
     color: #00CC00
@@ -52,19 +37,18 @@
     color: #CC0000
 }
 
-/* Card control table */
-
-.light-card-table {
+/* Item control table */
+.light-item-table {
     width: 100%;
     margin-top: 24px;
 }
 
-.light-card-table td {
+.light-item-table td {
     vertical-align: middle;
     height: 30px;
 }
 
-.light-card-table td:last-of-type {
+.light-item-table td:last-of-type {
     width: 40%;
     text-align: right;
 }

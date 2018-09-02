@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, Switch, Slider, Tooltip, Popover, Input } from 'antd'
+import { List, Button, Switch, Slider, Tooltip, Popover, Input } from 'antd'
 import PropTypes from 'prop-types'
 import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
@@ -9,19 +9,12 @@ import ThermometerIcon from 'mdi-react/ThermometerIcon'
 
 import * as R from 'ramda'
 
-import 'components/lights/LightCard.css'
-
-const { Meta } = Card
+import 'components/lights/LightItem.css'
 
 const getDescription = R.cond([
     [R.propEq('spectrum', 'white'), R.always('White spectrum light bulb')],
     [R.propEq('spectrum', 'rgb'), R.always('RGB spectrum light bulb')],
     [R.T, R.always('Light bulb')]
-])
-
-const getPicture = R.cond([
-    [R.equals('TRADFRI bulb E27 WS opal 980lm'), R.always('e27_ws_opal_980lm.png')],
-    [R.T, R.always('e27_ws_opal_980lm.png')]
 ])
 
 const percentFormatter = (v) => `${v}%`
@@ -31,7 +24,7 @@ const initialState = {
     editNameText: ''
 }
 
-class LightCard extends Component {
+class LightItem extends Component {
 
     constructor(props) {
         super(props)
@@ -40,32 +33,19 @@ class LightCard extends Component {
 
     render() {
         return (
-            <div className='light-card'>
-                <Card
-                    cover={this.cardCover(this.props)}>
-                    <Meta
-                        title={this.title(this.props)}
-                        avatar={this.statusIndicator(this.props)}
-                        description={getDescription(this.props.light)} />
-                    {this.controlTable(this.props)}
-                </Card>
-            </div>
-        )
-    }
-
-    cardCover({ light }) {
-        return (
-            <div className='light-card-cover'>
-                <Tooltip title={light.model}>
-                    <img alt={light.model} src={`/${getPicture(light.model)}`} />
-                </Tooltip>
-            </div>
+            <List.Item>
+                <List.Item.Meta
+                    title={this.title(this.props)}
+                    description={getDescription(this.props.light)} />
+                {this.controlTable(this.props)}
+            </List.Item>
         )
     }
 
     title({ light }) {
         return (
-            <div className='light-card-title'>
+            <div className='light-item-title'>
+                {this.statusIndicator(light)}
                 <span>{light.name}</span>
                 <Popover
                     title='Edit name'
@@ -74,8 +54,8 @@ class LightCard extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <span className='light-card-title-edit'>
-                        <PencilIcon size={18} />
+                    <span className='light-item-title-edit'>
+                        <PencilIcon size={12} />
                     </span>
                 </Popover>
             </div>
@@ -84,18 +64,20 @@ class LightCard extends Component {
 
     editName() {
         return (
-            <div className='light-card-title-popover'>
+            <div className='light-item-title-popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
         )
     }
 
-    statusIndicator({ light }) {
+    statusIndicator(light) {
         return (
-            <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
-                <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={18} />
-            </Tooltip>
+            <span style={{ marginRight: 10 }}>
+                <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
+                    <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={12} />
+                </Tooltip>
+            </span>
         )
     }
 
@@ -135,7 +117,7 @@ class LightCard extends Component {
 
     controlTable({ light }) {
         return (
-            <table className='light-card-table'>
+            <table className='light-item-table'>
                 <tbody>
                     <tr>
                         <td><LightbulbOnOutlineIcon /></td>
@@ -144,7 +126,7 @@ class LightCard extends Component {
                             <Switch
                                 size='small'
                                 checked={light.on}
-                                disabled={!light.switchable}
+                                disabled={!light.switchable || !light.alive}
                                 onChange={this.powerSwitched.bind(this)}
                             />
                         </td>
@@ -157,7 +139,7 @@ class LightCard extends Component {
                                 min={1}
                                 max={100}
                                 value={light.brightness}
-                                disabled={!light.dimmable}
+                                disabled={!light.dimmable || !light.alive}
                                 onChange={this.brightnessChanged.bind(this)}
                                 onAfterChange={() => null}
                                 tipFormatter={percentFormatter}
@@ -172,6 +154,7 @@ class LightCard extends Component {
                                 min={1}
                                 max={100}
                                 value={light.colorTemperature}
+                                disabled={!light.alive}
                                 onChange={this.temperatureChanged.bind(this)}
                                 onAfterChange={() => null}
                                 tipFormatter={percentFormatter}
@@ -184,7 +167,7 @@ class LightCard extends Component {
     }
 }
 
-LightCard.propTypes = {
+LightItem.propTypes = {
     light: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
@@ -201,4 +184,4 @@ LightCard.propTypes = {
     updateLight: PropTypes.func.isRequired
 }
 
-export default LightCard
+export default LightItem
