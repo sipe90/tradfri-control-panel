@@ -5,7 +5,7 @@ import * as R from 'ramda'
 
 import LightItem from 'components/lights/LightItem'
 
-import 'components/lights/Lights.css'
+import 'components/lights/LightList.css'
 
 class Lights extends Component {
 

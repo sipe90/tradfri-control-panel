@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, updateLight } from 'actions/lights'
 
-import Lights from 'components/lights/Lights'
+import LightList from 'components/lights/LightList'
 
 const mapStateToProps = state => ({
     lights: state.entities.lights,
@@ -20,6 +20,6 @@ const mapDispatchToProps = dispatch => ({
 const LightsModule = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Lights)
+)(LightList)
 
 export default LightsModule
