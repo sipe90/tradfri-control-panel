@@ -8,7 +8,8 @@ module.exports = {
     entry: './src/client/index.js',
     output: {
         path: path.join(__dirname, outputDirectory),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -32,6 +33,8 @@ module.exports = {
     devServer: {
         port: 3000,
         open: true,
+        useLocalIp: true,
+        historyApiFallback: true,
         proxy: {
             '/api': 'http://localhost:8080'
         }
@@ -44,6 +47,6 @@ module.exports = {
         })
     ],
     resolve: {
-        modules: [path.resolve(__dirname, 'src/client'), 'node_modules']
+        modules: [path.resolve(__dirname, 'public'), path.resolve(__dirname, 'src', 'client'), 'node_modules']
     }
 }
