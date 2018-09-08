@@ -9,7 +9,7 @@ const Navigation = (props) => {
         <div className='nav-menu'>
             {
                 props.routes.map((route, index) => (
-                    <NavLink key={index} to={route.path} className='nav-item' activeClassName='nav-item-active'>
+                    <NavLink key={index} to={route.path} exact className='nav-item' activeClassName='nav-item-active'>
                         <div>
                             {route.icon}
                         </div>

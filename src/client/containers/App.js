@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Route, Redirect } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Layout } from 'antd'
 
@@ -22,7 +21,6 @@ class App extends Component {
                             <Navigation routes={routeDefs} />
                         </Header>
                         <Content>
-                            <Route exact path='/' render={() => <Redirect to={routeDefs[0].path} />} />
                             <Routes routes={routeDefs} />
                         </Content>
                         <Footer className="app-footer">Trådfri Control Panel ©2018</Footer>
