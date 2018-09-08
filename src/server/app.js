@@ -22,6 +22,8 @@ if (isDevEnv) {
     app.set('json spaces', 2)
 }
 
+app.use(express.static('dist'));
+
 init(env).then((success) => {
     if (!success) {
         logger.error('Failed to initialize application. The process will now exit')
@@ -63,4 +65,6 @@ app.use((err, req, res, next) => {
     })
 })
 
-module.exports = app
+const port = process.env.SERVER_PORT || 8080
+
+app.listen(port, () => logger.info(`Listening on port ${port}!`));
