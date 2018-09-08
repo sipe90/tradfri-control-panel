@@ -1,22 +1,30 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router'
 import PropTypes from 'prop-types'
 
 import ModuleWrapper from 'components/ModuleWrapper'
 
 const Routes = (props) => {
     return (
-        props.routes.map((route, index) => (
-            <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                render={() => <ModuleWrapper                 
-                    title={route.text}
-                    module={route.container}
-                />}
+        <Switch>
+            <Route exact path='/' render={() => <Redirect to={props.routes[0].path} />} />
+            {props.routes.map((route, index) => (
+                <Route
+                    key={index}
+                    path={route.path}
+                    exact={route.exact}
+                    component={() => <ModuleWrapper
+                        title={route.text}
+                        module={route.container}
+                    />}
+                />
+            ))}
+            <Route component={() => <ModuleWrapper
+                title={'Not found'}
+                module={() => <div>404</div>}
+            />}
             />
-        ))
+        </Switch>
     )
 }
 
@@ -27,7 +35,7 @@ Routes.propTypes = {
                 PropTypes.func.isRequired,
                 PropTypes.element.isRequired
             ]),
-            exact:  PropTypes.bool.isRequired,
+            exact: PropTypes.bool.isRequired,
             path: PropTypes.string.isRequired
         })
     ).isRequired
