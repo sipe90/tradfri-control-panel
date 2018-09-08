@@ -5,6 +5,7 @@ import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 
 import 'components/gateway/GatewayCard.css'
+import gatewayImage from 'images/tradfri_gateway.png'
 
 const { Meta } = Card
 
@@ -38,7 +39,7 @@ class GatewayCard extends Component {
         return (
             <div className='gateway-card-cover'>
                 <Tooltip title={gateway.type}>
-                    <img alt={gateway.type} src={'/tradfri_gateway.png'} />
+                    <img alt={gateway.type} src={gatewayImage} />
                 </Tooltip>
             </div>
         )

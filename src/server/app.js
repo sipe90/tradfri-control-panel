@@ -22,8 +22,6 @@ if (isDevEnv) {
     app.set('json spaces', 2)
 }
 
-app.use(express.static('dist'));
-
 init(env).then((success) => {
     if (!success) {
         logger.error('Failed to initialize application. The process will now exit')
@@ -31,19 +29,19 @@ init(env).then((success) => {
     }
 })
 
-app.get('/', (req, res) =>
-    res.json({ message: 'Hello there' })
-)
+app.use(express.static('dist'))
 
 app.use('/api/gateway', gateway)
 app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
 
-app.use((req, res) =>
+app.use('/api/*', (req, res) =>
     res.status(404).json({
         error: 'Not Found'
     })
 )
+
+app.use('*', express.static('dist/index.html'))
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
@@ -67,4 +65,4 @@ app.use((err, req, res, next) => {
 
 const port = process.env.SERVER_PORT || 8080
 
-app.listen(port, () => logger.info(`Listening on port ${port}!`));
+app.listen(port, () => logger.info(`Listening on port ${port}`))

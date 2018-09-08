@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_PATH=src/server node src/server/app.js",
     "build": "webpack --mode production",
-    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot --host 0.0.0.0",
     "server": "cross-env NODE_PATH=src/server nodemon src/server/app.js --host 0.0.0.0",
     "mock-api": "node test/client/mock/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
