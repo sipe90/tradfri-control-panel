@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const TradfriGateway = require('../src/gateway/TradfriGateway')
+const TradfriGateway = require('../src/server/gateway/TradfriGateway')
 
 const argv = process.argv.slice(2)
 
@@ -43,7 +43,10 @@ async function authenticate(argv) {
     const gateway = new TradfriGateway(hostname)
 
     try {
-        const { identity, psk } = await gateway.authenticate(securityCode)
+        const {
+            identity,
+            psk
+        } = await gateway.authenticate(securityCode)
 
         console.log(`Identity: ${identity}`)
         console.log(`PSK: ${psk}`)
@@ -60,12 +63,16 @@ async function discover() {
 
     console.log('Looking for Trådfri gateways in the network...')
 
-    const discoverResult = await TradfriGateway.discover()
+    try {
+        const discoverResult = await TradfriGateway.discover()
 
-    if (discoverResult) {
-        console.log(JSON.stringify(discoverResult, null, 2))
-    } else {
-        console.log('No Trådfri gateways found')
+        if (discoverResult) {
+            console.log(JSON.stringify(discoverResult, null, 2))
+        } else {
+            console.log('No Trådfri gateways found')
+        }
+    } catch (err) {
+        console.log(`Error occurred while trying to discover gateway: ${err}`)
     }
 
     process.exit()

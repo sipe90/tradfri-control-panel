@@ -6,15 +6,15 @@ const { Logger, transports: { Console, File } } = winston
 const logger = new Logger({
     transports: [
         new Console(),
-        new File({ 
+        new File({
             name: 'logfile',
-            filename: path.join(__dirname, '../logs/server.log'),
+            filename: path.join(__dirname, '../../logs/server.log'),
             json: false
         }),
         new File({
             name: 'errorlogfile',
             level: 'error',
-            filename: path.join(__dirname, '../logs/error.log'),
+            filename: path.join(__dirname, '../../logs/error.log'),
             json: false
         }),
     ]
