@@ -5,50 +5,36 @@ The repo is divided into two JavaScript projects: `tradfri-control-panel-client`
 
 *TODO: Description*
 
-## Client
+## Running the app
 
-Front-end application spawned from the default `create-react-app` template.
+First install dependencies with `npm install`
 
-### Running the app
+To run the application in development mode:
 
 ```
-cd client
-npm i
+npm run dev
+```
+
+Or in production mode:
+
+```
+npm build
 npm start
 ```
-The client application runs on port 3000 by default. You can run the app in a different port by launching the app like this: `PORT=<PORT_NUMBER> npm start`
-All fetch-requests are proxied to `localhost:3001` by default. You can change this behavior by modifying the proxy-attribute in package.json
 
-### Mock JSON server
+The client application runs on port 3000 by default. You can run the app in a different port by launching the app like this: `PORT=<PORT_NUMBER> npm start`.
+In development mode all fetch-requests to `/api` are proxied to `localhost:8080` where the express server is hosted.
 
-A mock `json-server` can be used instead by running `npm run mock-api`. The contents of `test/mock/db.json` will be served on `http://localhost:3001`
-
-## Server
-
-Back-end API built on top of express
-
-### Database
-
-The server uses SQLite3 for storing persistent data. A `docker-compose.yml` is provided to set up a web interface for managing the data. It can be accessed from `http://localhost:8080`.
+In production mode, the `dist` folder contents built by webpack will be served by the back-end server at `localhost:8080`
 
 ### Registering gateways
 
-You can discover gateways or create authentication keys with the `bin/tradfri` utility.
+When you launch the application the first time, you will be prompted with a setup wizard for registering your gateway.
 
-Currently the backend application expects the SQLite database to contain a table named `tradfri_gateway` which contain rows describing the gateways to connect to.
-Example gateway:
+## Mock JSON server
 
-| id    | name              | hostname      | identity  | psk       |
-|-------|-------------------|---------------|-----------|-----------|
-| 1     | Trådfri gateway   | 192.168.0.9   | XXXXXX    | XXXXXX    |
+A mock `json-server` can be used instead by running `npm run dev-mock`. Mock data will be served on `http://localhost:8080`.
 
-The `identity` and `psk` properties contain the identity and pre shared key generated with the `bin/tradfri` utility.
+## Database
 
-### Running the server
-
-```
-cd server
-npm i
-npm start
-```
-The server runs on port 3001 by default. You can run the app in a different port by launching the server like this: `PORT=<PORT_NUMBER> npm start`
+The server uses SQLite3 for storing persistent data. A `docker-compose.yml` is provided to set up a web interface for managing the data. It can be accessed from `http://localhost:8081`.
