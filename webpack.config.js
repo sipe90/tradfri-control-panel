@@ -5,10 +5,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const outputDirectory = 'dist'
 
 module.exports = {
-    entry: './src/client/index.js',
+    entry: {
+        main: './src/client/index.js'
+    },
     output: {
         path: path.join(__dirname, outputDirectory),
-        filename: 'bundle.js',
+        filename: '[name].[hash].bundle.js',
         publicPath: '/'
     },
     module: {
@@ -48,5 +50,11 @@ module.exports = {
     ],
     resolve: {
         modules: [path.resolve(__dirname, 'public'), path.resolve(__dirname, 'src', 'client'), 'node_modules']
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all'
+        },
+        runtimeChunk: true
     }
 }
