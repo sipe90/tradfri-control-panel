@@ -9,6 +9,7 @@
     "server": "cross-env NODE_PATH=src/server nodemon src/server/app.js --host 0.0.0.0",
     "mock-api": "node test/client/mock/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev-mock": "concurrently \"npm run mock-api\" \"npm run client\"",
     "tradfri-auth": "./bin/tradfri authenticate",
     "tradfri-discover": "./bin/tradfri discover"
   },
