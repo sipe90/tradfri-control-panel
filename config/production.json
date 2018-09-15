@@ -1,0 +1,6 @@
+{
+  "database": {
+    "dbFolder": "data",
+    "dbName": "tradfri_control_panel.db"
+  }
+}
