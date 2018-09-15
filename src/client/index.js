@@ -22,9 +22,9 @@ const loggerMiddleware = createLogger()
 const store = createStore(
     reducers,
     applyMiddleware(
-        loggerMiddleware,
         thunkMiddleware,
-        timerMiddleware
+        timerMiddleware,
+        loggerMiddleware
     )
 )
 
