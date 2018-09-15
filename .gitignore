@@ -12,6 +12,9 @@
 # data
 /data/*.db
 
+# pm2 deployment
+ecosystem.deploy.json
+
 # misc
 .DS_Store
 .env.local
