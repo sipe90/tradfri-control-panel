@@ -2,15 +2,15 @@
     text-align: center;
 }
 
-.nav-item {
+.nav-menu__item {
     display: inline-block;
     height: 64px;
     padding: 6px 16px 2px 16px;
     color: rgba(255, 255, 255, 0.80);
 }
 
-.nav-item-active,
-.nav-item-active:focus {
+.nav-menu__item--active,
+.nav-menu__item--active {
     background-color: #1890ff;
     color: #fff;
     text-decoration: none;
