@@ -1,7 +1,6 @@
 # Trådfri Control Panel
 
 This repository contains the source code for my latest hobby project: The Trådfri control panel.
-The repo is divided into two JavaScript projects: `tradfri-control-panel-client` and `tradfri-control-panel-server`.
 
 *TODO: Description*
 
