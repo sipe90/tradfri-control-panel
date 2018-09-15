@@ -44,7 +44,7 @@ class LightItem extends Component {
 
     title({ light }) {
         return (
-            <div className='light-item-title'>
+            <div className='light-item__title'>
                 {this.statusIndicator(light)}
                 <span>{light.name}</span>
                 <Popover
@@ -54,7 +54,7 @@ class LightItem extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <span className='light-item-title-edit'>
+                    <span className='light-item__name-edit'>
                         <PencilIcon size={12} />
                     </span>
                 </Popover>
@@ -64,7 +64,7 @@ class LightItem extends Component {
 
     editName() {
         return (
-            <div className='light-item-title-popover'>
+            <div className='light-item__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
@@ -73,9 +73,12 @@ class LightItem extends Component {
 
     statusIndicator(light) {
         return (
-            <span style={{ marginRight: 10 }}>
+            <span className='light-item__status'>
                 <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
-                    <CircleIcon className={light.alive ? 'color-green' : 'color-red'} size={12} />
+                    <CircleIcon
+                        className={`light-item__status-icon ${light.alive ? 'light-item__status-icon--connected' :
+                            'light-item__status-icon--disconnected'}`}
+                        size={12} />
                 </Tooltip>
             </span>
         )
@@ -117,7 +120,7 @@ class LightItem extends Component {
 
     controlTable({ light }) {
         return (
-            <table className='light-item-table'>
+            <table className='light-item__table'>
                 <tbody>
                     <tr>
                         <td><LightbulbOnOutlineIcon /></td>

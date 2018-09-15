@@ -1,54 +1,60 @@
 /* Item Meta title */
-.light-item-title {
+.light-item__title {
     display: flex;
 }
 
-.light-item-title>span {
+.light-item__title>span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.light-item-title-edit {
+.light-item__name-edit {
     margin-left: 4px;
     margin-top: 2px;
     cursor: pointer;
 }
 
 /* Item Meta title popover */
-.light-item-title-popover {
+.light-item__popover {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.light-item-title-popover>button {
+.light-item__popover>button {
     margin-top: 12px;
     width: 40%;
 }
 
 /* Item Meta title status indicator */
-.color-green {
+.light-item__status {
+    margin-right: 10px;
+}
+
+.light-item__status-icon {
     margin-top: 4px;
+}
+
+.light-item__status-icon--connected {
     color: #00CC00
 }
 
-.color-red {
-    margin-top: 4px;
+.light-item__status-icon--disconnected {
     color: #CC0000
 }
 
 /* Item control table */
-.light-item-table {
+.light-item__table {
     width: 100%;
     margin-top: 24px;
 }
 
-.light-item-table td {
+.light-item__table td {
     vertical-align: middle;
     height: 30px;
 }
 
-.light-item-table td:last-of-type {
+.light-item__table td:last-of-type {
     width: 40%;
     text-align: right;
 }
