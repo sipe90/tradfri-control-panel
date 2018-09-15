@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const express = require('express')
 const httpLogger = require('morgan')
 const cookieParser = require('cookie-parser')

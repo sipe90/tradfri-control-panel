@@ -10,8 +10,8 @@
     "mock-api": "node test/client/mock/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "dev-mock": "concurrently \"npm run mock-api\" \"npm run client\"",
-    "tradfri-auth": "./bin/tradfri authenticate",
-    "tradfri-discover": "./bin/tradfri discover"
+    "tradfri-auth": "./bin/tradfri.js authenticate",
+    "tradfri-discover": "./bin/tradfri.js discover"
   },
   "dependencies": {
     "antd": "^3.9.2",
