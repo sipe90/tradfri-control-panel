@@ -37,7 +37,7 @@ class GatewayCard extends Component {
 
     cardCover({ gateway }) {
         return (
-            <div className='gateway-card-cover'>
+            <div className='gateway-card__cover'>
                 <Tooltip title={gateway.type}>
                     <img alt={gateway.type} src={gatewayImage} />
                 </Tooltip>
@@ -47,7 +47,7 @@ class GatewayCard extends Component {
 
     title({ gateway }) {
         return (
-            <div className='gateway-card-title'>
+            <div className='gateway-card__title'>
                 <span>{gateway.name}</span>
                 <Popover
                     title='Edit name'
@@ -56,7 +56,7 @@ class GatewayCard extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <span className='gateway-card-title-edit'>
+                    <span className='gateway-card__name-edit'>
                         <PencilIcon size={18} />
                     </span>
                 </Popover>
@@ -66,7 +66,7 @@ class GatewayCard extends Component {
 
     editName() {
         return (
-            <div className='gateway-card-title-popover'>
+            <div className='gateway-card__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)}>Update</Button>
             </div>
@@ -76,7 +76,10 @@ class GatewayCard extends Component {
     statusIndicator({ gateway }) {
         return (
             <Tooltip title={gateway.connected ? 'Gateway is online' : 'Gateway is offline'}>
-                <CircleIcon className={gateway.connected ? 'color-green' : 'color-red'} size={18} />
+                <CircleIcon
+                    className={`gateway-card__status-icon ${gateway.connected ? 'gateway-card__status-icon--connected' :
+                        'gateway-card__status-icon--disconnected'}`}
+                    size={18} />
             </Tooltip>
         )
     }

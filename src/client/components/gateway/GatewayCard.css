@@ -5,23 +5,23 @@
 
 /* Card cover */
 
-.gateway-card-cover {
+.gateway-card__cover {
     text-align: center;
     margin-top: 10px;
 }
 
 /* Card title */
 
-.gateway-card-title {
+.gateway-card__title {
     display: flex;
 }
 
-.gateway-card-title > span {
+.gateway-card__title>span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.gateway-card-title-edit {
+.gateway-card__name-edit {
     margin-left: 4px;
     margin-top: 2px;
     cursor: pointer;
@@ -29,25 +29,31 @@
 
 /* Card title popover */
 
-.gateway-card-title-popover {
+.gateway-card__popover {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.gateway-card-title-popover > button {
+.gateway-card__popover>button {
     margin-top: 12px;
     width: 40%;
 }
 
 /* Card status indicator */
 
-.color-green {
+.gateway-card__status {
+    margin-right: 10px;
+}
+
+.gateway-card__status-icon {
     margin-top: 4px;
+}
+
+.gateway-card__status-icon--connected {
     color: #00CC00
 }
 
-.color-red {
-    margin-top: 4px;
+.gateway-card__status-icon--disconnected {
     color: #CC0000
 }

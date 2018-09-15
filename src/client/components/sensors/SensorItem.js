@@ -34,7 +34,7 @@ class SensorItem extends Component {
 
     title({ sensor }) {
         return (
-            <div className='sensor-item-title'>
+            <div className='sensor-item__title'>
                 {this.statusIndicator(sensor)}
                 <span>{sensor.name}</span>
                 <Popover
@@ -44,7 +44,7 @@ class SensorItem extends Component {
                     onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
                     content={this.editName()}
                 >
-                    <span className='sensor-item-title-edit'>
+                    <span className='sensor-item__name-edit'>
                         <PencilIcon size={12} />
                     </span>
                 </Popover>
@@ -54,7 +54,7 @@ class SensorItem extends Component {
 
     editName() {
         return (
-            <div className='sensor-item-title-popover'>
+            <div className='sensor-item__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
@@ -63,9 +63,12 @@ class SensorItem extends Component {
 
     statusIndicator(sensor) {
         return (
-            <span style={{ marginRight: 10 }}>
+            <span className='sensor-item__status'>
                 <Tooltip title={sensor.alive ? 'Sensor is connected' : 'Sensor is disconnected'}>
-                    <CircleIcon className={sensor.alive ? 'color-green' : 'color-red'} size={12} />
+                    <CircleIcon
+                        className={`.sensor-item__status-icon ${sensor.alive ? 'sensor-item__status-icon--connected' :
+                            'sensor-item__status-icon--disconnected'}`}
+                        size={12} />
                 </Tooltip>
             </span>
         )
