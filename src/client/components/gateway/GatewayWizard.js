@@ -3,6 +3,8 @@ import { Steps } from 'antd'
 
 import GatewayFormContainer from 'containers/modules/GatewayFormContainer'
 
+import 'components/gateway/GatewayWizard.css'
+
 const { Step } = Steps
 
 const initialState = {
@@ -20,7 +22,7 @@ const steps = [{
     title: 'Test gateway connection'
 }]
 
-class AddGateway extends Component {
+class GatewayWizard extends Component {
 
     constructor(props) {
         super(props)
@@ -29,13 +31,13 @@ class AddGateway extends Component {
 
     render() {
         const { title } = steps[this.state.step]
-        return <div ref={(e) => this.scrollAnchor = e} style={{ padding: 24 }}>
-            <div style={{ marginBottom: 24 }}>
+        return <div className='gateway-wizard' ref={(e) => this.scrollAnchor = e} >
+            <div className='gateway-wizard__steps'>
                 <Steps size='small' current={this.state.step}>
                     {steps.map(({ stepName }, idx) => <Step key={idx} title={stepName} />)}
                 </Steps>
             </div>
-            <div style={{ marginBottom: 16, color: 'rgba(0, 0, 0, 0.85)', fontWeight: 500 }}>
+            <div className='gateway-wizard__title'>
                 {title}
             </div>
             <div>
@@ -58,4 +60,4 @@ class AddGateway extends Component {
     }
 }
 
-export default AddGateway
+export default GatewayWizard
