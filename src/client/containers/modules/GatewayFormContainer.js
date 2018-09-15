@@ -1,12 +1,14 @@
 import { connect } from 'react-redux'
-import { formValueSelector, getFormSyncErrors } from 'redux-form'
+import { formValueSelector, getFormSyncErrors, reduxForm } from 'redux-form'
 
 import { discoverGateway, generateIdentity, testConnection, saveGateway } from 'actions/gateway'
 
 import GatewayForm from 'components/gateway/GatewayForm'
 
-const valueSelector = formValueSelector('GATEWAY')
-const validationErrorSelector = getFormSyncErrors('GATEWAY')
+const GATEWAY_FORM = 'GATEWAY'
+
+const valueSelector = formValueSelector(GATEWAY_FORM)
+const validationErrorSelector = getFormSyncErrors(GATEWAY_FORM)
 
 const mapStateToProps = state => ({
     discoveryInProgress: state.modules.gateway.discoveryInProgress,
@@ -29,9 +31,11 @@ const mapDispatchToProps = dispatch => ({
     saveGateway: (gateway) => dispatch(saveGateway(gateway))
 })
 
+const ReduxForm = reduxForm({ form: GATEWAY_FORM, destroyOnUnmount: false })(GatewayForm)
+
 const GatewayFormContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(GatewayForm)
+)(ReduxForm)
 
 export default GatewayFormContainer
