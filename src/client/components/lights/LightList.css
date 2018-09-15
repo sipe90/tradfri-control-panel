@@ -1,9 +1,1 @@
-.card-container {
-    display: flex;
-    flex-flow: row wrap
-}
 
-.gateway-card {
-    display: flex;
-    margin: 12px;
-}

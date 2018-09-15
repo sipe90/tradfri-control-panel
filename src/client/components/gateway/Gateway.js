@@ -1,7 +1,7 @@
 import React from 'react'
-import { Spin, Icon } from 'antd'
 import PropTypes from 'prop-types'
 
+import Spinner from 'components/Spinner'
 import GatewayCard from 'components/gateway/GatewayCard'
 import GatewayWizard from 'components/gateway/GatewayWizard'
 
@@ -9,7 +9,7 @@ import 'components/gateway/Gateway.css'
 
 const Gateway = (props) =>
     <div>
-        <Spin spinning={props.initialDataLoading} className='spinner' indicator={<Icon type="loading" className='spinner__icon' spin />}>
+        <Spinner spinning={props.initialDataLoading}>
             {props.gateway ?
                 <GatewayCard
                     gateway={props.gateway}
@@ -17,7 +17,7 @@ const Gateway = (props) =>
                     saveGateway={props.saveGateway} />
                 :
                 <GatewayWizard />}
-        </Spin>
+        </Spinner>
     </div>
 
 Gateway.propTypes = {
