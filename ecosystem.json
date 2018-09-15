@@ -9,14 +9,5 @@
       "HOST": "0.0.0.0",
       "PORT": 8080
     }
-  }],
-  "deploy": {
-    "production": {
-      "host": "localhost",
-      "repo": "https://github.com/sipe90/tradfri-control-panel.git",
-      "ref": "origin/master",
-      "path": "/var/tradfri-control-panel",
-      "post-deploy": "npm i && npm run build && pm2 startOrRestart ecosystem.json --env production"
-    }
-  }
+  }]
 }
