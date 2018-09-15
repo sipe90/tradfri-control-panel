@@ -1,0 +1,13 @@
+.gateway-wizard {
+    padding: 24px;
+}
+
+.gateway-wizard__steps {
+    margin-bottom: 24px;
+}
+
+.gateway-wizard__title {
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+}

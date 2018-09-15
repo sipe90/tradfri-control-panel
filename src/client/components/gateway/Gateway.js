@@ -3,7 +3,7 @@ import { Spin, Icon } from 'antd'
 import PropTypes from 'prop-types'
 
 import GatewayCard from 'components/gateway/GatewayCard'
-import AddGateway from 'components/gateway/AddGateway'
+import GatewayWizard from 'components/gateway/GatewayWizard'
 
 import 'components/gateway/Gateway.css'
 
@@ -21,14 +21,14 @@ class Gateway extends Component {
     render() {
         return (
             <div>
-                <Spin spinning={this.props.initialDataLoading} style={{ marginTop: '240px' }} indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}>
+                <Spin spinning={this.props.initialDataLoading} className='spinner' indicator={<Icon type="loading" className='spinner__icon' spin />}>
                     {this.props.gateway ?
                         <GatewayCard
                             gateway={this.props.gateway}
                             gatewayStateChanged={this.props.gatewayStateChanged}
                             saveGateway={this.props.saveGateway} />
                         :
-                        <AddGateway />}
+                        <GatewayWizard />}
                 </Spin>
             </div>
         )
