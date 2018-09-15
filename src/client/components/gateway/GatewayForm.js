@@ -1,5 +1,5 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field } from 'redux-form'
 import PropTypes from 'prop-types'
 import { Button, Spin, Icon, Table } from 'antd'
 import * as R from 'ramda'
@@ -242,4 +242,4 @@ GatewayForm.propTypes =
         validationErrors: PropTypes.object
     }
 
-export default reduxForm({ form: 'GATEWAY', destroyOnUnmount: false })(GatewayForm)
+export default GatewayForm
