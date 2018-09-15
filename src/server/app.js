@@ -10,7 +10,10 @@ const logger = require('logger')
 const init = require('init')
 const { gateway, lights, sensors } = require('routes')
 
-let app = express()
+const HOST = process.env.HOST || 'localhost'
+const PORT = process.env.SERVER_PORT || 8080
+
+const app = express()
 
 const env = app.get('env')
 let isDevEnv = env === 'development'
@@ -65,6 +68,4 @@ app.use((err, req, res, next) => {
     })
 })
 
-const port = process.env.SERVER_PORT || 8080
-
-app.listen(port, () => logger.info(`Listening on port ${port}`))
+app.listen(PORT, HOST, () => logger.info(`Listening on port ${PORT}`))
