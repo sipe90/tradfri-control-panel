@@ -1,8 +1,8 @@
-.app-root {
+.app {
   background-color: #5dabcf;
 }
 
-.app-content {
+.app__content {
   background-color: rgb(255, 255, 255);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   min-height: 100vh;
@@ -10,12 +10,12 @@
   margin: auto;
 }
 
-.app-header {
+.app__header {
   padding: 0;
   line-height: normal;
 }
 
-.app-footer {
+.app__footer {
   background-color: rgb(255, 255, 255);
   text-align: center;
 }

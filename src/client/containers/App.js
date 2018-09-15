@@ -14,16 +14,16 @@ class App extends Component {
 
     render() {
         return (
-            <div className='app-root'>
+            <div className='app'>
                 <Router>
-                    <Layout className="app-content">
-                        <Header className="app-header">
+                    <Layout className='app__content'>
+                        <Header className='app__header'>
                             <Navigation routes={routeDefs} />
                         </Header>
                         <Content>
                             <Routes routes={routeDefs} />
                         </Content>
-                        <Footer className="app-footer">Trådfri Control Panel ©2018</Footer>
+                        <Footer className='app__footer'>Trådfri Control Panel ©2018</Footer>
                     </Layout>
                 </Router>
             </div>
