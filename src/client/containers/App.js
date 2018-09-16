@@ -23,7 +23,7 @@ class App extends Component {
                         <Content>
                             <Routes routes={routeDefs} />
                         </Content>
-                        <Footer className='app__footer'>Trådfri Control Panel ©2018</Footer>
+                        <Footer className='app__footer'>Trådfri Control Panel {VERSION ? `v${VERSION}` : ''}</Footer>
                     </Layout>
                 </Router>
             </div>

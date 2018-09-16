@@ -10,6 +10,9 @@ module.exports = {
         "plugin:react/recommended",
         "plugin:jest/recommended"
     ],
+    "globals": {
+        "VERSION": true
+    },
     "parserOptions": {
         "ecmaVersion": 8,
         "ecmaFeatures": {

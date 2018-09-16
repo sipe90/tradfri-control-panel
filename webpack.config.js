@@ -1,4 +1,5 @@
 const path = require('path')
+const { DefinePlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
@@ -46,6 +47,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './public/index.html',
             favicon: './public/favicon.ico'
+        }),
+        new DefinePlugin({
+            VERSION: JSON.stringify(process.env.npm_package_version)
         })
     ],
     resolve: {
