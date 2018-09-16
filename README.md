@@ -26,6 +26,10 @@ In development mode all fetch-requests to `/api` are proxied to `localhost:8080`
 
 In production mode, the `dist` folder contents built by webpack will be served by the back-end server at `localhost:8080`
 
+### Registering gateways
+
+When you launch the application the first time, you will be prompted with a setup wizard for registering your gateway.
+
 ## Deploying to Raspberry Pi
 
 First make sure you have `git`, `node` (tested working with version `8.9.4`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your RPi.
@@ -50,16 +54,12 @@ To deploy a specific branch use:
 pm2 deploy ecosystem.deploy.json production ref origin/<BRANCH>
 ```
 
-## Mock JSON server
+## Development
+
+### Mock JSON server
 
 A mock `json-server` can be used instead by running `npm run dev-mock`. Mock data will be served on `http://localhost:8080`.
 
-## Database
+### Database
 
 The server uses SQLite3 for storing persistent data. A `docker-compose.yml` is provided to set up a web interface for managing the data. It can be accessed from `http://localhost:8081`.
-
-### Registering gateways
-
-When you launch the application the first time, you will be prompted with a setup wizard for registering your gateway.
-
-
