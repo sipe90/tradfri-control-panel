@@ -56,7 +56,7 @@ jobs:
       - run: pm2 deploy ecosystem.deploy.json production
 workflows:
   version: 2
-  build_deploy:
+  build:
     jobs:
       - checkout
       - install:
@@ -65,6 +65,30 @@ workflows:
       - build:
           requires:
             - install
+  build_deploy:
+    jobs:
+      - checkout
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v.*/
+      - install:
+          requires:
+            - checkout
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - build:
+          requires:
+            - install
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
       - hold:
           type: approval
           requires:
@@ -82,4 +106,3 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
-
