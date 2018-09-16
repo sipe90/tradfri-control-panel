@@ -1,11 +1,16 @@
 {
   "deploy": {
     "production": {
-      "host": "CHANGEME",
+      "user": "pi",
+      "host": "192.168.0.2",
       "repo": "https://github.com/sipe90/tradfri-control-panel.git",
       "ref": "origin/master",
       "path": "/var/tradfri-control-panel",
-      "post-deploy": "npm i && npm run build && pm2 startOrRestart ecosystem.json"
+      "ssh_options": "StrictHostKeyChecking=no",
+      "post-deploy": "npm i && npm run build && pm2 startOrRestart ecosystem.json",
+      "env": {
+        "NODE_ENV": "production"
+      }
     }
   }
 }
