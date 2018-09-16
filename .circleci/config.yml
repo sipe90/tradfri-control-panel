@@ -27,7 +27,6 @@ jobs:
           paths:
             - node_modules
           key: dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-      - run: npm run build
   build:
     docker:
       - image: circleci/node:8.9.4
