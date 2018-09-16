@@ -44,7 +44,6 @@ jobs:
           paths:
             - dist
           key: dist-{{ .Environment.CIRCLE_SHA1 }}
-      - run: npm run build
   deploy:
     docker:
       - image: circleci/node:8.9.4
