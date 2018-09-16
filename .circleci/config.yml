@@ -1,10 +1,20 @@
 version: 2
 jobs:
-  build:
+  checkout:
+    working_directory: ~/project
+    steps:
+      - checkout
+      - save_cache:
+          key: repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/project
+  install:
     docker:
       - image: circleci/node:8.9.4
     steps:
-      - checkout
+      - restore_cache:
+          keys:
+          - repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
           - dependencies-{{ .Branch }}-{{ checksum "package.json" }}
@@ -16,5 +26,56 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ .Branch }}-{{ checksum "package.json" }}
       - run: npm run build
-
+  build:
+    docker:
+      - image: circleci/node:8.9.4
+    steps:
+      - restore_cache:
+          keys:
+          - repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+          - dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+          - dependencies-{{ .Branch }}
+          - dependencies-
+      - run: npm run build
+      - save_cache:
+          paths:
+            - dist
+          key: dist-{{ .Environment.CIRCLE_SHA1 }}
+      - run: npm run build
+  deploy:
+    docker:
+      - image: circleci/node:8.9.4
+    steps:
+      - restore_cache:
+          keys:
+          - repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run: echo $DEPLOY_FILE | base64 --decode > ecosystem.deploy.json
+      - run: npm install -g pm2
+      - run: pm2 deploy ecosystem.deploy.json production
+workflows:
+  version: 2
+  build_deploy:
+    jobs:
+      - checkout
+      - install:
+          requires:
+            - checkout
+      - build:
+          requires:
+            - install
+      - hold:
+          type: approval
+          requires:
+           - build
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy:
+          requires:
+            - hold
+          filters:
+            tags:
+              only: /^v.*/
 
