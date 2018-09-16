@@ -67,12 +67,12 @@ workflows:
             - install
   build_deploy:
     jobs:
-      - checkout
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
+      - checkout:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
       - install:
           requires:
             - checkout
