@@ -30,16 +30,16 @@ In production mode, the `dist` folder contents built by webpack will be served b
 
 When you launch the application the first time, you will be prompted with a setup wizard for registering your gateway.
 
-## Deploying to Raspberry Pi
+## Deploying to a remote server (like Raspberry Pi)
 
-First make sure you have `git`, `node` (tested working with version `8.9.4`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your RPi.
+First make sure you have `git`, `node` (tested working with version `8.9.4`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your server.
 PM2 also has to be installed on the computer where you run the deployment.
 
 Webpack is required for now since the bundle is built during deployment. This might change in the future.
 
 I have created a PM2 deployment template called `ecosystem.deploy.json.template`. You can use it as a base for creating your deployment configuration.
 
-The deployment is done over SSH so make sure you have a public key installed to your Raspberry Pi to allow easier deployments without the need for passwords. More information about this can be found [from PM2 deploy documentation](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
+The deployment is done over SSH so make sure you have a public key installed to your server to allow easier deployments without the need for passwords. More information about this can be found [from PM2 deploy documentation](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
 
 When you have created the deploy configuration, you can deploy the app with:
 
