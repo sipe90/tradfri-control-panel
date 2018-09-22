@@ -1,5 +1,5 @@
 const { TradfriClient, AccessoryTypes, discoverGateway } = require('node-tradfri-client')
-const R = require('ramda')
+const { filterObj } = require('utils')
 
 class TradfriGateway {
 
@@ -43,16 +43,22 @@ class TradfriGateway {
     }
 
     getLights() {
-        return R.filter((device) => device.type === AccessoryTypes.lightbulb || device.type === 1, R.values(this.getDevices()))
+        return filterObj(
+            (instanceId, device) =>
+                device.type === AccessoryTypes.lightbulb || device.type === 1,
+            this.getDevices())
     }
 
     getSensors() {
-        return R.filter((device) => device.type === AccessoryTypes.motionSensor, R.values(this.getDevices()))
+        return filterObj(
+            (instanceId, device) =>
+                device.type === AccessoryTypes.motionSensor || device.type === 1,
+            this.getDevices())
     }
 
     updateLight(light) {
-        const lightAccessory = this.getLights().find((accessory => accessory.instanceId === light.id))
-        if (!light) {
+        const lightAccessory = this.getLights()[light.id]
+        if (!lightAccessory) {
             throw Error(`No light with id ${light.id} found`)
         }
         const updatedAccessory = lightAccessory.clone()
