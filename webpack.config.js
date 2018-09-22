@@ -7,7 +7,7 @@ const outputDirectory = 'dist'
 
 module.exports = {
     entry: {
-        main: './src/client/index.js'
+        main: './src/client/index.jsx'
     },
     output: {
         path: path.join(__dirname, outputDirectory),
@@ -17,7 +17,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader'
@@ -53,6 +53,7 @@ module.exports = {
         })
     ],
     resolve: {
+        extensions: ['.jsx', '.js'],
         modules: [path.resolve(__dirname, 'public'), path.resolve(__dirname, 'src', 'client'), 'node_modules']
     },
     optimization: {
