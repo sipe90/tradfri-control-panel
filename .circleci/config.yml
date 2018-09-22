@@ -2,7 +2,7 @@
 node8: &node8
   working_directory: &workdir_node8 ~/node8
   docker:
-    - image: circleci/node:8
+    - image: circleci/node:8.9.4
 
 # Branch and tag filters
 tags_and_branches: &tags_and_branches
