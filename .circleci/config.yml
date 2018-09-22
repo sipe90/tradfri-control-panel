@@ -59,7 +59,7 @@ jobs:
     <<: *node8
     steps:
       - attach_workspace:
-        at: *workdir_node8
+          at: *workdir_node8
       - restore_cache:
           keys:
           - repo-{{ .Environment.CIRCLE_SHA1 }}
