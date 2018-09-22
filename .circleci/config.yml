@@ -1,22 +1,41 @@
+# Define images and workspaces
+node8: &node8
+  working_directory: &workdir_node8 ~/node8
+  docker:
+    - image: circleci/node:8
+
+# Branch and tag filters
+tags_and_branches: &tags_and_branches
+  filters:
+    tags:
+      only: /^v.*/
+
+only_tags: &only_tags
+  filters:
+    tags:
+      only: /^v.*/
+    branches:
+      ignore: /.*/
+
+# Items to persist from workspace
+whitelist: &whitelist
+  paths:
+    - node_modules/*
+    - bin/*
+    - src/*
+    - test/*
+    - public/*
+    - package.json
+    - .eslintrc.js
+    - webpack.config.js
+    - .babelrc
+
 version: 2
 jobs:
-  checkout:
-    docker:
-      - image: circleci/node:8.9.4
-    working_directory: ~/project
+  install:
+    <<: *node8
     steps:
       - checkout
-      - save_cache:
-          key: repo-{{ .Environment.CIRCLE_SHA1 }}
-          paths:
-            - ~/project
-  install:
-    docker:
-      - image: circleci/node:8.9.4
-    steps:
-      - restore_cache:
-          keys:
-          - repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
           - dependencies-{{ .Branch }}-{{ checksum "package.json" }}
@@ -27,27 +46,20 @@ jobs:
           paths:
             - node_modules
           key: dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: *workdir_node8
+          <<: *whitelist
   build:
-    docker:
-      - image: circleci/node:8.9.4
+    <<: *node8
     steps:
-      - restore_cache:
-          keys:
-          - repo-{{ .Environment.CIRCLE_SHA1 }}
-      - restore_cache:
-          keys:
-          - dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-          - dependencies-{{ .Branch }}
-          - dependencies-
+      - attach_workspace:
+          at: *workdir_node8
       - run: npm run build
-      - save_cache:
-          paths:
-            - dist
-          key: dist-{{ .Environment.CIRCLE_SHA1 }}
   deploy:
-    docker:
-      - image: circleci/node:8.9.4
+    <<: *node8
     steps:
+      - attach_workspace:
+        at: *workdir_node8
       - restore_cache:
           keys:
           - repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -67,42 +79,18 @@ workflows:
             - install
   build_deploy:
     jobs:
-      - checkout:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - install:
-          requires:
-            - checkout
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+          <<: *tags_and_branches
       - build:
+          <<: *tags_and_branches
           requires:
             - install
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-      - hold:
+      - confirm_deploy:
+          <<: *only_tags
           type: approval
           requires:
            - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
       - deploy:
+          <<: *only_tags
           requires:
-            - hold
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+            - confirm_deploy
