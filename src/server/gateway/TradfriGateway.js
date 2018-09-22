@@ -18,6 +18,7 @@ class TradfriGateway {
     async connect(identity, psk, observe = true) {
         await this.client.connect(identity, psk)
         observe && await this.client.observeDevices()
+        observe && await this.client.observeGroupsAndScenes()
         this.connected = true
     }
 
@@ -70,6 +71,14 @@ class TradfriGateway {
         }
         this.client.updateDevice(updatedAccessory)
         this.client.operateLight(updatedAccessory, lightOperation)
+    }
+
+    updateGroup(group) {
+        const groupInfo = this.getGroups()[group.id]
+        if (!groupInfo) {
+            throw Error(`No group with id ${groupInfo.id} found`)
+        }
+        // TODO: Update group
     }
 }
 
