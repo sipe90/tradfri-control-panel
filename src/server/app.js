@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const { ValidationError } = require('error')
 const logger = require('logger')
 const init = require('init')
-const { gateway, lights, sensors } = require('routes')
+const { gateway, lights, sensors, groups } = require('routes')
 
 const HOST = process.env.HOST || 'localhost'
 const PORT = process.env.SERVER_PORT || 8080
@@ -39,6 +39,7 @@ app.use(express.static('dist'))
 app.use('/api/gateway', gateway)
 app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
+app.use('/api/groups', groups)
 
 app.use('/api/*', (req, res) =>
     res.status(404).json({

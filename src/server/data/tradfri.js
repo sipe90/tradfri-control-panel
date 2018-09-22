@@ -9,6 +9,8 @@ const normalizeLights = (lights) => R.map(normalizeLight, R.values(lights))
 
 const normalizeSensors = (sensors) => R.map(normalizeSensor, R.values(sensors))
 
+const normalizeGroups = (groups) => R.map(normalizeGroup, R.values(groups))
+
 const normalizeLight = (light) => ({
     id: light.instanceId,
     name: light.name,
@@ -36,8 +38,22 @@ const normalizeSensor = (sensor) => ({
     battery: sensor.deviceInfo.battery
 })
 
+const normalizeGroup = ({ group, scenes }) => ({
+    id: group.instanceId,
+    name: group.name,
+    devices: group.deviceIDs,
+    moods: R.map(normalizeScene, R.values(scenes)),
+})
+
+const normalizeScene = (scene) => ({
+    id: scene.instanceId,
+    name: scene.name,
+    active: scene.isActive
+})
+
 module.exports = {
     normalizeDevices,
     normalizeLights,
-    normalizeSensors
+    normalizeSensors,
+    normalizeGroups
 }
