@@ -1,13 +1,13 @@
 const R = require('ramda')
 
 const normalizeDevices = (lights, sensors) => ({
-    lights: R.map(R.prop('instanceId'), lights),
-    sensors: R.map(R.prop('instanceId'), sensors),
+    lights: R.map((instanceId) => parseInt(instanceId, 10), R.keys(lights)),
+    sensors: R.map((instanceId) => parseInt(instanceId, 10), R.keys(sensors)),
 })
 
-const normalizeLights = (lights) => R.map(normalizeLight, lights)
+const normalizeLights = (lights) => R.map(normalizeLight, R.values(lights))
 
-const normalizeSensors = (sensors) => R.map(normalizeSensor, sensors)
+const normalizeSensors = (sensors) => R.map(normalizeSensor, R.values(sensors))
 
 const normalizeLight = (light) => ({
     id: light.instanceId,
@@ -19,11 +19,11 @@ const normalizeLight = (light) => ({
     battery: light.deviceInfo.battery,
     color: R.path(['lightList', 0, 'color'], light),
     colorTemperature: R.path(['lightList', 0, 'colorTemperature'], light),
-    brightness:  R.path(['lightList', 0, 'dimmer'], light),
-    spectrum:  R.path(['lightList', 0, 'spectrum'], light),
-    dimmable:  R.path(['lightList', 0, 'isDimmable'], light),
-    switchable:  R.path(['lightList', 0, 'isSwitchable'], light),
-    on:  R.path(['lightList', 0, 'onOff'], light),
+    brightness: R.path(['lightList', 0, 'dimmer'], light),
+    spectrum: R.path(['lightList', 0, 'spectrum'], light),
+    dimmable: R.path(['lightList', 0, 'isDimmable'], light),
+    switchable: R.path(['lightList', 0, 'isSwitchable'], light),
+    on: R.path(['lightList', 0, 'onOff'], light),
 })
 
 const normalizeSensor = (sensor) => ({
