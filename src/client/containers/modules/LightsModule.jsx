@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, updateLight } from 'actions/lights'
 
-import LightList from 'components/lights/LightList'
+import LightGroups from 'components/lights/LightGroups'
 
 class LightsModule extends Component {
 
@@ -19,7 +19,8 @@ class LightsModule extends Component {
 
     render() {
         return (
-            <LightList
+            <LightGroups
+                groups={this.props.groups}
                 lights={this.props.lights}
                 initialDataLoading={this.props.initialDataLoading}
                 lightStateChanged={this.props.lightStateChanged}
@@ -30,6 +31,7 @@ class LightsModule extends Component {
 }
 
 LightsModule.propTypes = {
+    groups: PropTypes.object.isRequired,
     lights: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
     initialDataLoading: PropTypes.bool.isRequired,
@@ -40,6 +42,7 @@ LightsModule.propTypes = {
 }
 
 const mapStateToProps = state => ({
+    groups: state.entities.groups,
     lights: state.entities.lights,
     initialDataLoading: state.modules.lights.initialDataLoading
 })
