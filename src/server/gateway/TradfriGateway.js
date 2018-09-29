@@ -46,14 +46,14 @@ class TradfriGateway {
     getLights() {
         return filterObj(
             (instanceId, device) =>
-                device.type === AccessoryTypes.lightbulb || device.type === 1,
+                device.type === AccessoryTypes.lightbulb,
             this.getDevices())
     }
 
     getSensors() {
         return filterObj(
             (instanceId, device) =>
-                device.type === AccessoryTypes.motionSensor || device.type === 1,
+                device.type === AccessoryTypes.motionSensor,
             this.getDevices())
     }
 
