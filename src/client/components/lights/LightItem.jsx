@@ -123,7 +123,7 @@ class LightItem extends Component {
             <table className='light-item__table'>
                 <tbody>
                     <tr>
-                        <td><LightbulbOnOutlineIcon /></td>
+                        <td><LightbulbOnOutlineIcon size={18} /></td>
                         <td><span>Power</span></td>
                         <td>
                             <Switch
@@ -135,7 +135,7 @@ class LightItem extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td><Brightness5Icon /></td>
+                        <td><Brightness5Icon size={18} /></td>
                         <td><span>Brightness</span></td>
                         <td>
                             <Slider
@@ -150,7 +150,7 @@ class LightItem extends Component {
                         </td>
                     </tr>
                     <tr>
-                        <td><ThermometerIcon /></td>
+                        <td><ThermometerIcon size={18} /></td>
                         <td><span>Temperature</span></td>
                         <td>
                             <Slider
