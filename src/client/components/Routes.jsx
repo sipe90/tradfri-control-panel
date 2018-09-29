@@ -14,7 +14,6 @@ const Routes = (props) => {
                     path={route.path}
                     exact={route.exact}
                     component={() => <ModuleWrapper
-                        title={route.text}
                         module={route.container}
                     />}
                 />
