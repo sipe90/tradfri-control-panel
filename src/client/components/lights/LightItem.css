@@ -45,7 +45,6 @@
 
 /* Item control table */
 .light-item__table {
-    width: 100%;
     margin-top: 24px;
 }
 
@@ -54,7 +53,19 @@
     height: 30px;
 }
 
-.light-item__table td:last-of-type {
-    width: 40%;
+.light-item__table td:nth-of-type(1) {
+    width: 34px;
+}
+
+.light-item__table td:nth-of-type(2) {
+    width: 100px;
+}
+
+.light-item__table td:nth-of-type(3) {
+    width: 340px;
     text-align: right;
+}
+
+.light-item__table tr:nth-of-type(1)>td:nth-of-type(3)>:first-child {
+    margin-left: 6px;
 }
