@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const TradfriGateway = require('../src/server/gateway/TradfriGateway')
+const TradfriGateway = require('gateway/TradfriGateway')
 
 const argv = process.argv.slice(2)
 
