@@ -1,0 +1,48 @@
+.light-group__card {
+    margin-bottom: 8px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.light-group__header {
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 450;
+    text-align: center;
+}
+
+.light-group__divider {
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.light-group__collapse {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* Group control table */
+.light-group__table {
+    margin: 24px 12px;
+}
+
+.light-group__table td {
+    vertical-align: middle;
+    height: 30px;
+}
+
+.light-group__table td:nth-of-type(1) {
+    width: 34px;
+}
+
+.light-group__table td:nth-of-type(2) {
+    width: 100px;
+}
+
+.light-group__table td:nth-of-type(3) {
+    width: 340px;
+    text-align: right;
+}
+
+.light-group__table tr:nth-of-type(1)>td:nth-of-type(3)>:first-child {
+    margin-left: 6px;
+}
