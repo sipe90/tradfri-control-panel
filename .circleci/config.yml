@@ -38,14 +38,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - dependencies-{{ .Branch }}-{{ checksum "package.json" }}
-          - dependencies-{{ .Branch }}
-          - dependencies-
+          - dependencies-node_10.14-{{ .Branch }}-{{ checksum "package.json" }}
+          - dependencies-node_10.14-{{ .Branch }}
+          - dependencies-node_10.14
       - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-{{ .Branch }}-{{ checksum "package.json" }}
+          key: dependencies-node_10.14-{{ .Branch }}-{{ checksum "package.json" }}
       - persist_to_workspace:
           root: *workdir_node10
           <<: *whitelist
