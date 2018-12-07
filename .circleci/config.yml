@@ -1,8 +1,8 @@
 # Define images and workspaces
-node8: &node8
-  working_directory: &workdir_node8 ~/node8
+node10: &node10
+  working_directory: &workdir_node10 ~/node10
   docker:
-    - image: circleci/node:8.9.4
+    - image: circleci/node:10.14
 
 # Branch and tag filters
 tags_and_branches: &tags_and_branches
@@ -33,7 +33,7 @@ whitelist: &whitelist
 version: 2
 jobs:
   install:
-    <<: *node8
+    <<: *node10
     steps:
       - checkout
       - restore_cache:
@@ -47,19 +47,19 @@ jobs:
             - node_modules
           key: dependencies-{{ .Branch }}-{{ checksum "package.json" }}
       - persist_to_workspace:
-          root: *workdir_node8
+          root: *workdir_node10
           <<: *whitelist
   build:
-    <<: *node8
+    <<: *node10
     steps:
       - attach_workspace:
-          at: *workdir_node8
+          at: *workdir_node10
       - run: npm run build
   deploy:
-    <<: *node8
+    <<: *node10
     steps:
       - attach_workspace:
-          at: *workdir_node8
+          at: *workdir_node10
       - run: echo $DEPLOY_FILE | base64 --decode > ecosystem.deploy.json
       - run: sudo npm install -g pm2
       - run: git status
