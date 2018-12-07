@@ -18,17 +18,17 @@ only_tags: &only_tags
       ignore: /.*/
 
 # Items to persist from workspace
-whitelist: &whitelist
-  paths:
-    - node_modules/*
-    - bin/*
-    - src/*
-    - test/*
-    - public/*
-    - package.json
-    - .eslintrc.js
-    - webpack.config.js
-    - .babelrc
+#whitelist: &whitelist
+#  paths:
+#    - node_modules/*
+#    - bin/*
+#    - src/*
+#    - test/*
+#    - public/*
+#    - package.json
+#    - .eslintrc.js
+#    - webpack.config.js
+#    - .babelrc
 
 version: 2
 jobs:
@@ -48,7 +48,7 @@ jobs:
           key: dependencies-node_10.14-{{ .Branch }}-{{ checksum "package.json" }}
       - persist_to_workspace:
           root: *workdir_node10
-          <<: *whitelist
+          #<<: *whitelist
   build:
     <<: *node10
     steps:
