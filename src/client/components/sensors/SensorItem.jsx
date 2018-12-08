@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Button, List, Tooltip, Popover, Input } from 'antd'
+import { Button, List, Popover, Input } from 'antd'
 import PropTypes from 'prop-types'
-import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 
 import * as R from 'ramda'
 
 import 'components/sensors/SensorItem.css'
+import StatusIndicator from 'components/StatusIndicator'
 
 const getDescription = R.always('Motion sensor')
 
@@ -35,7 +35,7 @@ class SensorItem extends Component {
     title({ sensor }) {
         return (
             <div className='sensor-item__title'>
-                {this.statusIndicator(sensor)}
+                <StatusIndicator type='sensor' alive={this.props.sensor.alive}/>
                 <span>{sensor.name}</span>
                 <Popover
                     title='Edit name'
@@ -58,19 +58,6 @@ class SensorItem extends Component {
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
-        )
-    }
-
-    statusIndicator(sensor) {
-        return (
-            <span className='sensor-item__status'>
-                <Tooltip title={sensor.alive ? 'Sensor is connected' : 'Sensor is disconnected'}>
-                    <CircleIcon
-                        className={`.sensor-item__status-icon ${sensor.alive ? 'sensor-item__status-icon--connected' :
-                            'sensor-item__status-icon--disconnected'}`}
-                        size={12} />
-                </Tooltip>
-            </span>
         )
     }
 

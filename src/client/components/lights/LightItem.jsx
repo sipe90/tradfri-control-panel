@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { List, Button, Switch, Slider, Tooltip, Popover, Input } from 'antd'
+import { List, Button, Switch, Slider, Popover, Input } from 'antd'
+import * as R from 'ramda'
 import PropTypes from 'prop-types'
-import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import ThermometerIcon from 'mdi-react/ThermometerIcon'
-
-import * as R from 'ramda'
+import StatusIndicator from 'components/StatusIndicator'
 
 import 'components/lights/LightItem.css'
 
@@ -46,7 +45,7 @@ class LightItem extends Component {
     title({ light }) {
         return (
             <div className='light-item__title'>
-                {this.statusIndicator(light)}
+                <StatusIndicator type='light' on={light.on} alive={light.alive}/>
                 <span>{light.name}</span>
                 <Popover
                     title='Edit name'
@@ -69,19 +68,6 @@ class LightItem extends Component {
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
             </div>
-        )
-    }
-
-    statusIndicator(light) {
-        return (
-            <span className='light-item__status'>
-                <Tooltip title={light.alive ? 'Light is connected' : 'Light is disconnected'}>
-                    <CircleIcon
-                        className={`light-item__status-icon ${light.alive ? 'light-item__status-icon--connected' :
-                            'light-item__status-icon--disconnected'}`}
-                        size={12} />
-                </Tooltip>
-            </span>
         )
     }
 

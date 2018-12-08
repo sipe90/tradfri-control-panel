@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Card, Collapse, Switch, Slider } from 'antd'
+import { Card, Switch, Slider, Table } from 'antd'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import * as R from 'ramda'
 import { lightStateChanged, updateLight } from 'actions/lights'
 
 import 'containers/lights/LightGroupsTab.css'
-
-const { Panel } = Collapse
+import StatusIndicator from 'components/StatusIndicator'
 
 const percentFormatter = (v) => `${v}%`
 
@@ -17,14 +16,14 @@ class LightGroups extends Component {
 
     render() {
         return R.values(this.props.groups).map((group, idx) =>
-            <Card key={idx} className='light-group__card'>
-                <div className='light-group__header'>{group.name}</div>
+            <Card key={idx} className='light-group__card' title={group.name}>
                 {this.lightGroupControls()}
-                <div className='light-group__divider' />
-                <Collapse bordered={false} className='light-group__collapse'>
-                    <Panel header='Lights'>
-                    </Panel>
-                </Collapse> 
+                <Table 
+                    columns={columns}
+                    dataSource={lightsForGroup(group, this.props.lights)}
+                    pagination={false}
+                    size='small'
+                    rowKey='id' />
             </Card>)
     }
 
@@ -60,6 +59,15 @@ class LightGroups extends Component {
         )
     }
 }
+
+const columns = [{
+    title: 'Status',
+    render: function renderStatus(light){ return <StatusIndicator type='light' alive={light.alive} on={light.on}/> },
+    width: '55px'
+}, {
+    title: 'Name',
+    dataIndex: 'name'
+}]
 
 const lightsForGroup = (group, lights) => R.values(R.pick(group.devices, lights))
 

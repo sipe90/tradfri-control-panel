@@ -1,0 +1,19 @@
+.status {
+    margin-right: 10px;
+}
+
+.status__icon {
+    margin-top: 4px;
+}
+
+.status__icon--on {
+    color: #00CC00
+}
+
+.status__icon--off {
+    color: #C1C1C1
+}
+
+.status__icon--disconnected {
+    color: #CC0000
+}

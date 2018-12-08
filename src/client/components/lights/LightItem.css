@@ -30,23 +30,6 @@
     width: 40%;
 }
 
-/* Item Meta title status indicator */
-.light-item__status {
-    margin-right: 10px;
-}
-
-.light-item__status-icon {
-    margin-top: 4px;
-}
-
-.light-item__status-icon--connected {
-    color: #00CC00
-}
-
-.light-item__status-icon--disconnected {
-    color: #CC0000
-}
-
 /* Item control table */
 .light-item__table {
     margin-top: 24px;
