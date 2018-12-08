@@ -61,6 +61,7 @@ class LightGroups extends Component {
 }
 
 const columns = [{
+    key: 'status',
     title: 'Status',
     render: function renderStatus(light){ return <StatusIndicator type='light' alive={light.alive} on={light.on}/> },
     width: '55px'
