@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Card, Tooltip, Popover, Input } from 'antd'
 import PropTypes from 'prop-types'
-import CircleIcon from 'mdi-react/CircleIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
+import StatusIndicator from 'components/StatusIndicator'
 
 import 'components/gateway/GatewayCard.css'
 import gatewayImage from 'images/tradfri_gateway.png'
@@ -28,7 +28,7 @@ class GatewayCard extends Component {
                     cover={this.cardCover(this.props)}>
                     <Meta
                         title={this.title(this.props)}
-                        avatar={this.statusIndicator(this.props)}
+                        avatar={<StatusIndicator type='gateway' alive={this.props.gateway.connected}/>}
                         description='IKEA Trådfri gateway' />
                 </Card>
             </div>
@@ -70,17 +70,6 @@ class GatewayCard extends Component {
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
                 <Button type='primary' size='small' onClick={this.updateName.bind(this)}>Update</Button>
             </div>
-        )
-    }
-
-    statusIndicator({ gateway }) {
-        return (
-            <Tooltip title={gateway.connected ? 'Gateway is online' : 'Gateway is offline'}>
-                <CircleIcon
-                    className={`gateway-card__status-icon ${gateway.connected ? 'gateway-card__status-icon--connected' :
-                        'gateway-card__status-icon--disconnected'}`}
-                    size={18} />
-            </Tooltip>
         )
     }
 

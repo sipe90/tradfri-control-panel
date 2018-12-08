@@ -25,20 +25,3 @@
     margin-top: 12px;
     width: 40%;
 }
-
-/* Item Meta title status indicator */
-.sensor-item__status {
-    margin-right: 10px;
-}
-
-.sensor-item__status-icon {
-    margin-top: 4px;
-}
-
-.sensor-item__status-icon--connected {
-    color: #00CC00
-}
-
-.sensor-item__status-icon--disconnected {
-    color: #CC0000
-}
