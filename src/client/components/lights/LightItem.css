@@ -3,6 +3,10 @@
     display: flex;
 }
 
+.light-item__meta {
+    text-align: left;
+}
+
 .light-item__title>span {
     overflow: hidden;
     text-overflow: ellipsis;

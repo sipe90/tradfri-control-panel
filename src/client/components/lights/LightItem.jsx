@@ -35,6 +35,7 @@ class LightItem extends Component {
         return (
             <List.Item>
                 <List.Item.Meta
+                    className='light-item__meta'
                     title={this.title(this.props)}
                     description={getDescription(this.props.light)} />
                 {this.controlTable(this.props)}
@@ -157,7 +158,7 @@ class LightItem extends Component {
                                 min={1}
                                 max={100}
                                 value={light.colorTemperature}
-                                disabled={!light.alive}
+                                disabled={light.spectrum === 'none' || !light.alive}
                                 onChange={this.temperatureChanged.bind(this)}
                                 onAfterChange={() => null}
                                 tipFormatter={percentFormatter}

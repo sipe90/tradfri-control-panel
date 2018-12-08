@@ -12,7 +12,6 @@ const ModuleWrapper = (props) => {
 }
 
 ModuleWrapper.propTypes = {
-    title: PropTypes.string.isRequired,
     module: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired
 }
 
