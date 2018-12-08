@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import { Tabs } from 'antd'
 import { connect } from 'react-redux'
+import { StickyContainer, Sticky } from 'react-sticky'
 import PropTypes from 'prop-types'
 
-import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, updateLight } from 'actions/lights'
+import { fetchLights, startLightPolling, stopLightPolling } from 'actions/lights'
 
-import LightGroups from 'components/lights/LightGroups'
+import LightGroupsTab from 'containers/lights/LightGroupsTab'
+import LightsTab from 'containers/lights/LightsTab'
+
+const TabPane = Tabs.TabPane
 
 class LightsModule extends Component {
 
@@ -19,43 +24,40 @@ class LightsModule extends Component {
 
     render() {
         return (
-            <LightGroups
-                groups={this.props.groups}
-                lights={this.props.lights}
-                initialDataLoading={this.props.initialDataLoading}
-                lightStateChanged={this.props.lightStateChanged}
-                updateLight={this.props.updateLight}
-            />
+            <StickyContainer>
+                <Tabs style={{ textAlign: 'center' }} 
+                    animated={{ inkBar: true, tabPane: false }}
+                    renderTabBar={renderTabBar}>
+                    <TabPane key='1' tab='Lights'>
+                        <LightsTab/>
+                    </TabPane>
+                    <TabPane key='2' tab='Groups'>
+                        <LightGroupsTab/>
+                    </TabPane>
+                </Tabs>
+            </StickyContainer>
         )
     }
 }
 
+const renderTabBar = (props, DefaultTabBar) => (
+    <Sticky bottomOffset={80}>
+        {({ style }) => (
+            <DefaultTabBar {...props} style={{ ...style, zIndex: 1, background: '#fff' }} />
+        )}
+    </Sticky>
+)
+
 LightsModule.propTypes = {
-    groups: PropTypes.object.isRequired,
-    lights: PropTypes.object.isRequired,
     loadLights: PropTypes.func.isRequired,
-    initialDataLoading: PropTypes.bool.isRequired,
-    lightStateChanged: PropTypes.func.isRequired,
-    updateLight: PropTypes.func.isRequired,
     startLightPolling: PropTypes.func.isRequired,
     stopLightPolling: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-    groups: state.entities.groups,
-    lights: state.entities.lights,
-    initialDataLoading: state.modules.lights.initialDataLoading
-})
-
 const mapDispatchToProps = dispatch => ({
     loadLights: () => dispatch(fetchLights()),
-    lightStateChanged: (light) => dispatch(lightStateChanged(light)),
     startLightPolling: () => dispatch(startLightPolling()),
-    stopLightPolling: () => dispatch(stopLightPolling()),
-    updateLight: (gatewayId, light) => dispatch(updateLight(gatewayId, light))
+    stopLightPolling: () => dispatch(stopLightPolling())
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LightsModule)
+export default connect(null, mapDispatchToProps)(LightsModule)
