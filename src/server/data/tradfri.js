@@ -1,8 +1,9 @@
 const R = require('ramda')
 
-const normalizeDevices = (lights, sensors) => ({
+const normalizeDevices = (lights, sensors, groups) => ({
     lights: R.map((instanceId) => parseInt(instanceId, 10), R.keys(lights)),
     sensors: R.map((instanceId) => parseInt(instanceId, 10), R.keys(sensors)),
+    groups: R.map((instanceId) => parseInt(instanceId, 10), R.keys(groups)),
 })
 
 const normalizeLights = (lights) => R.map(normalizeLight, R.values(lights))

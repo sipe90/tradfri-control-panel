@@ -46,7 +46,11 @@ const getGateway = async () => {
     return ({
         ...gateway,
         connected: gatewayConnection.isConnected(),
-        ...normalizeDevices(gatewayConnection.getLights(), gatewayConnection.getSensors())
+        ...normalizeDevices(
+            gatewayConnection.getLights(),
+            gatewayConnection.getSensors(),
+            gatewayConnection.getGroups()
+        )
     })
 }
 

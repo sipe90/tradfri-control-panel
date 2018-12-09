@@ -57,28 +57,39 @@ class TradfriGateway {
             this.getDevices())
     }
 
-    updateLight(light) {
-        const lightAccessory = this.getLights()[light.id]
+    async updateLight(lightId, lightUpdate) {
+        const lightAccessory = this.getLights()[lightId]
         if (!lightAccessory) {
-            throw Error(`No light with id ${light.id} found`)
+            throw new Error(`No light with id ${lightId} found`)
         }
         const updatedAccessory = lightAccessory.clone()
-        updatedAccessory.name = light.name || lightAccessory.name
-        const lightOperation = {
-            onOff: light.on || lightAccessory.onOff,
-            dimmer: light.brightness || lightAccessory.dimmer,
-            colorTemperature: light.colorTemperature || lightAccessory.colorTemperature
-        }
-        this.client.updateDevice(updatedAccessory)
-        this.client.operateLight(updatedAccessory, lightOperation)
+        updatedAccessory.name = lightUpdate.name || lightAccessory.name
+        return this.client.updateDevice(updatedAccessory)
     }
 
-    updateGroup(group) {
-        const groupInfo = this.getGroups()[group.id]
-        if (!groupInfo) {
-            throw Error(`No group with id ${groupInfo.id} found`)
+    async operateLight(lightId, lightOperation) {
+        const lightAccessory = this.getLights()[lightId]
+        if (!lightAccessory) {
+            throw new Error(`No light with id ${lightId} found`)
         }
-        // TODO: Update group
+        return this.client.operateLight(lightAccessory, lightOperation)
+    }
+
+    async updateGroup(groupId, groupUpdate) {
+        const groupInfo = this.getGroups()[groupId]
+        if (!groupInfo) {
+            throw new Error(`No group with id ${groupId} found`)
+        }
+        groupInfo.group.name = groupUpdate.name || groupInfo.group.name
+        return this.client.updateGroup(groupInfo.group)
+    }
+
+    async operateGroup(groupId, groupOperation) {
+        const groupInfo = this.getGroups()[groupId]
+        if (!groupInfo) {
+            throw new Error(`No group with id ${groupId} found`)
+        }
+        return this.client.operateGroup(groupInfo.group, groupOperation)
     }
 }
 
