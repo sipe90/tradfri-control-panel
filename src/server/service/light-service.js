@@ -21,8 +21,22 @@ const updateLight = async (light) => {
     if (!R.contains(light.id, gateway.lights)) {
         throw new Error(`No light found with id: ${light.id}`)
     }
-    getConnection().updateLight(light)
+
+    const connection = getConnection()
+
+    await connection.updateLight(light.id, toLightUpdate(light))
+    await connection.operateLight(light.id, toLightOperation(light))
 }
+
+const toLightUpdate = (light) => ({
+    name: light.name
+})
+
+const toLightOperation = (light) => ({
+    onOff: light.on,
+    dimmer: light.brightness,
+    colorTemperature: light.colorTemperature
+})
 
 module.exports = {
     getLights,

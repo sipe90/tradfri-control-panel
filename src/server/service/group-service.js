@@ -19,10 +19,23 @@ const updateGroup = async (group) => {
         throw new Error('Gateway is not connected')
     }
     if (!R.contains(group.id, gateway.groups)) {
-        throw new Error(`No light found with id: ${group.id}`)
+        throw new Error(`No group found with id: ${group.id}`)
     }
-    getConnection().updateGroup(group)
+
+    const connection = getConnection()
+
+    await connection.updateGroup(group.id, toGroupUpdate(group))
+    await connection.operateGroup(group.id, toGroupOperation(group))
 }
+
+const toGroupUpdate = (group) => ({
+    name: group.name
+})
+
+const toGroupOperation = (group) => ({
+    onOff: group.on,
+    dimmer: group.brightness
+})
 
 module.exports = {
     getGroups,
