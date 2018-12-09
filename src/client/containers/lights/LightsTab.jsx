@@ -19,7 +19,8 @@ class LightsTab extends Component {
                     <Spinner spinning={this.props.initialDataLoading}>
                         <List itemLayout='vertical'
                             dataSource={lightsForGroup(group, this.props.lights)}
-                            renderItem={(item) => renderItem(item, this.props)} />
+                            renderItem={(item) => renderItem(item, this.props)} 
+                            locale={{ emptyText: 'No lights'}}/>
                     </Spinner>
                 </Card>)
         )
