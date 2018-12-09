@@ -33,7 +33,8 @@ class LightGroups extends Component {
                             <StatusIndicator type='light' alive={light.alive} on={light.on}/>{light.name}
                         </Item>}
                     bordered={true}
-                    size='small' />
+                    size='small' 
+                    locale={{ emptyText: 'No lights'}} />
             </Card>)
         })
     }
@@ -47,6 +48,7 @@ class LightGroups extends Component {
                         <td><span>Power</span></td>
                         <td>
                             <Switch
+                                disabled={!groupLights.length}
                                 checked={anyLightIsOn(groupLights)}
                                 size='small'
                                 onChange={(newValue) => this.powerSwitched(group, groupLights, newValue)}
@@ -58,6 +60,7 @@ class LightGroups extends Component {
                         <td><span>Brightness</span></td>
                         <td>
                             <Slider
+                                disabled={!groupLights.length}
                                 value={groupLights.length && avgBrightness(groupLights)}
                                 min={1}
                                 max={100}
