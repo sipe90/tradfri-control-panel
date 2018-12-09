@@ -82,8 +82,13 @@ export const updateGroup = (group) => (dispatch) => {
 
     dispatch(updateGroupRequest())
 
+    const payload = {
+        on: group.on,
+        brightness: group.brightness
+    }
+
     return fetch(`/api/groups/${group.id}`,
-        { method: 'POST', body: JSON.stringify(group), headers: { 'content-type': 'application/json' } })
+        { method: 'POST', body: JSON.stringify(payload), headers: { 'content-type': 'application/json' } })
         .then(handleErrors)
         .then(() => dispatch(updateGroupSuccess()))
         .catch(error => {
