@@ -32,7 +32,7 @@ When you launch the application the first time, you will be prompted with a setu
 
 ## Deploying to a remote server (like Raspberry Pi)
 
-First make sure you have `git`, `node` (tested working with version `8.9.4`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your server.
+First make sure you have `git`, `node` (tested working with version `10.14`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your server.
 PM2 also has to be installed on the computer where you run the deployment.
 
 Webpack is required for now since the bundle is built during deployment. This might change in the future.
