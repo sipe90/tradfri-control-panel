@@ -1,14 +1,14 @@
-const db = require('db')
-const logger = require('logger')
-const { fetchGateway } = require('service/gateway-service')
-const { connectToGateway } = require('service/gateway-connection-manager')
+import * as db from 'db'
+import logger from 'logger'
+import { fetchGateway } from 'service/gateway-service'
+import { connectToGateway } from 'service/gateway-connection-manager'
 
-const logError = (logMsg) => (err) => {
+const logError = (logMsg: string) => (err: Error) => {
     logger.error(logMsg, err)
     return Promise.reject(err)
 }
 
-module.exports = async (env) => {
+export default async (env: string) => {
     try {
         logger.info('Initializing application')
 

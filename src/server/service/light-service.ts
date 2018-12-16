@@ -1,16 +1,16 @@
-const R = require('ramda')
-const { getGateway } = require('service/gateway-service')
-const { getConnection } = require('service/gateway-connection-manager')
-const { normalizeLights } = require('data/tradfri')
+import R from 'ramda'
+import { getGateway } from 'service/gateway-service'
+import { getConnection } from 'service/gateway-connection-manager'
+import { normalizeLights, Light } from 'data/tradfri'
 
-const getLights = async () => {
+export const getLights = async () => {
     const gateway = await getGateway()
     if (!gateway || !gateway.connected)
         return []
     return normalizeLights(getConnection().getLights())
 }
 
-const updateLight = async (light) => {
+export const updateLight = async (light: Light) => {
     const gateway = await getGateway()
     if (!gateway) {
         throw new Error('No gateway found')
@@ -24,21 +24,16 @@ const updateLight = async (light) => {
 
     const connection = getConnection()
 
-    await connection.updateLight(light.id, toLightUpdate(light))
-    await connection.operateLight(light.id, toLightOperation(light))
+    await connection.updateLight(String(light.id), toLightUpdate(light))
+    await connection.operateLight(String(light.id), toLightOperation(light))
 }
 
-const toLightUpdate = (light) => ({
+const toLightUpdate = (light: Light) => ({
     name: light.name
 })
 
-const toLightOperation = (light) => ({
+const toLightOperation = (light: Light) => ({
     onOff: light.on,
     dimmer: light.brightness,
     colorTemperature: light.colorTemperature
 })
-
-module.exports = {
-    getLights,
-    updateLight
-}

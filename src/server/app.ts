@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-const express = require('express')
-const httpLogger = require('morgan')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
+import express, { Request, Response, NextFunction } from 'express'
+import httpLogger from 'morgan'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
 
-const { ValidationError } = require('error')
-const logger = require('logger')
-const init = require('init')
-const { gateway, lights, sensors, groups } = require('routes')
+import { ValidationError } from 'error'
+import logger from 'logger'
+import init from 'init'
+import { gateway, lights, sensors, groups } from 'routes'
 
 const HOST = process.env.HOST || 'localhost'
-const PORT = process.env.SERVER_PORT || 8080
+const PORT = parseInt(process.env.SERVER_PORT || '8080', 10)
 
 const app = express()
 
@@ -41,7 +41,7 @@ app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
 app.use('/api/groups', groups)
 
-app.use('/api/*', (req, res) =>
+app.use('/api/*', (_req, res) =>
     res.status(404).json({
         error: 'Not Found'
     })
@@ -49,7 +49,7 @@ app.use('/api/*', (req, res) =>
 
 app.use('*', express.static('dist/index.html'))
 
-app.use((err, req, res, next) => {
+app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     if (res.headersSent) {
         return next(err)
     }

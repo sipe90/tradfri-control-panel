@@ -1,16 +1,22 @@
-const TradfriGateway = require('gateway/TradfriGateway')
-const logger = require('logger')
+import TradfriGateway from 'gateway/TradfriGateway'
+import logger from 'logger'
 
-let connection
+interface ConnectProps {
+    hostname: string;
+    identity: string;
+    psk: string;
+}
 
-const getConnection = () => {
+let connection: TradfriGateway
+
+export const getConnection = () => {
     if (!connection) {
         throw Error('Not connected to any gateway')
     }
     return connection
 }
 
-const connectToGateway = async ({ hostname, identity, psk }) => {
+export const connectToGateway = async ({ hostname, identity, psk }: ConnectProps) => {
     logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
     const gateway = new TradfriGateway(hostname)
 
@@ -24,9 +30,4 @@ const connectToGateway = async ({ hostname, identity, psk }) => {
 
     connection = gateway
     return connection
-}
-
-module.exports = {
-    connectToGateway,
-    getConnection
 }
