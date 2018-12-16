@@ -1,36 +1,39 @@
-const express = require('express')
+import express from 'express'
+import { 
+    getGateway, discoverGateway, generateIdentity,
+    testConnect, createTradfriGateway 
+} from 'service/gateway-service'
+
 const router = express.Router()
 
-const gatewayService = require('service/gateway-service')
-
-router.get('/', (req, res, next) =>
-    gatewayService.getGateway()
+router.get('/', (_req, res, next) =>
+    getGateway()
         .then((result) => result ? res.json(result) : res.status(404).send())
         .catch(next)
 )
 
-router.get('/discover', (req, res, next) =>
-    gatewayService.discoverGateway()
+router.get('/discover', (_req, res, next) =>
+    discoverGateway()
         .then((result) => result ? res.json(result) : res.status(404).send())
         .catch(next)
 )
 
 router.post('/identity', (req, res, next) =>
-    gatewayService.generateIdentity(req.body)
+    generateIdentity(req.body)
         .then((result) => res.json(result))
         .catch(next)
 )
 
 router.post('/test', (req, res, next) =>
-    gatewayService.testConnect(req.body)
+    testConnect(req.body)
         .then((result) => res.json(result))
         .catch(next)
 )
 
 router.post('/', (req, res, next) =>
-    gatewayService.createTradfriGateway(req.body)
+    createTradfriGateway(req.body)
         .then(() => res.status(201).send())
         .catch(next)
 )
 
-module.exports = router
+export default router

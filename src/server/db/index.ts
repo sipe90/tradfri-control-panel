@@ -1,12 +1,17 @@
-const sqlite  = require('sqlite')
-const config = require('config')
-const logger = require('logger')
+import sqlite, { Database } from 'sqlite'
+import config from 'config'
+import logger from 'logger'
 
-const dbConfig = config.get('database')
+interface DbConfig {
+    dbFolder: string;
+    dbName: string;
+}
 
-let dbConnection
+const dbConfig: DbConfig = config.get('database')
 
-const init = async (env) => {
+let dbConnection: Database
+
+export const init = async (_env: string) => {
     const connection = await connect()
 
     const migrationsPath = `${dbConfig.dbFolder}/migrations`
@@ -21,21 +26,14 @@ const init = async (env) => {
     await connection.migrate(migrateOptions)
 }
 
-const connect = async () => {
+export const connect = async () => {
     const dbFilePath = `${dbConfig.dbFolder}/${dbConfig.dbName}`
 
     logger.info(`Connecting to SQLite3 db at ${dbFilePath}`)
 
-    dbConnection = sqlite.open(dbFilePath)
+    dbConnection = await sqlite.open(dbFilePath)
 
     return dbConnection
 }
 
-const getConnection = async () => dbConnection
-
-module.exports = {
-    init,
-    connect,
-    getConnection
-}
-
+export const getConnection = async () => dbConnection
