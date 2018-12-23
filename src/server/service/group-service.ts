@@ -2,13 +2,7 @@ import R from 'ramda'
 import { getGateway } from 'service/gateway-service'
 import { getConnection } from 'service/gateway-connection-manager'
 import { normalizeGroups } from 'data/tradfri'
-
-interface GroupUpdateRequest {
-    id: number;
-    name: string;
-    on: boolean;
-    brightness: number;
-}
+import { GroupUpdateRequest } from 'shared/types';
 
 export const getGroups = async () => {
     const gateway = await getGateway()

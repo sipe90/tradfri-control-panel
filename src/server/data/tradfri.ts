@@ -1,61 +1,6 @@
 import R from 'ramda'
-import { Accessory, GroupInfo, Scene as TScene, Light as TLight } from 'node-tradfri-client';
-
-interface Device {
-    id: number;
-    name: string;
-    alive: boolean;
-    manufacturer: string;
-    model: string;
-    power: number;
-    battery: number;
-}
-
-export interface Gateway {
-    id: number;
-    connected: boolean;
-    name: string;
-    hostname: string;
-    identity: string;
-    psk: string;
-} 
-
-export interface GatewayDevices extends Gateway {
-    lights: number[],
-    sensors: number[],
-    groups: number[]
-} 
-
-export interface Light extends Device {
-    color: string;
-    colorTemperature: number;
-    brightness: number;
-    spectrum: number;
-    dimmable: boolean;
-    switchable: boolean;
-    on: boolean;
-} 
-
-export interface Sensor extends Device {}
-
-export interface Group {
-    id: number;
-    name: string;
-    devices: number[];
-    moods: Scene[];
-}
-
-export interface Scene {
-    id: number;
-    name: string;
-    active: boolean;
-}
-
-export interface DeviceIDs {
-    lights: number[];
-    sensors: number[];
-    groups: number[];
-}
+import { Accessory, GroupInfo, Scene as TScene, Light as TLight } from 'node-tradfri-client'
+import { Gateway, GatewayDevices, Light, Sensor, Group, Scene } from 'shared/types'
 
 type DeviceRecord = Record<string, Accessory>
 type GroupRecord = Record<string, GroupInfo>

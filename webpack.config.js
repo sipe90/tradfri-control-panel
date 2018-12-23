@@ -7,7 +7,7 @@ const outputDirectory = 'dist'
 
 module.exports = {
     entry: {
-        main: './src/client/index.jsx'
+        main: './src/client/index.tsx'
     },
     output: {
         path: path.join(__dirname, outputDirectory),
