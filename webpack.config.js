@@ -17,7 +17,14 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'ts-loader'
+                }
+            },
+            {
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader'
@@ -53,7 +60,7 @@ module.exports = {
         })
     ],
     resolve: {
-        extensions: ['.jsx', '.js'],
+        extensions: ['.tsx', '.ts', '.js'],
         modules: [path.resolve(__dirname, 'public'), path.resolve(__dirname, 'src', 'client'), 'node_modules']
     },
     optimization: {
