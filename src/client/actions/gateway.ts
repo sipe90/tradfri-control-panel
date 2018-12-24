@@ -8,6 +8,7 @@ import { Gateway } from 'shared/types'
 import { DiscoveredGateway } from 'node-tradfri-client'
 import { ConnectionTestResult, ThunkResult } from 'types'
 import { ActionCreator } from 'redux'
+import { fetchGetJson, fetchPostJson } from 'utils';
 
 export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'
@@ -126,17 +127,16 @@ export const stopGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =
 export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadGatewayRequest())
-        const res = await fetch('/api/gateway')
+        const res = await fetchGetJson<Gateway>('/api/gateway')
         
         if (res.status === 404) {
             dispatch(loadGatewaySuccess(null))
             dispatch(stopGatewayPolling())
         }
 
-        if (!res.ok) throw new Error(res.statusText)
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
-        const json = await res.json()
-        dispatch(loadGatewaySuccess(json))
+        dispatch(loadGatewaySuccess(res.json))
     } catch (error) {
         message.error(`Failed to fetch gateway: ${error.message}`)
         dispatch(loadGatewayFailure(error))
@@ -147,10 +147,9 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
 export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => async (dispatch) => {
     try {
         dispatch(saveGatewayRequest())
-        const response = await fetch('/api/gateway', 
-            { method: 'POST', body: JSON.stringify(gateway), headers: { 'content-type': 'application/json' } })
+        const res = await fetchPostJson<void>('/api/gateway', gateway)
 
-        if (!response.ok) throw new Error(response.statusText)
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(saveGatewaySuccess())
         dispatch(fetchGateway())
@@ -163,13 +162,13 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => asy
 export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(discoverGatewayRequest())
-        const res = await fetch('api/gateway/discover')
+        const res = await fetchGetJson('api/gateway/discover')
 
         if (res.status === 404) {
             dispatch(discoverGatewaySuccess(null))
         }
 
-        if (!res.ok) throw new Error(res.statusText)
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         const json = await res.json()
 
@@ -182,15 +181,19 @@ export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch
     }
 }
 
+interface GenerateIdentityResponse {
+    identity: string
+    psk: string
+}
+
 export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, securityCode: string) => async (dispatch) => {
     try {
         dispatch(generateIdentityRequest())
-        const res = await fetch('api/gateway/identity',
-            { method: 'POST', body: JSON.stringify({ hostname, securityCode }), headers: { 'content-type': 'application/json' } });
+        const res = await fetchPostJson<GenerateIdentityResponse>('api/gateway/identity', { hostname, securityCode })
         
-        if (!res.ok) throw new Error(res.statusText)
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
-        const { identity, psk } = await res.json()
+        const { identity, psk } = await res.json as GenerateIdentityResponse
 
         dispatch(change('GATEWAY', 'identity', identity));
         dispatch(change('GATEWAY', 'psk', psk));
@@ -204,13 +207,11 @@ export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, s
 export const testConnection: ActionCreator<ThunkResult> = (hostname: string, identity: string, psk: string) => async (dispatch) => {
     try {
         dispatch(testConnectionRequest())
-        const res = await fetch('/api/gateway/test',
-            { method: 'POST', body: JSON.stringify({ hostname, identity, psk }), headers: { 'content-type': 'application/json' } });
+        const res = await fetchPostJson<ConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
         
-        if (!res.ok) throw new Error(res.statusText)
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
-        const json = await res.json();
-        dispatch(testConnectionSuccess(json));
+        dispatch(testConnectionSuccess(res.json));
     } catch (error) {
         message.error(`Failed to test connection: ${error.message}`);
         dispatch(testConnectionFailure(error));

@@ -8,6 +8,7 @@ import { Dictionary } from 'ramda';
 import { Light } from 'shared/types';
 import { ActionCreator } from 'redux';
 import { ThunkResult } from 'types';
+import { fetchGetJson, fetchPostJson } from 'utils';
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
@@ -74,9 +75,11 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
     try {
         await dispatch(fetchGateway())
         dispatch(loadLightsRequest())
-        const res = await fetch('/api/lights')
-        const json = await res.json()
-        dispatch(loadLightsSuccess(json))
+        const res = await fetchGetJson<Dictionary<Light>>('/api/lights')
+        
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
+        dispatch(loadLightsSuccess(res.json))
     } catch (error) {
         message.error(`Failed to fetch lights: ${error.message}`)
         dispatch(loadLightsFailure(error))
@@ -87,9 +90,11 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
 export const updateLight: ActionCreator<ThunkResult> = (light: Light) => async (dispatch) => {
     try {
         dispatch(updateLightRequest())
-        await fetch(`/api/lights/${light.id}`,
-            { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json' } })
-        return dispatch(updateLightSuccess())
+        const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
+
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
+        dispatch(updateLightSuccess())
     } catch (error) {
         message.error(`Failed to update light: ${error.message}`)
         dispatch(updateLightFailure(error))

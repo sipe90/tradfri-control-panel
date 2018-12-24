@@ -6,6 +6,7 @@ import { START_TIMER, STOP_TIMER } from 'redux-timers'
 import { GroupUpdateRequest, Omit, Dictionary, Group } from 'shared/types';
 import { ActionCreator } from 'redux';
 import { ThunkResult } from 'types';
+import { fetchGetJson, fetchPostJson } from 'utils';
 
 export const LOAD_GROUPS_REQUEST = 'LOAD_GROUPS_REQUEST'
 export const LOAD_GROUPS_SUCCESS = 'LOAD_GROUPS_SUCCESS'
@@ -65,9 +66,11 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
     try {
         await dispatch(fetchGateway())
         await dispatch(loadGroupsRequest())
-        const res = await fetch('/api/groups')
-        const json = await res.json()
-        dispatch(loadGroupsSuccess(json))
+        const res = await fetchGetJson<Dictionary<Group>>('/api/groups')
+
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
+        dispatch(loadGroupsSuccess(res.json))
     } catch (error) {
         message.error(`Failed to fetch groups: ${error.message}`)
         dispatch(loadGroupsFailure(error))
@@ -83,8 +86,10 @@ export const updateGroup: ActionCreator<ThunkResult> = (group: GroupUpdateReques
         }
 
         dispatch(updateGroupRequest())
-        await fetch(`/api/groups/${group.id}`, 
-            { method: 'POST', body: JSON.stringify(payload), headers: { 'content-type': 'application/json' } })
+        const res = await fetchPostJson<void>(`/api/groups/${group.id}`, payload)
+
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
         dispatch(updateGroupSuccess())
     } catch (error) {
         message.error(`Failed to update group: ${error.message}`)

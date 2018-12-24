@@ -7,6 +7,7 @@ import { Dictionary } from 'ramda';
 import { Sensor } from 'shared/types';
 import { ActionCreator } from 'redux';
 import { ThunkResult } from 'types';
+import { fetchPostJson, fetchGetJson } from 'utils';
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -73,9 +74,11 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
     try {
         await dispatch(fetchGateway())
         await dispatch(loadSensorsRequest())
-        const res = await fetch('/api/sensors')
-        const json = await res.json()
-        dispatch(loadSensorsSuccess(json))
+        const res = await fetchGetJson<Dictionary<Sensor>>('/api/sensors')
+
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
+        dispatch(loadSensorsSuccess(res.json))
     } catch (error) {
         message.error(`Failed to fetch sensors: ${error.message}`)
         dispatch(loadSensorsFailure(error))
@@ -86,8 +89,10 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
 export const updateSensor: ActionCreator<ThunkResult> = (sensor: Sensor) => async (dispatch) => {
     try {
         dispatch(updateSensorRequest())
-        await fetch(`/api/sensors/${sensor.id}`,
-            { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json' } });
+        const res = await fetchPostJson(`/api/sensors/${sensor.id}`, sensor)
+
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
         dispatch(updateSensorSuccess());
     } catch (error) {
         message.error(`Failed to update sensor: ${error.message}`);
