@@ -10,13 +10,13 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 
 interface SensorsModuleProps {
-    sensors: Dictionary<Sensor>;
-    initialDataLoading: boolean;
-    loadSensors: () => Promise<void>;
-    sensorStateChanged: (sensor: Sensor) => void;
-    updateSensor: (sensor: Sensor) => void; 
-    startSensorPolling: () => void;
-    stopSensorPolling: () => void;
+    sensors: Dictionary<Sensor>
+    initialDataLoading: boolean
+    loadSensors: () => void
+    sensorStateChanged: (sensor: Sensor) => void
+    updateSensor: (sensor: Sensor) => void
+    startSensorPolling: () => void
+    stopSensorPolling: () => void
 }
 
 
@@ -50,7 +50,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 // TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     loadSensors: () => dispatch(fetchSensors()),
     sensorStateChanged: (sensor: Sensor) => dispatch(sensorStateChanged(sensor)),
     updateSensor: (sensor: Sensor) => dispatch(updateSensor(sensor)),

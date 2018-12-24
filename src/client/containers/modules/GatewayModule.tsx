@@ -9,13 +9,13 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 
 interface GatewayModuleProps {
-    gateway: Gateway;
-    initialDataLoading: boolean;
-    loadGateway: () => Promise<void>;
-    gatewayStateChanged:(gateway: Gateway) => void;
-    saveGateway: (gateway: Gateway) => void;
-    startGatewayPolling:  () => void;
-    stopGatewayPolling:  () => void;
+    gateway: Gateway
+    initialDataLoading: boolean
+    loadGateway: () => void
+    gatewayStateChanged:(gateway: Gateway) => void
+    saveGateway: (gateway: Gateway) => void
+    startGatewayPolling:  () => void
+    stopGatewayPolling:  () => void
 }
 
 class GatewayModule extends Component<GatewayModuleProps> {
@@ -47,7 +47,7 @@ const mapStateToProps = (state: any) => ({
 })
 
 // TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     loadGateway: () => dispatch(fetchGateway()),
     gatewayStateChanged: (gateway: Gateway) => dispatch(gatewayStateChanged(gateway)),
     startGatewayPolling: () => dispatch(startGatewayPolling()),

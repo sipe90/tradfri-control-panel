@@ -16,12 +16,12 @@ import { AnyAction } from 'redux';
 const { Header, Content, Footer } = Layout
 
 // From Webpack define plugin
-declare var VERSION: string | void;
+declare var VERSION: string | void
 
 interface AppProps {
-    startGroupPolling: () => void;
-    stopGroupPolling: () => void;
-    fetchGroups: () => Promise<void>;
+    startGroupPolling: () => void
+    stopGroupPolling: () => void
+    fetchGroups: () => void
 }
 
 class App extends Component<AppProps> {
@@ -55,7 +55,7 @@ class App extends Component<AppProps> {
 }
 
 // TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     fetchGroups: () => dispatch(fetchGroups()),
     startGroupPolling: () => dispatch(startGroupPolling()),
     stopGroupPolling: () => dispatch(stopGroupPolling()),

@@ -14,11 +14,11 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 
 interface LightsTabProps {
-    groups: Dictionary<Group>;
-    lights: Dictionary<Light>;
-    initialDataLoading: boolean;
-    lightStateChanged: (light: Light) => void;
-    updateLight: (light: Light) => void;
+    groups: Dictionary<Group>
+    lights: Dictionary<Light>
+    initialDataLoading: boolean
+    lightStateChanged: (light: Light) => void
+    updateLight: (light: Light) => void
 }
 
 class LightsTab extends Component<LightsTabProps> {
@@ -52,7 +52,7 @@ const mapStateToProps = (state: any) => ({
     initialDataLoading: state.modules.lights.initialDataLoading
 })
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     lightStateChanged: (light: Light) => dispatch(lightStateChanged(light)),
     updateLight: (light: Light) => dispatch(updateLight(light))
 })

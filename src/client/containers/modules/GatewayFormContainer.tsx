@@ -27,7 +27,7 @@ const mapStateToProps = (state: any) => ({
     validationErrors: validationErrorSelector(state)
 })
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     discoverGateway: () => dispatch(discoverGateway()),
     generateIdentity: (hostname: string, securityCode: string) => dispatch(generateIdentity(hostname, securityCode)),
     testConnection: (hostname: string, identity: string, psk: string) => dispatch(testConnection(hostname, identity, psk)),

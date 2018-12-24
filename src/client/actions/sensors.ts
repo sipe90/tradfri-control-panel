@@ -3,6 +3,10 @@ import { message } from 'antd'
 
 import { START_TIMER, STOP_TIMER } from 'redux-timers'
 import { fetchGateway } from 'actions/gateway'
+import { Dictionary } from 'ramda';
+import { Sensor } from 'shared/types';
+import { ActionCreator } from 'redux';
+import { ThunkResult } from 'types';
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -18,12 +22,12 @@ const loadSensorsRequest = () => ({
     type: LOAD_SENSORS_REQUEST
 })
 
-const loadSensorsSuccess = (lights) => ({
+const loadSensorsSuccess = (sensors: Dictionary<Sensor>) => ({
     type: LOAD_SENSORS_SUCCESS,
-    payload: lights
+    payload: sensors
 })
 
-const loadSensorsFailure = (error) => ({
+const loadSensorsFailure = (error: Error) => ({
     type: LOAD_SENSORS_FAILURE,
     payload: error
 })
@@ -36,24 +40,17 @@ const updateSensorSuccess = () => ({
     type: UPDATE_SENSOR_SUCCESS
 })
 
-const updateSensorFailure = (error) => ({
+const updateSensorFailure = (error: Error) => ({
     type: UPDATE_SENSOR_FAILURE,
     payload: error
 })
 
-export const sensorStateChanged = (sensorProps) => ({
+export const sensorStateChanged = (sensorProps: Sensor) => ({
     type: SENSOR_STATE_CHANGED,
     payload: sensorProps
 })
 
-const handleErrors = (response) => {
-    if (!response.ok) {
-        throw Error(response.statusText)
-    }
-    return response
-}
-
-export const startSensorPolling = () => (dispatch) =>
+export const startSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: START_TIMER,
         payload: {
@@ -64,7 +61,7 @@ export const startSensorPolling = () => (dispatch) =>
     })
 
 
-export const stopSensorPolling = () => (dispatch) =>
+export const stopSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
         payload: {
@@ -72,30 +69,28 @@ export const stopSensorPolling = () => (dispatch) =>
         }
     })
 
-export const fetchSensors = () => (dispatch) =>
-    dispatch(fetchGateway())
-        .then(() => dispatch(loadSensorsRequest()))
-        .then(() => fetch('/api/sensors'))
-        .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(loadSensorsSuccess(json)))
-        .catch(error => {
-            message.error(`Failed to fetch sensors: ${error.message}`)
-            dispatch(loadSensorsFailure(error))
-            dispatch(stopSensorPolling())
-        })
+export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) => {
+    try {
+        await dispatch(fetchGateway())
+        await dispatch(loadSensorsRequest())
+        const res = await fetch('/api/sensors')
+        const json = await res.json()
+        dispatch(loadSensorsSuccess(json))
+    } catch (error) {
+        message.error(`Failed to fetch sensors: ${error.message}`)
+        dispatch(loadSensorsFailure(error))
+        dispatch(stopSensorPolling())
+    }
+}
 
-export const updateSensor = (sensor) => (dispatch) => {
-
-    dispatch(updateSensorRequest())
-
-    return fetch(`/api/sensors/${sensor.id}`,
-        { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json' } })
-        .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(updateSensorSuccess(json)))
-        .catch(error => {
-            message.error(`Failed to update sensor: ${error.message}`)
-            dispatch(updateSensorFailure(error))
-        })
+export const updateSensor: ActionCreator<ThunkResult> = (sensor: Sensor) => async (dispatch) => {
+    try {
+        dispatch(updateSensorRequest())
+        await fetch(`/api/sensors/${sensor.id}`,
+            { method: 'POST', body: JSON.stringify(sensor), headers: { 'content-type': 'application/json' } });
+        dispatch(updateSensorSuccess());
+    } catch (error) {
+        message.error(`Failed to update sensor: ${error.message}`);
+        dispatch(updateSensorFailure(error));
+    }
 }

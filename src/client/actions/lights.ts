@@ -4,6 +4,10 @@ import { message } from 'antd'
 import { fetchGateway } from 'actions/gateway'
 
 import { START_TIMER, STOP_TIMER } from 'redux-timers'
+import { Dictionary } from 'ramda';
+import { Light } from 'shared/types';
+import { ActionCreator } from 'redux';
+import { ThunkResult } from 'types';
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
@@ -19,12 +23,12 @@ const loadLightsRequest = () => ({
     type: LOAD_LIGHTS_REQUEST
 })
 
-const loadLightsSuccess = (lights) => ({
+const loadLightsSuccess = (lights: Dictionary<Light>) => ({
     type: LOAD_LIGHTS_SUCCESS,
     payload: lights
 })
 
-const loadLightsFailure = (error) => ({
+const loadLightsFailure = (error: Error) => ({
     type: LOAD_LIGHTS_FAILURE,
     payload: error
 })
@@ -37,24 +41,17 @@ const updateLightSuccess = () => ({
     type: UPDATE_LIGHT_SUCCESS
 })
 
-const updateLightFailure = (error) => ({
+const updateLightFailure = (error: Error) => ({
     type: UPDATE_LIGHT_FAILURE,
     payload: error
 })
 
-export const lightStateChanged = (lightProps) => ({
+export const lightStateChanged = (lightProps: Light) => ({
     type: LIGHT_STATE_CHANGED,
     payload: lightProps
 })
 
-const handleErrors = (response) => {
-    if (!response.ok) {
-        throw Error(response.statusText)
-    }
-    return response
-}
-
-export const startLightPolling = () => (dispatch) =>
+export const startLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: START_TIMER,
         payload: {
@@ -65,7 +62,7 @@ export const startLightPolling = () => (dispatch) =>
     })
 
 
-export const stopLightPolling = () => (dispatch) =>
+export const stopLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
         payload: {
@@ -73,29 +70,28 @@ export const stopLightPolling = () => (dispatch) =>
         }
     })
 
-export const fetchLights = () => (dispatch) =>
-    dispatch(fetchGateway())
-        .then(() => dispatch(loadLightsRequest()))
-        .then(() => fetch('/api/lights'))
-        .then(handleErrors)
-        .then(res => res.json())
-        .then(json => dispatch(loadLightsSuccess(json)))
-        .catch(error => {
-            message.error(`Failed to fetch lights: ${error.message}`)
-            dispatch(loadLightsFailure(error))
-            dispatch(stopLightPolling())
-        })
+export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) => {
+    try {
+        await dispatch(fetchGateway())
+        dispatch(loadLightsRequest())
+        const res = await fetch('/api/lights')
+        const json = await res.json()
+        dispatch(loadLightsSuccess(json))
+    } catch (error) {
+        message.error(`Failed to fetch lights: ${error.message}`)
+        dispatch(loadLightsFailure(error))
+        dispatch(stopLightPolling())
+    }
+}
 
-export const updateLight = (light) => (dispatch) => {
-
-    dispatch(updateLightRequest())
-
-    return fetch(`/api/lights/${light.id}`,
-        { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json' } })
-        .then(handleErrors)
-        .then(() => dispatch(updateLightSuccess()))
-        .catch(error => {
-            message.error(`Failed to update light: ${error.message}`)
-            dispatch(updateLightFailure(error))
-        })
+export const updateLight: ActionCreator<ThunkResult> = (light: Light) => async (dispatch) => {
+    try {
+        dispatch(updateLightRequest())
+        await fetch(`/api/lights/${light.id}`,
+            { method: 'POST', body: JSON.stringify(light), headers: { 'content-type': 'application/json' } })
+        return dispatch(updateLightSuccess())
+    } catch (error) {
+        message.error(`Failed to update light: ${error.message}`)
+        dispatch(updateLightFailure(error))
+    }
 }

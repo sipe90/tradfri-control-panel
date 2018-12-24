@@ -14,9 +14,9 @@ import { AnyAction } from 'redux';
 const TabPane = Tabs.TabPane
 
 interface LightModuleProps {
-    loadLights: () => Promise<void>;
-    startLightPolling:  () => void;
-    stopLightPolling:  () => void;
+    loadLights: () => void
+    startLightPolling:  () => void
+    stopLightPolling:  () => void
 }
 
 class LightsModule extends Component<LightModuleProps> {
@@ -57,7 +57,7 @@ const renderTabBar = (props: TabsProps, DefaultTabBar: any) => (
 )
 
 // TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     loadLights: () => dispatch(fetchLights()),
     startLightPolling: () => dispatch(startLightPolling()),
     stopLightPolling: () => dispatch(stopLightPolling())

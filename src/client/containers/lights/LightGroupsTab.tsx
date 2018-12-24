@@ -6,7 +6,7 @@ import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import R from 'ramda'
 import { lightStateChanged } from 'actions/lights'
 import { updateGroup } from 'actions/groups'
-import { Group, Light, Dictionary, GroupUpdateRequest as GroupUpdate } from 'shared/types'
+import { Group, Light, Dictionary, GroupUpdateRequest } from 'shared/types'
 
 import 'containers/lights/LightGroupsTab.css'
 import StatusIndicator from 'components/StatusIndicator'
@@ -25,7 +25,7 @@ interface LightGroupsProps {
     lights: Dictionary<Light>;
     initialDataLoading: boolean;
     lightStateChanged: (light: Light) => void,
-    updateGroup: (groupUpdate: GroupUpdate) => void,
+    updateGroup: (groupUpdate: GroupUpdateRequest) => void,
 }
 
 class LightGroups extends Component<LightGroupsProps> {
@@ -112,9 +112,9 @@ const mapStateToProps = (state: any) => ({
 })
 
 // TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, null, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     lightStateChanged: (light: Light) => dispatch(lightStateChanged(light)),
-    updateGroup: (group: GroupUpdate) => dispatch(updateGroup(group))
+    updateGroup: (group: GroupUpdateRequest) => dispatch(updateGroup(group))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightGroups)
