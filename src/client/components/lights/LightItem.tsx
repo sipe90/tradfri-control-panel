@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { List, Button, Switch, Slider, Popover, Input } from 'antd'
-import R from 'ramda'
+import * as R from 'ramda'
 import PencilIcon from 'mdi-react/PencilIcon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'

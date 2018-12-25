@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tooltip } from 'antd'
-import R from 'ramda'
+import * as R from 'ramda'
 import CircleIcon from 'mdi-react/CircleIcon'
 
 import 'components/StatusIndicator.css'

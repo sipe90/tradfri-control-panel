@@ -4,7 +4,7 @@ import PencilIcon from 'mdi-react/PencilIcon'
 import StatusIndicator from 'components/StatusIndicator'
 
 import 'components/gateway/GatewayCard.css'
-import gatewayImage from 'public/images/tradfri_gateway.png'
+// import * as gatewayImage from 'public/images/tradfri_gateway.png'
 import { Gateway } from 'shared/types'
 
 const { Meta } = Card
@@ -45,11 +45,11 @@ class GatewayCard extends Component<GatewayCardProps, GatewayCardState> {
             </div>
         )
     }
-
+// <img alt='Trådfri gateway' src={gatewayImage} />
     cardCover() {
         return (
             <div className='gateway-card__cover'>
-                <img alt='Trådfri gateway' src={gatewayImage} />
+                
             </div>
         )
     }

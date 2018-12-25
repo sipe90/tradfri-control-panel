@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, FormErrors, InjectedFormProps } from 'redux-form'
 import { Button, Spin, Icon, Table } from 'antd'
-import R from 'ramda'
+import * as R from 'ramda'
 import { DiscoveredGateway } from 'node-tradfri-client'
 
 import { Input, Search } from 'components/form'

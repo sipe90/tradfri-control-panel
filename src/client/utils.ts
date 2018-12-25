@@ -1,4 +1,4 @@
-import R from 'ramda'
+import * as R from 'ramda'
 import { normalize, Schema } from 'normalizr'
 import { Group, Dictionary, Device } from 'shared/types';
 import { NormalizeResult, PayloadAction } from 'types';
