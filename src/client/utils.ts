@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 import { normalize, Schema } from 'normalizr'
 import { Group, Dictionary, Device } from 'shared/types';
-import { NormalizeResult, PayloadAction } from 'types';
+import { NormalizeResult, PayloadAction } from '@/types';
 import { Action } from 'redux';
 
 export const devicesForGroup = (group: Group, devices: Dictionary<Device>) => R.values(R.pick(R.map(String, group.devices), devices))

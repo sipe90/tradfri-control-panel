@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Steps } from 'antd'
 
-import GatewayFormContainer from 'containers/modules/GatewayFormContainer'
+import GatewayFormContainer from '@/containers/modules/GatewayFormContainer'
 
-import 'components/gateway/GatewayWizard.css'
+import './GatewayWizard.css'
 
 const { Step } = Steps
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchSensors, updateSensor, startSensorPolling, stopSensorPolling, sensorStateChanged } from 'actions/sensors'
+import { fetchSensors, updateSensor, startSensorPolling, stopSensorPolling, sensorStateChanged } from '@/actions/sensors'
 
-import SensorList from 'components/sensors/SensorList'
+import SensorList from '@/components/sensors/SensorList'
 import { Dictionary } from 'ramda';
 import { Sensor } from 'shared/types';
 import { ThunkDispatch } from 'redux-thunk';

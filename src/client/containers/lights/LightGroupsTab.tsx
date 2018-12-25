@@ -4,12 +4,12 @@ import { Card, Switch, Slider, List } from 'antd'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import * as R from 'ramda'
-import { lightStateChanged } from 'actions/lights'
-import { updateGroup } from 'actions/groups'
+import { lightStateChanged } from '@/actions/lights'
+import { updateGroup } from '@/actions/groups'
 import { Group, Light, Dictionary, GroupUpdateRequest } from 'shared/types'
 
-import 'containers/lights/LightGroupsTab.css'
-import StatusIndicator from 'components/StatusIndicator'
+import './LightGroupsTab.css'
+import StatusIndicator from '@/components/StatusIndicator'
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

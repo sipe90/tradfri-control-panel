@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchGateway, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, saveGateway } from 'actions/gateway'
+import { fetchGateway, startGatewayPolling, stopGatewayPolling, gatewayStateChanged, saveGateway } from '@/actions/gateway'
 
 import { Gateway } from 'shared/types'
-import GatewayComponent from 'components/gateway/Gateway'
+import GatewayComponent from '@/components/gateway/Gateway'
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

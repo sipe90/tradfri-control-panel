@@ -1,6 +1,6 @@
 import React from 'react'
 
-import 'components/ModuleWrapper.css'
+import './ModuleWrapper.css'
 
 interface ModuleWrapperProps {
     module: React.ReactNode

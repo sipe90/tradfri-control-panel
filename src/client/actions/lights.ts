@@ -1,14 +1,14 @@
 
 import { message } from 'antd'
 
-import { fetchGateway } from 'actions/gateway'
+import { fetchGateway } from '@/actions/gateway'
 
-import { START_TIMER, STOP_TIMER } from 'redux-timers'
+import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { Dictionary } from 'ramda';
 import { Light } from 'shared/types';
 import { ActionCreator } from 'redux';
-import { ThunkResult } from 'types';
-import { fetchGetJson, fetchPostJson } from 'utils';
+import { ThunkResult } from '@/types';
+import { fetchGetJson, fetchPostJson } from '@/utils';
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'

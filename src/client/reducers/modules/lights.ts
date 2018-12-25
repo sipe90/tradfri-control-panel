@@ -1,7 +1,7 @@
 import { 
     LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS, LOAD_LIGHTS_FAILURE 
-} from 'actions/lights'
-import { createReducer } from 'utils'
+} from '@/actions/lights'
+import { createReducer } from '@/utils'
 import { Reducer } from 'redux'
 
 interface LightsModuleState {

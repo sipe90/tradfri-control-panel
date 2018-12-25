@@ -4,11 +4,11 @@ import { Button, Spin, Icon, Table } from 'antd'
 import * as R from 'ramda'
 import { DiscoveredGateway } from 'node-tradfri-client'
 
-import { Input, Search } from 'components/form'
-import { required } from 'validators'
+import { Input, Search } from '@/components/form'
+import { required } from '@/validators'
 
-import 'components/gateway/GatewayForm.css'
-import { ConnectionTestResult } from 'types'
+import './GatewayForm.css'
+import { ConnectionTestResult } from '@/types'
 import { ColumnProps } from 'antd/lib/table';
 
 export interface GatewayFormValues {

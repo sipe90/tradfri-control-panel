@@ -5,9 +5,9 @@ import PencilIcon from 'mdi-react/PencilIcon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import ThermometerIcon from 'mdi-react/ThermometerIcon'
-import StatusIndicator from 'components/StatusIndicator'
+import StatusIndicator from '@/components/StatusIndicator'
 
-import 'components/lights/LightItem.css'
+import './LightItem.css'
 import { Light } from 'shared/types';
 import { SliderValue } from 'antd/lib/slider';
 

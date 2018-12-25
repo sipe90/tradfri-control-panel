@@ -1,7 +1,7 @@
 import { 
     LOAD_SENSORS_REQUEST, LOAD_SENSORS_SUCCESS, LOAD_SENSORS_FAILURE 
-} from 'actions/sensors'
-import { createReducer } from 'utils'
+} from '@/actions/sensors'
+import { createReducer } from '@/utils'
 import { Reducer } from 'redux'
 
 interface SensorsModuleState {

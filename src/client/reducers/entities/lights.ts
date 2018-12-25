@@ -1,13 +1,13 @@
 
 import * as R from 'ramda'
 
-import schemas from 'schemas'
+import schemas from '@/schemas'
 
-import { LOAD_LIGHTS_SUCCESS, LIGHT_STATE_CHANGED } from 'actions/lights'
-import { normalizer, createReducer } from 'utils'
+import { LOAD_LIGHTS_SUCCESS, LIGHT_STATE_CHANGED } from '@/actions/lights'
+import { normalizer, createReducer } from '@/utils'
 import { Dictionary, Light } from 'shared/types'
 import { Reducer } from 'redux'
-import { NormalizeResult } from 'types'
+import { NormalizeResult } from '@/types'
 
 type LightEntitiesState = Dictionary<Light>
 

@@ -1,12 +1,12 @@
 import { message } from 'antd'
 
-import { fetchGateway } from 'actions/gateway'
+import { fetchGateway } from '@/actions/gateway'
 
-import { START_TIMER, STOP_TIMER } from 'redux-timers'
+import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { GroupUpdateRequest, Omit, Dictionary, Group } from 'shared/types';
 import { ActionCreator } from 'redux';
-import { ThunkResult } from 'types';
-import { fetchGetJson, fetchPostJson } from 'utils';
+import { ThunkResult } from '@/types';
+import { fetchGetJson, fetchPostJson } from '@/utils';
 
 export const LOAD_GROUPS_REQUEST = 'LOAD_GROUPS_REQUEST'
 export const LOAD_GROUPS_SUCCESS = 'LOAD_GROUPS_SUCCESS'

@@ -1,13 +1,13 @@
 
 import { message } from 'antd'
 
-import { START_TIMER, STOP_TIMER } from 'redux-timers'
-import { fetchGateway } from 'actions/gateway'
+import { START_TIMER, STOP_TIMER } from '@/redux-timers'
+import { fetchGateway } from '@/actions/gateway'
 import { Dictionary } from 'ramda';
 import { Sensor } from 'shared/types';
 import { ActionCreator } from 'redux';
-import { ThunkResult } from 'types';
-import { fetchPostJson, fetchGetJson } from 'utils';
+import { ThunkResult } from '@/types';
+import { fetchPostJson, fetchGetJson } from '@/utils';
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'

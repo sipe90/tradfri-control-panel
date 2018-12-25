@@ -5,9 +5,9 @@ import RssIcon from 'mdi-react/RssIcon'
 import HomeAutomationIcon from 'mdi-react/HomeAutomationIcon'
 import SettingsIcon from 'mdi-react/SettingsIcon'
 
-import GatewayModule from 'containers/modules/GatewayModule'
-import LightsModule from 'containers/modules/LightsModule'
-import SensorsModule from 'containers/modules/SensorsModule'
+import GatewayModule from '@/containers/modules/GatewayModule'
+import LightsModule from '@/containers/modules/LightsModule'
+import SensorsModule from '@/containers/modules/SensorsModule'
 
 export interface RouteDefinition {
     path: string;

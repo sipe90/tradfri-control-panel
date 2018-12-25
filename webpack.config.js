@@ -60,8 +60,11 @@ module.exports = {
         })
     ],
     resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src', 'client')
+        },
         extensions: ['.tsx', '.ts', '.js'],
-        modules: [path.resolve(__dirname, 'public'), path.resolve(__dirname, 'src', 'client'), 'node_modules']
+        modules: [path.resolve(__dirname, 'public'), 'node_modules']
     },
     optimization: {
         splitChunks: {

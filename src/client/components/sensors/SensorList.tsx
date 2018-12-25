@@ -2,10 +2,10 @@ import React from 'react'
 import { List } from 'antd'
 import R, { Dictionary } from 'ramda'
 
-import Spinner from 'components/Spinner'
-import SensorItem from 'components/sensors/SensorItem'
+import Spinner from '@/components/Spinner'
+import SensorItem from '@/components/sensors/SensorItem'
 
-import 'components/sensors/SensorList.css'
+import './SensorList.css'
 import { Sensor } from 'shared/types';
 
 interface SensorListProps {

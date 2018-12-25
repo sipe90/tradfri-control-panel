@@ -1,12 +1,12 @@
 import * as R from 'ramda'
 
-import schemas from 'schemas'
+import schemas from '@/schemas'
 
-import { LOAD_GROUPS_SUCCESS } from 'actions/groups'
+import { LOAD_GROUPS_SUCCESS } from '@/actions/groups'
 import { Reducer } from 'redux'
 import { Dictionary, Group } from 'shared/types'
-import { normalizer, createReducer } from 'utils'
-import { NormalizeResult } from 'types'
+import { normalizer, createReducer } from '@/utils'
+import { NormalizeResult } from '@/types'
 
 type GroupEntitiesState = Dictionary<Group>
 

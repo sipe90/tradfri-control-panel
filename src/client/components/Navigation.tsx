@@ -1,8 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import 'components/Navigation.css'
-import { RouteDefinition } from 'routeDefs';
+import './Navigation.css'
+import { RouteDefinition } from '@/routeDefs';
 
 interface NavigationProps {
     routes: RouteDefinition[]

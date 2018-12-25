@@ -1,13 +1,13 @@
 
 import * as R from 'ramda'
 
-import schemas from 'schemas'
+import schemas from '@/schemas'
 
-import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from 'actions/sensors'
+import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from '@/actions/sensors'
 import { Sensor, Dictionary } from 'shared/types'
 import { Reducer } from 'redux'
-import { NormalizeResult } from 'types'
-import { normalizer, createReducer } from 'utils'
+import { NormalizeResult } from '@/types'
+import { normalizer, createReducer } from '@/utils'
 
 type SensorEntitiesState = Dictionary<Sensor>
 

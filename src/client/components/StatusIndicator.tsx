@@ -3,7 +3,7 @@ import { Tooltip } from 'antd'
 import * as R from 'ramda'
 import CircleIcon from 'mdi-react/CircleIcon'
 
-import 'components/StatusIndicator.css'
+import './StatusIndicator.css'
 
 interface StatusIndicatorProps {
     type:'light' | 'sensor' | 'gateway'

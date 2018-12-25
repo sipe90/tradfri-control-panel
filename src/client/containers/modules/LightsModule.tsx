@@ -3,10 +3,10 @@ import { Tabs } from 'antd'
 import { connect } from 'react-redux'
 import { StickyContainer, Sticky } from 'react-sticky'
 
-import { fetchLights, startLightPolling, stopLightPolling } from 'actions/lights'
+import { fetchLights, startLightPolling, stopLightPolling } from '@/actions/lights'
 
-import LightGroupsTab from 'containers/lights/LightGroupsTab'
-import LightsTab from 'containers/lights/LightsTab'
+import LightGroupsTab from '@/containers/lights/LightGroupsTab'
+import LightsTab from '@/containers/lights/LightsTab'
 import { TabsProps } from 'antd/lib/tabs';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';

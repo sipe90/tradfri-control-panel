@@ -3,11 +3,11 @@ import {
     DISCOVER_GATEWAY_REQUEST, DISCOVER_GATEWAY_SUCCESS, DISCOVER_GATEWAY_FAILURE,
     GENERATE_IDENTITY_REQUEST, GENERATE_IDENTITY_SUCCESS, GENERATE_IDENTITY_FAILURE,
     TEST_CONNECTION_REQUEST, TEST_CONNECTION_SUCCESS, TEST_CONNECTION_FAILURE
-} from 'actions/gateway'
+} from '@/actions/gateway'
 import { Gateway } from 'shared/types'
 import { Reducer } from 'redux'
-import { ErrorResponse, ConnectionTestResult } from 'types'
-import { createReducer } from 'utils'
+import { ErrorResponse, ConnectionTestResult } from '@/types'
+import { createReducer } from '@/utils'
 
 interface GatewayModuleState {
     initialDataLoading: boolean

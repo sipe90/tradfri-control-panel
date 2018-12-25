@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Spinner from 'components/Spinner'
-import GatewayCard from 'components/gateway/GatewayCard'
-import GatewayWizard from 'components/gateway/GatewayWizard'
+import Spinner from '@/components/Spinner'
+import GatewayCard from '@/components/gateway/GatewayCard'
+import GatewayWizard from '@/components/gateway/GatewayWizard'
 
-import 'components/gateway/Gateway.css'
+import './Gateway.css'
 import { Gateway } from 'shared/types';
 
 interface GatewayProps {

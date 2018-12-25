@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Card, List } from 'antd'
 import R, { Dictionary } from 'ramda'
-import { lightStateChanged, updateLight } from 'actions/lights'
+import { lightStateChanged, updateLight } from '@/actions/lights'
 
-import Spinner from 'components/Spinner'
-import LightItem from 'components/lights/LightItem'
+import Spinner from '@/components/Spinner'
+import LightItem from '@/components/lights/LightItem'
 
-import 'containers/lights/LightsTab.css'
+import './LightsTab.css'
 import { Group, Light } from 'shared/types';
-import { devicesForGroup } from 'utils';
+import { devicesForGroup } from '@/utils';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

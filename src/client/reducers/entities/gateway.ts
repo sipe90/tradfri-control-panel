@@ -1,7 +1,7 @@
-import { LOAD_GATEWAY_SUCCESS } from 'actions/gateway'
+import { LOAD_GATEWAY_SUCCESS } from '@/actions/gateway'
 import { Reducer } from 'redux'
 import { Gateway } from 'shared/types'
-import { createReducer } from 'utils';
+import { createReducer } from '@/utils';
 
 const initialState = null
 

@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Layout } from 'antd'
 
-import { startGroupPolling, stopGroupPolling, fetchGroups } from 'actions/groups'
+import { startGroupPolling, stopGroupPolling, fetchGroups } from '@/actions/groups'
 
-import Navigation from 'components/Navigation'
-import Routes from 'components/Routes'
+import Navigation from '@/components/Navigation'
+import Routes from '@/components/Routes'
 import './App.css'
 
-import routeDefs from 'routeDefs'
+import routeDefs from '@/routeDefs'
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

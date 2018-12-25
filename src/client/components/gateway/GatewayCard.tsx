@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Card, Popover, Input } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
-import StatusIndicator from 'components/StatusIndicator'
+import StatusIndicator from '@/components/StatusIndicator'
 
-import 'components/gateway/GatewayCard.css'
+import './GatewayCard.css'
 // import * as gatewayImage from 'public/images/tradfri_gateway.png'
 import { Gateway } from 'shared/types'
 

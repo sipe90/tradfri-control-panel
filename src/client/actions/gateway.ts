@@ -3,12 +3,12 @@ import { message } from 'antd'
 
 import { change } from 'redux-form'
 
-import { START_TIMER, STOP_TIMER } from 'redux-timers'
+import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { Gateway } from 'shared/types'
 import { DiscoveredGateway } from 'node-tradfri-client'
-import { ConnectionTestResult, ThunkResult } from 'types'
+import { ConnectionTestResult, ThunkResult } from '@/types'
 import { ActionCreator } from 'redux'
-import { fetchGetJson, fetchPostJson } from 'utils';
+import { fetchGetJson, fetchPostJson } from '@/utils';
 
 export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'

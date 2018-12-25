@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Button, List, Popover, Input } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
 
-import 'components/sensors/SensorItem.css'
-import StatusIndicator from 'components/StatusIndicator'
+import './SensorItem.css'
+import StatusIndicator from '@/components/StatusIndicator'
 import { Sensor } from 'shared/types'
 
 interface SensorItemProps {

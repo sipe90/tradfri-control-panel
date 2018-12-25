@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import { formValueSelector, getFormSyncErrors, reduxForm } from 'redux-form'
 
-import { discoverGateway, generateIdentity, testConnection, saveGateway } from 'actions/gateway'
+import { discoverGateway, generateIdentity, testConnection, saveGateway } from '@/actions/gateway'
 
-import GatewayForm, { GatewayFormValues, GatewayFormProps } from 'components/gateway/GatewayForm'
+import GatewayForm, { GatewayFormValues, GatewayFormProps } from '@/components/gateway/GatewayForm'
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Spin, Icon } from 'antd'
 
+import './Spinner.css'
+
 interface SpinnerProps {
     children: React.ReactNode
     spinning: boolean
