@@ -1,13 +1,12 @@
 
 import * as R from 'ramda'
-
-import schemas from '@/schemas'
-
-import { LOAD_LIGHTS_SUCCESS, LIGHT_STATE_CHANGED } from '@/actions/lights'
-import { normalizer, createReducer } from '@/utils'
-import { Dictionary, Light } from 'shared/types'
 import { Reducer } from 'redux'
-import { NormalizeResult } from '@/types'
+
+import { LIGHT_STATE_CHANGED, LOAD_LIGHTS_SUCCESS } from '@/actions/lights'
+import schemas from '@/schemas'
+import { INormalizeResult } from '@/types'
+import { createReducer, normalizer } from '@/utils'
+import { Dictionary, Light } from 'shared/types'
 
 type LightEntitiesState = Dictionary<Light>
 
@@ -15,29 +14,29 @@ const initialState = {}
 
 const normalizeLights = normalizer(schemas.lights)
 
-const mapLights = R.pipe<Light[], NormalizeResult, Dictionary<Light> | undefined>(
+const mapLights = R.pipe<Light[], INormalizeResult, Dictionary<Light> | undefined>(
     normalizeLights,
-    R.path(['entities', 'lights'])
+    R.path(['entities', 'lights']),
 )
 
 const updateLight = (state: LightEntitiesState, light: Light): LightEntitiesState => ({
-    ...state, 
+    ...state,
     [light.id]: {
         ...state[light.id],
-        ...light 
-    }
+        ...light,
+    },
 })
 
 const reducer = createReducer<LightEntitiesState>([
-    [LOAD_LIGHTS_SUCCESS, (_state, { payload }) => ({  
-        ...mapLights(payload as Light[])
+    [LOAD_LIGHTS_SUCCESS, (_state, { payload }) => ({
+        ...mapLights(payload as Light[]),
     })],
     [LIGHT_STATE_CHANGED, (state, { payload }) => ({
         ...state,
-        ...updateLight(state, payload as Light)
-    })]
+        ...updateLight(state, payload as Light),
+    })],
 ])
 
 const lightEntitiesReducer: Reducer<LightEntitiesState> = (state = initialState, action) => reducer(state, action)
 
-export default lightEntitiesReducer 
+export default lightEntitiesReducer

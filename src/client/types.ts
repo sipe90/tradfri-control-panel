@@ -1,23 +1,23 @@
 import { Action, AnyAction } from 'redux'
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction } from 'redux-thunk'
 
-export interface PayloadAction<P = any, T = any> extends Action<T> {
+export interface IPayloadAction<P = any, T = any> extends Action<T> {
     payload?: P
 }
 
 // TODO: State type
-export type ThunkResult<R = void, A extends Action<any> = AnyAction> = ThunkAction<R, any, undefined, A>;
+export type ThunkResult<R = void, A extends Action<any> = AnyAction> = ThunkAction<R, any, undefined, A>
 
-export interface NormalizeResult {
+export interface INormalizeResult {
     result: any
     entities: any
 }
 
-export interface ErrorResponse {
+export interface IErrorResponse {
     message: string
 }
 
-export interface ConnectionTestResult {
+export interface IConnectionTestResult {
     success: boolean
     error: string | null
 }

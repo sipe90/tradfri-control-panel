@@ -2,14 +2,14 @@ import React from 'react'
 
 import './ModuleWrapper.css'
 
-interface ModuleWrapperProps {
-    module: React.ReactNode
+interface IModuleWrapperProps {
+    module: any
 }
 
-const ModuleWrapper: React.FunctionComponent<ModuleWrapperProps> = (props) => {
+const ModuleWrapper: React.FunctionComponent<IModuleWrapperProps> = (props) => {
     return (
-        <div className="content-wrap">
-            {props.module}
+        <div className='content-wrap'>
+            <props.module />
         </div>
     )
 }

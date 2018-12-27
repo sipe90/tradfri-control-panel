@@ -1,12 +1,11 @@
 import { message } from 'antd'
 
 import { fetchGateway } from '@/actions/gateway'
-
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
-import { GroupUpdateRequest, Omit, Dictionary, Group } from 'shared/types';
-import { ActionCreator } from 'redux';
-import { ThunkResult } from '@/types';
-import { fetchGetJson, fetchPostJson } from '@/utils';
+import { ThunkResult } from '@/types'
+import { fetchGetJson, fetchPostJson } from '@/utils'
+import { ActionCreator } from 'redux'
+import { Dictionary, Group, GroupUpdateRequest, Omit } from 'shared/types'
 
 export const LOAD_GROUPS_REQUEST = 'LOAD_GROUPS_REQUEST'
 export const LOAD_GROUPS_SUCCESS = 'LOAD_GROUPS_SUCCESS'
@@ -53,7 +52,6 @@ export const startGroupPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
         }
     })
 
-
 export const stopGroupPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
@@ -68,7 +66,7 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
         await dispatch(loadGroupsRequest())
         const res = await fetchGetJson<Dictionary<Group>>('/api/groups')
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(loadGroupsSuccess(res.json))
     } catch (error) {
@@ -88,7 +86,7 @@ export const updateGroup: ActionCreator<ThunkResult> = (group: GroupUpdateReques
         dispatch(updateGroupRequest())
         const res = await fetchPostJson<void>(`/api/groups/${group.id}`, payload)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(updateGroupSuccess())
     } catch (error) {

@@ -1,92 +1,93 @@
-import {
-    LOAD_GATEWAY_REQUEST, LOAD_GATEWAY_SUCCESS, LOAD_GATEWAY_FAILURE,
-    DISCOVER_GATEWAY_REQUEST, DISCOVER_GATEWAY_SUCCESS, DISCOVER_GATEWAY_FAILURE,
-    GENERATE_IDENTITY_REQUEST, GENERATE_IDENTITY_SUCCESS, GENERATE_IDENTITY_FAILURE,
-    TEST_CONNECTION_REQUEST, TEST_CONNECTION_SUCCESS, TEST_CONNECTION_FAILURE
-} from '@/actions/gateway'
-import { Gateway } from 'shared/types'
 import { Reducer } from 'redux'
-import { ErrorResponse, ConnectionTestResult } from '@/types'
-import { createReducer } from '@/utils'
 
-interface GatewayModuleState {
+import {
+    DISCOVER_GATEWAY_FAILURE, DISCOVER_GATEWAY_REQUEST, DISCOVER_GATEWAY_SUCCESS,
+    GENERATE_IDENTITY_FAILURE, GENERATE_IDENTITY_REQUEST, GENERATE_IDENTITY_SUCCESS,
+    LOAD_GATEWAY_FAILURE, LOAD_GATEWAY_REQUEST, LOAD_GATEWAY_SUCCESS,
+    TEST_CONNECTION_FAILURE, TEST_CONNECTION_REQUEST, TEST_CONNECTION_SUCCESS,
+} from '@/actions/gateway'
+import { IConnectionTestResult, IErrorResponse } from '@/types'
+import { createReducer } from '@/utils'
+import { Gateway } from 'shared/types'
+
+interface IGatewayModuleState {
     initialDataLoading: boolean
     discoveryInProgress: boolean
     identityGenerationInProgress: boolean
     connectionTestInProgress: boolean
     discoveredGateway: Gateway | null
-    identityGenerationError: ErrorResponse | null
-    connectionTestResult: ConnectionTestResult | null
+    identityGenerationError: IErrorResponse | null
+    connectionTestResult: IConnectionTestResult | null
 }
 
 const initialState = {
-    initialDataLoading: false,
-    discoveryInProgress: false,
-    identityGenerationInProgress: false,
     connectionTestInProgress: false,
+    connectionTestResult: null,
     discoveredGateway: null,
+    discoveryInProgress: false,
     identityGenerationError: null,
-    connectionTestResult: null
+    identityGenerationInProgress: false,
+    initialDataLoading: false,
 }
 
-const reducer = createReducer<GatewayModuleState>([
+const reducer = createReducer<IGatewayModuleState>([
     [LOAD_GATEWAY_REQUEST, (state) => ({
         ...state,
-        initialDataLoading: true
+        initialDataLoading: true,
     })],
     [LOAD_GATEWAY_SUCCESS, (state) => ({
         ...state,
-        initialDataLoading: false
+        initialDataLoading: false,
     })],
     [LOAD_GATEWAY_FAILURE, (state) => ({
         ...state,
-        initialDataLoading: false
+        initialDataLoading: false,
     })],
     [DISCOVER_GATEWAY_REQUEST, (state) => ({
         ...state,
-        discoveryInProgress: true
+        discoveryInProgress: true,
     })],
     [DISCOVER_GATEWAY_SUCCESS, (state, { payload }) => ({
         ...state,
+        discoveredGateway: payload,
         discoveryInProgress: false,
-        discoveredGateway: payload
     })],
-    [DISCOVER_GATEWAY_FAILURE, state => ({
+    [DISCOVER_GATEWAY_FAILURE, (state) => ({
         ...state,
+        discoveredGateway: null,
         discoveryInProgress: false,
-        discoveredGateway: null
     })],
     [GENERATE_IDENTITY_REQUEST, (state) => ({
         ...state,
-        identityGenerationInProgress: true
+        identityGenerationInProgress: true,
     })],
     [GENERATE_IDENTITY_SUCCESS, (state) => ({
         ...state,
+        identityGenerationError: null,
         identityGenerationInProgress: false,
-        identityGenerationError: null
     })],
     [GENERATE_IDENTITY_FAILURE, (state, { payload }) => ({
         ...state,
+        identityGenerationError: payload,
         identityGenerationInProgress: false,
-        identityGenerationError: payload
     })],
     [TEST_CONNECTION_REQUEST, (state) => ({
         ...state,
         connectionTestInProgress: true,
-        connectionTestResult: null
+        connectionTestResult: null,
     })],
     [TEST_CONNECTION_SUCCESS, (state, { payload }) => ({
         ...state,
         connectionTestInProgress: false,
-        connectionTestResult: payload
+        connectionTestResult: payload,
     })],
     [TEST_CONNECTION_FAILURE, (state, { payload }) => ({
         ...state,
         connectionTestInProgress: false,
-        connectionTestResult: payload
-    })]
+        connectionTestResult: payload,
+    })],
 ])
 
-const gatewayReducer: Reducer<GatewayModuleState> = (state = initialState, action) => reducer(state, action)
+const gatewayReducer: Reducer<IGatewayModuleState> = (state = initialState, action) => reducer(state, action)
 
 export default gatewayReducer

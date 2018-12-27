@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('module-alias/register')
+
 import express, { Request, Response, NextFunction } from 'express'
 import httpLogger from 'morgan'
 import cookieParser from 'cookie-parser'

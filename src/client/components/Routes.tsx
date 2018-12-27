@@ -1,31 +1,26 @@
 import React from 'react'
-import { Redirect, Switch, Route } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 
 import ModuleWrapper from '@/components/ModuleWrapper'
-import { RouteDefinition } from '@/routeDefs';
+import { IRouteDefinition } from '@/routeDefs'
 
-interface RoutesProps {
-    routes: RouteDefinition[];
+interface IRoutesProps {
+    routes: IRouteDefinition[]
 }
 
-const Routes: React.FunctionComponent<RoutesProps> = (props) => {
+const Routes: React.FunctionComponent<IRoutesProps> = (props) => {
     return (
         <Switch>
-            <Route exact path='/' render={() => <Redirect to={props.routes[0].path} />} />
+            <Route exact={true} path='/' render={() => <Redirect to={props.routes[0].path} />} />
             {props.routes.map((route, index) => (
                 <Route
                     key={index}
                     path={route.path}
                     exact={route.exact}
-                    component={() => <ModuleWrapper
-                        module={route.container}
-                    />}
+                    component={() => <ModuleWrapper module={route.container} />}
                 />
             ))}
-            <Route component={() => <ModuleWrapper
-                module={<div>404</div>}
-            />}
-            />
+            <Route component={() => <ModuleWrapper module={<div>404</div>} />} />
         </Switch>
     )
 }

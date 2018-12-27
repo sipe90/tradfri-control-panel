@@ -1,23 +1,24 @@
-import React, { Component } from 'react'
-import { List, Button, Switch, Slider, Popover, Input } from 'antd'
-import * as R from 'ramda'
-import PencilIcon from 'mdi-react/PencilIcon'
-import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
+import { Button, Input, List, Popover, Slider, Switch } from 'antd'
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
+import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
+import PencilIcon from 'mdi-react/PencilIcon'
 import ThermometerIcon from 'mdi-react/ThermometerIcon'
+import * as R from 'ramda'
+import React, { Component } from 'react'
+
 import StatusIndicator from '@/components/StatusIndicator'
+import { SliderValue } from 'antd/lib/slider'
+import { Light } from 'shared/types'
 
 import './LightItem.css'
-import { Light } from 'shared/types';
-import { SliderValue } from 'antd/lib/slider';
 
-interface LightItemProps {
+interface ILightItemProps {
     light: Light
     lightStateChanged: (light: Light) => void
     updateLight: (light: Light) => void
 }
 
-interface LightItemState {
+interface ILightItemState {
     editNameVisible: boolean
     editNameText: string
 }
@@ -25,24 +26,24 @@ interface LightItemState {
 const getDescription = R.cond([
     [R.propEq('spectrum', 'white'), R.always('White spectrum light bulb')],
     [R.propEq('spectrum', 'rgb'), R.always('RGB spectrum light bulb')],
-    [R.T, R.always('Light bulb')]
+    [R.T, R.always('Light bulb')],
 ])
 
 const percentFormatter = (v: number) => `${v}%`
 
 const initialState = {
+    editNameText: '',
     editNameVisible: false,
-    editNameText: ''
 }
 
-class LightItem extends Component<LightItemProps, LightItemState> {
+class LightItem extends Component<ILightItemProps, ILightItemState> {
 
-    constructor(props: Readonly<LightItemProps>) {
+    constructor(props: Readonly<ILightItemProps>) {
         super(props)
         this.state = initialState
     }
 
-    render() {
+    public render() {
         return (
             <List.Item>
                 <List.Item.Meta
@@ -54,7 +55,7 @@ class LightItem extends Component<LightItemProps, LightItemState> {
         )
     }
 
-    title(light: Light) {
+    private title(light: Light) {
         return (
             <div className='light-item__title'>
                 <StatusIndicator type='light' on={light.on} alive={light.alive}/>
@@ -74,7 +75,7 @@ class LightItem extends Component<LightItemProps, LightItemState> {
         )
     }
 
-    editName() {
+    private editName() {
         return (
             <div className='light-item__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
@@ -83,41 +84,41 @@ class LightItem extends Component<LightItemProps, LightItemState> {
         )
     }
 
-    onEditNameVisibleChanged(visible: boolean) {
+    private onEditNameVisibleChanged(visible: boolean) {
         visible && this.setState({ editNameText: this.props.light.name })
         this.setState({ editNameVisible: visible })
     }
 
-    editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    private editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ editNameText: event.target.value })
     }
 
-    updateName() {
+    private updateName() {
         const newLightState = { ...this.props.light, name: this.state.editNameText }
         this.props.updateLight(newLightState)
         this.props.lightStateChanged(newLightState)
         this.setState({ editNameVisible: false })
     }
 
-    powerSwitched(newValue: boolean) {
+    private powerSwitched(newValue: boolean) {
         const newLightState = { ...this.props.light, on: newValue }
         this.props.lightStateChanged(newLightState)
         this.props.updateLight(newLightState)
     }
 
-    brightnessChanged(newValue: number) {
+    private brightnessChanged(newValue: number) {
         const newLightState = { ...this.props.light, brightness: newValue }
         this.props.lightStateChanged(newLightState)
         this.props.updateLight(newLightState)
     }
 
-    temperatureChanged(newValue: number) {
+    private temperatureChanged(newValue: number) {
         const newLightState = { ...this.props.light, colorTemperature: newValue }
         this.props.lightStateChanged(newLightState)
         this.props.updateLight(newLightState)
     }
 
-    controlTable(light: Light) {
+    private controlTable(light: Light) {
         return (
             <table className='light-item__table'>
                 <tbody>

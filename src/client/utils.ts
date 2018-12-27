@@ -1,67 +1,71 @@
-import * as R from 'ramda'
+import { INormalizeResult, IPayloadAction } from '@/types'
 import { normalize, Schema } from 'normalizr'
-import { Group, Dictionary, Device } from 'shared/types';
-import { NormalizeResult, PayloadAction } from '@/types';
-import { Action } from 'redux';
+import * as R from 'ramda'
+import { Action } from 'redux'
 
-export const devicesForGroup = (group: Group, devices: Dictionary<Device>) => R.values(R.pick(R.map(String, group.devices), devices))
+import { Device, Dictionary, Group } from 'shared/types'
 
-export const normalizer = (schema: Schema): (data: any) => NormalizeResult => R.curry(R.flip(normalize))(schema);
+export const devicesForGroup = (group: Group, devices: Dictionary<Device>) =>
+    R.values(R.pick(R.map(String, group.devices), devices))
 
-type ActionReducePair<S, A> = [string, (state: S, action: A) => S];
+export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R.curry(R.flip(normalize))(schema)
+
+type ActionReducePair<S, A> = [string, (state: S, action: A) => S]
 type ActionPredicateReducePair<S> = [(action: string) => boolean, () => S]
 
-export const createReducer = <S, A extends Action = PayloadAction> (cases: Array<ActionReducePair<S, A>>) => (state: S, action: A) =>
-    R.cond(
-        R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(([act, reduce]) => [R.equals(act), () => reduce(state, action)], cases)
-        .concat([R.T, R.always(state)])
-    )(action.type)
+export const createReducer = <S, A extends Action = IPayloadAction> (cases: Array<ActionReducePair<S, A>>) =>
+    (state: S, action: A) =>
+        R.cond(
+            R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(([act, reduce]) =>
+                [R.equals(act), () => reduce(state, action)], cases)
+            .concat([[R.T, R.always(state)]]),
+        )(action.type)
 
-type JsonResponse<R> = ({
+type JsonResponse<E> = ({
     headers: Headers
     status: number
-    statusText: string
+    statusText: string,
 } & ({
         ok: true
-        json: R
+        json: E,
     } | {
         ok: false
-        json: ErrorResponse
+        json: IErrorResponse,
     })
 )
 
-interface ErrorResponse {
+interface IErrorResponse {
     field: string
     message: string
     stack?: string
 }
 
-const fetchJson = async <R> (url: string, init?: RequestInit): Promise<JsonResponse<R>> => {
+const fetchJson = async <E> (url: string, init?: RequestInit): Promise<JsonResponse<E>> => {
     const { headers, status, statusText, ok, json } = await fetch(url, init)
     const resJson = await json()
 
     return ok ? {
         headers,
+        json: resJson as E,
+        ok: true,
         status,
         statusText,
-        ok: true,
-        json: resJson as R,
     } : {
         headers,
+        json: resJson as IErrorResponse,
+        ok: false,
         status,
         statusText,
-        ok: false,
-        json: resJson as ErrorResponse
     }
 }
 
-export const fetchGetJson = <R = any> (url: string) => fetchJson<R>(url)
+export const fetchGetJson = <E = any> (url: string) => fetchJson<E>(url)
 
-export const fetchPostJson = <R = any> (url: string, body: object | string) =>
-    fetchJson<R>(url, {
-        method: 'POST', 
-        body: typeof body === 'string' ? body : JSON.stringify(body), 
-        headers: { 'content-type': 'application/json' }
+export const fetchPostJson = <E = any> (url: string, body: object | string) =>
+    fetchJson<E>(url, {
+        body: typeof body === 'string' ? body : JSON.stringify(body),
+        headers: { 'content-type': 'application/json' },
+        method: 'POST',
     })
 
-export const fetchDeleteJson = <R = any> (url: string) => fetchJson<R>(url, { method: 'DELETE' })
+export const fetchDeleteJson = <E = any> (url: string) => fetchJson<E>(url, { method: 'DELETE' })

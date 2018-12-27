@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Card, List } from 'antd'
 import R, { Dictionary } from 'ramda'
-import { lightStateChanged, updateLight } from '@/actions/lights'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { AnyAction } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 
-import Spinner from '@/components/Spinner'
+import { lightStateChanged, updateLight } from '@/actions/lights'
 import LightItem from '@/components/lights/LightItem'
+import Spinner from '@/components/Spinner'
+import { devicesForGroup } from '@/utils'
+import { Group, Light } from 'shared/types'
 
 import './LightsTab.css'
-import { Group, Light } from 'shared/types';
-import { devicesForGroup } from '@/utils';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
 
-interface LightsTabProps {
+interface ILightsTabProps {
     groups: Dictionary<Group>
     lights: Dictionary<Light>
     initialDataLoading: boolean
@@ -21,40 +21,44 @@ interface LightsTabProps {
     updateLight: (light: Light) => void
 }
 
-class LightsTab extends Component<LightsTabProps> {
-    
-    render() {
-        return (
-            R.values(this.props.groups).map((group, idx) =>
-                <Card key={idx} className='lights-tab__card' title={group.name}>
-                    <Spinner spinning={this.props.initialDataLoading}>
-                        <List itemLayout='vertical'
-                            dataSource={devicesForGroup(group, this.props.lights)}
-                            renderItem={(item: Light) => renderItem(item, this.props)} 
-                            locale={{ emptyText: 'No lights'}}/>
-                    </Spinner>
-                </Card>)
-        )
-    }
-}
+class LightsTab extends Component<ILightsTabProps> {
 
-const renderItem = (light: Light, { lightStateChanged, updateLight }: LightsTabProps) => (
-    <LightItem key={light.id}
-        light={light}
-        lightStateChanged={lightStateChanged}
-        updateLight={updateLight} />
-)
+    public render = () => (
+        R.values(this.props.groups).map((group, idx) => (
+            <Card key={idx} className='lights-tab__card' title={group.name}>
+                <Spinner spinning={this.props.initialDataLoading}>
+                    <List
+                        itemLayout='vertical'
+                        dataSource={devicesForGroup(group, this.props.lights)}
+                        renderItem={this.renderItem}
+                        locale={{ emptyText: 'No lights'}}
+                    />
+                </Spinner>
+            </Card>
+            ),
+        )
+    )
+
+    private renderItem = (light: Light) => (
+        <LightItem
+            key={light.id}
+            light={light}
+            lightStateChanged={this.props.lightStateChanged}
+            updateLight={this.props.updateLight}
+        />
+    )
+}
 
 // TODO: State type
 const mapStateToProps = (state: any) => ({
     groups: state.entities.groups,
+    initialDataLoading: state.modules.lights.initialDataLoading,
     lights: state.entities.lights,
-    initialDataLoading: state.modules.lights.initialDataLoading
 })
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     lightStateChanged: (light: Light) => dispatch(lightStateChanged(light)),
-    updateLight: (light: Light) => dispatch(updateLight(light))
+    updateLight: (light: Light) => dispatch(updateLight(light)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightsTab)

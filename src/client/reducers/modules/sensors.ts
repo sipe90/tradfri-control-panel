@@ -1,31 +1,32 @@
-import { 
-    LOAD_SENSORS_REQUEST, LOAD_SENSORS_SUCCESS, LOAD_SENSORS_FAILURE 
-} from '@/actions/sensors'
-import { createReducer } from '@/utils'
 import { Reducer } from 'redux'
 
-interface SensorsModuleState {
+import {
+    LOAD_SENSORS_FAILURE, LOAD_SENSORS_REQUEST, LOAD_SENSORS_SUCCESS,
+} from '@/actions/sensors'
+import { createReducer } from '@/utils'
+
+interface ISensorsModuleState {
     initialDataLoading: boolean
 }
 
 const initialState = {
-    initialDataLoading: true
+    initialDataLoading: true,
 }
 
-const reducer = createReducer<SensorsModuleState>([
-    [LOAD_SENSORS_REQUEST, (state) => ({ 
-        ...state
+const reducer = createReducer<ISensorsModuleState>([
+    [LOAD_SENSORS_REQUEST, (state) => ({
+        ...state,
     })],
-    [LOAD_SENSORS_SUCCESS, (state) => ({ 
-        ...state, 
-        initialDataLoading: false
+    [LOAD_SENSORS_SUCCESS, (state) => ({
+        ...state,
+        initialDataLoading: false,
     })],
     [LOAD_SENSORS_FAILURE, (state) => ({
         ...state,
-        initialDataLoading: false
-    })]
+        initialDataLoading: false,
+    })],
 ])
 
-const sensorsModuleReducer: Reducer<SensorsModuleState> = (state = initialState, action) => reducer(state, action) 
+const sensorsModuleReducer: Reducer<ISensorsModuleState> = (state = initialState, action) => reducer(state, action)
 
 export default sensorsModuleReducer

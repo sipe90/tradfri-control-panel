@@ -1,13 +1,13 @@
 
 import { message } from 'antd'
+import { Dictionary } from 'ramda'
+import { ActionCreator } from 'redux'
 
-import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { fetchGateway } from '@/actions/gateway'
-import { Dictionary } from 'ramda';
-import { Sensor } from 'shared/types';
-import { ActionCreator } from 'redux';
-import { ThunkResult } from '@/types';
-import { fetchPostJson, fetchGetJson } from '@/utils';
+import { START_TIMER, STOP_TIMER } from '@/redux-timers'
+import { ThunkResult } from '@/types'
+import { fetchGetJson, fetchPostJson } from '@/utils'
+import { Sensor } from 'shared/types'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -61,7 +61,6 @@ export const startSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =
         }
     })
 
-
 export const stopSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
@@ -76,7 +75,7 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
         await dispatch(loadSensorsRequest())
         const res = await fetchGetJson<Dictionary<Sensor>>('/api/sensors')
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(loadSensorsSuccess(res.json))
     } catch (error) {
@@ -91,11 +90,11 @@ export const updateSensor: ActionCreator<ThunkResult> = (sensor: Sensor) => asyn
         dispatch(updateSensorRequest())
         const res = await fetchPostJson(`/api/sensors/${sensor.id}`, sensor)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
-        dispatch(updateSensorSuccess());
+        dispatch(updateSensorSuccess())
     } catch (error) {
-        message.error(`Failed to update sensor: ${error.message}`);
-        dispatch(updateSensorFailure(error));
+        message.error(`Failed to update sensor: ${error.message}`)
+        dispatch(updateSensorFailure(error))
     }
 }

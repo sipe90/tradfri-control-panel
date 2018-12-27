@@ -1,60 +1,63 @@
-import React, { Component } from 'react'
-import { Button, Card, Popover, Input } from 'antd'
+import { Button, Card, Input, Popover } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
-import StatusIndicator from '@/components/StatusIndicator'
+import React, { Component } from 'react'
 
-import './GatewayCard.css'
+import StatusIndicator from '@/components/StatusIndicator'
 // import * as gatewayImage from 'public/images/tradfri_gateway.png'
 import { Gateway } from 'shared/types'
 
+import './GatewayCard.css'
+
 const { Meta } = Card
 
-interface GatewayCardProps {
+interface IGatewayCardProps {
     gateway: Gateway
     gatewayStateChanged: (gateway: Gateway) => void
     saveGateway: (gateway: Gateway) => void
 }
 
-interface GatewayCardState {
+interface IGatewayCardState {
     editNameVisible: boolean
     editNameText: string
 }
 
 const initialState = {
+    editNameText: '',
     editNameVisible: false,
-    editNameText: ''
 }
 
-class GatewayCard extends Component<GatewayCardProps, GatewayCardState> {
+class GatewayCard extends Component<IGatewayCardProps, IGatewayCardState> {
 
-    constructor(props: Readonly<GatewayCardProps>) {
+    constructor(props: Readonly<IGatewayCardProps>) {
         super(props)
         this.state = initialState
     }
 
-    render() {
+    public render() {
         return (
             <div className='gateway-card'>
                 <Card
-                    cover={this.cardCover()}>
+                    cover={this.cardCover()}
+                >
                     <Meta
                         title={this.title(this.props.gateway)}
                         avatar={<StatusIndicator type='gateway' alive={this.props.gateway.connected}/>}
-                        description='IKEA Trådfri gateway' />
+                        description='IKEA Trådfri gateway'
+                    />
                 </Card>
             </div>
         )
     }
 // <img alt='Trådfri gateway' src={gatewayImage} />
-    cardCover() {
+    private cardCover() {
         return (
             <div className='gateway-card__cover'>
-                
+
             </div>
         )
     }
 
-    title(gateway: Gateway) {
+    private title(gateway: Gateway) {
         return (
             <div className='gateway-card__title'>
                 <span>{gateway.name}</span>
@@ -73,7 +76,7 @@ class GatewayCard extends Component<GatewayCardProps, GatewayCardState> {
         )
     }
 
-    editName() {
+    private editName() {
         return (
             <div className='gateway-card__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
@@ -82,16 +85,16 @@ class GatewayCard extends Component<GatewayCardProps, GatewayCardState> {
         )
     }
 
-    onEditNameVisibleChanged(visible: boolean) {
+    private onEditNameVisibleChanged(visible: boolean) {
         visible && this.setState({ editNameText: this.props.gateway.name })
         this.setState({ editNameVisible: visible })
     }
 
-    editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    private editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ editNameText: event.target.value })
     }
 
-    updateName() {
+    private updateName() {
         const newGatewayState = { ...this.props.gateway, name: this.state.editNameText }
         this.props.saveGateway(newGatewayState)
         this.props.gatewayStateChanged(newGatewayState)

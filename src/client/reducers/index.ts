@@ -15,12 +15,12 @@ export default combineReducers({
         gateway: entityGateway,
         groups: entityGroups,
         lights: entityLights,
-        sensors: entitySensors
+        sensors: entitySensors,
     }),
+    form: formReducer,
     modules: combineReducers({
         gateway: moduleGateway,
         lights: moduleLights,
-        sensors: moduleSensors
+        sensors: moduleSensors,
     }),
-    form: formReducer
 })

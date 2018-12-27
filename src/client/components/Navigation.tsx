@@ -1,14 +1,15 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import './Navigation.css'
-import { RouteDefinition } from '@/routeDefs';
+import { IRouteDefinition } from '@/routeDefs'
 
-interface NavigationProps {
-    routes: RouteDefinition[]
+import './Navigation.css'
+
+interface INavigationProps {
+    routes: IRouteDefinition[]
 }
 
-const Navigation: React.FunctionComponent<NavigationProps> = (props) => {
+const Navigation: React.FunctionComponent<INavigationProps> = (props) => {
     return (
         <div className='nav-menu'>
             {

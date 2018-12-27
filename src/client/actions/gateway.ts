@@ -4,11 +4,11 @@ import { message } from 'antd'
 import { change } from 'redux-form'
 
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
-import { Gateway } from 'shared/types'
+import { IConnectionTestResult, ThunkResult } from '@/types'
+import { fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
-import { ConnectionTestResult, ThunkResult } from '@/types'
 import { ActionCreator } from 'redux'
-import { fetchGetJson, fetchPostJson } from '@/utils';
+import { Gateway } from 'shared/types'
 
 export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'
@@ -89,7 +89,7 @@ const testConnectionRequest = () => ({
     type: TEST_CONNECTION_REQUEST
 })
 
-const testConnectionSuccess = (testResult: ConnectionTestResult) => ({
+const testConnectionSuccess = (testResult: IConnectionTestResult) => ({
     type: TEST_CONNECTION_SUCCESS,
     payload: testResult
 })
@@ -114,7 +114,6 @@ export const startGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) 
         }
     })
 
-
 export const stopGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
@@ -123,18 +122,17 @@ export const stopGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =
         }
     })
 
-
 export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadGatewayRequest())
         const res = await fetchGetJson<Gateway>('/api/gateway')
-        
+
         if (res.status === 404) {
             dispatch(loadGatewaySuccess(null))
             dispatch(stopGatewayPolling())
         }
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(loadGatewaySuccess(res.json))
     } catch (error) {
@@ -149,7 +147,7 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => asy
         dispatch(saveGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway', gateway)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(saveGatewaySuccess())
         dispatch(fetchGateway())
@@ -168,7 +166,7 @@ export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch
             dispatch(discoverGatewaySuccess(null))
         }
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         const json = await res.json()
 
@@ -181,39 +179,42 @@ export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch
     }
 }
 
-interface GenerateIdentityResponse {
+interface IGenerateIdentityResponse {
     identity: string
     psk: string
 }
 
-export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, securityCode: string) => async (dispatch) => {
-    try {
-        dispatch(generateIdentityRequest())
-        const res = await fetchPostJson<GenerateIdentityResponse>('api/gateway/identity', { hostname, securityCode })
-        
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, securityCode: string) =>
+    async (dispatch) => {
+        try {
+            dispatch(generateIdentityRequest())
+            const res = await fetchPostJson<IGenerateIdentityResponse>(
+                'api/gateway/identity', { hostname, securityCode })
 
-        const { identity, psk } = await res.json as GenerateIdentityResponse
+            if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
-        dispatch(change('GATEWAY', 'identity', identity));
-        dispatch(change('GATEWAY', 'psk', psk));
-        dispatch(generateIdentitySuccess());
-    } catch (error) {
-        message.error(`Failed to generate identity: ${error.message}`);
-        dispatch(generateIdentityFailure(error));
-    }
+            const { identity, psk } = await res.json as IGenerateIdentityResponse
+
+            dispatch(change('GATEWAY', 'identity', identity))
+            dispatch(change('GATEWAY', 'psk', psk))
+            dispatch(generateIdentitySuccess())
+        } catch (error) {
+            message.error(`Failed to generate identity: ${error.message}`)
+            dispatch(generateIdentityFailure(error))
+        }
 }
 
-export const testConnection: ActionCreator<ThunkResult> = (hostname: string, identity: string, psk: string) => async (dispatch) => {
-    try {
-        dispatch(testConnectionRequest())
-        const res = await fetchPostJson<ConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
-        
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+export const testConnection: ActionCreator<ThunkResult> = (hostname: string, identity: string, psk: string) =>
+    async (dispatch) => {
+        try {
+            dispatch(testConnectionRequest())
+            const res = await fetchPostJson<IConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
 
-        dispatch(testConnectionSuccess(res.json));
-    } catch (error) {
-        message.error(`Failed to test connection: ${error.message}`);
-        dispatch(testConnectionFailure(error));
-    }
+            if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+
+            dispatch(testConnectionSuccess(res.json))
+        } catch (error) {
+            message.error(`Failed to test connection: ${error.message}`)
+            dispatch(testConnectionFailure(error))
+        }
 }

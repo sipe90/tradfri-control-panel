@@ -1,15 +1,17 @@
+import { Dictionary } from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { AnyAction } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 
-import { fetchSensors, updateSensor, startSensorPolling, stopSensorPolling, sensorStateChanged } from '@/actions/sensors'
-
+import {
+    fetchSensors, sensorStateChanged, startSensorPolling,
+    stopSensorPolling, updateSensor,
+} from '@/actions/sensors'
 import SensorList from '@/components/sensors/SensorList'
-import { Dictionary } from 'ramda';
-import { Sensor } from 'shared/types';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
+import { Sensor } from 'shared/types'
 
-interface SensorsModuleProps {
+interface ISensorsModuleProps {
     sensors: Dictionary<Sensor>
     initialDataLoading: boolean
     loadSensors: () => void
@@ -19,19 +21,18 @@ interface SensorsModuleProps {
     stopSensorPolling: () => void
 }
 
+class SensorsModule extends Component<ISensorsModuleProps> {
 
-class SensorsModule extends Component<SensorsModuleProps> {
-
-    componentDidMount() {
+    public componentDidMount() {
         this.props.loadSensors()
         this.props.startSensorPolling()
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         this.props.stopSensorPolling()
     }
 
-    render() {
+    public render() {
         return (
             <SensorList
                 sensors={this.props.sensors}
@@ -45,20 +46,20 @@ class SensorsModule extends Component<SensorsModuleProps> {
 
 // TODO: State type
 const mapStateToProps = (state: any) => ({
+    initialDataLoading: state.modules.sensors.initialDataLoading,
     sensors: state.entities.sensors,
-    initialDataLoading: state.modules.sensors.initialDataLoading
 })
 
 // TODO: State type
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     loadSensors: () => dispatch(fetchSensors()),
     sensorStateChanged: (sensor: Sensor) => dispatch(sensorStateChanged(sensor)),
-    updateSensor: (sensor: Sensor) => dispatch(updateSensor(sensor)),
     startSensorPolling: () => dispatch(startSensorPolling()),
-    stopSensorPolling: () => dispatch(stopSensorPolling())
+    stopSensorPolling: () => dispatch(stopSensorPolling()),
+    updateSensor: (sensor: Sensor) => dispatch(updateSensor(sensor)),
 })
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(SensorsModule)

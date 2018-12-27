@@ -1,33 +1,37 @@
-import React from 'react'
 import { List } from 'antd'
-import R, { Dictionary } from 'ramda'
+import * as R from 'ramda'
+import React from 'react'
 
-import Spinner from '@/components/Spinner'
 import SensorItem from '@/components/sensors/SensorItem'
+import Spinner from '@/components/Spinner'
+import { Dictionary, Sensor } from 'shared/types'
 
 import './SensorList.css'
-import { Sensor } from 'shared/types';
 
-interface SensorListProps {
+interface ISensorListProps {
     sensors: Dictionary<Sensor>
     initialDataLoading: boolean
     sensorStateChanged: (sensor: Sensor) => void
     updateSensor: (sensor: Sensor) => void
 }
 
-const SensorList: React.FunctionComponent<SensorListProps> = (props) => (
+const SensorList: React.FunctionComponent<ISensorListProps> = (props) => (
     <Spinner spinning={props.initialDataLoading}>
-        <List itemLayout='vertical'
+        <List
+            itemLayout='vertical'
             dataSource={R.values(props.sensors)}
-            renderItem={(item: Sensor) => renderItem(item, props)} />
+            renderItem={(item: Sensor) => renderItem(item, props)}
+        />
     </Spinner>
 )
 
-const renderItem = (sensor: Sensor, { sensorStateChanged, updateSensor }: SensorListProps) => (
-    <SensorItem key={sensor.id}
+const renderItem = (sensor: Sensor, { sensorStateChanged, updateSensor }: ISensorListProps) => (
+    <SensorItem
+        key={sensor.id}
         sensor={sensor}
         sensorStateChanged={sensorStateChanged}
-        updateSensor={updateSensor} />
+        updateSensor={updateSensor}
+    />
 )
 
 export default SensorList

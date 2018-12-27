@@ -1,45 +1,47 @@
-import React, { Component } from 'react'
-import { Button, List, Popover, Input } from 'antd'
+import { Button, Input, List, Popover } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
+import React, { Component } from 'react'
 
-import './SensorItem.css'
 import StatusIndicator from '@/components/StatusIndicator'
 import { Sensor } from 'shared/types'
 
-interface SensorItemProps {
+import './SensorItem.css'
+
+interface ISensorItemProps {
     sensor: Sensor
     sensorStateChanged: (sensor: Sensor) => void
     updateSensor: (sensor: Sensor) => void
 }
 
-interface SensorItemState {
+interface ISensorItemState {
     editNameVisible: boolean
     editNameText: string
 }
 
 const initialState = {
+    editNameText: '',
     editNameVisible: false,
-    editNameText: ''
 }
 
-class SensorItem extends Component<SensorItemProps, SensorItemState> {
+class SensorItem extends Component<ISensorItemProps, ISensorItemState> {
 
-    constructor(props: Readonly<SensorItemProps>) {
+    constructor(props: Readonly<ISensorItemProps>) {
         super(props)
         this.state = initialState
     }
 
-    render() {
+    public render() {
         return (
             <List.Item>
                 <List.Item.Meta
                     title={this.title(this.props.sensor)}
-                    description='Motion sensor' />
+                    description='Motion sensor'
+                />
             </List.Item>
         )
     }
 
-    title(sensor: Sensor) {
+    private title(sensor: Sensor) {
         return (
             <div className='sensor-item__title'>
                 <StatusIndicator type='sensor' alive={this.props.sensor.alive}/>
@@ -59,7 +61,7 @@ class SensorItem extends Component<SensorItemProps, SensorItemState> {
         )
     }
 
-    editName() {
+    private editName() {
         return (
             <div className='sensor-item__popover'>
                 <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
@@ -68,16 +70,16 @@ class SensorItem extends Component<SensorItemProps, SensorItemState> {
         )
     }
 
-    onEditNameVisibleChanged(visible: boolean) {
+    private onEditNameVisibleChanged(visible: boolean) {
         visible && this.setState({ editNameText: this.props.sensor.name })
         this.setState({ editNameVisible: visible })
     }
 
-    editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    private editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ editNameText: event.target.value })
     }
 
-    updateName() {
+    private updateName() {
         const newSensorState = { ...this.props.sensor, name: this.state.editNameText }
         this.props.updateSensor(newSensorState)
         this.props.sensorStateChanged(newSensorState)

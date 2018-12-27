@@ -1,17 +1,18 @@
+import { Button, Icon, Spin, Table } from 'antd'
+import { DiscoveredGateway } from 'node-tradfri-client'
+import * as R from 'ramda'
 import React from 'react'
 import { Field, FormErrors, InjectedFormProps } from 'redux-form'
-import { Button, Spin, Icon, Table } from 'antd'
-import * as R from 'ramda'
-import { DiscoveredGateway } from 'node-tradfri-client'
 
 import { Input, Search } from '@/components/form'
 import { required } from '@/validators'
 
-import './GatewayForm.css'
-import { ConnectionTestResult } from '@/types'
-import { ColumnProps } from 'antd/lib/table';
+import { IConnectionTestResult } from '@/types'
+import { ColumnProps } from 'antd/lib/table'
 
-export interface GatewayFormValues {
+import './GatewayForm.css'
+
+export interface IGatewayFormValues {
     name: string
     hostname: string
     identity: string
@@ -19,74 +20,74 @@ export interface GatewayFormValues {
     securityCode: string
 }
 
-export interface GatewayFormProps {
+export interface IGatewayFormProps {
     step: number
     nextStep: () => void
     previousStep: () => void
     discoverGateway: () => void
     generateIdentity: (hostname: string, securityCode: string) => void
     testConnection: (hostname: string, identity: string, psk: string) => void
-    saveGateway: (gateway: GatewayFormValues) => void
+    saveGateway: (gateway: IGatewayFormValues) => void
     discoveryInProgress: boolean
     identityGenerationInProgress: boolean
     connectionTestInProgress: boolean
     securityCodeValue: string
     hostnameValue: string
-    identityValue:string
+    identityValue: string
     pskValue: string
     identityGenerationError: any
     discoveredGateway: DiscoveredGateway
-    connectionTestResult: ConnectionTestResult
-    validationErrors: FormErrors<GatewayFormValues>
+    connectionTestResult: IConnectionTestResult
+    validationErrors: FormErrors<IGatewayFormValues>
 }
 
-type AllProps = GatewayFormProps & InjectedFormProps<GatewayFormValues, GatewayFormProps>
+type AllProps = IGatewayFormProps & InjectedFormProps<IGatewayFormValues, IGatewayFormProps>
 
 const fieldProps = {
-    securityCode: {
-        label: 'Security code',
-        colon: false,
-        enterButton: 'Generate',
-        style: {
-            width: 240
-        }
-    },
-    name: {
-        label: 'Gateway name',
-        colon: false
-    },
     hostname: {
+        colon: false,
         label: 'Gateway address',
-        colon: false
     },
     identity: {
+        colon: false,
         label: 'Identity',
-        colon: false
+    },
+    name: {
+        colon: false,
+        label: 'Gateway name',
     },
     psk: {
+        colon: false,
         label: 'Pre-shared key',
-        colon: false
-    }
+    },
+    securityCode: {
+        colon: false,
+        enterButton: 'Generate',
+        label: 'Security code',
+        style: {
+            width: 240,
+        },
+    },
 }
 
 const columns: Array<ColumnProps<DiscoveredGateway>> = [{
+    dataIndex: 'name',
     title: 'Name',
-    dataIndex: 'name'
 }, {
+    dataIndex: 'host',
     title: 'Host',
-    dataIndex: 'host'
 }, {
-    title: 'Addresses',
     dataIndex: 'addresses',
-    render: function renderAddresses([ipv4, ipv6]: [string, string]) { return <span>{ipv4}<br />{ipv6}</span> }
+    render: function renderAddresses([ipv4, ipv6]: [string, string]) { return <span>{ipv4}<br />{ipv6}</span> },
+    title: 'Addresses',
 }, {
+    dataIndex: 'version',
     title: 'Version',
-    dataIndex: 'version'
 }]
 
-const Spinner = <Icon type='loading' className='spinner-icon' spin />
+const Spinner = <Icon type='loading' className='spinner-icon' spin={true} />
 
-const renderDiscoveryStep = (props: AllProps) =>
+const renderDiscoveryStep = (props: AllProps) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -97,9 +98,11 @@ const renderDiscoveryStep = (props: AllProps) =>
             </div>
             <div className='discovery__discover'>
                 <div>
-                    <Button type='primary'
+                    <Button
+                        type='primary'
                         onClick={() => props.discoverGateway()}
-                        disabled={props.discoveryInProgress}>
+                        disabled={props.discoveryInProgress}
+                    >
                         Discover
                     </Button>
                 </div>
@@ -112,18 +115,32 @@ const renderDiscoveryStep = (props: AllProps) =>
             </div>
             <div>
                 <div className='discovery__table-header'>Discovered gateway</div>
-                <Table size='small'
+                <Table
+                    size='small'
                     columns={columns}
                     dataSource={props.discoveredGateway ? [props.discoveredGateway] : []}
                     pagination={false}
-                    rowKey='name' />
+                    rowKey='name'
+                />
             </div>
             <div className='discovery__input'>
                 <div>
-                    <Field name='name' validate={required} component={Input as any} type='text' props={fieldProps.name as any} />
+                    <Field
+                        name='name'
+                        validate={required}
+                        component={Input as any}
+                        type='text'
+                        props={fieldProps.name as any}
+                    />
                 </div>
                 <div>
-                    <Field name='hostname' validate={required} component={Input as any} type='text' props={fieldProps.hostname as any} />
+                    <Field
+                        name='hostname'
+                        validate={required}
+                        component={Input as any}
+                        type='text'
+                        props={fieldProps.hostname as any}
+                    />
                 </div>
             </div>
         </div>
@@ -138,8 +155,9 @@ const renderDiscoveryStep = (props: AllProps) =>
             </div>
         </div>
     </div>
+    )
 
-const renderAuthenticationStep = (props: AllProps) =>
+const renderAuthenticationStep = (props: AllProps) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -153,12 +171,17 @@ const renderAuthenticationStep = (props: AllProps) =>
             </div>
             <div className='auth__security-code'>
                 <div>
-                    <Field name='securityCode' component={Search as any} type='text' props={{
-                        validateStatus: props.identityGenerationError ? 'error' : null,
-                        help: props.identityGenerationError ? props.identityGenerationError.message : null,
-                        onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
-                        ...fieldProps.securityCode
-                    } as any} />
+                    <Field
+                        name='securityCode'
+                        component={Search as any}
+                        type='text'
+                        props={{
+                            validateStatus: props.identityGenerationError ? 'error' : null,
+                            help: props.identityGenerationError ? props.identityGenerationError.message : null,
+                            onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
+                            ...fieldProps.securityCode,
+                        } as any}
+                    />
                 </div>
                 {props.identityGenerationInProgress &&
                     <div className='auth__status'>
@@ -169,17 +192,30 @@ const renderAuthenticationStep = (props: AllProps) =>
             </div>
             <div className='auth__input'>
                 <div>
-                    <Field name='identity' validate={required} component={Input as any} type='text' props={fieldProps.identity as any} />
+                    <Field
+                        name='identity'
+                        validate={required}
+                        component={Input as any}
+                        type='text'
+                        props={fieldProps.identity as any}
+                    />
                 </div>
                 <div>
-                    <Field name='psk' validate={required} component={Input as any} type='text' props={fieldProps.psk as any} />
+                    <Field
+                        name='psk'
+                        validate={required}
+                        component={Input as any}
+                        type='text'
+                        props={fieldProps.psk as any}
+                    />
                 </div>
             </div>
         </div>
         <div className='form-section__button-row'>
             <div>
                 <Button
-                    onClick={props.previousStep}>
+                    onClick={props.previousStep}
+                >
                     Previous
                 </Button>
             </div>
@@ -187,14 +223,16 @@ const renderAuthenticationStep = (props: AllProps) =>
                 <Button
                     type='primary'
                     onClick={props.nextStep}
-                    disabled={!R.isEmpty(props.validationErrors)}>
+                    disabled={!R.isEmpty(props.validationErrors)}
+                >
                     Next
                 </Button>
             </div>
         </div>
     </div>
+)
 
-const renderTestConnectionStep = (props: AllProps) =>
+const renderTestConnectionStep = (props: AllProps) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -204,7 +242,12 @@ const renderTestConnectionStep = (props: AllProps) =>
             </div>
             <div className='test__content'>
                 <div>
-                    <Button type='primary' onClick={() => props.testConnection(props.hostnameValue, props.identityValue, props.pskValue)}>Test connection</Button>
+                    <Button
+                        type='primary'
+                        onClick={() => props.testConnection(props.hostnameValue, props.identityValue, props.pskValue)}
+                    >
+                        Test connection
+                    </Button>
                 </div>
                 {props.connectionTestInProgress &&
                     <div>
@@ -215,7 +258,8 @@ const renderTestConnectionStep = (props: AllProps) =>
                 {props.connectionTestResult &&
                     <div>
                         {props.connectionTestResult.success ?
-                            <span className='test__status--success'>Successfully connected to gateway!</span> : <span className='test__status--failure'>Failed to connect to gateway</span>
+                            <span className='test__status--success'>Successfully connected to gateway!</span>
+                                : <span className='test__status--failure'>Failed to connect to gateway</span>
                         }
                     </div>
                 }
@@ -224,7 +268,8 @@ const renderTestConnectionStep = (props: AllProps) =>
         <div className='form-section__button-row'>
             <div>
                 <Button
-                    onClick={props.previousStep}>
+                    onClick={props.previousStep}
+                >
                     Previous
                 </Button>
             </div>
@@ -233,20 +278,24 @@ const renderTestConnectionStep = (props: AllProps) =>
                     onClick={props.handleSubmit(props.saveGateway)}
                     type='primary'
                     htmlType='submit'
-                    disabled={props.submitting || !R.path(['connectionTestResult', 'success'], props)}>
+                    disabled={props.submitting || !R.path(['connectionTestResult', 'success'], props)}
+                >
                     Finish
                 </Button>
             </div>
         </div>
     </div>
+)
 
 const GatewayForm: React.FunctionComponent<AllProps> = (props) => {
     const { handleSubmit, step } = props
-    return <form onSubmit={handleSubmit}>
-        {step === 0 && renderDiscoveryStep(props)}
-        {step === 1 && renderAuthenticationStep(props)}
-        {step === 2 && renderTestConnectionStep(props)}
-    </form>
+    return (
+        <form onSubmit={handleSubmit}>
+            {step === 0 && renderDiscoveryStep(props)}
+            {step === 1 && renderAuthenticationStep(props)}
+            {step === 2 && renderTestConnectionStep(props)}
+        </form>
+    )
 }
 
 export default GatewayForm

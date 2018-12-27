@@ -1,14 +1,12 @@
 
 import { message } from 'antd'
+import { ActionCreator } from 'redux'
 
 import { fetchGateway } from '@/actions/gateway'
-
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
-import { Dictionary } from 'ramda';
-import { Light } from 'shared/types';
-import { ActionCreator } from 'redux';
-import { ThunkResult } from '@/types';
-import { fetchGetJson, fetchPostJson } from '@/utils';
+import { ThunkResult } from '@/types'
+import { fetchGetJson, fetchPostJson } from '@/utils'
+import { Dictionary, Light } from 'shared/types'
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
@@ -62,7 +60,6 @@ export const startLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
         }
     })
 
-
 export const stopLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
     dispatch({
         type: STOP_TIMER,
@@ -76,8 +73,8 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
         await dispatch(fetchGateway())
         dispatch(loadLightsRequest())
         const res = await fetchGetJson<Dictionary<Light>>('/api/lights')
-        
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(loadLightsSuccess(res.json))
     } catch (error) {
@@ -92,7 +89,7 @@ export const updateLight: ActionCreator<ThunkResult> = (light: Light) => async (
         dispatch(updateLightRequest())
         const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
 
         dispatch(updateLightSuccess())
     } catch (error) {

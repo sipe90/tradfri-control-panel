@@ -1,17 +1,18 @@
 
-import R, { Dictionary } from 'ramda'
-import { AnyAction, Middleware } from 'redux';
+import * as R from 'ramda'
+import { AnyAction, Middleware } from 'redux'
+import { Dictionary } from 'shared/types'
 
-export const START_TIMER = 'START_TIMER';
-export const STOP_TIMER = 'STOP_TIMER';
+export const START_TIMER = 'START_TIMER'
+export const STOP_TIMER = 'STOP_TIMER'
 
 const timerMiddleware: Middleware = ({ dispatch }) => {
-    
-    interface Timer {
-        intervalId: NodeJS.Timeout;
+
+    interface ITimer {
+        intervalId: number
     }
 
-    const timers: Dictionary<Timer> = {}
+    const timers: Dictionary<ITimer> = {}
 
     return (next) => (action: AnyAction) => {
         R.cond([
@@ -23,16 +24,16 @@ const timerMiddleware: Middleware = ({ dispatch }) => {
                 }
 
                 timers[timerName] = {
-                    intervalId: setInterval(() => dispatch(dispatchFunc), timerInterval) 
+                    intervalId: window.setInterval(() => dispatch(dispatchFunc), timerInterval),
                 }
             }],
-            [R.equals(STOP_TIMER), () => { 
+            [R.equals(STOP_TIMER), () => {
                 const { timerName } = action.payload
                 if (timers[timerName]) {
                     clearInterval(timers[timerName].intervalId)
                 }
             }],
-            [R.T, () => next(action)]
+            [R.T, () => next(action)],
         ])(action.type)
     }
 }

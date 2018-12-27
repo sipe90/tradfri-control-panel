@@ -1,41 +1,40 @@
+import { Layout } from 'antd'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Layout } from 'antd'
+import { AnyAction } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 
-import { startGroupPolling, stopGroupPolling, fetchGroups } from '@/actions/groups'
-
+import { fetchGroups, startGroupPolling, stopGroupPolling } from '@/actions/groups'
 import Navigation from '@/components/Navigation'
 import Routes from '@/components/Routes'
-import './App.css'
-
 import routeDefs from '@/routeDefs'
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
+
+import './App.css'
 
 const { Header, Content, Footer } = Layout
 
 // From Webpack define plugin
 declare var VERSION: string | void
 
-interface AppProps {
+interface IAppProps {
     startGroupPolling: () => void
     stopGroupPolling: () => void
     fetchGroups: () => void
 }
 
-class App extends Component<AppProps> {
+class App extends Component<IAppProps> {
 
-    componentDidMount() {
+    public componentDidMount() {
         this.props.fetchGroups()
         this.props.startGroupPolling()
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         this.props.stopGroupPolling()
     }
 
-    render() {
+    public render() {
         return (
             <div className='app'>
                 <Router>
