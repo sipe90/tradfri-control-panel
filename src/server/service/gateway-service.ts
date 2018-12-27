@@ -1,10 +1,10 @@
 import { TradfriErrorCodes } from 'node-tradfri-client'
-import * as db from 'db/gateway'
-import TradfriGateway from 'gateway/TradfriGateway'
-import { getConnection, connectToGateway } from 'service/gateway-connection-manager'
-import { ValidationError } from 'error'
-import logger from 'logger'
-import { normalizeGateway } from 'data/tradfri';
+import * as db from '#/db/gateway'
+import TradfriGateway from '#/gateway/TradfriGateway'
+import { getConnection, connectToGateway } from '#/service/gateway-connection-manager'
+import { ValidationError } from '#/error'
+import logger from '#/logger'
+import { normalizeGateway } from '#/data/tradfri';
 
 interface CreateGatewayRequest {
     name: string;

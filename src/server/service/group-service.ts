@@ -1,7 +1,7 @@
 import R from 'ramda'
-import { getGateway } from 'service/gateway-service'
-import { getConnection } from 'service/gateway-connection-manager'
-import { normalizeGroups } from 'data/tradfri'
+import { getGateway } from '#/service/gateway-service'
+import { getConnection } from '#/service/gateway-connection-manager'
+import { normalizeGroups } from '#/data/tradfri'
 import { GroupUpdateRequest } from 'shared/types';
 
 export const getGroups = async () => {

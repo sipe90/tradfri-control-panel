@@ -1,5 +1,5 @@
 import express = require('express')
-import { getSensors } from 'service/sensor-service'
+import { getSensors } from '#/service/sensor-service'
 
 const router = express.Router()
 

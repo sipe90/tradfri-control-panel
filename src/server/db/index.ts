@@ -1,6 +1,6 @@
 import sqlite, { Database } from 'sqlite'
 import config from 'config'
-import logger from 'logger'
+import logger from '#/logger'
 
 interface DbConfig {
     dbFolder: string;

@@ -5,10 +5,10 @@ import httpLogger from 'morgan'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 
-import { ValidationError } from 'error'
-import logger from 'logger'
-import init from 'init'
-import { gateway, lights, sensors, groups } from 'routes'
+import { ValidationError } from '#/error'
+import logger from '#/logger'
+import init from '#/init'
+import { gateway, lights, sensors, groups } from '#/routes'
 
 const HOST = process.env.HOST || 'localhost'
 const PORT = parseInt(process.env.SERVER_PORT || '8080', 10)

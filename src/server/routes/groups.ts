@@ -1,5 +1,5 @@
 import express from 'express'
-import { getGroups, updateGroup } from 'service/group-service'
+import { getGroups, updateGroup } from '#/service/group-service'
 
 const router = express.Router()
 

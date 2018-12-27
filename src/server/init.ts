@@ -1,7 +1,7 @@
-import * as db from 'db'
-import logger from 'logger'
-import { fetchGateway } from 'service/gateway-service'
-import { connectToGateway } from 'service/gateway-connection-manager'
+import * as db from '#/db'
+import logger from '#/logger'
+import { fetchGateway } from '#/service/gateway-service'
+import { connectToGateway } from '#/service/gateway-connection-manager'
 
 const logError = (logMsg: string) => (err: Error) => {
     logger.error(logMsg, err)

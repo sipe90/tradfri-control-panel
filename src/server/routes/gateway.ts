@@ -2,7 +2,7 @@ import express from 'express'
 import { 
     getGateway, discoverGateway, generateIdentity,
     testConnect, createTradfriGateway 
-} from 'service/gateway-service'
+} from '#/service/gateway-service'
 
 const router = express.Router()
 

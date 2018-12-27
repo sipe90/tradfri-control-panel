@@ -1,5 +1,5 @@
-import TradfriGateway from 'gateway/TradfriGateway'
-import logger from 'logger'
+import TradfriGateway from '#/gateway/TradfriGateway'
+import logger from '#/logger'
 
 interface ConnectProps {
     hostname: string;

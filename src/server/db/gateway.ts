@@ -1,5 +1,5 @@
 import SQL, { SQLStatement } from 'sql-template-strings'
-import { getConnection } from 'db'
+import { getConnection } from '#/db'
 import { Omit, Gateway } from 'shared/types';
 
 const all = async (sql: SQLStatement) => (await getConnection()).all(sql)

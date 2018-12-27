@@ -1,7 +1,7 @@
 import R from 'ramda'
-import { getGateway } from 'service/gateway-service'
-import { getConnection } from 'service/gateway-connection-manager'
-import { normalizeLights } from 'data/tradfri'
+import { getGateway } from '#/service/gateway-service'
+import { getConnection } from '#/service/gateway-connection-manager'
+import { normalizeLights } from '#/data/tradfri'
 import { Light } from 'shared/types';
 
 export const getLights = async () => {
