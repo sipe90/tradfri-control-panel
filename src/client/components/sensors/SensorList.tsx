@@ -4,15 +4,15 @@ import React from 'react'
 
 import SensorItem from '@/components/sensors/SensorItem'
 import Spinner from '@/components/Spinner'
-import { Dictionary, Sensor } from 'shared/types'
+import { Dictionary, ISensor } from 'shared/types'
 
 import './SensorList.css'
 
 interface ISensorListProps {
-    sensors: Dictionary<Sensor>
+    sensors: Dictionary<ISensor>
     initialDataLoading: boolean
-    sensorStateChanged: (sensor: Sensor) => void
-    updateSensor: (sensor: Sensor) => void
+    sensorStateChanged: (sensor: ISensor) => void
+    updateSensor: (sensor: ISensor) => void
 }
 
 const SensorList: React.FunctionComponent<ISensorListProps> = (props) => (
@@ -20,12 +20,12 @@ const SensorList: React.FunctionComponent<ISensorListProps> = (props) => (
         <List
             itemLayout='vertical'
             dataSource={R.values(props.sensors)}
-            renderItem={(item: Sensor) => renderItem(item, props)}
+            renderItem={(item: ISensor) => renderItem(item, props)}
         />
     </Spinner>
 )
 
-const renderItem = (sensor: Sensor, { sensorStateChanged, updateSensor }: ISensorListProps) => (
+const renderItem = (sensor: ISensor, { sensorStateChanged, updateSensor }: ISensorListProps) => (
     <SensorItem
         key={sensor.id}
         sensor={sensor}

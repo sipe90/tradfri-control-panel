@@ -8,14 +8,14 @@ import React, { Component } from 'react'
 
 import StatusIndicator from '@/components/StatusIndicator'
 import { SliderValue } from 'antd/lib/slider'
-import { Light } from 'shared/types'
+import { ILight } from 'shared/types'
 
 import './LightItem.css'
 
 interface ILightItemProps {
-    light: Light
-    lightStateChanged: (light: Light) => void
-    updateLight: (light: Light) => void
+    light: ILight
+    lightStateChanged: (light: ILight) => void
+    updateLight: (light: ILight) => void
 }
 
 interface ILightItemState {
@@ -55,7 +55,7 @@ class LightItem extends Component<ILightItemProps, ILightItemState> {
         )
     }
 
-    private title(light: Light) {
+    private title(light: ILight) {
         return (
             <div className='light-item__title'>
                 <StatusIndicator type='light' on={light.on} alive={light.alive}/>
@@ -118,7 +118,7 @@ class LightItem extends Component<ILightItemProps, ILightItemState> {
         this.props.updateLight(newLightState)
     }
 
-    private controlTable(light: Light) {
+    private controlTable(light: ILight) {
         return (
             <table className='light-item__table'>
                 <tbody>

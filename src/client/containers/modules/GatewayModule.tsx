@@ -9,14 +9,14 @@ import {
 } from '@/actions/gateway'
 
 import GatewayComponent from '@/components/gateway/Gateway'
-import { Gateway } from 'shared/types'
+import { IGateway } from 'shared/types'
 
 interface IGatewayModuleProps {
-    gateway: Gateway
+    gateway: IGateway
     initialDataLoading: boolean
     loadGateway: () => void
-    gatewayStateChanged: (gateway: Gateway) => void
-    saveGateway: (gateway: Gateway) => void
+    gatewayStateChanged: (gateway: IGateway) => void
+    saveGateway: (gateway: IGateway) => void
     startGatewayPolling: () => void
     stopGatewayPolling: () => void
 }
@@ -52,9 +52,9 @@ const mapStateToProps = (state: any) => ({
 
 // TODO: State type
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
-    gatewayStateChanged: (gateway: Gateway) => dispatch(gatewayStateChanged(gateway)),
+    gatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
     loadGateway: () => dispatch(fetchGateway()),
-    saveGateway: (gateway: Gateway) => dispatch(saveGateway(gateway)),
+    saveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
     startGatewayPolling: () => dispatch(startGatewayPolling()),
     stopGatewayPolling: () => dispatch(stopGatewayPolling()),
 })

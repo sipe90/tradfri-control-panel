@@ -6,20 +6,20 @@ import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from '@/actions/sensors'
 import schemas from '@/schemas'
 import { INormalizeResult } from '@/types'
 import { createReducer, normalizer } from '@/utils'
-import { Dictionary, Sensor } from 'shared/types'
+import { Dictionary, ISensor } from 'shared/types'
 
-type SensorEntitiesState = Dictionary<Sensor>
+type SensorEntitiesState = Dictionary<ISensor>
 
 const initialState = {}
 
 const normalizeSensors = normalizer(schemas.sensors)
 
-const mapSensors = R.pipe<Sensor[], INormalizeResult, Dictionary<Sensor> | undefined>(
+const mapSensors = R.pipe<ISensor[], INormalizeResult, Dictionary<ISensor> | undefined>(
     normalizeSensors,
     R.path(['entities', 'sensors']),
 )
 
-const updateSensor = (previousState: SensorEntitiesState, sensor: Sensor): SensorEntitiesState => ({
+const updateSensor = (previousState: SensorEntitiesState, sensor: ISensor): SensorEntitiesState => ({
     ...previousState,
     [sensor.id]: {
         ...previousState[sensor.id],
@@ -29,11 +29,11 @@ const updateSensor = (previousState: SensorEntitiesState, sensor: Sensor): Senso
 
 const reducer = createReducer<SensorEntitiesState>([
     [LOAD_SENSORS_SUCCESS, (_state, { payload }) => ({
-        ...mapSensors(payload as Sensor[]),
+        ...mapSensors(payload as ISensor[]),
     })],
     [SENSOR_STATE_CHANGED, (state, { payload }) => ({
         ...state,
-        ...updateSensor(state, payload as Sensor),
+        ...updateSensor(state, payload as ISensor),
     })],
 ])
 

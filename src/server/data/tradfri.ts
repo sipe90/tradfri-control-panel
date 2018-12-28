@@ -1,13 +1,19 @@
+import { Accessory, GroupInfo, Light as TLight, Scene as TScene } from 'node-tradfri-client'
 import R from 'ramda'
-import { Accessory, GroupInfo, Scene as TScene, Light as TLight } from 'node-tradfri-client'
-import { Gateway, GatewayDevices, Light, Sensor, Group, Scene } from 'shared/types'
+
+import { IGateway, IGatewayDevices, IGroup, ILight, IScene, ISensor } from 'shared/types'
 
 type DeviceRecord = Record<string, Accessory>
 type GroupRecord = Record<string, GroupInfo>
 
 const parseId = (instanceId: string) => parseInt(instanceId, 10)
 
-export const normalizeGateway = (gateway: Gateway, lights: DeviceRecord, sensors: DeviceRecord, groups: GroupRecord): GatewayDevices => ({
+export const normalizeGateway = (
+    gateway: IGateway,
+    lights: DeviceRecord,
+    sensors: DeviceRecord,
+    groups: GroupRecord
+): IGatewayDevices => ({
     ...gateway,
     lights: R.map(parseId, R.keys(lights)),
     sensors: R.map(parseId, R.keys(sensors)),
@@ -22,7 +28,7 @@ export const normalizeGroups = (groups: GroupRecord) => R.map(normalizeGroup, R.
 
 const lightProp = (prop: keyof TLight, light: Accessory) => R.pathOr(null, ['lightList', 0, prop], light)
 
-const normalizeLight = (light: Accessory): Light => ({
+const normalizeLight = (light: Accessory): ILight => ({
     id: light.instanceId,
     name: light.name,
     alive: light.alive,
@@ -39,7 +45,7 @@ const normalizeLight = (light: Accessory): Light => ({
     on: lightProp('onOff', light)
 })
 
-const normalizeSensor = (sensor: Accessory): Sensor => ({
+const normalizeSensor = (sensor: Accessory): ISensor => ({
     id: sensor.instanceId,
     name: sensor.name,
     alive: sensor.alive,
@@ -49,14 +55,14 @@ const normalizeSensor = (sensor: Accessory): Sensor => ({
     battery: sensor.deviceInfo.battery
 })
 
-const normalizeGroup = ({ group, scenes }: GroupInfo): Group => ({
+const normalizeGroup = ({ group, scenes }: GroupInfo): IGroup => ({
     id: group.instanceId,
     name: group.name,
     devices: group.deviceIDs,
     moods: R.map(normalizeScene, R.values(scenes)),
 })
 
-const normalizeScene = (scene: TScene): Scene => ({
+const normalizeScene = (scene: TScene): IScene => ({
     id: scene.instanceId,
     name: scene.name,
     active: scene.isActive

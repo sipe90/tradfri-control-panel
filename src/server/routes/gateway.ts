@@ -1,7 +1,8 @@
 import express from 'express'
-import { 
-    getGateway, discoverGateway, generateIdentity,
-    testConnect, createTradfriGateway 
+
+import {
+    createTradfriGateway, discoverGateway, generateIdentity,
+    getGateway, testConnect
 } from '#/service/gateway-service'
 
 const router = express.Router()

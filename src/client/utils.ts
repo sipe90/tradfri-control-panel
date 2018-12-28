@@ -3,9 +3,9 @@ import { normalize, Schema } from 'normalizr'
 import * as R from 'ramda'
 import { Action } from 'redux'
 
-import { Device, Dictionary, Group } from 'shared/types'
+import { IDevice, Dictionary, IGroup } from 'shared/types'
 
-export const devicesForGroup = (group: Group, devices: Dictionary<Device>) =>
+export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
     R.values(R.pick(R.map(String, group.devices), devices))
 
 export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R.curry(R.flip(normalize))(schema)

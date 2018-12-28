@@ -1,17 +1,17 @@
 import R from 'ramda'
-import { getGateway } from '#/service/gateway-service'
-import { getConnection } from '#/service/gateway-connection-manager'
+
 import { normalizeGroups } from '#/data/tradfri'
-import { GroupUpdateRequest } from 'shared/types';
+import { getConnection } from '#/service/gateway-connection-manager'
+import { getGateway } from '#/service/gateway-service'
+import { IGroupUpdateRequest } from 'shared/types'
 
 export const getGroups = async () => {
     const gateway = await getGateway()
-    if (!gateway || !gateway.connected)
-        return []
+    if (!gateway || !gateway.connected) return []
     return normalizeGroups(getConnection().getGroups())
 }
 
-export const updateGroup = async (group: GroupUpdateRequest) => {
+export const updateGroup = async (group: IGroupUpdateRequest) => {
     const gateway = await getGateway()
     if (!gateway) {
         throw new Error('No gateway found')
@@ -29,11 +29,11 @@ export const updateGroup = async (group: GroupUpdateRequest) => {
     await connection.operateGroup(String(group.id), toGroupOperation(group))
 }
 
-const toGroupUpdate = (group: GroupUpdateRequest) => ({
+const toGroupUpdate = (group: IGroupUpdateRequest) => ({
     name: group.name
 })
 
-const toGroupOperation = (group: GroupUpdateRequest) => ({
+const toGroupOperation = (group: IGroupUpdateRequest) => ({
     onOff: group.on,
     dimmer: group.brightness
 })

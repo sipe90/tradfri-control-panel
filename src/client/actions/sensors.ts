@@ -7,7 +7,7 @@ import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
-import { Sensor } from 'shared/types'
+import { ISensor } from 'shared/types'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -23,7 +23,7 @@ const loadSensorsRequest = () => ({
     type: LOAD_SENSORS_REQUEST
 })
 
-const loadSensorsSuccess = (sensors: Dictionary<Sensor>) => ({
+const loadSensorsSuccess = (sensors: Dictionary<ISensor>) => ({
     type: LOAD_SENSORS_SUCCESS,
     payload: sensors
 })
@@ -46,7 +46,7 @@ const updateSensorFailure = (error: Error) => ({
     payload: error
 })
 
-export const sensorStateChanged = (sensorProps: Sensor) => ({
+export const sensorStateChanged = (sensorProps: ISensor) => ({
     type: SENSOR_STATE_CHANGED,
     payload: sensorProps
 })
@@ -73,7 +73,7 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
     try {
         await dispatch(fetchGateway())
         await dispatch(loadSensorsRequest())
-        const res = await fetchGetJson<Dictionary<Sensor>>('/api/sensors')
+        const res = await fetchGetJson<Dictionary<ISensor>>('/api/sensors')
 
         if (!res.ok) throw new Error(res.json.message || res.statusText)
 
@@ -85,7 +85,7 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
     }
 }
 
-export const updateSensor: ActionCreator<ThunkResult> = (sensor: Sensor) => async (dispatch) => {
+export const updateSensor: ActionCreator<ThunkResult> = (sensor: ISensor) => async (dispatch) => {
     try {
         dispatch(updateSensorRequest())
         const res = await fetchPostJson<void>(`/api/sensors/${sensor.id}`, sensor)

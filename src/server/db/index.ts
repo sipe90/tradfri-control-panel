@@ -1,13 +1,14 @@
-import sqlite, { Database } from 'sqlite'
 import config from 'config'
+import sqlite, { Database } from 'sqlite'
+
 import logger from '#/logger'
 
-interface DbConfig {
-    dbFolder: string;
-    dbName: string;
+interface IDbConfig {
+    dbFolder: string
+    dbName: string
 }
 
-const dbConfig: DbConfig = config.get('database')
+const dbConfig: IDbConfig = config.get('database')
 
 let dbConnection: Database
 
@@ -19,7 +20,7 @@ export const init = async (_env: string) => {
     // Re-apply latest migration on each startup when in dev environment
     const migrateOptions = {
         migrationsPath,
-        //force: env === 'development' ? 'last' : undefined
+        // force: env === 'development' ? 'last' : undefined
     }
 
     logger.info('Migrating database')

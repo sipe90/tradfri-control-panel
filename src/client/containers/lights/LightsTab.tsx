@@ -9,16 +9,16 @@ import { lightStateChanged, updateLight } from '@/actions/lights'
 import LightItem from '@/components/lights/LightItem'
 import Spinner from '@/components/Spinner'
 import { devicesForGroup } from '@/utils'
-import { Dictionary, Group, Light } from 'shared/types'
+import { Dictionary, IGroup, ILight } from 'shared/types'
 
 import './LightsTab.css'
 
 interface ILightsTabProps {
-    groups: Dictionary<Group>
-    lights: Dictionary<Light>
+    groups: Dictionary<IGroup>
+    lights: Dictionary<ILight>
     initialDataLoading: boolean
-    lightStateChanged: (light: Light) => void
-    updateLight: (light: Light) => void
+    lightStateChanged: (light: ILight) => void
+    updateLight: (light: ILight) => void
 }
 
 class LightsTab extends Component<ILightsTabProps> {
@@ -39,7 +39,7 @@ class LightsTab extends Component<ILightsTabProps> {
         )
     )
 
-    private renderItem = (light: Light) => (
+    private renderItem = (light: ILight) => (
         <LightItem
             key={light.id}
             light={light}
@@ -57,8 +57,8 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
-    lightStateChanged: (light: Light) => dispatch(lightStateChanged(light)),
-    updateLight: (light: Light) => dispatch(updateLight(light)),
+    lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
+    updateLight: (light: ILight) => dispatch(updateLight(light)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightsTab)

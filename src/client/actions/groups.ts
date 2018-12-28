@@ -5,7 +5,7 @@ import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { ActionCreator } from 'redux'
-import { Dictionary, Group, GroupUpdateRequest, Omit } from 'shared/types'
+import { Dictionary, IGroup, IGroupUpdateRequest, Omit } from 'shared/types'
 
 export const LOAD_GROUPS_REQUEST = 'LOAD_GROUPS_REQUEST'
 export const LOAD_GROUPS_SUCCESS = 'LOAD_GROUPS_SUCCESS'
@@ -19,7 +19,7 @@ const loadGroupsRequest = () => ({
     type: LOAD_GROUPS_REQUEST
 })
 
-const loadGroupsSuccess = (groups: Dictionary<Group>) => ({
+const loadGroupsSuccess = (groups: Dictionary<IGroup>) => ({
     type: LOAD_GROUPS_SUCCESS,
     payload: groups
 })
@@ -64,7 +64,7 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
     try {
         await dispatch(fetchGateway())
         await dispatch(loadGroupsRequest())
-        const res = await fetchGetJson<Dictionary<Group>>('/api/groups')
+        const res = await fetchGetJson<Dictionary<IGroup>>('/api/groups')
 
         if (!res.ok) throw new Error(res.json.message || res.statusText)
 
@@ -76,9 +76,9 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
     }
 }
 
-export const updateGroup: ActionCreator<ThunkResult> = (group: GroupUpdateRequest) => async (dispatch) => {
+export const updateGroup: ActionCreator<ThunkResult> = (group: IGroupUpdateRequest) => async (dispatch) => {
     try {
-        const payload: Omit<GroupUpdateRequest, 'id'> = {
+        const payload: Omit<IGroupUpdateRequest, 'id'> = {
             on: group.on,
             brightness: group.brightness
         }

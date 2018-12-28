@@ -3,15 +3,15 @@ import React from 'react'
 import GatewayCard from '@/components/gateway/GatewayCard'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
-import { Gateway } from 'shared/types'
+import { IGateway } from 'shared/types'
 
 import './Gateway.css'
 
 interface IGatewayProps {
-    gateway: Gateway
+    gateway: IGateway
     initialDataLoading: boolean
-    gatewayStateChanged: (gateway: Gateway) => void
-    saveGateway: (gateway: Gateway) => void
+    gatewayStateChanged: (gateway: IGateway) => void
+    saveGateway: (gateway: IGateway) => void
 }
 
 const Gateway: React.FunctionComponent<IGatewayProps> = (props) => (

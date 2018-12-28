@@ -11,23 +11,23 @@ import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import { updateGroup } from '@/actions/groups'
 import { lightStateChanged } from '@/actions/lights'
 import StatusIndicator from '@/components/StatusIndicator'
-import { Dictionary, Group, GroupUpdateRequest, Light } from 'shared/types'
+import { Dictionary, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
 import './LightGroupsTab.css'
 
 const Item = List.Item
 
 const percentFormatter = (v: number) => `${v}%`
-const anyLightIsOn = R.any<Light>(R.prop('on'))
-const lightBrightnesses = R.map<Light, number>(R.prop('brightness'))
+const anyLightIsOn = R.any<ILight>(R.prop('on'))
+const lightBrightnesses = R.map<ILight, number>(R.prop('brightness'))
 const avgBrightness = R.converge(R.divide, [R.pipe(lightBrightnesses, R.sum), R.length])
 
 interface ILightGroupsProps {
-    groups: Dictionary<Group>
-    lights: Dictionary<Light>
+    groups: Dictionary<IGroup>
+    lights: Dictionary<ILight>
     initialDataLoading: boolean
-    lightStateChanged: (light: Light) => void,
-    updateGroup: (groupUpdate: GroupUpdateRequest) => void,
+    lightStateChanged: (light: ILight) => void,
+    updateGroup: (groupUpdate: IGroupUpdateRequest) => void,
 }
 
 class LightGroups extends Component<ILightGroupsProps> {
@@ -50,13 +50,13 @@ class LightGroups extends Component<ILightGroupsProps> {
             )
         })
 
-    private renderLight = (light: Light) => (
+    private renderLight = (light: ILight) => (
         <Item>
             <StatusIndicator type='light' alive={light.alive} on={light.on}/>{light.name}
         </Item>
     )
 
-    private lightGroupControls(group: Group, groupLights: Light[]) {
+    private lightGroupControls(group: IGroup, groupLights: ILight[]) {
         return (
             <table className='light-group__table'>
                 <tbody>
@@ -92,7 +92,7 @@ class LightGroups extends Component<ILightGroupsProps> {
         )
     }
 
-    private brightnessChanged({ id }: Group, groupLights: Light[], newValue: number) {
+    private brightnessChanged({ id }: IGroup, groupLights: ILight[], newValue: number) {
         this.props.updateGroup({ id, brightness: newValue})
         for (const light of groupLights) {
             const newLightState = { ...light, brightness: newValue }
@@ -100,7 +100,7 @@ class LightGroups extends Component<ILightGroupsProps> {
         }
     }
 
-    private powerSwitched({ id }: Group, groupLights: Light[], newValue: boolean) {
+    private powerSwitched({ id }: IGroup, groupLights: ILight[], newValue: boolean) {
         this.props.updateGroup({ id, on: newValue})
         for (const light of groupLights) {
             const newLightState = { ...light, on: newValue }
@@ -109,7 +109,7 @@ class LightGroups extends Component<ILightGroupsProps> {
     }
 }
 
-const lightsForGroup = (group: Group, lights: Dictionary<Light>) =>
+const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
     R.values(R.pick(R.map(String, group.devices), lights))
 
 // TODO: State type
@@ -121,8 +121,8 @@ const mapStateToProps = (state: any) => ({
 
 // TODO: State type
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
-    lightStateChanged: (light: Light) => dispatch(lightStateChanged(light)),
-    updateGroup: (group: GroupUpdateRequest) => dispatch(updateGroup(group)),
+    lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
+    updateGroup: (group: IGroupUpdateRequest) => dispatch(updateGroup(group)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightGroups)

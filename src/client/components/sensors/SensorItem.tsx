@@ -3,14 +3,14 @@ import PencilIcon from 'mdi-react/PencilIcon'
 import React, { Component } from 'react'
 
 import StatusIndicator from '@/components/StatusIndicator'
-import { Sensor } from 'shared/types'
+import { ISensor } from 'shared/types'
 
 import './SensorItem.css'
 
 interface ISensorItemProps {
-    sensor: Sensor
-    sensorStateChanged: (sensor: Sensor) => void
-    updateSensor: (sensor: Sensor) => void
+    sensor: ISensor
+    sensorStateChanged: (sensor: ISensor) => void
+    updateSensor: (sensor: ISensor) => void
 }
 
 interface ISensorItemState {
@@ -41,7 +41,7 @@ class SensorItem extends Component<ISensorItemProps, ISensorItemState> {
         )
     }
 
-    private title(sensor: Sensor) {
+    private title(sensor: ISensor) {
         return (
             <div className='sensor-item__title'>
                 <StatusIndicator type='sensor' alive={this.props.sensor.alive}/>

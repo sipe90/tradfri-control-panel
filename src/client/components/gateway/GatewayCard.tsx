@@ -4,16 +4,16 @@ import React, { Component } from 'react'
 
 import StatusIndicator from '@/components/StatusIndicator'
 // import * as gatewayImage from 'public/images/tradfri_gateway.png'
-import { Gateway } from 'shared/types'
+import { IGateway } from 'shared/types'
 
 import './GatewayCard.css'
 
 const { Meta } = Card
 
 interface IGatewayCardProps {
-    gateway: Gateway
-    gatewayStateChanged: (gateway: Gateway) => void
-    saveGateway: (gateway: Gateway) => void
+    gateway: IGateway
+    gatewayStateChanged: (gateway: IGateway) => void
+    saveGateway: (gateway: IGateway) => void
 }
 
 interface IGatewayCardState {
@@ -57,7 +57,7 @@ class GatewayCard extends Component<IGatewayCardProps, IGatewayCardState> {
         )
     }
 
-    private title(gateway: Gateway) {
+    private title(gateway: IGateway) {
         return (
             <div className='gateway-card__title'>
                 <span>{gateway.name}</span>

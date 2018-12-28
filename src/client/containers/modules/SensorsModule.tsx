@@ -9,14 +9,14 @@ import {
     stopSensorPolling, updateSensor,
 } from '@/actions/sensors'
 import SensorList from '@/components/sensors/SensorList'
-import { Sensor } from 'shared/types'
+import { ISensor } from 'shared/types'
 
 interface ISensorsModuleProps {
-    sensors: Dictionary<Sensor>
+    sensors: Dictionary<ISensor>
     initialDataLoading: boolean
     loadSensors: () => void
-    sensorStateChanged: (sensor: Sensor) => void
-    updateSensor: (sensor: Sensor) => void
+    sensorStateChanged: (sensor: ISensor) => void
+    updateSensor: (sensor: ISensor) => void
     startSensorPolling: () => void
     stopSensorPolling: () => void
 }
@@ -53,10 +53,10 @@ const mapStateToProps = (state: any) => ({
 // TODO: State type
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
     loadSensors: () => dispatch(fetchSensors()),
-    sensorStateChanged: (sensor: Sensor) => dispatch(sensorStateChanged(sensor)),
+    sensorStateChanged: (sensor: ISensor) => dispatch(sensorStateChanged(sensor)),
     startSensorPolling: () => dispatch(startSensorPolling()),
     stopSensorPolling: () => dispatch(stopSensorPolling()),
-    updateSensor: (sensor: Sensor) => dispatch(updateSensor(sensor)),
+    updateSensor: (sensor: ISensor) => dispatch(updateSensor(sensor)),
 })
 
 export default connect(

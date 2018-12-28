@@ -8,7 +8,7 @@ import { IConnectionTestResult, ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
 import { ActionCreator } from 'redux'
-import { Gateway } from 'shared/types'
+import { IGateway } from 'shared/types'
 
 export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'
@@ -36,7 +36,7 @@ const loadGatewayRequest = () => ({
     type: LOAD_GATEWAY_REQUEST
 })
 
-const loadGatewaySuccess = (gateway: Gateway | null) => ({
+const loadGatewaySuccess = (gateway: IGateway | null) => ({
     type: LOAD_GATEWAY_SUCCESS,
     payload: gateway
 })
@@ -99,7 +99,7 @@ const testConnectionFailure = (error: Error) => ({
     payload: error
 })
 
-export const gatewayStateChanged = (gatewayProps: Gateway) => ({
+export const gatewayStateChanged = (gatewayProps: IGateway) => ({
     type: GATEWAY_STATE_CHANGED,
     payload: gatewayProps
 })
@@ -125,7 +125,7 @@ export const stopGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =
 export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadGatewayRequest())
-        const res = await fetchGetJson<Gateway>('/api/gateway')
+        const res = await fetchGetJson<IGateway>('/api/gateway')
 
         if (res.status === 404) {
             dispatch(loadGatewaySuccess(null))
@@ -142,7 +142,7 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
     }
 }
 
-export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => async (dispatch) => {
+export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => async (dispatch) => {
     try {
         dispatch(saveGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway', gateway)

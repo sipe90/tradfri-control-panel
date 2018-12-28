@@ -8,14 +8,14 @@ import {
 } from '@/actions/gateway'
 import { IConnectionTestResult, IErrorResponse } from '@/types'
 import { createReducer } from '@/utils'
-import { Gateway } from 'shared/types'
+import { IGateway } from 'shared/types'
 
 interface IGatewayModuleState {
     initialDataLoading: boolean
     discoveryInProgress: boolean
     identityGenerationInProgress: boolean
     connectionTestInProgress: boolean
-    discoveredGateway: Gateway | null
+    discoveredGateway: IGateway | null
     identityGenerationError: IErrorResponse | null
     connectionTestResult: IConnectionTestResult | null
 }

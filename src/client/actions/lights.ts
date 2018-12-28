@@ -6,7 +6,7 @@ import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
-import { Dictionary, Light } from 'shared/types'
+import { Dictionary, ILight } from 'shared/types'
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'
@@ -22,7 +22,7 @@ const loadLightsRequest = () => ({
     type: LOAD_LIGHTS_REQUEST
 })
 
-const loadLightsSuccess = (lights: Dictionary<Light>) => ({
+const loadLightsSuccess = (lights: Dictionary<ILight>) => ({
     type: LOAD_LIGHTS_SUCCESS,
     payload: lights
 })
@@ -45,7 +45,7 @@ const updateLightFailure = (error: Error) => ({
     payload: error
 })
 
-export const lightStateChanged = (lightProps: Light) => ({
+export const lightStateChanged = (lightProps: ILight) => ({
     type: LIGHT_STATE_CHANGED,
     payload: lightProps
 })
@@ -72,7 +72,7 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
     try {
         await dispatch(fetchGateway())
         dispatch(loadLightsRequest())
-        const res = await fetchGetJson<Dictionary<Light>>('/api/lights')
+        const res = await fetchGetJson<Dictionary<ILight>>('/api/lights')
 
         if (!res.ok) throw new Error(res.json.message || res.statusText)
 
@@ -84,7 +84,7 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
     }
 }
 
-export const updateLight: ActionCreator<ThunkResult> = (light: Light) => async (dispatch) => {
+export const updateLight: ActionCreator<ThunkResult> = (light: ILight) => async (dispatch) => {
     try {
         dispatch(updateLightRequest())
         const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
