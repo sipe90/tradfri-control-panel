@@ -1,5 +1,6 @@
 {
-  "lights": [{
+  "lights": [
+    {
       "id": 53755,
       "name": "Kitchen light",
       "alive": true,
@@ -60,13 +61,61 @@
       "on": true
     }
   ],
-  "sensors": [{
-    "id": 38329,
-    "name": "Kitchen motion sensor",
-    "alive": true,
-    "manufacturer": "IKEA of Sweden",
-    "model": "TRADFRI motion sensor",
-    "power": 3,
-    "battery": 11
-  }]
+  "sensors": [
+    {
+      "id": 38329,
+      "name": "Kitchen motion sensor",
+      "alive": true,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI motion sensor",
+      "power": 3,
+      "battery": 11
+    }
+  ],
+  "groups": [
+    {
+    "id": 64434,
+    "name": "Kitchen",
+    "devices": [53755, 38329],
+    "moods": [
+      {
+        "id": 354665,
+        "name": "RELAX",
+        "active": false
+      },
+      {
+        "id": 354666,
+        "name": "FOCUS",
+        "active": false
+      },
+      {
+        "id": 354667,
+        "name": "EVERYDAY",
+        "active": false
+      }
+    ]
+  },
+  {
+    "id": 64434,
+    "name": "Living room",
+    "devices": [26511, 86388, 73456],
+    "moods": [
+        {
+          "id": 354668,
+          "name": "RELAX",
+          "active": false
+        },
+        {
+          "id": 354669,
+          "name": "FOCUS",
+          "active": false
+        },
+        {
+          "id": 354670,
+          "name": "EVERYDAY",
+          "active": false
+        }
+      ]
+    }
+  ]
 }
