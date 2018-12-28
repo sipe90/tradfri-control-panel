@@ -1,10 +1,13 @@
-const jsonServer = require('json-server')
+#!/usr/bin/env ts-node
+
+import jsonServer from 'json-server'
 const server = jsonServer.create()
-const path = require('path')
+import path from 'path'
+import { IGateway, Omit } from 'shared/types'
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults()
 
-let gateway
+let gateway: Omit<IGateway, 'connected'>
 
 server.use(middlewares)
 server.use(jsonServer.bodyParser)
@@ -13,14 +16,14 @@ server.use(jsonServer.rewriter({
     '/api/*': '/$1'
 }))
 
-server.get('/gateway', (req, res) =>
+server.get('/gateway', (_req, res) =>
     gateway ? res.json({
         ...gateway,
         connected: true
     }) : res.status(404).send()
 )
 
-server.get('/gateway/discover', (req, res) =>
+server.get('/gateway/discover', (_req, res) =>
     res.json({
         name: 'gw-b8d7af2aabd9',
         host: 'TRADFRI-Gateway-b8d7af2aabd9.local',
@@ -40,7 +43,7 @@ server.post('/gateway/identity', (req, res) =>
         })
 )
 
-server.post('/gateway/test', (req, res) =>
+server.post('/gateway/test', (_req, res) =>
     res.json({
         success: true
     })
@@ -54,5 +57,6 @@ server.post('/gateway', (req, res) => {
 server.use(router)
 
 server.listen(8080, () => {
-    console.log('JSON Server is running')
+    // tslint:disable-next-line:no-console
+    console.log('JSON Server is running on port 8080')
 })
