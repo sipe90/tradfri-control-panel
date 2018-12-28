@@ -7,7 +7,7 @@ import {
 
 type DeviceTypeFilter = (type: AccessoryTypes) => (devices: Record<string, Accessory>) => Record<string, Accessory>
 
-const filterDevice: DeviceTypeFilter = (type: AccessoryTypes) => R.pickBy(R.propEq(type))
+const filterDevice: DeviceTypeFilter = (type: AccessoryTypes) => R.pickBy(R.propEq('type', type))
 
 const filterLights = filterDevice(AccessoryTypes.lightbulb)
 const filterSensors = filterDevice(AccessoryTypes.motionSensor)
