@@ -1,7 +1,7 @@
 {
   "apps": [{
     "name": "tradfri-control-panel",
-    "script": "./src/server/app.ts",
+    "script": "npm start",
     "watch": false,
     "env": {
       "NODE_ENV": "production",
