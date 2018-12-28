@@ -1,33 +1,17 @@
 import { TradfriErrorCodes } from 'node-tradfri-client'
-import * as db from 'db/gateway'
-import TradfriGateway from 'gateway/TradfriGateway'
-import { getConnection, connectToGateway } from 'service/gateway-connection-manager'
-import { ValidationError } from 'error'
-import logger from 'logger'
-import { normalizeGateway } from 'data/tradfri';
 
-interface CreateGatewayRequest {
-    name: string;
-    hostname: string;
-    identity: string;
-    psk: string;
-}
-
-interface GenerateIdentityRequest {
-    hostname: string;
-    securityCode: string
-}
-
-interface TestConnectionRequest {
-    hostname: string;
-    identity: string;
-    psk: string;
-}
+import { normalizeGateway } from '#/data/tradfri'
+import * as db from '#/db/gateway'
+import { ValidationError } from '#/error'
+import TradfriGateway from '#/gateway/TradfriGateway'
+import logger from '#/logger'
+import { connectToGateway, getConnection } from '#/service/gateway-connection-manager'
+import { ICreateGatewayRequest, IGenerateIdentityRequest, ITestConnectionRequest } from 'shared/types'
 
 export const fetchGateway = async () =>
     db.selectGateway()
 
-export const createTradfriGateway = async ({ name, hostname, identity, psk }: CreateGatewayRequest) => {
+export const createTradfriGateway = async ({ name, hostname, identity, psk }: ICreateGatewayRequest) => {
     if (!name) {
         throw new ValidationError('name', 'Name is required')
     }
@@ -73,7 +57,7 @@ export const getGateway = async () => {
 
 export const discoverGateway = async () => TradfriGateway.discover()
 
-export const generateIdentity = async ({ hostname, securityCode }: GenerateIdentityRequest) => {
+export const generateIdentity = async ({ hostname, securityCode }: IGenerateIdentityRequest) => {
     if (!hostname) {
         throw new ValidationError('hostname', 'Hostname is required')
     }
@@ -85,14 +69,14 @@ export const generateIdentity = async ({ hostname, securityCode }: GenerateIdent
     try {
         return await gateway.authenticate(securityCode)
     } catch (err) {
-        if (err.code == TradfriErrorCodes.AuthenticationFailed) {
+        if (err.code === TradfriErrorCodes.AuthenticationFailed) {
             throw new ValidationError('securityCode', err.message)
         }
         throw new Error(err.message)
     }
 }
 
-export const testConnect = async ({ hostname, identity, psk }: TestConnectionRequest) => {
+export const testConnect = async ({ hostname, identity, psk }: ITestConnectionRequest) => {
     if (!hostname) {
         throw new ValidationError('hostname', 'Hostname is required')
     }

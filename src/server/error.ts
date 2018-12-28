@@ -1,8 +1,8 @@
 
 export class ValidationError extends Error {
 
-    field: string;
-    status: number;
+    public field: string
+    public status: number
 
     constructor(field: string, message?: string, status = 400) {
         super()

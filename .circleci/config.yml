@@ -27,9 +27,10 @@ whitelist: &whitelist
     - test/*
     - public/*
     - package.json
-    - .eslintrc.js
-    - webpack.config.js
-    - .babelrc
+    - tslint.json
+    - webpack.config.ts
+    - tsconfig.json
+    - jest.config.js
 
 version: 2
 jobs:
@@ -50,6 +51,12 @@ jobs:
       - persist_to_workspace:
           root: *workdir_node10
           <<: *whitelist
+  test:
+    <<: *node10
+    steps:
+      - attach_workspace:
+          at: *workdir_node10
+      - run: npm test
   build:
     <<: *node10
     steps:
@@ -66,10 +73,14 @@ jobs:
       - run: pm2 deploy ecosystem.deploy.json production ref $CIRCLE_TAG --force
 workflows:
   version: 2
-  build_deploy:
+  test_build_deploy:
     jobs:
       - install:
           <<: *tags_and_branches
+      - test:
+          <<: *tags_and_branches
+          requires:
+            - install
       - build:
           <<: *tags_and_branches
           requires:

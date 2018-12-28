@@ -1,10 +1,10 @@
-import TradfriGateway from 'gateway/TradfriGateway'
-import logger from 'logger'
+import TradfriGateway from '#/gateway/TradfriGateway'
+import logger from '#/logger'
 
-interface ConnectProps {
-    hostname: string;
-    identity: string;
-    psk: string;
+interface IConnectProps {
+    hostname: string
+    identity: string
+    psk: string
 }
 
 let connection: TradfriGateway
@@ -16,7 +16,7 @@ export const getConnection = () => {
     return connection
 }
 
-export const connectToGateway = async ({ hostname, identity, psk }: ConnectProps) => {
+export const connectToGateway = async ({ hostname, identity, psk }: IConnectProps) => {
     logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
     const gateway = new TradfriGateway(hostname)
 

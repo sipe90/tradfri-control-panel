@@ -1,0 +1,121 @@
+{
+  "lights": [
+    {
+      "id": 53755,
+      "name": "Kitchen light",
+      "alive": true,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI bulb E27 WS opal 980lm",
+      "power": 1,
+      "color": "f1e0b5",
+      "colorTemperature": 58.8,
+      "brightness": 100,
+      "spectrum": "white",
+      "dimmable": true,
+      "switchable": true,
+      "on": true
+    },
+    {
+      "id": 26511,
+      "name": "Living room light 1",
+      "alive": true,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI bulb E27 WS opal 980lm",
+      "power": 1,
+      "color": "f1e0b5",
+      "colorTemperature": 58.8,
+      "brightness": 100,
+      "spectrum": "white",
+      "dimmable": true,
+      "switchable": true,
+      "on": true
+    },
+    {
+      "id": 86388,
+      "name": "Living room light 2",
+      "alive": false,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI bulb E27 WS opal 980lm",
+      "power": 1,
+      "color": "f1e0b5",
+      "colorTemperature": 58.8,
+      "brightness": 100,
+      "spectrum": "white",
+      "dimmable": true,
+      "switchable": true,
+      "on": true
+    },
+    {
+      "id": 73456,
+      "name": "Living room light 3",
+      "alive": true,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI bulb E27 WS opal 980lm",
+      "power": 1,
+      "color": "f1e0b5",
+      "colorTemperature": 70,
+      "brightness": 80,
+      "spectrum": "white",
+      "dimmable": true,
+      "switchable": true,
+      "on": true
+    }
+  ],
+  "sensors": [
+    {
+      "id": 38329,
+      "name": "Kitchen motion sensor",
+      "alive": true,
+      "manufacturer": "IKEA of Sweden",
+      "model": "TRADFRI motion sensor",
+      "power": 3,
+      "battery": 11
+    }
+  ],
+  "groups": [
+    {
+    "id": 64434,
+    "name": "Kitchen",
+    "devices": [53755, 38329],
+    "moods": [
+      {
+        "id": 354665,
+        "name": "RELAX",
+        "active": false
+      },
+      {
+        "id": 354666,
+        "name": "FOCUS",
+        "active": false
+      },
+      {
+        "id": 354667,
+        "name": "EVERYDAY",
+        "active": false
+      }
+    ]
+  },
+  {
+    "id": 64434,
+    "name": "Living room",
+    "devices": [26511, 86388, 73456],
+    "moods": [
+        {
+          "id": 354668,
+          "name": "RELAX",
+          "active": false
+        },
+        {
+          "id": 354669,
+          "name": "FOCUS",
+          "active": false
+        },
+        {
+          "id": 354670,
+          "name": "EVERYDAY",
+          "active": false
+        }
+      ]
+    }
+  ]
+}

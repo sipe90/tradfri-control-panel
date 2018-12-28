@@ -1,5 +1,6 @@
 import express from 'express'
-import { getLights, updateLight } from 'service/light-service'
+
+import { getLights, updateLight } from '#/service/light-service'
 
 const router = express.Router()
 

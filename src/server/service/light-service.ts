@@ -1,16 +1,17 @@
 import R from 'ramda'
-import { getGateway } from 'service/gateway-service'
-import { getConnection } from 'service/gateway-connection-manager'
-import { normalizeLights, Light } from 'data/tradfri'
+
+import { normalizeLights } from '#/data/tradfri'
+import { getConnection } from '#/service/gateway-connection-manager'
+import { getGateway } from '#/service/gateway-service'
+import { ILight } from 'shared/types'
 
 export const getLights = async () => {
     const gateway = await getGateway()
-    if (!gateway || !gateway.connected)
-        return []
+    if (!gateway || !gateway.connected) return []
     return normalizeLights(getConnection().getLights())
 }
 
-export const updateLight = async (light: Light) => {
+export const updateLight = async (light: ILight) => {
     const gateway = await getGateway()
     if (!gateway) {
         throw new Error('No gateway found')
@@ -28,11 +29,11 @@ export const updateLight = async (light: Light) => {
     await connection.operateLight(String(light.id), toLightOperation(light))
 }
 
-const toLightUpdate = (light: Light) => ({
+const toLightUpdate = (light: ILight) => ({
     name: light.name
 })
 
-const toLightOperation = (light: Light) => ({
+const toLightOperation = (light: ILight) => ({
     onOff: light.on,
     dimmer: light.brightness,
     colorTemperature: light.colorTemperature

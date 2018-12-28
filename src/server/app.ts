@@ -1,14 +1,16 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
-import express, { Request, Response, NextFunction } from 'express'
-import httpLogger from 'morgan'
-import cookieParser from 'cookie-parser'
+import 'module-alias/register'
+
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import express, { NextFunction, Request, Response } from 'express'
+import httpLogger from 'morgan'
 
-import { ValidationError } from 'error'
-import logger from 'logger'
-import init from 'init'
-import { gateway, lights, sensors, groups } from 'routes'
+import { ValidationError } from '#/error'
+import init from '#/init'
+import logger from '#/logger'
+import { gateway, groups, lights, sensors } from '#/routes'
 
 const HOST = process.env.HOST || 'localhost'
 const PORT = parseInt(process.env.SERVER_PORT || '8080', 10)
@@ -16,7 +18,7 @@ const PORT = parseInt(process.env.SERVER_PORT || '8080', 10)
 const app = express()
 
 const env = app.get('env')
-let isDevEnv = env === 'development'
+const isDevEnv = env === 'development'
 
 app.use(httpLogger('dev'))
 app.use(cookieParser())

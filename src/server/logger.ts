@@ -1,5 +1,5 @@
-import winston from 'winston'
 import path from 'path'
+import winston from 'winston'
 
 const { createLogger, format, transports: { Console, File } } = winston
 const { combine, timestamp, printf } = format
