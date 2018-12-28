@@ -3,16 +3,16 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "start": "./src/server/app.ts",
+    "start": "ts-node src/server/app.ts",
     "build": "webpack --mode production",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot --host 0.0.0.0",
     "server": "nodemon --host 0.0.0.0",
-    "mock-api": "./mock/server.ts",
+    "mock-api": "ts-node mock/server.ts",
     "dev": "concurrently 'npm run server' 'npm run client'",
     "dev-mock": "concurrently 'npm run mock-api' 'npm run client'",
     "test": "jest",
-    "tradfri-auth": "./bin/tradfri.ts authenticate",
-    "tradfri-discover": "./bin/tradfri.ts discover"
+    "tradfri-auth": "ts-node bin/tradfri.ts authenticate",
+    "tradfri-discover": "ts-node bin/tradfri.ts discover"
   },
   "_moduleAliases": {
     "#": "./src/server",
