@@ -51,9 +51,7 @@ class LightsModule extends Component<ILightModuleProps> {
 
 const renderTabBar = (props: TabsProps, DefaultTabBar: any) => (
     <Sticky bottomOffset={80}>
-        {({ style }: { style: React.CSSProperties}) => (
-            <DefaultTabBar {...props} style={{ ...style, zIndex: 1, background: '#fff' }} />
-        )}
+        {({ style }) => <DefaultTabBar {...props} style={{ ...style, zIndex: 1, background: '#fff' }} />}
     </Sticky>
 )
 

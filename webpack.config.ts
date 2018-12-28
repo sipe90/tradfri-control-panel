@@ -1,12 +1,12 @@
-const path = require('path')
-const { DefinePlugin } = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const tsImportPluginFactory = require('ts-import-plugin')
+import CleanWebpackPlugin from 'clean-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import path from 'path'
+import tsImportPluginFactory from 'ts-import-plugin'
+import { Configuration, DefinePlugin } from 'webpack'
 
 const outputDirectory = 'dist'
 
-module.exports = {
+const config: Configuration = {
     entry: {
         main: './src/client/index.tsx'
     },
@@ -81,3 +81,5 @@ module.exports = {
         runtimeChunk: true
     }
 }
+
+export default config

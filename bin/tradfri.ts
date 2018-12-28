@@ -1,6 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
-const TradfriGateway = require('gateway/TradfriGateway')
+import 'module-alias/register'
+
+import TradfriGateway from '#/gateway/TradfriGateway'
+
+// tslint:disable:no-console
 
 const argv = process.argv.slice(2)
 
@@ -21,8 +25,8 @@ switch (action) {
         printUsageAndExit()
 }
 
-function printUsageAndExit(action) {
-    switch (action) {
+function printUsageAndExit(act?: string) {
+    switch (act) {
         case 'authenticate':
             console.log('Usage: tradfri authenticate HOSTNAME SECURITY_CODE')
             break
@@ -32,13 +36,12 @@ function printUsageAndExit(action) {
     process.exit(1)
 }
 
-async function authenticate(argv) {
-    if (argv.length != 2) {
+async function authenticate(args: string[]) {
+    if (args.length !== 2) {
         printUsageAndExit('authenticate')
     }
 
-    const hostname = argv[0]
-    const securityCode = argv[1]
+    const [hostname, securityCode] = args
 
     const gateway = new TradfriGateway(hostname)
 
@@ -77,3 +80,5 @@ async function discover() {
 
     process.exit()
 }
+
+// tslint:enable:no-console
