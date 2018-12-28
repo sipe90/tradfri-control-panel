@@ -29,7 +29,6 @@ whitelist: &whitelist
     - package.json
     - tslint.json
     - webpack.config.ts
-    - .babelrc
     - tsconfig.json
     - jest.config.js
 
