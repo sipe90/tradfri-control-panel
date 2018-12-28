@@ -12,7 +12,7 @@ router.get('/', (_req, res, next) =>
 
 router.post('/:id', (req, res, next) =>
     updateLight({ ...req.body, id: parseInt(req.params.id, 10) })
-        .then((result) => res.json(result))
+        .then(() => res.status(204))
         .catch(next)
 )
 
