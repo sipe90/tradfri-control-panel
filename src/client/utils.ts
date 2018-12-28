@@ -40,20 +40,24 @@ interface IErrorResponse {
     stack?: string
 }
 
+const isJsonResponse = (headers: Headers) => (headers.get('content-type') || '').includes('application/json')
+
 const fetchJson = async <E> (url: string, init?: RequestInit): Promise<JsonResponse<E>> => {
-    const { headers, status, statusText, ok, json } = await fetch(url, init)
-    const resJson = await json()
+    const res = await fetch(url, init)
+    const { headers, json, ok, status, statusText } = res
+
+    const resJson = isJsonResponse(headers) ? await json.call(res) : null
 
     return ok ? {
         headers,
         json: resJson as E,
-        ok: true,
+        ok,
         status,
         statusText,
     } : {
         headers,
         json: resJson as IErrorResponse,
-        ok: false,
+        ok,
         status,
         statusText,
     }
