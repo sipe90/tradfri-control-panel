@@ -27,9 +27,11 @@ whitelist: &whitelist
     - test/*
     - public/*
     - package.json
-    - .eslintrc.js
-    - webpack.config.js
+    - tslint.json
+    - webpack.config.ts
     - .babelrc
+    - tsconfig.json
+    - jest.config.js
 
 version: 2
 jobs:
