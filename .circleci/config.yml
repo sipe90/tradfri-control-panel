@@ -80,6 +80,8 @@ workflows:
           <<: *tags_and_branches
       - test:
           <<: *tags_and_branches
+          requires:
+            - install
       - build:
           <<: *tags_and_branches
           requires:
