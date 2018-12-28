@@ -1,5 +1,5 @@
 import { Card, List } from 'antd'
-import R, { Dictionary } from 'ramda'
+import * as R from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { AnyAction } from 'redux'
@@ -9,7 +9,7 @@ import { lightStateChanged, updateLight } from '@/actions/lights'
 import LightItem from '@/components/lights/LightItem'
 import Spinner from '@/components/Spinner'
 import { devicesForGroup } from '@/utils'
-import { Group, Light } from 'shared/types'
+import { Dictionary, Group, Light } from 'shared/types'
 
 import './LightsTab.css'
 

@@ -132,7 +132,7 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
             dispatch(stopGatewayPolling())
         }
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(loadGatewaySuccess(res.json))
     } catch (error) {
@@ -147,7 +147,7 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => asy
         dispatch(saveGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway', gateway)
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(saveGatewaySuccess())
         dispatch(fetchGateway())
@@ -160,19 +160,17 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: Gateway) => asy
 export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(discoverGatewayRequest())
-        const res = await fetchGetJson('api/gateway/discover')
+        const res = await fetchGetJson<DiscoveredGateway>('api/gateway/discover')
 
-        if (res.status === 404) {
-            dispatch(discoverGatewaySuccess(null))
-        }
+        if (res.status === 404) dispatch(discoverGatewaySuccess(null))
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
-        const json = await res.json()
+        const { name, addresses } = res.json
 
-        dispatch(change('GATEWAY', 'name', json.name))
-        dispatch(change('GATEWAY', 'hostname', json.addresses[0]))
-        dispatch(discoverGatewaySuccess(json))
+        dispatch(change('GATEWAY', 'name', name))
+        dispatch(change('GATEWAY', 'hostname', addresses[0]))
+        dispatch(discoverGatewaySuccess(res.json))
     } catch (error) {
         message.error(`Failed to discover gateway: ${error.message}`)
         dispatch(discoverGatewayFailure())
@@ -191,9 +189,9 @@ export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, s
             const res = await fetchPostJson<IGenerateIdentityResponse>(
                 'api/gateway/identity', { hostname, securityCode })
 
-            if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+            if (!res.ok) throw new Error(res.json.message || res.statusText)
 
-            const { identity, psk } = await res.json as IGenerateIdentityResponse
+            const { identity, psk } = res.json
 
             dispatch(change('GATEWAY', 'identity', identity))
             dispatch(change('GATEWAY', 'psk', psk))
@@ -210,7 +208,7 @@ export const testConnection: ActionCreator<ThunkResult> = (hostname: string, ide
             dispatch(testConnectionRequest())
             const res = await fetchPostJson<IConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
 
-            if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+            if (!res.ok) throw new Error(res.json.message || res.statusText)
 
             dispatch(testConnectionSuccess(res.json))
         } catch (error) {

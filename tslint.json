@@ -13,6 +13,8 @@
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
         "no-unused-expression": [true, "allow-fast-null-checks"],
         "trailing-comma": false,
-        "object-literal-sort-keys": false
+        "object-literal-sort-keys": false,
+        "curly": [true, "ignore-same-line"],
+        "jsx-no-lambda": false
     }
 }

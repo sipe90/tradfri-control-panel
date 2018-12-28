@@ -11,18 +11,25 @@ interface IRoutesProps {
 const Routes: React.FunctionComponent<IRoutesProps> = (props) => {
     return (
         <Switch>
-            <Route exact={true} path='/' render={() => <Redirect to={props.routes[0].path} />} />
-            {props.routes.map((route, index) => (
-                <Route
-                    key={index}
-                    path={route.path}
-                    exact={route.exact}
-                    component={() => <ModuleWrapper module={route.container} />}
-                />
-            ))}
-            <Route component={() => <ModuleWrapper module={<div>404</div>} />} />
+            <Route
+                exact={true}
+                path='/'
+                component={() => <Redirect to={props.routes[0].path} />}
+            />
+            {renderRoutes(props.routes)}
+            <ModuleWrapper module={<div>404</div>} />
         </Switch>
     )
 }
+
+const renderRoutes = (routes: IRouteDefinition[]) =>
+    routes.map(({ path, exact, container }, index) => (
+        <Route
+            key={index}
+            path={path}
+            exact={exact}
+            component={() => <ModuleWrapper module={container} />}
+        />
+    ))
 
 export default Routes

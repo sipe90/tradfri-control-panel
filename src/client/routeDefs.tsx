@@ -12,28 +12,28 @@ import SensorsModule from '@/containers/modules/SensorsModule'
 export interface IRouteDefinition {
     path: string
     exact: boolean
-    icon: React.ReactNode
+    icon: JSX.Element
     text: string
-    container: React.ReactNode
+    container: JSX.Element
 }
 
 const routes: IRouteDefinition[] = [
     {
-        container: GatewayModule,
+        container: <GatewayModule />,
         exact: true,
         icon: <HomeAutomationIcon size={28} />,
         path: '/gateway',
         text: 'Gateway',
     },
     {
-        container: LightsModule,
+        container: <LightsModule />,
         exact: true,
         icon: <LightbulbOutlineIcon size={28} />,
         path: '/lights',
         text: 'Lights',
     },
     {
-        container: SensorsModule,
+        container: <SensorsModule />,
         exact: true,
         icon: <RssIcon size={28} />,
         path: '/sensors',

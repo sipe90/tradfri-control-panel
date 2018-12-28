@@ -3,13 +3,13 @@ import React from 'react'
 import './ModuleWrapper.css'
 
 interface IModuleWrapperProps {
-    module: any
+    module: JSX.Element
 }
 
 const ModuleWrapper: React.FunctionComponent<IModuleWrapperProps> = (props) => {
     return (
         <div className='content-wrap'>
-            <props.module />
+            {props.module}
         </div>
     )
 }

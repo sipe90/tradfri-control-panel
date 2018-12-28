@@ -66,7 +66,7 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
         await dispatch(loadGroupsRequest())
         const res = await fetchGetJson<Dictionary<Group>>('/api/groups')
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(loadGroupsSuccess(res.json))
     } catch (error) {
@@ -86,7 +86,7 @@ export const updateGroup: ActionCreator<ThunkResult> = (group: GroupUpdateReques
         dispatch(updateGroupRequest())
         const res = await fetchPostJson<void>(`/api/groups/${group.id}`, payload)
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(updateGroupSuccess())
     } catch (error) {

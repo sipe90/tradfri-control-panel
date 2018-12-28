@@ -17,15 +17,17 @@ interface IGatewayProps {
 const Gateway: React.FunctionComponent<IGatewayProps> = (props) => (
     <div>
         <Spinner spinning={props.initialDataLoading}>
-            {props.gateway ?
-                <GatewayCard
-                    gateway={props.gateway}
-                    gatewayStateChanged={props.gatewayStateChanged}
-                    saveGateway={props.saveGateway} />
-                :
-                <GatewayWizard />}
+            {!props.initialDataLoading && (!props.gateway ? <GatewayWizard /> : renderGateway(props))}
         </Spinner>
     </div>
+)
+
+const renderGateway = ({gateway, gatewayStateChanged, saveGateway}: IGatewayProps) => (
+    <GatewayCard
+        gateway={gateway}
+        gatewayStateChanged={gatewayStateChanged}
+        saveGateway={saveGateway}
+    />
 )
 
 export default Gateway

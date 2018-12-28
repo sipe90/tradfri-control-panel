@@ -75,7 +75,7 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
         await dispatch(loadSensorsRequest())
         const res = await fetchGetJson<Dictionary<Sensor>>('/api/sensors')
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(loadSensorsSuccess(res.json))
     } catch (error) {
@@ -88,9 +88,9 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
 export const updateSensor: ActionCreator<ThunkResult> = (sensor: Sensor) => async (dispatch) => {
     try {
         dispatch(updateSensorRequest())
-        const res = await fetchPostJson(`/api/sensors/${sensor.id}`, sensor)
+        const res = await fetchPostJson<void>(`/api/sensors/${sensor.id}`, sensor)
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(updateSensorSuccess())
     } catch (error) {

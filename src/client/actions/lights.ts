@@ -74,7 +74,7 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
         dispatch(loadLightsRequest())
         const res = await fetchGetJson<Dictionary<Light>>('/api/lights')
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(loadLightsSuccess(res.json))
     } catch (error) {
@@ -89,7 +89,7 @@ export const updateLight: ActionCreator<ThunkResult> = (light: Light) => async (
         dispatch(updateLightRequest())
         const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
 
-        if (!res.ok) { throw new Error(res.json.message || res.statusText) }
+        if (!res.ok) throw new Error(res.json.message || res.statusText)
 
         dispatch(updateLightSuccess())
     } catch (error) {
