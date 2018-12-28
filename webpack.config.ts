@@ -69,7 +69,8 @@ const config: Configuration = {
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src', 'client')
+            '@': path.resolve(__dirname, 'src', 'client'),
+            'shared': path.resolve(__dirname, 'src', 'shared'),
         },
         extensions: ['.tsx', '.ts', '.js'],
         modules: [path.resolve(__dirname, 'public'), 'node_modules']

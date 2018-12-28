@@ -1,5 +1,6 @@
 
 import { message } from 'antd'
+import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
 import { fetchGateway } from '@/actions/gateway'
@@ -74,7 +75,7 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
         dispatch(loadLightsRequest())
         const res = await fetchGetJson<Dictionary<ILight>>('/api/lights')
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(loadLightsSuccess(res.json))
     } catch (error) {
@@ -89,7 +90,7 @@ export const updateLight: ActionCreator<ThunkResult> = (light: ILight) => async 
         dispatch(updateLightRequest())
         const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(updateLightSuccess())
     } catch (error) {

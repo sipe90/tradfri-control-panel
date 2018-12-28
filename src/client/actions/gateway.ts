@@ -1,5 +1,6 @@
 
 import { message } from 'antd'
+import * as R from 'ramda'
 
 import { change } from 'redux-form'
 
@@ -130,9 +131,10 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
         if (res.status === 404) {
             dispatch(loadGatewaySuccess(null))
             dispatch(stopGatewayPolling())
+            return
         }
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(loadGatewaySuccess(res.json))
     } catch (error) {
@@ -147,7 +149,7 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => as
         dispatch(saveGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway', gateway)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(saveGatewaySuccess())
         dispatch(fetchGateway())
@@ -162,9 +164,12 @@ export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch
         dispatch(discoverGatewayRequest())
         const res = await fetchGetJson<DiscoveredGateway>('api/gateway/discover')
 
-        if (res.status === 404) dispatch(discoverGatewaySuccess(null))
+        if (res.status === 404) {
+            dispatch(discoverGatewaySuccess(null))
+            return
+        }
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         const { name, addresses } = res.json
 
@@ -189,7 +194,7 @@ export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, s
             const res = await fetchPostJson<IGenerateIdentityResponse>(
                 'api/gateway/identity', { hostname, securityCode })
 
-            if (!res.ok) throw new Error(res.json.message || res.statusText)
+            if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
             const { identity, psk } = res.json
 
@@ -208,7 +213,7 @@ export const testConnection: ActionCreator<ThunkResult> = (hostname: string, ide
             dispatch(testConnectionRequest())
             const res = await fetchPostJson<IConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
 
-            if (!res.ok) throw new Error(res.json.message || res.statusText)
+            if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
             dispatch(testConnectionSuccess(res.json))
         } catch (error) {

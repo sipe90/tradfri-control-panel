@@ -1,4 +1,5 @@
 import { message } from 'antd'
+import * as R from 'ramda'
 
 import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
@@ -66,7 +67,7 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
         await dispatch(loadGroupsRequest())
         const res = await fetchGetJson<Dictionary<IGroup>>('/api/groups')
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(loadGroupsSuccess(res.json))
     } catch (error) {
@@ -86,7 +87,7 @@ export const updateGroup: ActionCreator<ThunkResult> = (group: IGroupUpdateReque
         dispatch(updateGroupRequest())
         const res = await fetchPostJson<void>(`/api/groups/${group.id}`, payload)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(updateGroupSuccess())
     } catch (error) {

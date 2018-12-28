@@ -3,7 +3,7 @@ import { normalize, Schema } from 'normalizr'
 import * as R from 'ramda'
 import { Action } from 'redux'
 
-import { IDevice, Dictionary, IGroup } from 'shared/types'
+import { Dictionary, IDevice, IGroup } from 'shared/types'
 
 export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
     R.values(R.pick(R.map(String, group.devices), devices))
@@ -24,13 +24,13 @@ export const createReducer = <S, A extends Action = IPayloadAction> (cases: Arra
 type JsonResponse<E> = ({
     headers: Headers
     status: number
-    statusText: string,
+    statusText: string
 } & ({
         ok: true
-        json: E,
+        json: E
     } | {
         ok: false
-        json: IErrorResponse,
+        json: IErrorResponse | null
     })
 )
 

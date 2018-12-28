@@ -1,4 +1,3 @@
-import { Dictionary } from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { AnyAction } from 'redux'
@@ -9,7 +8,7 @@ import {
     stopSensorPolling, updateSensor,
 } from '@/actions/sensors'
 import SensorList from '@/components/sensors/SensorList'
-import { ISensor } from 'shared/types'
+import { Dictionary, ISensor } from 'shared/types'
 
 interface ISensorsModuleProps {
     sensors: Dictionary<ISensor>

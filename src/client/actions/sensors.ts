@@ -1,13 +1,13 @@
 
 import { message } from 'antd'
-import { Dictionary } from 'ramda'
+import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
 import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
-import { ISensor } from 'shared/types'
+import { Dictionary, ISensor } from 'shared/types'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'
@@ -75,7 +75,7 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
         await dispatch(loadSensorsRequest())
         const res = await fetchGetJson<Dictionary<ISensor>>('/api/sensors')
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(loadSensorsSuccess(res.json))
     } catch (error) {
@@ -90,7 +90,7 @@ export const updateSensor: ActionCreator<ThunkResult> = (sensor: ISensor) => asy
         dispatch(updateSensorRequest())
         const res = await fetchPostJson<void>(`/api/sensors/${sensor.id}`, sensor)
 
-        if (!res.ok) throw new Error(res.json.message || res.statusText)
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
 
         dispatch(updateSensorSuccess())
     } catch (error) {
