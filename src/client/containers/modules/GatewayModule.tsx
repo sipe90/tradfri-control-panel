@@ -7,39 +7,45 @@ import {
     fetchGateway, gatewayStateChanged, saveGateway,
     startGatewayPolling, stopGatewayPolling,
 } from '@/actions/gateway'
-
 import GatewayComponent from '@/components/gateway/Gateway'
+import GatewayWizard from '@/components/gateway/GatewayWizard'
+import Spinner from '@/components/Spinner'
 import { IGateway } from 'shared/types'
 
 interface IGatewayModuleProps {
     gateway: IGateway
     initialDataLoading: boolean
-    loadGateway: () => void
-    gatewayStateChanged: (gateway: IGateway) => void
-    saveGateway: (gateway: IGateway) => void
-    startGatewayPolling: () => void
-    stopGatewayPolling: () => void
+    dispatchLoadGateway: () => void
+    dispatchGatewayStateChanged: (gateway: IGateway) => void
+    dispatchSaveGateway: (gateway: IGateway) => void
+    dispatchStartGatewayPolling: () => void
+    dispatchStopGatewayPolling: () => void
 }
 
 class GatewayModule extends Component<IGatewayModuleProps> {
 
     public componentDidMount() {
-        this.props.loadGateway()
-        this.props.startGatewayPolling()
+        this.props.dispatchLoadGateway()
+        this.props.dispatchStartGatewayPolling()
     }
 
     public componentWillUnmount() {
-        this.props.stopGatewayPolling()
+        this.props.dispatchStopGatewayPolling()
     }
 
-    public render() {
+    public render = () => {
+        const { gateway, initialDataLoading } = this.props
         return (
-            <GatewayComponent
-                gateway={this.props.gateway}
-                initialDataLoading={this.props.initialDataLoading}
-                gatewayStateChanged={this.props.gatewayStateChanged}
-                saveGateway={this.props.saveGateway}
-            />
+            <Spinner spinning={initialDataLoading}>
+                {!initialDataLoading && (!gateway ? <GatewayWizard /> : this.renderGateway())}
+            </Spinner>
+        )
+    }
+
+    private renderGateway = () => {
+        const { gateway, initialDataLoading, dispatchGatewayStateChanged, dispatchSaveGateway } = this.props
+        return (
+            <GatewayComponent {...{ gateway, initialDataLoading, dispatchGatewayStateChanged, dispatchSaveGateway }}/>
         )
     }
 
@@ -52,11 +58,11 @@ const mapStateToProps = (state: any) => ({
 
 // TODO: State type
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
-    gatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
-    loadGateway: () => dispatch(fetchGateway()),
-    saveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
-    startGatewayPolling: () => dispatch(startGatewayPolling()),
-    stopGatewayPolling: () => dispatch(stopGatewayPolling()),
+    dispatchGatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
+    dispatchLoadGateway: () => dispatch(fetchGateway()),
+    dispatchSaveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
+    dispatchStartGatewayPolling: () => dispatch(startGatewayPolling()),
+    dispatchStopGatewayPolling: () => dispatch(stopGatewayPolling()),
 })
 
 export default connect(
