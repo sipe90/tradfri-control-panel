@@ -13,7 +13,7 @@ import logger from '#/logger'
 import { gateway, groups, lights, sensors } from '#/routes'
 
 const HOST = process.env.HOST || 'localhost'
-const PORT = parseInt(process.env.SERVER_PORT || '8080', 10)
+const PORT = parseInt(process.env.PORT || '8080', 10)
 
 const app = express()
 
@@ -71,4 +71,4 @@ app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     })
 })
 
-app.listen(PORT, HOST, () => logger.info(`Listening on port ${PORT}`))
+app.listen(PORT, HOST, () => logger.info(`Listening on ${HOST}:${PORT}`))
