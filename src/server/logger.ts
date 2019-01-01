@@ -6,7 +6,7 @@ const { combine, timestamp, printf } = format
 
 const stringFormat = printf((info) => `${info.timestamp} [${info.level}] ${info.message}`)
 
-export default createLogger({
+const logger = createLogger({
     format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
         stringFormat,
@@ -25,3 +25,5 @@ export default createLogger({
         })
     ]
 })
+
+export default logger
