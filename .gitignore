@@ -10,7 +10,7 @@
 /dist
 
 # data
-/data/*.db
+/data/*
 
 # pm2 deployment
 ecosystem.deploy.json
