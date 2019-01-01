@@ -6,7 +6,7 @@
     "start": "ts-node src/server/app.ts",
     "build": "webpack --mode production",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot --host 0.0.0.0",
-    "server": "nodemon --host 0.0.0.0",
+    "server": "nodemon",
     "mock-api": "ts-node mock/server.ts",
     "dev": "concurrently 'npm run server' 'npm run client'",
     "dev-mock": "concurrently 'npm run mock-api' 'npm run client'",
