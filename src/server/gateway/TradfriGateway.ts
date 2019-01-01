@@ -1,9 +1,10 @@
-import R from 'ramda'
-
 import {
     Accessory, AccessoryTypes, discoverGateway,
-    GroupOperation, LightOperation, TradfriClient
+    GroupOperation, LightOperation, LoggerFunction, TradfriClient
 } from 'node-tradfri-client'
+import R from 'ramda'
+
+import logger from '#/logger'
 
 type DeviceTypeFilter = (type: AccessoryTypes) => (devices: Record<string, Accessory>) => Record<string, Accessory>
 
@@ -12,19 +13,21 @@ const filterDevice: DeviceTypeFilter = (type: AccessoryTypes) => R.pickBy(R.prop
 const filterLights = filterDevice(AccessoryTypes.lightbulb)
 const filterSensors = filterDevice(AccessoryTypes.motionSensor)
 
+const loggerFn: LoggerFunction = (message, severity) => logger[severity || 'info'](`(NTC): ${message}`)
+
 export default class TradfriGateway {
 
     public static discover() {
         return discoverGateway()
     }
 
-    public client: TradfriClient
-    public connected: boolean = false
-    public hostname: string
+    private client: TradfriClient
+    private connected: boolean = false
+    private hostname: string
 
     constructor(hostname: string) {
         this.hostname = hostname
-        this.client = new TradfriClient(hostname)
+        this.client = new TradfriClient(hostname, loggerFn)
     }
 
     public async authenticate(securityCode: string) {
