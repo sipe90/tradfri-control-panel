@@ -2,12 +2,13 @@ import path from 'path'
 import winston from 'winston'
 
 const { createLogger, format, transports: { Console, File } } = winston
-const { combine, timestamp, printf } = format
+const { combine, timestamp, printf, splat } = format
 
 const stringFormat = printf((info) => `${info.timestamp} [${info.level}] ${info.message}`)
 
 const logger = createLogger({
     format: combine(
+        splat(),
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
         stringFormat,
     ),

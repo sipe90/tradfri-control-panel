@@ -1,3 +1,5 @@
+import { UpdatePriority } from 'node-tradfri-client'
+
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 export type Diff<T extends string, U extends string> = ({[P in T]: P} &
@@ -5,6 +7,12 @@ export type Diff<T extends string, U extends string> = ({[P in T]: P} &
 
 // tslint:disable-next-line:interface-over-type-literal
 export type Dictionary<T> = {[key: string]: T}
+
+export enum GatewayConnectionState {
+    CONNECTED = 1,
+    DISCONNECTED = 2,
+    OFFLINE = 3
+}
 
 export interface IDevice {
     id: number
@@ -17,12 +25,15 @@ export interface IDevice {
 }
 
 export interface IGateway {
-    id: number
-    connected: boolean
+    hostname: string,
+    connectionState: GatewayConnectionState
+    alexaPairStatus: boolean
+    googleHomePairStatus: boolean
+    version: string
+    updateProgress: number
+    updatePriority: UpdatePriority
+    releaseNotes: string
     name: string
-    hostname: string
-    identity: string
-    psk: string
 }
 
 export interface IGatewayDevices extends IGateway {

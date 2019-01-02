@@ -1,7 +1,15 @@
 import SQL, { SQLStatement } from 'sql-template-strings'
 
 import { getConnection } from '#/db'
-import { IGateway, Omit } from 'shared/types'
+import { Omit } from 'shared/types'
+
+interface IGatewayEntity {
+    id: number
+    name: string
+    hostname: string
+    identity: string
+    psk: string
+}
 
 const all = async (sql: SQLStatement) => (await getConnection()).all(sql)
 const get = async (sql: SQLStatement) => (await getConnection()).get(sql)
@@ -13,10 +21,10 @@ const del = async (sql: SQLStatement) => (await run(sql)).changes > 0
 export const selectAllGateways = async () =>
     all(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway`)
 
-export const selectGateway: () => Promise<IGateway> = async () =>
+export const selectGateway: () => Promise<IGatewayEntity> = async () =>
     get(SQL`SELECT id, name, hostname, identity, psk FROM tradfri_gateway LIMIT 1`)
 
-export const insertGateway = async ({ name, hostname, identity, psk }: Omit<IGateway, 'id' | 'connected'>) =>
+export const insertGateway = async ({ name, hostname, identity, psk }: Omit<IGatewayEntity, 'id'>) =>
     ins(SQL`INSERT INTO tradfri_gateway (name, hostname, identity, psk)
         VALUES (${name}, ${hostname}, ${identity}, ${psk})`)
 

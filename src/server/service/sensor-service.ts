@@ -4,6 +4,6 @@ import { getGateway } from '#/service/gateway-service'
 
 export const getSensors = async () => {
     const gateway = await getGateway()
-    if (!gateway || !gateway.connected) return []
+    if (!gateway) return []
     return normalizeSensors(getConnection().getSensors())
 }

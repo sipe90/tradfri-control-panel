@@ -7,17 +7,14 @@ import { ILight } from 'shared/types'
 
 export const getLights = async () => {
     const gateway = await getGateway()
-    if (!gateway || !gateway.connected) return []
+    if (!gateway) return []
     return normalizeLights(getConnection().getLights())
 }
 
 export const updateLight = async (light: ILight) => {
     const gateway = await getGateway()
     if (!gateway) {
-        throw new Error('No gateway found')
-    }
-    if (!gateway.connected) {
-        throw new Error('Gateway is not connected')
+        throw new Error('Not connected to a gateway')
     }
     if (!R.contains(light.id, gateway.lights)) {
         throw new Error(`No light found with id: ${light.id}`)

@@ -1,4 +1,5 @@
 import { TradfriErrorCodes } from 'node-tradfri-client'
+import R from 'ramda'
 
 import { normalizeGateway } from '#/data/tradfri'
 import * as db from '#/db/gateway'
@@ -33,21 +34,32 @@ export const createTradfriGateway = async ({ name, hostname, identity, psk }: IC
 }
 
 export const getGateway = async () => {
-    const gateway = await fetchGateway()
-
-    if (!gateway) {
-        return null
-    }
-
     const gatewayConnection = getConnection()
 
-    if (!gatewayConnection) {
+    if (!gatewayConnection || !gatewayConnection.isConnected()) {
         return null
     }
 
+    const gatewayDetails = gatewayConnection.getGateway()
+
+    if (!gatewayDetails) {
+        return null
+    }
+
+    const { name } = await fetchGateway()
+
     return normalizeGateway({
-            ...gateway,
-            connected: gatewayConnection.isConnected()
+            ...R.pick([
+                'alexaPairStatus',
+                'googleHomePairStatus',
+                'version',
+                'updateProgress',
+                'updatePriority',
+                'releaseNotes'
+            ], gatewayDetails),
+            name,
+            hostname: gatewayConnection.getHostname(),
+            connectionState: gatewayConnection.getConnectionState()
         },
         gatewayConnection.getLights(),
         gatewayConnection.getSensors(),
