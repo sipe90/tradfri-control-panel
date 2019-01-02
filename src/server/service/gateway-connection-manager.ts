@@ -16,6 +16,8 @@ export const getConnection = () => {
     return connection
 }
 
+export const isGatewayConnected = () => connection && connection.isConnected()
+
 export const connectToGateway = async ({ hostname, identity, psk }: IConnectProps) => {
     logger.info(`Connecting to a trådfri gateway at hostname ${hostname}`)
     const gateway = new TradfriGateway(hostname)

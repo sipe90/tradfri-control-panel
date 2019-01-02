@@ -7,17 +7,14 @@ import { IGroupUpdateRequest } from 'shared/types'
 
 export const getGroups = async () => {
     const gateway = await getGateway()
-    if (!gateway || !gateway.connected) return []
+    if (!gateway) return []
     return normalizeGroups(getConnection().getGroups())
 }
 
 export const updateGroup = async (group: IGroupUpdateRequest) => {
     const gateway = await getGateway()
     if (!gateway) {
-        throw new Error('No gateway found')
-    }
-    if (!gateway.connected) {
-        throw new Error('Gateway is not connected')
+        throw new Error('Not connected to a gateway')
     }
     if (!R.contains(group.id, gateway.groups)) {
         throw new Error(`No group found with id: ${group.id}`)
