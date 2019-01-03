@@ -19,6 +19,10 @@ export const SAVE_GATEWAY_REQUEST = 'SAVE_GATEWAY_REQUEST'
 export const SAVE_GATEWAY_SUCCESS = 'SAVE_GATEWAY_SUCCESS'
 export const SAVE_GATEWAY_FAILURE = 'SAVE_GATEWAY_FAILURE'
 
+export const UPDATE_GATEWAY_REQUEST = 'UPDATE_GATEWAY_REQUEST'
+export const UPDATE_GATEWAY_SUCCESS = 'UPDATE_GATEWAY_SUCCESS'
+export const UPDATE_GATEWAY_FAILURE = 'UPDATE_GATEWAY_FAILURE'
+
 export const GATEWAY_STATE_CHANGED = 'GATEWAY_STATE_CHANGED'
 
 export const DISCOVER_GATEWAY_REQUEST = 'DISCOVER_GATEWAY_REQUEST'
@@ -57,6 +61,19 @@ const saveGatewaySuccess = () => ({
 
 const saveGatewayFailure = (error: Error) => ({
     type: SAVE_GATEWAY_FAILURE,
+    payload: error
+})
+
+const updateGatewayRequest = () => ({
+    type: UPDATE_GATEWAY_REQUEST
+})
+
+const updateGatewaySuccess = () => ({
+    type: UPDATE_GATEWAY_SUCCESS
+})
+
+const updateGatewayFailure = (error: Error) => ({
+    type: UPDATE_GATEWAY_FAILURE,
     payload: error
 })
 
@@ -156,6 +173,21 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => as
     } catch (error) {
         message.error(`Failed to save or update gateway: ${error.message}`)
         dispatch(saveGatewayFailure(error))
+    }
+}
+
+export const updateGateway: ActionCreator<ThunkResult> = (gateway: Partial<IGateway>) => async (dispatch) => {
+    try {
+        dispatch(updateGatewayRequest())
+        const res = await fetchPostJson<void>('/api/gateway/update', gateway)
+
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
+
+        dispatch(updateGatewaySuccess())
+        dispatch(fetchGateway())
+    } catch (error) {
+        message.error(`Failed to save or update gateway: ${error.message}`)
+        dispatch(updateGatewayFailure(error))
     }
 }
 

@@ -1,12 +1,14 @@
+import * as R from 'ramda'
 import React from 'react'
+
+import { Button, Card, Divider, Input, Popover } from 'antd'
+import { PencilIcon } from 'mdi-react'
 
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
-import StatusIndicator from '@/components/StatusIndicator'
-import { IGateway } from 'shared/types'
+import StatusIndicator, { StatusColor } from '@/components/StatusIndicator'
+import { GatewayConnectionState, IGateway } from 'shared/types'
 
-import { Button, Card, Input, Popover } from 'antd'
-import { PencilIcon } from 'mdi-react'
 import './Gateway.css'
 
 const { Meta } = Card
@@ -16,6 +18,7 @@ interface IGatewayProps {
     initialDataLoading: boolean
     dispatchGatewayStateChanged: (gateway: IGateway) => void
     dispatchSaveGateway: (gateway: IGateway) => void
+    dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
 }
 
 interface IGatewayState {
@@ -46,22 +49,26 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         )
     }
 
-    private renderGateway() {
-        const { gateway } = this.props
-        return (
-        <div className='gateway'>
+    private renderGateway = () => (
+        <div>
+            <div className='gateway__actions'>
+                <Button>Edit</Button>
+                <Button>Delete</Button>
+                <Divider type='vertical' style={{ height: 24, margin: '0px 8px 0px 4px' }} />
+                <Button>Reboot</Button>
+                <Button type='danger'>Reset</Button>
+            </div>
             <Card
                 cover={this.cardCover()}
             >
                 <Meta
                     title={this.title()}
-                    avatar={<StatusIndicator type='gateway' alive={gateway.connected}/>}
+                    avatar={this.statusIndicator()}
                     description='IKEA Trådfri gateway'
                 />
             </Card>
         </div>
     )
-    }
 
     private cardCover() {
         return (
@@ -71,7 +78,7 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         )
     }
 
-    private title() {
+    private title = () => {
         const { gateway } = this.props
         return (
             <div className='gateway__title'>
@@ -89,6 +96,11 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
                 </Popover>
             </div>
         )
+    }
+
+    private statusIndicator = () => {
+        const connectionState = this.props.gateway.connectionState
+        return <StatusIndicator title={statusTitle(connectionState)} color={statusColor(connectionState)}/>
     }
 
     private editName = () => {
@@ -111,10 +123,24 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private updateName = () => {
         const newGatewayState = { ...this.props.gateway, name: this.state.editNameText }
-        this.props.dispatchSaveGateway(newGatewayState)
+        this.props.dispatchUpdateGateway(newGatewayState)
         this.props.dispatchGatewayStateChanged(newGatewayState)
         this.setState({ editNameVisible: false })
     }
 }
+
+const statusTitle = R.cond([
+    [R.equals(GatewayConnectionState.CONNECTED), R.always('Connected to gateway')],
+    [R.equals(GatewayConnectionState.DISCONNECTED), R.always('Gateway connection lost')],
+    [R.equals(GatewayConnectionState.OFFLINE), R.always('Gateway is offline')],
+    [R.T, R.always('Gateway is offline')]
+])
+
+const statusColor = R.cond([
+    [R.equals(GatewayConnectionState.CONNECTED), R.always(StatusColor.ONLINE)],
+    [R.equals(GatewayConnectionState.DISCONNECTED), R.always(StatusColor.DISCONNECTED)],
+    [R.equals(GatewayConnectionState.OFFLINE), R.always(StatusColor.OFFLINE)],
+    [R.T, R.always(StatusColor.OFFLINE)]
+])
 
 export default Gateway
