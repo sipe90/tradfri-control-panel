@@ -7,10 +7,12 @@ import { ValidationError } from '#/error'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
 import { connectToGateway, getConnection } from '#/service/gateway-connection-manager'
-import { ICreateGatewayRequest, IGenerateIdentityRequest, ITestConnectionRequest } from 'shared/types'
+import {
+    ICreateGatewayRequest, IGenerateIdentityRequest,
+    ITestConnectionRequest, IUpdateGatewayRequest
+} from 'shared/types'
 
-export const fetchGateway = async () =>
-    db.selectGateway()
+export const fetchGateway = db.selectGateway
 
 export const createTradfriGateway = async ({ name, hostname, identity, psk }: ICreateGatewayRequest) => {
     if (!name) {
@@ -31,6 +33,18 @@ export const createTradfriGateway = async ({ name, hostname, identity, psk }: IC
     await db.insertGateway({ name, hostname, identity, psk })
     logger.info('Successfully saved gateway to database')
     await connectToGateway({ hostname, identity, psk })
+}
+
+export const updateTradfriGateway = async ({ name }: IUpdateGatewayRequest) => {
+    if (!name) {
+        throw new ValidationError('name', 'Name is required')
+    }
+    if (!await fetchGateway()) {
+        throw new Error('Gateway not found')
+    }
+    logger.info(`Updating gateway name to ${name}`)
+    await db.updateGateway({ name })
+    logger.info('Successfully updated gateway')
 }
 
 export const getGateway = async () => {
