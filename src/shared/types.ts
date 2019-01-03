@@ -87,6 +87,10 @@ export interface ICreateGatewayRequest {
     psk: string
 }
 
+export interface IUpdateGatewayRequest {
+    name: string
+}
+
 export interface IGenerateIdentityRequest {
     hostname: string
     securityCode: string
