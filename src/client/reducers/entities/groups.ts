@@ -7,7 +7,7 @@ import { INormalizeResult } from '@/types'
 import { createReducer, normalizer } from '@/utils'
 import { Dictionary, IGroup } from 'shared/types'
 
-type GroupEntitiesState = Dictionary<IGroup>
+export type GroupEntitiesState = Dictionary<IGroup>
 
 const initialState = {}
 

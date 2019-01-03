@@ -5,7 +5,7 @@ import {
 } from '@/actions/lights'
 import { createReducer } from '@/utils'
 
-interface ILightsModuleState {
+export interface ILightsModuleState {
     initialDataLoading: boolean
 }
 

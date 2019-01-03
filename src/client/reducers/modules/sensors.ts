@@ -5,7 +5,7 @@ import {
 } from '@/actions/sensors'
 import { createReducer } from '@/utils'
 
-interface ISensorsModuleState {
+export interface ISensorsModuleState {
     initialDataLoading: boolean
 }
 

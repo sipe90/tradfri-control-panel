@@ -6,12 +6,12 @@ import { IGateway } from 'shared/types'
 
 const initialState = null
 
-type GatewayEntityState = IGateway | null
+export type GatewayEntityState = IGateway | null
 
 const reducer = createReducer<GatewayEntityState>([
-    [LOAD_GATEWAY_SUCCESS, (_state, { payload }) => payload ? ({
+    [LOAD_GATEWAY_SUCCESS, (_state, { payload }) => ({
         ...payload,
-    }) : null],
+    })],
 ])
 
 const gatewayEntityReducer: Reducer<GatewayEntityState> = (state = initialState, action) => reducer(state, action)

@@ -2,12 +2,11 @@ import { Tabs } from 'antd'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Sticky, StickyContainer } from 'react-sticky'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import { fetchLights, startLightPolling, stopLightPolling } from '@/actions/lights'
 import LightGroupsTab from '@/containers/lights/LightGroupsTab'
 import LightsTab from '@/containers/lights/LightsTab'
+import { AppDispatch } from '@/types'
 import { TabsProps } from 'antd/lib/tabs'
 
 const TabPane = Tabs.TabPane
@@ -55,8 +54,7 @@ const renderTabBar = (props: TabsProps, DefaultTabBar: any) => (
     </Sticky>
 )
 
-// TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     loadLights: () => dispatch(fetchLights()),
     startLightPolling: () => dispatch(startLightPolling()),
     stopLightPolling: () => dispatch(stopLightPolling()),

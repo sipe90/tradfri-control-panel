@@ -2,14 +2,13 @@ import { Layout } from 'antd'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import { fetchGroups, startGroupPolling, stopGroupPolling } from '@/actions/groups'
 import Navigation from '@/components/Navigation'
 import Routes from '@/components/Routes'
 import routeDefs from '@/routeDefs'
 
+import { AppDispatch } from '@/types'
 import './App.css'
 
 const { Header, Content, Footer } = Layout
@@ -53,8 +52,7 @@ class App extends Component<IAppProps> {
     }
 }
 
-// TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     fetchGroups: () => dispatch(fetchGroups()),
     startGroupPolling: () => dispatch(startGroupPolling()),
     stopGroupPolling: () => dispatch(stopGroupPolling()),

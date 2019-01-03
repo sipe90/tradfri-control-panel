@@ -8,7 +8,7 @@ import { INormalizeResult } from '@/types'
 import { createReducer, normalizer } from '@/utils'
 import { Dictionary, ILight } from 'shared/types'
 
-type LightEntitiesState = Dictionary<ILight>
+export type LightEntitiesState = Dictionary<ILight>
 
 const initialState = {}
 

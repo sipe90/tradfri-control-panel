@@ -36,8 +36,8 @@ export interface IGatewayFormProps {
     identityValue: string
     pskValue: string
     identityGenerationError: any
-    discoveredGateway: DiscoveredGateway
-    connectionTestResult: IConnectionTestResult
+    discoveredGateway: DiscoveredGateway | null
+    connectionTestResult: IConnectionTestResult | null
     validationErrors: FormErrors<IGatewayFormValues>
 }
 

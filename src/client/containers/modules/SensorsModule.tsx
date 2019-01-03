@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import {
     fetchSensors, sensorStateChanged, startSensorPolling,
     stopSensorPolling, updateSensor,
 } from '@/actions/sensors'
 import SensorList from '@/components/sensors/SensorList'
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
 import { Dictionary, ISensor } from 'shared/types'
 
 interface ISensorsModuleProps {
@@ -43,14 +43,12 @@ class SensorsModule extends Component<ISensorsModuleProps> {
     }
 }
 
-// TODO: State type
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IAppState) => ({
     initialDataLoading: state.modules.sensors.initialDataLoading,
     sensors: state.entities.sensors,
 })
 
-// TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     loadSensors: () => dispatch(fetchSensors()),
     sensorStateChanged: (sensor: ISensor) => dispatch(sensorStateChanged(sensor)),
     startSensorPolling: () => dispatch(startSensorPolling()),
