@@ -2,8 +2,6 @@ import { Card, List, Slider, Switch } from 'antd'
 import * as R from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
@@ -13,6 +11,8 @@ import { lightStateChanged } from '@/actions/lights'
 import StatusIndicator from '@/components/StatusIndicator'
 import { Dictionary, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
 import './LightGroupsTab.css'
 
 const Item = List.Item
@@ -112,15 +112,13 @@ class LightGroups extends Component<ILightGroupsProps> {
 const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
     R.values(R.pick(R.map(String, group.devices), lights))
 
-// TODO: State type
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IAppState) => ({
     groups: state.entities.groups,
     initialDataLoading: state.modules.lights.initialDataLoading,
     lights: state.entities.lights,
 })
 
-// TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
     updateGroup: (group: IGroupUpdateRequest) => dispatch(updateGroup(group)),
 })

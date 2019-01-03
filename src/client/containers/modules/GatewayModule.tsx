@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import {
     fetchGateway, gatewayStateChanged, saveGateway,
@@ -10,10 +8,12 @@ import {
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
 import { IGateway } from 'shared/types'
 
 interface IGatewayModuleProps {
-    gateway: IGateway
+    gateway: IGateway | null
     initialDataLoading: boolean
     dispatchLoadGateway: () => void
     dispatchGatewayStateChanged: (gateway: IGateway) => void
@@ -38,15 +38,15 @@ class GatewayModule extends Component<IGatewayModuleProps> {
         const { gateway, initialDataLoading } = this.props
         return (
             <Spinner spinning={initialDataLoading}>
-                {!initialDataLoading && (!gateway ? <GatewayWizard /> : this.renderGateway())}
+                {!initialDataLoading && (!gateway ? <GatewayWizard /> : this.renderGateway(gateway))}
             </Spinner>
         )
     }
 
-    private renderGateway = () => {
+    private renderGateway = (gateway: IGateway) => {
         const {
-                gateway, initialDataLoading, dispatchGatewayStateChanged,
-                dispatchSaveGateway, dispatchUpdateGateway
+            initialDataLoading, dispatchGatewayStateChanged,
+            dispatchSaveGateway, dispatchUpdateGateway
         } = this.props
         return (
             <GatewayComponent
@@ -61,13 +61,12 @@ class GatewayModule extends Component<IGatewayModuleProps> {
 
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IAppState) => ({
     gateway: state.entities.gateway,
     initialDataLoading: state.modules.gateway.initialDataLoading,
 })
 
-// TODO: State type
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     dispatchGatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
     dispatchLoadGateway: () => dispatch(fetchGateway()),
     dispatchSaveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),

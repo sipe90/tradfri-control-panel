@@ -8,7 +8,7 @@ import { INormalizeResult } from '@/types'
 import { createReducer, normalizer } from '@/utils'
 import { Dictionary, ISensor } from 'shared/types'
 
-type SensorEntitiesState = Dictionary<ISensor>
+export type SensorEntitiesState = Dictionary<ISensor>
 
 const initialState = {}
 

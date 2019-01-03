@@ -2,8 +2,6 @@ import { Card, List } from 'antd'
 import * as R from 'ramda'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
 
 import { lightStateChanged, updateLight } from '@/actions/lights'
 import LightItem from '@/components/lights/LightItem'
@@ -11,6 +9,8 @@ import Spinner from '@/components/Spinner'
 import { devicesForGroup } from '@/utils'
 import { Dictionary, IGroup, ILight } from 'shared/types'
 
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
 import './LightsTab.css'
 
 interface ILightsTabProps {
@@ -49,14 +49,13 @@ class LightsTab extends Component<ILightsTabProps> {
     )
 }
 
-// TODO: State type
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IAppState) => ({
     groups: state.entities.groups,
     initialDataLoading: state.modules.lights.initialDataLoading,
     lights: state.entities.lights,
 })
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
     updateLight: (light: ILight) => dispatch(updateLight(light)),
 })

@@ -1,18 +1,17 @@
 import { connect } from 'react-redux'
-import { AnyAction } from 'redux'
 import { formValueSelector, getFormSyncErrors, reduxForm } from 'redux-form'
-import { ThunkDispatch } from 'redux-thunk'
 
 import { discoverGateway, generateIdentity, saveGateway, testConnection } from '@/actions/gateway'
 import GatewayForm, { IGatewayFormProps, IGatewayFormValues } from '@/components/gateway/GatewayForm'
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
 
 const GATEWAY_FORM = 'GATEWAY'
 
 const valueSelector = formValueSelector(GATEWAY_FORM)
 const validationErrorSelector = getFormSyncErrors(GATEWAY_FORM)
 
-// TODO: State type
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IAppState) => ({
     connectionTestInProgress: state.modules.gateway.connectionTestInProgress,
     connectionTestResult: state.modules.gateway.connectionTestResult,
     discoveredGateway: state.modules.gateway.discoveredGateway,
@@ -26,7 +25,7 @@ const mapStateToProps = (state: any) => ({
     validationErrors: validationErrorSelector(state),
 })
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
     discoverGateway: () => dispatch(discoverGateway()),
     generateIdentity: (hostname: string, securityCode: string) => dispatch(generateIdentity(hostname, securityCode)),
     saveGateway: (gateway: IGatewayFormValues) => dispatch(saveGateway(gateway)),

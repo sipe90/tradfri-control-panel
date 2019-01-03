@@ -1,12 +1,13 @@
+import { IAppState } from '@/reducers'
 import { Action, AnyAction } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 export interface IPayloadAction<P = any, T = any> extends Action<T> {
     payload?: P
 }
 
-// TODO: State type
-export type ThunkResult<R = void, A extends Action<any> = AnyAction> = ThunkAction<R, any, undefined, A>
+export type AppDispatch = ThunkDispatch<IAppState, undefined, AnyAction>
+export type ThunkResult<R = void, A extends Action<any> = AnyAction> = ThunkAction<R, IAppState, undefined, A>
 
 export interface INormalizeResult {
     result: any

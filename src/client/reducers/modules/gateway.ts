@@ -8,14 +8,14 @@ import {
 } from '@/actions/gateway'
 import { IConnectionTestResult, IErrorResponse } from '@/types'
 import { createReducer } from '@/utils'
-import { IGateway } from 'shared/types'
+import { DiscoveredGateway } from 'node-tradfri-client'
 
-interface IGatewayModuleState {
+export interface IGatewayModuleState {
     initialDataLoading: boolean
     discoveryInProgress: boolean
     identityGenerationInProgress: boolean
     connectionTestInProgress: boolean
-    discoveredGateway: IGateway | null
+    discoveredGateway: DiscoveredGateway | null
     identityGenerationError: IErrorResponse | null
     connectionTestResult: IConnectionTestResult | null
 }
