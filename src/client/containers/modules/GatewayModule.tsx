@@ -5,7 +5,7 @@ import { ThunkDispatch } from 'redux-thunk'
 
 import {
     fetchGateway, gatewayStateChanged, saveGateway,
-    startGatewayPolling, stopGatewayPolling,
+    startGatewayPolling, stopGatewayPolling, updateGateway,
 } from '@/actions/gateway'
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
@@ -18,6 +18,7 @@ interface IGatewayModuleProps {
     dispatchLoadGateway: () => void
     dispatchGatewayStateChanged: (gateway: IGateway) => void
     dispatchSaveGateway: (gateway: IGateway) => void
+    dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
     dispatchStartGatewayPolling: () => void
     dispatchStopGatewayPolling: () => void
 }
@@ -43,9 +44,18 @@ class GatewayModule extends Component<IGatewayModuleProps> {
     }
 
     private renderGateway = () => {
-        const { gateway, initialDataLoading, dispatchGatewayStateChanged, dispatchSaveGateway } = this.props
+        const {
+                gateway, initialDataLoading, dispatchGatewayStateChanged,
+                dispatchSaveGateway, dispatchUpdateGateway
+        } = this.props
         return (
-            <GatewayComponent {...{ gateway, initialDataLoading, dispatchGatewayStateChanged, dispatchSaveGateway }}/>
+            <GatewayComponent
+                {...{
+                        gateway, initialDataLoading, dispatchGatewayStateChanged,
+                        dispatchSaveGateway, dispatchUpdateGateway
+                    }
+                }
+            />
         )
     }
 
@@ -61,6 +71,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, undefined, AnyAction>) 
     dispatchGatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
     dispatchLoadGateway: () => dispatch(fetchGateway()),
     dispatchSaveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
+    dispatchUpdateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
     dispatchStartGatewayPolling: () => dispatch(startGatewayPolling()),
     dispatchStopGatewayPolling: () => dispatch(stopGatewayPolling()),
 })

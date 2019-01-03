@@ -4,6 +4,14 @@
     margin: 0 12px;
 }
 
+.gateway__actions {
+    padding: 4px 0px;
+}
+
+.gateway__actions>button {
+    margin-right: 4px;
+}
+
 /* Card cover */
 
 .gateway__cover {
