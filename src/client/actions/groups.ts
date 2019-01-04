@@ -1,7 +1,6 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
@@ -63,7 +62,6 @@ export const stopGroupPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
 
 export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
-        await dispatch(fetchGateway())
         await dispatch(loadGroupsRequest())
         const res = await fetchGetJson<Dictionary<IGroup>>('/api/groups')
 
