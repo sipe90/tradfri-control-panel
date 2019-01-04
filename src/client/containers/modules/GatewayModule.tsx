@@ -8,8 +8,10 @@ import {
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
+import { GATEWAY_EDIT_FORM } from '@/containers/gateway/GatewayEditFormContainer'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
+import { submit } from 'redux-form'
 import { IGateway } from 'shared/types'
 
 interface IGatewayModuleProps {
@@ -21,6 +23,7 @@ interface IGatewayModuleProps {
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
     dispatchStartGatewayPolling: () => void
     dispatchStopGatewayPolling: () => void
+    dispatchSubmitEditGatewayForm: () => void
 }
 
 class GatewayModule extends Component<IGatewayModuleProps> {
@@ -46,13 +49,13 @@ class GatewayModule extends Component<IGatewayModuleProps> {
     private renderGateway = (gateway: IGateway) => {
         const {
             initialDataLoading, dispatchGatewayStateChanged,
-            dispatchSaveGateway, dispatchUpdateGateway
+            dispatchSaveGateway, dispatchUpdateGateway, dispatchSubmitEditGatewayForm
         } = this.props
         return (
             <GatewayComponent
                 {...{
                         gateway, initialDataLoading, dispatchGatewayStateChanged,
-                        dispatchSaveGateway, dispatchUpdateGateway
+                        dispatchSaveGateway, dispatchUpdateGateway, dispatchSubmitEditGatewayForm
                     }
                 }
             />
@@ -73,6 +76,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
     dispatchStartGatewayPolling: () => dispatch(startGatewayPolling()),
     dispatchStopGatewayPolling: () => dispatch(stopGatewayPolling()),
+    dispatchSubmitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))
 })
 
 export default connect(
