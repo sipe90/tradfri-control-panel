@@ -1,7 +1,7 @@
 import { Steps } from 'antd'
 import React, { Component } from 'react'
 
-import GatewayFormContainer from '@/containers/modules/GatewayFormContainer'
+import GatewayWizardFormContainer from '@/containers/gateway/GatewayWizardFormContainer'
 
 import './GatewayWizard.css'
 
@@ -49,7 +49,7 @@ class GatewayWizard extends Component<{}, IGatewayWizardState> {
                     {title}
                 </div>
                 <div>
-                    <GatewayFormContainer
+                    <GatewayWizardFormContainer
                         step={this.state.step}
                         nextStep={() => this.nextStep()}
                         previousStep={() => this.previousStep()}

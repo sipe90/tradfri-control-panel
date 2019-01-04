@@ -10,9 +10,9 @@ import { required } from '@/validators'
 import { IConnectionTestResult } from '@/types'
 import { ColumnProps } from 'antd/lib/table'
 
-import './GatewayForm.css'
+import './GatewayWizardForm.css'
 
-export interface IGatewayFormValues {
+export interface IGatewayWizardFormValues {
     name: string
     hostname: string
     identity: string
@@ -20,14 +20,14 @@ export interface IGatewayFormValues {
     securityCode: string
 }
 
-export interface IGatewayFormProps {
+export interface IGatewayWizardFormProps {
     step: number
     nextStep: () => void
     previousStep: () => void
     discoverGateway: () => void
     generateIdentity: (hostname: string, securityCode: string) => void
     testConnection: (hostname: string, identity: string, psk: string) => void
-    saveGateway: (gateway: IGatewayFormValues) => void
+    saveGateway: (gateway: IGatewayWizardFormValues) => void
     discoveryInProgress: boolean
     identityGenerationInProgress: boolean
     connectionTestInProgress: boolean
@@ -38,10 +38,10 @@ export interface IGatewayFormProps {
     identityGenerationError: any
     discoveredGateway: DiscoveredGateway | null
     connectionTestResult: IConnectionTestResult | null
-    validationErrors: FormErrors<IGatewayFormValues>
+    validationErrors: FormErrors<IGatewayWizardFormValues>
 }
 
-type AllProps = IGatewayFormProps & InjectedFormProps<IGatewayFormValues, IGatewayFormProps>
+type AllProps = IGatewayWizardFormProps & InjectedFormProps<IGatewayWizardFormValues, IGatewayWizardFormProps>
 
 const fieldProps = {
     hostname: {
@@ -287,7 +287,7 @@ const renderTestConnectionStep = (props: AllProps) => (
     </div>
 )
 
-const GatewayForm: React.FunctionComponent<AllProps> = (props) => {
+const GatewayWizardForm: React.FunctionComponent<AllProps> = (props) => {
     const { handleSubmit, step } = props
     return (
         <form onSubmit={handleSubmit}>
@@ -298,4 +298,4 @@ const GatewayForm: React.FunctionComponent<AllProps> = (props) => {
     )
 }
 
-export default GatewayForm
+export default GatewayWizardForm

@@ -2,14 +2,17 @@ import { connect } from 'react-redux'
 import { formValueSelector, getFormSyncErrors, reduxForm } from 'redux-form'
 
 import { discoverGateway, generateIdentity, saveGateway, testConnection } from '@/actions/gateway'
-import GatewayForm, { IGatewayFormProps, IGatewayFormValues } from '@/components/gateway/GatewayForm'
+import GatewayWizardForm, {
+    IGatewayWizardFormProps,
+    IGatewayWizardFormValues
+} from '@/components/gateway/GatewayWizardForm'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 
-const GATEWAY_FORM = 'GATEWAY'
+const GATEWAY__WIZARD_FORM = 'GATEWAY_WIZARD'
 
-const valueSelector = formValueSelector(GATEWAY_FORM)
-const validationErrorSelector = getFormSyncErrors(GATEWAY_FORM)
+const valueSelector = formValueSelector<IAppState>(GATEWAY__WIZARD_FORM)
+const validationErrorSelector = getFormSyncErrors(GATEWAY__WIZARD_FORM)
 
 const mapStateToProps = (state: IAppState) => ({
     connectionTestInProgress: state.modules.gateway.connectionTestInProgress,
@@ -28,17 +31,17 @@ const mapStateToProps = (state: IAppState) => ({
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     discoverGateway: () => dispatch(discoverGateway()),
     generateIdentity: (hostname: string, securityCode: string) => dispatch(generateIdentity(hostname, securityCode)),
-    saveGateway: (gateway: IGatewayFormValues) => dispatch(saveGateway(gateway)),
+    saveGateway: (gateway: IGatewayWizardFormValues) => dispatch(saveGateway(gateway)),
     testConnection: (hostname: string, identity: string, psk: string) =>
         dispatch(testConnection(hostname, identity, psk)),
 })
 
-const ReduxForm = reduxForm<IGatewayFormValues, IGatewayFormProps>(
-    { form: GATEWAY_FORM, destroyOnUnmount: false })(GatewayForm)
+const ReduxForm = reduxForm<IGatewayWizardFormValues, IGatewayWizardFormProps>(
+    { form: GATEWAY__WIZARD_FORM, destroyOnUnmount: false })(GatewayWizardForm)
 
-const gatewayFormContainer = connect(
+const GatewayWizardFormContainer = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(ReduxForm)
 
-export default gatewayFormContainer
+export default GatewayWizardFormContainer

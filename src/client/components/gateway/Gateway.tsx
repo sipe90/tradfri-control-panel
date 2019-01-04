@@ -1,11 +1,13 @@
 import * as R from 'ramda'
 import React from 'react'
 
-import { Card, Divider, Dropdown, Icon, Menu } from 'antd'
+import { Card, Divider, Dropdown, Icon, Menu, Modal } from 'antd'
 
 import { GatewayConnectionState, IGateway } from 'shared/types'
 
-import StatusIndicator from '../StatusIndicator'
+import StatusIndicator from '@/components/StatusIndicator'
+import GatewayEditFormContainer from '@/containers/gateway/GatewayEditFormContainer'
+
 import './Gateway.css'
 
 interface IGatewayProps {
@@ -14,16 +16,15 @@ interface IGatewayProps {
     dispatchGatewayStateChanged: (gateway: IGateway) => void
     dispatchSaveGateway: (gateway: IGateway) => void
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
+    dispatchSubmitEditGatewayForm: () => void
 }
 
 interface IGatewayState {
-    editNameVisible: boolean
-    editNameText: string
+    editModalVisible: boolean
 }
 
 const initialState = {
-    editNameText: '',
-    editNameVisible: false,
+    editModalVisible: false,
 }
 
 class Gateway extends React.Component<IGatewayProps, IGatewayState> {
@@ -34,11 +35,19 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
     }
 
     public render = () => (
-        <div>
+        <>
             <Card title={this.title()} extra={this.actionButtons()}>
                 {this.gatewayDetails()}
             </Card>
-        </div>
+            <Modal
+                title='Edit gateway information'
+                visible={this.state.editModalVisible}
+                onOk={this.props.dispatchSubmitEditGatewayForm}
+                onCancel={() => this.setEditModalVisible(false)}
+            >
+                <GatewayEditFormContainer onSubmit={this.handleSubmit} />
+            </Modal>
+        </>
     )
 
     private title = () => (
@@ -50,7 +59,7 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private actionButtons = () => (
         <div className='gateway__actions'>
-            <a>Edit</a>
+            <a onClick={() => this.setEditModalVisible(true)}>Edit</a>
             <Divider type='vertical' />
             <a>Delete</a>
             <Divider type='vertical' />
@@ -105,11 +114,13 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         )
     }
 
-    private updateName = () => {
-        const newGatewayState = { ...this.props.gateway, name: this.state.editNameText }
-        this.props.dispatchUpdateGateway(newGatewayState)
+    private setEditModalVisible = (visible: boolean) => this.setState({ editModalVisible: visible })
+
+    private handleSubmit = (gateway: Partial<IGateway>) => {
+        const newGatewayState = { ...this.props.gateway, ...gateway }
+        this.props.dispatchUpdateGateway(gateway)
         this.props.dispatchGatewayStateChanged(newGatewayState)
-        this.setState({ editNameVisible: false })
+        this.setEditModalVisible(false)
     }
 }
 
