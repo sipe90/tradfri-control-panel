@@ -58,7 +58,7 @@ class LightItem extends Component<ILightItemProps, ILightItemState> {
     private title(light: ILight) {
         return (
             <div className='light-item__title'>
-                <StatusIndicator type='light' on={light.on} alive={light.alive}/>
+                <StatusIndicator title={statusTitle(light)} status={status(light)}/>
                 <span>{light.name}</span>
                 <Popover
                     title='Edit name'
@@ -169,5 +169,15 @@ class LightItem extends Component<ILightItemProps, ILightItemState> {
         )
     }
 }
+
+const statusTitle = R.cond([
+    [R.propEq('alive', true), R.always('Light is connected')],
+    [R.T, R.always('Light is disconnected')]
+])
+
+const status = R.cond([
+    [R.propEq('alive', true), R.always('online')],
+    [R.T, R.always('offline')]
+])
 
 export default LightItem

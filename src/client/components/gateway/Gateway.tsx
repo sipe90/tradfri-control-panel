@@ -6,7 +6,7 @@ import { PencilIcon } from 'mdi-react'
 
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
-import StatusIndicator, { StatusColor } from '@/components/StatusIndicator'
+import StatusIndicator from '@/components/StatusIndicator'
 import { GatewayConnectionState, IGateway } from 'shared/types'
 
 import './Gateway.css'
@@ -100,7 +100,7 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private statusIndicator = () => {
         const connectionState = this.props.gateway.connectionState
-        return <StatusIndicator title={statusTitle(connectionState)} color={statusColor(connectionState)}/>
+        return <StatusIndicator title={statusTitle(connectionState)} status={status(connectionState)}/>
     }
 
     private editName = () => {
@@ -136,11 +136,10 @@ const statusTitle = R.cond([
     [R.T, R.always('Gateway is offline')]
 ])
 
-const statusColor = R.cond([
-    [R.equals(GatewayConnectionState.CONNECTED), R.always(StatusColor.ONLINE)],
-    [R.equals(GatewayConnectionState.DISCONNECTED), R.always(StatusColor.DISCONNECTED)],
-    [R.equals(GatewayConnectionState.OFFLINE), R.always(StatusColor.OFFLINE)],
-    [R.T, R.always(StatusColor.OFFLINE)]
+const status = R.cond([
+    [R.equals(GatewayConnectionState.CONNECTED), R.always('online')],
+    [R.equals(GatewayConnectionState.DISCONNECTED), R.always('disconnected')],
+    [R.T, R.always('offline')]
 ])
 
 export default Gateway
