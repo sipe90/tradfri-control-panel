@@ -5,18 +5,18 @@ import CircleIcon from 'mdi-react/CircleIcon'
 
 import './StatusIndicator.css'
 
-export enum StatusColor {
-    ONLINE = '#00CC00',
-    ON = '',
-    OFF = '#C1C1C1',
-    DISCONNECTED = '',
-    OFFLINE = '#CC0000'
-}
-
 interface IStatusIndicatorProps {
     title: string
-    color: string
+    status: Status
     size?: number
+}
+
+type Status = 'online' | 'disconnected' | 'offline'
+
+const statusColors: { [key in Status]: string } = {
+    online: '#00CC00',
+    disconnected: '#FAAD14',
+    offline: '#CC0000'
 }
 
 const StatusIndicator: React.FunctionComponent<IStatusIndicatorProps> = (props) =>  (
@@ -24,7 +24,7 @@ const StatusIndicator: React.FunctionComponent<IStatusIndicatorProps> = (props) 
         <Tooltip title={props.title}>
             <CircleIcon
                 className='status__icon'
-                color={props.color}
+                color={statusColors[props.status]}
                 size={props.size}
             />
         </Tooltip>

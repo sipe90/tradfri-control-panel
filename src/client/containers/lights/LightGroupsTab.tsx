@@ -52,7 +52,7 @@ class LightGroups extends Component<ILightGroupsProps> {
 
     private renderLight = (light: ILight) => (
         <Item>
-            <StatusIndicator type='light' alive={light.alive} on={light.on}/>{light.name}
+            <StatusIndicator title={statusTitle(light)} status={status(light)}/>{light.name}
         </Item>
     )
 
@@ -111,6 +111,16 @@ class LightGroups extends Component<ILightGroupsProps> {
 
 const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
     R.values(R.pick(R.map(String, group.devices), lights))
+
+const statusTitle = R.cond([
+    [R.propEq('alive', true), R.always('Light is connected')],
+    [R.T, R.always('Light is disconnected')]
+])
+
+const status = R.cond([
+    [R.propEq('alive', true), R.always('online')],
+    [R.T, R.always('offline')]
+])
 
 const mapStateToProps = (state: IAppState) => ({
     groups: state.entities.groups,

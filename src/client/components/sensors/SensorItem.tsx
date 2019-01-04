@@ -1,5 +1,6 @@
 import { Button, Input, List, Popover } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
+import * as R from 'ramda'
 import React, { Component } from 'react'
 
 import StatusIndicator from '@/components/StatusIndicator'
@@ -44,7 +45,7 @@ class SensorItem extends Component<ISensorItemProps, ISensorItemState> {
     private title(sensor: ISensor) {
         return (
             <div className='sensor-item__title'>
-                <StatusIndicator type='sensor' alive={this.props.sensor.alive}/>
+                <StatusIndicator title={statusTitle(sensor)} status={status(sensor)} />
                 <span>{sensor.name}</span>
                 <Popover
                     title='Edit name'
@@ -86,5 +87,15 @@ class SensorItem extends Component<ISensorItemProps, ISensorItemState> {
         this.setState({ editNameVisible: false })
     }
 }
+
+const statusTitle = R.cond([
+    [R.propEq('alive', true), R.always('Sensor is connected')],
+    [R.T, R.always('Sensor is disconnected')]
+])
+
+const status = R.cond([
+    [R.propEq('alive', true), R.always('online')],
+    [R.T, R.always('offline')]
+])
 
 export default SensorItem
