@@ -3,7 +3,6 @@ import { message } from 'antd'
 import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
-import { fetchGateway } from '@/actions/gateway'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
@@ -71,7 +70,6 @@ export const stopSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
 
 export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
-        await dispatch(fetchGateway())
         await dispatch(loadSensorsRequest())
         const res = await fetchGetJson<Dictionary<ISensor>>('/api/sensors')
 
