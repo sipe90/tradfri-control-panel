@@ -27,13 +27,12 @@ const initialState = {
     discoveryInProgress: false,
     identityGenerationError: null,
     identityGenerationInProgress: false,
-    initialDataLoading: false,
+    initialDataLoading: true,
 }
 
 const reducer = createReducer<IGatewayModuleState>([
     [LOAD_GATEWAY_REQUEST, (state) => ({
-        ...state,
-        initialDataLoading: true,
+        ...state
     })],
     [LOAD_GATEWAY_SUCCESS, (state) => ({
         ...state,
