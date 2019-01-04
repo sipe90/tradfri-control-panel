@@ -33,6 +33,7 @@
 
 .light-group__table td:nth-of-type(2) {
     width: 100px;
+    text-align: left;
 }
 
 .light-group__table td:nth-of-type(3) {

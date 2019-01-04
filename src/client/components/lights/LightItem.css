@@ -46,6 +46,7 @@
 
 .light-item__table td:nth-of-type(2) {
     width: 100px;
+    text-align: left;
 }
 
 .light-item__table td:nth-of-type(3) {
