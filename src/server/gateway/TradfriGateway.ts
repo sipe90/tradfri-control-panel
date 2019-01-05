@@ -124,20 +124,20 @@ export default class TradfriGateway {
         return this.client.operateLight(lightAccessory, lightOperation)
     }
 
-    public async updateGroup(deviceId: string, groupUpdate: Partial<Accessory>) {
-        const groupInfo = this.getGroups()[deviceId]
+    public async updateGroup(groupId: string, groupUpdate: Partial<Accessory>) {
+        const groupInfo = this.getGroups()[groupId]
         if (!groupInfo) {
-            throw new Error(`No group with id ${deviceId} found`)
+            throw new Error(`No group with id ${groupId} found`)
         }
         const group = groupInfo.group
         group.name = groupUpdate.name || group.name
         return this.client.updateGroup(group)
     }
 
-    public async operateGroup(deviceId: string, groupOperation: GroupOperation) {
-        const groupInfo = this.getGroups()[deviceId]
+    public async operateGroup(groupId: string, groupOperation: GroupOperation) {
+        const groupInfo = this.getGroups()[groupId]
         if (!groupInfo) {
-            throw new Error(`No group with id ${deviceId} found`)
+            throw new Error(`No group with id ${groupId} found`)
         }
         const group = groupInfo.group
         return this.client.operateGroup(group, groupOperation)
@@ -164,7 +164,7 @@ export default class TradfriGateway {
 
     private onDeviceUpdate = (device: Accessory) => {
         logger.info('Updating device [%d]', device.instanceId)
-        this.devices = R.assoc(String(device.instanceId), device, this.devices)
+        this.devices = R.assoc(String(device.instanceId), device.clone(), this.devices)
     }
 
     private onDeviceRemove = (instanceId: number) => {
@@ -174,7 +174,7 @@ export default class TradfriGateway {
 
     private onGroupUpdate = (group: Group) => {
         logger.info('Updating group [%d]', group.instanceId)
-        this.groups = R.assocPath([group.instanceId, 'group'], group, this.groups)
+        this.groups = R.assocPath([group.instanceId, 'group'], group.clone(), this.groups)
     }
 
     private onGroupRemove = (instanceId: number) => {
@@ -184,7 +184,7 @@ export default class TradfriGateway {
 
     private onSceneUpdate = (groupId: number, scene: Scene) => {
         logger.info('Updating scene [%d] in group [%d]', scene.instanceId, groupId)
-        this.groups = R.assocPath([groupId, 'scenes', scene.instanceId], scene, this.groups)
+        this.groups = R.assocPath([groupId, 'scenes', scene.instanceId], scene.clone(), this.groups)
     }
 
     private onSceneRemove = (groupId: number, instanceId: number) => {
