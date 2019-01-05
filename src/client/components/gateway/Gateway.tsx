@@ -17,6 +17,7 @@ interface IGatewayProps {
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
     dispatchDeleteGateway: () => void
     dispatchSubmitEditGatewayForm: () => void
+    dispatchRebootGateway: () => void
 }
 
 interface IGatewayState {
@@ -72,7 +73,7 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
     private dropdown = () => (
         <Menu>
           <Menu.Item>
-            <a>Reboot gateway</a>
+            <a onClick={this.showRebootConfirm}>Reboot gateway</a>
           </Menu.Item>
           <Menu.Item>
             <a>Factory reset</a>
@@ -125,6 +126,15 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         })
     }
 
+    private showRebootConfirm = () => {
+        Modal.confirm({
+            title: 'Reboot gateway',
+            content: 'Are you sure you want to reboot the gateway?',
+            maskClosable: true,
+            onOk: this.handleReboot
+        })
+    }
+
     private handleSubmit = (gateway: Partial<IGateway>) => {
         this.props.dispatchUpdateGateway(gateway)
         this.setEditModalVisible(false)
@@ -132,6 +142,10 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private handleDelete = () => {
         this.props.dispatchDeleteGateway()
+    }
+
+    private handleReboot = () => {
+        this.props.dispatchRebootGateway()
     }
 }
 

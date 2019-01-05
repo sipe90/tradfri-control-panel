@@ -27,12 +27,12 @@ export interface IDevice {
 export interface IGateway {
     hostname: string,
     connectionState: GatewayConnectionState
-    alexaPairStatus: boolean
-    googleHomePairStatus: boolean
-    version: string
-    updateProgress: number
-    updatePriority: UpdatePriority
-    releaseNotes: string
+    alexaPairStatus: boolean | null
+    googleHomePairStatus: boolean | null
+    version: string | null
+    updateProgress: number | null
+    updatePriority: UpdatePriority | null
+    releaseNotes: string | null
     name: string
 }
 

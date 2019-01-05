@@ -70,6 +70,13 @@ export default class TradfriGateway {
         this.connectionState = GatewayConnectionState.DISCONNECTED
     }
 
+    public rebootGateway = async () => {
+        logger.info('Rebooting gateway')
+        const started = await this.client.rebootGateway()
+        !started && logger.info('Gateway could not be rebooted')
+        return started
+    }
+
     public getHostname() {
         return this.client.hostname
     }

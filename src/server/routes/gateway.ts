@@ -3,7 +3,8 @@ import express from 'express'
 import { created, noContent, okOrNotFound } from '#/routes/responses'
 import {
     createTradfriGateway, deleteTradfriGateway, discoverGateway,
-    generateIdentity, getGateway, testConnect,
+    generateIdentity, getGateway, rebootGateway,
+    testConnect,
     updateTradfriGateway
 } from '#/service/gateway-service'
 
@@ -30,6 +31,12 @@ router.post('/identity', (req, res, next) =>
 router.post('/test', (req, res, next) =>
     testConnect(req.body)
         .then(okOrNotFound(res))
+        .catch(next)
+)
+
+router.post('/reboot', (_req, res, next) =>
+    rebootGateway()
+        .then(noContent(res))
         .catch(next)
 )
 
