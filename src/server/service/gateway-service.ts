@@ -1,4 +1,4 @@
-import { TradfriErrorCodes } from 'node-tradfri-client'
+import { Accessory, GroupInfo, TradfriErrorCodes } from 'node-tradfri-client'
 import R from 'ramda'
 
 import { normalizeGateway } from '#/data/tradfri'
@@ -11,8 +11,8 @@ import {
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
 import {
-    ICreateGatewayRequest, IGenerateIdentityRequest,
-    ITestConnectionRequest, IUpdateGatewayRequest
+    GatewayConnectionState, ICreateGatewayRequest,
+    IGateway, IGenerateIdentityRequest, ITestConnectionRequest, IUpdateGatewayRequest
 } from 'shared/types'
 
 export const fetchGateway = db.selectGateway
@@ -51,19 +51,22 @@ export const updateTradfriGateway = async ({ name }: IUpdateGatewayRequest) => {
 }
 
 export const getGateway = async () => {
-    if (!isGatewayConnected()) return null
 
-    const gatewayConnection = getConnection()
-    const gatewayDetails = gatewayConnection.getGateway()
+    const { name, hostname } = await fetchGateway()
 
-    if (!gatewayDetails) {
-        return null
-    }
+    const connected = isGatewayConnected()
 
-    const { name } = await fetchGateway()
+    let gateway: IGateway
+    let lights: Record<string, Accessory>
+    let sensors: Record<string, Accessory>
+    let groups: Record<string, GroupInfo>
 
-    return normalizeGateway({
-            ...R.pick([
+    if (connected) {
+        const gatewayConnection = getConnection()
+        const gatewayDetails = gatewayConnection.getGateway()
+
+        gateway = {
+            ...R.pickAll([
                 'alexaPairStatus',
                 'googleHomePairStatus',
                 'version',
@@ -72,13 +75,30 @@ export const getGateway = async () => {
                 'releaseNotes'
             ], gatewayDetails),
             name,
-            hostname: gatewayConnection.getHostname(),
+            hostname,
             connectionState: gatewayConnection.getConnectionState()
-        },
-        gatewayConnection.getLights(),
-        gatewayConnection.getSensors(),
-        gatewayConnection.getGroups()
-    )
+        }
+        lights = gatewayConnection.getLights()
+        sensors = gatewayConnection.getSensors()
+        groups = gatewayConnection.getGroups()
+    } else {
+        gateway = {
+            alexaPairStatus: null,
+            googleHomePairStatus: null,
+            version: null,
+            updateProgress: null,
+            updatePriority: null,
+            releaseNotes: null,
+            name,
+            hostname,
+            connectionState: GatewayConnectionState.OFFLINE
+        }
+        lights = {}
+        sensors = {}
+        groups = {}
+    }
+
+    return normalizeGateway(gateway, lights, sensors, groups)
 }
 
 export const deleteTradfriGateway = async () => {
@@ -92,6 +112,12 @@ export const deleteTradfriGateway = async () => {
     logger.info('Clearing existing gateway connection')
     disconnectFromGateway(true)
     return true
+}
+
+export const rebootGateway = async () => {
+    if (!isGatewayConnected()) throw new Error('Could not reboot: Not connected to gateway')
+    const started = await getConnection().rebootGateway()
+    if (!started) throw new Error('Could not reboot')
 }
 
 export const discoverGateway = async () => TradfriGateway.discover()

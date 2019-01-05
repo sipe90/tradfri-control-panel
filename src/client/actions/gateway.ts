@@ -27,6 +27,10 @@ export const DELETE_GATEWAY_REQUEST = 'DELETE_GATEWAY_REQUEST'
 export const DELETE_GATEWAY_SUCCESS = 'DELETE_GATEWAY_SUCCESS'
 export const DELETE_GATEWAY_FAILURE = 'DELETE_GATEWAY_FAILURE'
 
+export const REBOOT_GATEWAY_REQUEST = 'REBOOT_GATEWAY_REQUEST'
+export const REBOOT_GATEWAY_SUCCESS = 'REBOOT_GATEWAY_SUCCESS'
+export const REBOOT_GATEWAY_FAILURE = 'REBOOT_GATEWAY_FAILURE'
+
 export const DISCOVER_GATEWAY_REQUEST = 'DISCOVER_GATEWAY_REQUEST'
 export const DISCOVER_GATEWAY_SUCCESS = 'DISCOVER_GATEWAY_SUCCESS'
 export const DISCOVER_GATEWAY_FAILURE = 'DISCOVER_GATEWAY_FAILURE'
@@ -89,6 +93,19 @@ const deleteGatewaySuccess = () => ({
 
 const deleteGatewayFailure = (error: Error) => ({
     type: DELETE_GATEWAY_FAILURE,
+    payload: error
+})
+
+const rebootGatewayRequest = () => ({
+    type: REBOOT_GATEWAY_REQUEST
+})
+
+const rebootGatewaySuccess = () => ({
+    type: REBOOT_GATEWAY_SUCCESS
+})
+
+const rebootGatewayFailure = (error: Error) => ({
+    type: REBOOT_GATEWAY_FAILURE,
     payload: error
 })
 
@@ -213,6 +230,20 @@ export const deleteGateway: ActionCreator<ThunkResult> = () => async (dispatch) 
     } catch (error) {
         message.error(`Failed to delete gateway: ${error.message}`)
         dispatch(deleteGatewayFailure(error))
+    }
+}
+
+export const rebootGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+    try {
+        dispatch(rebootGatewayRequest())
+        const res = await fetchPostJson<void>('/api/gateway/reboot')
+
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
+
+        dispatch(rebootGatewaySuccess())
+    } catch (error) {
+        message.error(`Failed to reboot gateway: ${error.message}`)
+        dispatch(rebootGatewayFailure(error))
     }
 }
 

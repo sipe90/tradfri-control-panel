@@ -65,10 +65,10 @@ const fetchJson = async <E> (url: string, init?: RequestInit): Promise<JsonRespo
 
 export const fetchGetJson = <E = any> (url: string) => fetchJson<E>(url)
 
-export const fetchPostJson = <E = any> (url: string, body: object | string) =>
+export const fetchPostJson = <E = any> (url: string, body?: object | string) =>
     fetchJson<E>(url, {
         body: typeof body === 'string' ? body : JSON.stringify(body),
-        headers: { 'content-type': 'application/json' },
+        headers: typeof body === 'undefined' ? undefined : { 'content-type': 'application/json' },
         method: 'POST',
     })
 
