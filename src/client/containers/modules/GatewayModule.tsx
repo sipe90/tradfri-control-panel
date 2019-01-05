@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {
-    fetchGateway, gatewayStateChanged, saveGateway,
-    startGatewayPolling, stopGatewayPolling, updateGateway,
+    deleteGateway, fetchGateway, saveGateway,
+     startGatewayPolling, stopGatewayPolling,  updateGateway
 } from '@/actions/gateway'
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
@@ -18,9 +18,9 @@ interface IGatewayModuleProps {
     gateway: IGateway | null
     initialDataLoading: boolean
     dispatchLoadGateway: () => void
-    dispatchGatewayStateChanged: (gateway: IGateway) => void
     dispatchSaveGateway: (gateway: IGateway) => void
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
+    dispatchDeleteGateway: () => void
     dispatchStartGatewayPolling: () => void
     dispatchStopGatewayPolling: () => void
     dispatchSubmitEditGatewayForm: () => void
@@ -48,14 +48,14 @@ class GatewayModule extends Component<IGatewayModuleProps> {
 
     private renderGateway = (gateway: IGateway) => {
         const {
-            initialDataLoading, dispatchGatewayStateChanged,
-            dispatchSaveGateway, dispatchUpdateGateway, dispatchSubmitEditGatewayForm
+            initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway,
+            dispatchUpdateGateway, dispatchSubmitEditGatewayForm
         } = this.props
         return (
             <GatewayComponent
                 {...{
-                        gateway, initialDataLoading, dispatchGatewayStateChanged,
-                        dispatchSaveGateway, dispatchUpdateGateway, dispatchSubmitEditGatewayForm
+                        gateway, initialDataLoading, dispatchSaveGateway,
+                        dispatchUpdateGateway, dispatchSubmitEditGatewayForm, dispatchDeleteGateway
                     }
                 }
             />
@@ -70,10 +70,10 @@ const mapStateToProps = (state: IAppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    dispatchGatewayStateChanged: (gateway: IGateway) => dispatch(gatewayStateChanged(gateway)),
     dispatchLoadGateway: () => dispatch(fetchGateway()),
     dispatchSaveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
+    dispatchDeleteGateway: () => dispatch(deleteGateway()),
     dispatchStartGatewayPolling: () => dispatch(startGatewayPolling()),
     dispatchStopGatewayPolling: () => dispatch(stopGatewayPolling()),
     dispatchSubmitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))

@@ -2,8 +2,9 @@ import express from 'express'
 
 import { created, noContent, okOrNotFound } from '#/routes/responses'
 import {
-    createTradfriGateway, discoverGateway, generateIdentity,
-    getGateway, testConnect, updateTradfriGateway
+    createTradfriGateway, deleteTradfriGateway, discoverGateway,
+    generateIdentity, getGateway, testConnect,
+    updateTradfriGateway
 } from '#/service/gateway-service'
 
 const router = express.Router()
@@ -35,6 +36,12 @@ router.post('/test', (req, res, next) =>
 router.post('/', (req, res, next) =>
     createTradfriGateway(req.body)
         .then(created(res))
+        .catch(next)
+)
+
+router.delete('/', (_req, res, next) =>
+    deleteTradfriGateway()
+        .then((success) => success ? res.sendStatus(204) : res.sendStatus(404))
         .catch(next)
 )
 

@@ -30,13 +30,13 @@ export default class TradfriGateway {
     private devices: Record<string, Accessory>
     private groups: Record<string, GroupInfo>
 
-    constructor(hostname: string) {
+    constructor(hostname: string, watchConnection: boolean) {
         this.connectionState = GatewayConnectionState.OFFLINE
         this.gateway = null
         this.devices = {}
         this.groups = {}
 
-        this.client = new TradfriClient(hostname, { customLogger: loggerFn, watchConnection: true })
+        this.client = new TradfriClient(hostname, { customLogger: loggerFn, watchConnection })
     }
 
     public async authenticate(securityCode: string) {
@@ -44,7 +44,9 @@ export default class TradfriGateway {
     }
 
     public async connect(identity: string, psk: string, observe = true) {
+        logger.info('Connecting to gateway at %s...', this.getHostname())
         await this.client.connect(identity, psk)
+        logger.info('Connected to gateway')
         this.connectionState = GatewayConnectionState.CONNECTED
         if (observe) {
             this.registerObservers()

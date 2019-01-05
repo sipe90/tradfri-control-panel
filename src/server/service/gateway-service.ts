@@ -6,7 +6,10 @@ import * as db from '#/db/gateway'
 import { ValidationError } from '#/error'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
-import { connectToGateway, getConnection } from '#/service/gateway-connection-manager'
+import {
+    connectToGateway, disconnectFromGateway,
+    getConnection, isGatewayConnected
+} from '#/service/gateway-connection-manager'
 import {
     ICreateGatewayRequest, IGenerateIdentityRequest,
     ITestConnectionRequest, IUpdateGatewayRequest
@@ -28,7 +31,7 @@ export const createTradfriGateway = async ({ name, hostname, identity, psk }: IC
         throw new ValidationError('psk', 'Pre-shared key is required')
     }
     logger.info(`Creating a new gateway name: ${name}, hostname: ${hostname}, identity: ${identity}, psk: ${psk}`)
-    const gateway = new TradfriGateway(hostname)
+    const gateway = new TradfriGateway(hostname, true)
     await gateway.connect(identity, psk)
     await db.insertGateway({ name, hostname, identity, psk })
     logger.info('Successfully saved gateway to database')
@@ -48,12 +51,9 @@ export const updateTradfriGateway = async ({ name }: IUpdateGatewayRequest) => {
 }
 
 export const getGateway = async () => {
+    if (!isGatewayConnected()) return null
+
     const gatewayConnection = getConnection()
-
-    if (!gatewayConnection || !gatewayConnection.isConnected()) {
-        return null
-    }
-
     const gatewayDetails = gatewayConnection.getGateway()
 
     if (!gatewayDetails) {
@@ -81,6 +81,19 @@ export const getGateway = async () => {
     )
 }
 
+export const deleteTradfriGateway = async () => {
+    logger.info('Deleting gateway from database')
+    const deleted = await db.deleteGateway()
+    if (!deleted) {
+        logger.info('Could not delete gateway since there was none to delete')
+        return false
+    }
+    logger.info('Successfully deleted gateway from database')
+    logger.info('Clearing existing gateway connection')
+    disconnectFromGateway(true)
+    return true
+}
+
 export const discoverGateway = async () => TradfriGateway.discover()
 
 export const generateIdentity = async ({ hostname, securityCode }: IGenerateIdentityRequest) => {
@@ -90,10 +103,15 @@ export const generateIdentity = async ({ hostname, securityCode }: IGenerateIden
     if (!securityCode) {
         throw new ValidationError('securityCode', 'Security code is required')
     }
-    const gateway = new TradfriGateway(hostname)
+
+    const gateway = new TradfriGateway(hostname, false)
 
     try {
-        return await gateway.authenticate(securityCode)
+        logger.info('Trying to generate identity with parameters [hostname=%s, securityCode=%s]',
+            hostname, securityCode)
+        const identity = await gateway.authenticate(securityCode)
+        logger.info('Successfully created new identity [identity=%s, psk=%]', identity.identity, identity.psk)
+        return identity
     } catch (err) {
         if (err.code === TradfriErrorCodes.AuthenticationFailed) {
             throw new ValidationError('securityCode', err.message)
@@ -112,12 +130,15 @@ export const testConnect = async ({ hostname, identity, psk }: ITestConnectionRe
     if (!psk) {
         throw new ValidationError('psk', 'Pre-shared key is required')
     }
-    const gateway = new TradfriGateway(hostname)
+    const gateway = new TradfriGateway(hostname, false)
 
     try {
+        logger.info('Testing gateway connection with parameters [hostname=%s, identity=%s, psk=%s]',
+            hostname, identity, psk)
         await gateway.connect(identity, psk, false)
+        logger.info('Gateway connection test successful, disconnecting from gateway')
         gateway.disconnect()
-
+        logger.info('Disconnected from gateway')
         return {
             success: true,
             error: null
