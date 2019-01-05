@@ -1,13 +1,13 @@
 import R from 'ramda'
 
 import { normalizeLights } from '#/data/tradfri'
-import { getConnection } from '#/service/gateway-connection-manager'
+import { getConnection, isGatewayConnected } from '#/service/gateway-connection-manager'
 import { getGateway } from '#/service/gateway-service'
 import { ILight } from 'shared/types'
 
 export const getLights = async () => {
     const gateway = await getGateway()
-    if (!gateway) return []
+    if (!gateway || !isGatewayConnected()) return []
     return normalizeLights(getConnection().getLights())
 }
 

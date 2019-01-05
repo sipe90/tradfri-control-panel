@@ -6,7 +6,7 @@ import { change } from 'redux-form'
 
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { IConnectionTestResult, ThunkResult } from '@/types'
-import { fetchGetJson, fetchPostJson } from '@/utils'
+import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
 import { ActionCreator } from 'redux'
 import { IGateway } from 'shared/types'
@@ -23,7 +23,9 @@ export const UPDATE_GATEWAY_REQUEST = 'UPDATE_GATEWAY_REQUEST'
 export const UPDATE_GATEWAY_SUCCESS = 'UPDATE_GATEWAY_SUCCESS'
 export const UPDATE_GATEWAY_FAILURE = 'UPDATE_GATEWAY_FAILURE'
 
-export const GATEWAY_STATE_CHANGED = 'GATEWAY_STATE_CHANGED'
+export const DELETE_GATEWAY_REQUEST = 'DELETE_GATEWAY_REQUEST'
+export const DELETE_GATEWAY_SUCCESS = 'DELETE_GATEWAY_SUCCESS'
+export const DELETE_GATEWAY_FAILURE = 'DELETE_GATEWAY_FAILURE'
 
 export const DISCOVER_GATEWAY_REQUEST = 'DISCOVER_GATEWAY_REQUEST'
 export const DISCOVER_GATEWAY_SUCCESS = 'DISCOVER_GATEWAY_SUCCESS'
@@ -77,6 +79,19 @@ const updateGatewayFailure = (error: Error) => ({
     payload: error
 })
 
+const deleteGatewayRequest = () => ({
+    type: DELETE_GATEWAY_REQUEST
+})
+
+const deleteGatewaySuccess = () => ({
+    type: DELETE_GATEWAY_SUCCESS
+})
+
+const deleteGatewayFailure = (error: Error) => ({
+    type: DELETE_GATEWAY_FAILURE,
+    payload: error
+})
+
 const discoverGatewayRequest = () => ({
     type: DISCOVER_GATEWAY_REQUEST
 })
@@ -115,11 +130,6 @@ const testConnectionSuccess = (testResult: IConnectionTestResult) => ({
 const testConnectionFailure = (error: Error) => ({
     type: TEST_CONNECTION_FAILURE,
     payload: error
-})
-
-export const gatewayStateChanged = (gatewayProps: IGateway) => ({
-    type: GATEWAY_STATE_CHANGED,
-    payload: gatewayProps
 })
 
 export const startGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
@@ -171,7 +181,7 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => as
         dispatch(saveGatewaySuccess())
         dispatch(fetchGateway())
     } catch (error) {
-        message.error(`Failed to save or update gateway: ${error.message}`)
+        message.error(`Failed to save gateway: ${error.message}`)
         dispatch(saveGatewayFailure(error))
     }
 }
@@ -186,8 +196,23 @@ export const updateGateway: ActionCreator<ThunkResult> = (gateway: Partial<IGate
         dispatch(updateGatewaySuccess())
         dispatch(fetchGateway())
     } catch (error) {
-        message.error(`Failed to save or update gateway: ${error.message}`)
+        message.error(`Failed to update gateway: ${error.message}`)
         dispatch(updateGatewayFailure(error))
+    }
+}
+
+export const deleteGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+    try {
+        dispatch(deleteGatewayRequest())
+        const res = await fetchDeleteJson<void>('/api/gateway')
+
+        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
+
+        dispatch(deleteGatewaySuccess())
+        dispatch(fetchGateway())
+    } catch (error) {
+        message.error(`Failed to delete gateway: ${error.message}`)
+        dispatch(deleteGatewayFailure(error))
     }
 }
 

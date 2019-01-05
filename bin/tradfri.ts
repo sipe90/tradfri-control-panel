@@ -43,7 +43,7 @@ async function authenticate(args: string[]) {
 
     const [hostname, securityCode] = args
 
-    const gateway = new TradfriGateway(hostname)
+    const gateway = new TradfriGateway(hostname, false)
 
     try {
         const {

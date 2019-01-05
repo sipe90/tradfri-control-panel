@@ -13,9 +13,9 @@ import './Gateway.css'
 interface IGatewayProps {
     gateway: IGateway
     initialDataLoading: boolean
-    dispatchGatewayStateChanged: (gateway: IGateway) => void
     dispatchSaveGateway: (gateway: IGateway) => void
     dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
+    dispatchDeleteGateway: () => void
     dispatchSubmitEditGatewayForm: () => void
 }
 
@@ -61,9 +61,9 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         <div className='gateway__actions'>
             <a onClick={() => this.setEditModalVisible(true)}>Edit</a>
             <Divider type='vertical' />
-            <a>Delete</a>
+            <a onClick={this.showDeleteConfirm}>Delete</a>
             <Divider type='vertical' />
-            <Dropdown trigger={['click', 'hover']} overlay={this.dropdown()}>
+            <Dropdown trigger={['click']} overlay={this.dropdown()}>
                 <a>More <Icon type='down' /></a>
             </Dropdown>
         </div>
@@ -116,11 +116,22 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private setEditModalVisible = (visible: boolean) => this.setState({ editModalVisible: visible })
 
+    private showDeleteConfirm = () => {
+        Modal.confirm({
+            title: 'Delete gateway',
+            content: 'Are you sure you want to delete the gateway?',
+            maskClosable: true,
+            onOk: this.handleDelete
+        })
+    }
+
     private handleSubmit = (gateway: Partial<IGateway>) => {
-        const newGatewayState = { ...this.props.gateway, ...gateway }
         this.props.dispatchUpdateGateway(gateway)
-        this.props.dispatchGatewayStateChanged(newGatewayState)
         this.setEditModalVisible(false)
+    }
+
+    private handleDelete = () => {
+        this.props.dispatchDeleteGateway()
     }
 }
 
