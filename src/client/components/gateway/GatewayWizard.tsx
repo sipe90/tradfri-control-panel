@@ -30,8 +30,8 @@ class GatewayWizard extends Component<{}, IGatewayWizardState> {
 
     public scrollAnchor: HTMLDivElement | null
 
-    constructor() {
-        super({})
+    constructor(props: {}) {
+        super(props)
         this.state = initialState
         this.scrollAnchor = null
     }
