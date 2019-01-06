@@ -89,6 +89,7 @@ export interface ICreateGatewayRequest {
 
 export interface IUpdateGatewayRequest {
     name: string
+    hostname: string
 }
 
 export interface IGenerateIdentityRequest {

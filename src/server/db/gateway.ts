@@ -24,8 +24,8 @@ export const insertGateway = async ({ name, hostname, identity, psk }: IGatewayE
     ins(SQL`INSERT INTO tradfri_gateway (name, hostname, identity, psk)
         VALUES (${name}, ${hostname}, ${identity}, ${psk})`)
 
-export const updateGateway = async ({ name }: Partial<IGatewayEntity>) =>
-    upd(SQL`UPDATE tradfri_gateway SET name = ${name}`)
+export const updateGateway = async ({ name, hostname }: Partial<IGatewayEntity>) =>
+    upd(SQL`UPDATE tradfri_gateway SET name = ${name}, hostname = ${hostname}`)
 
 export const deleteGateway = async () =>
     del(SQL`DELETE FROM tradfri_gateway`)

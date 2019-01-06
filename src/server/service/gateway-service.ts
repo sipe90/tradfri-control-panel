@@ -38,16 +38,26 @@ export const createTradfriGateway = async ({ name, hostname, identity, psk }: IC
     await connectToGateway({ hostname, identity, psk })
 }
 
-export const updateTradfriGateway = async ({ name }: IUpdateGatewayRequest) => {
+export const updateTradfriGateway = async ({ name, hostname }: IUpdateGatewayRequest) => {
     if (!name) {
         throw new ValidationError('name', 'Name is required')
     }
-    if (!await fetchGateway()) {
+    if (!hostname) {
+        throw new ValidationError('hostname', 'Address is required')
+    }
+    const gateway = await fetchGateway()
+    if (!gateway) {
         throw new Error('Gateway not found')
     }
-    logger.info(`Updating gateway name to ${name}`)
-    await db.updateGateway({ name })
-    logger.info('Successfully updated gateway')
+    logger.info('Updating gateway: [name: %s->%s, hostname: %s->%s]',
+        gateway.name, name, gateway.hostname, hostname)
+    await db.updateGateway({ name, hostname })
+    logger.info('Successfully updated gateway entity')
+    if (gateway.hostname !== hostname) {
+        logger.info('Gateway hostname changed, reconnecting to gateway using new address')
+        disconnectFromGateway(true)
+        connectToGateway({ ...gateway, hostname })
+    }
 }
 
 export const getGateway = async () => {
