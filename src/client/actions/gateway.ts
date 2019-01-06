@@ -4,6 +4,7 @@ import * as R from 'ramda'
 
 import { change } from 'redux-form'
 
+import { GATEWAY_WIZARD_FORM } from '@/containers/gateway/GatewayWizardFormContainer'
 import { START_TIMER, STOP_TIMER } from '@/redux-timers'
 import { IConnectionTestResult, ThunkResult } from '@/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
@@ -293,8 +294,8 @@ export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch
 
         const { name, addresses } = res.json
 
-        dispatch(change('GATEWAY', 'name', name))
-        dispatch(change('GATEWAY', 'hostname', addresses[0]))
+        dispatch(change(GATEWAY_WIZARD_FORM, 'name', name))
+        dispatch(change(GATEWAY_WIZARD_FORM, 'hostname', addresses[0]))
         dispatch(discoverGatewaySuccess(res.json))
     } catch (error) {
         message.error(`Failed to discover gateway: ${error.message}`)
@@ -318,8 +319,8 @@ export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, s
 
             const { identity, psk } = res.json
 
-            dispatch(change('GATEWAY', 'identity', identity))
-            dispatch(change('GATEWAY', 'psk', psk))
+            dispatch(change(GATEWAY_WIZARD_FORM, 'identity', identity))
+            dispatch(change(GATEWAY_WIZARD_FORM, 'psk', psk))
             dispatch(generateIdentitySuccess())
         } catch (error) {
             message.error(`Failed to generate identity: ${error.message}`)
