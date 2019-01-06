@@ -52,7 +52,11 @@ export const updateTradfriGateway = async ({ name }: IUpdateGatewayRequest) => {
 
 export const getGateway = async () => {
 
-    const { name, hostname } = await fetchGateway()
+    const gatewayEntity = await fetchGateway()
+
+    if (!gatewayEntity) return null
+
+    const { name, hostname } = gatewayEntity
 
     const connected = isGatewayConnected()
 
@@ -118,6 +122,13 @@ export const rebootGateway = async () => {
     if (!isGatewayConnected()) throw new Error('Could not reboot: Not connected to gateway')
     const started = await getConnection().rebootGateway()
     if (!started) throw new Error('Could not reboot')
+}
+
+export const resetGateway = async () => {
+    if (!isGatewayConnected()) throw new Error('Could not reset: Not connected to gateway')
+    const started = await getConnection().factoryReset()
+    if (!started) throw new Error('Could not reboot')
+    await deleteTradfriGateway()
 }
 
 export const discoverGateway = async () => TradfriGateway.discover()

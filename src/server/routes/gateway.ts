@@ -4,6 +4,7 @@ import { created, noContent, okOrNotFound } from '#/routes/responses'
 import {
     createTradfriGateway, deleteTradfriGateway, discoverGateway,
     generateIdentity, getGateway, rebootGateway,
+    resetGateway,
     testConnect,
     updateTradfriGateway
 } from '#/service/gateway-service'
@@ -36,6 +37,12 @@ router.post('/test', (req, res, next) =>
 
 router.post('/reboot', (_req, res, next) =>
     rebootGateway()
+        .then(noContent(res))
+        .catch(next)
+)
+
+router.post('/reset', (_req, res, next) =>
+    resetGateway()
         .then(noContent(res))
         .catch(next)
 )
