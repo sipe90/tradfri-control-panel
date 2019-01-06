@@ -177,32 +177,35 @@ export default class TradfriGateway {
     }
 
     private onDeviceUpdate = (device: Accessory) => {
-        logger.info('Updating device [%d]', device.instanceId)
+        logger.info('Updating device [%d:%s]', device.instanceId, device.name)
         this.devices = R.assoc(String(device.instanceId), device.clone(), this.devices)
     }
 
     private onDeviceRemove = (instanceId: number) => {
-        logger.info('Removing device [%d]', instanceId)
+        logger.info('Removing device [%d:%s]', instanceId, R.path([instanceId, 'name'], this.devices))
         this.devices = R.dissoc(String(instanceId), this.devices)
     }
 
     private onGroupUpdate = (group: Group) => {
-        logger.info('Updating group [%d]', group.instanceId)
+        logger.info('Updating group [%d:%s]', group.instanceId, group.name)
         this.groups = R.assocPath([group.instanceId, 'group'], group.clone(), this.groups)
     }
 
     private onGroupRemove = (instanceId: number) => {
-        logger.info('Removing group [%d]', instanceId)
+        logger.info('Removing group [%d:%s]', instanceId, R.path([instanceId, 'group', 'name'], this.groups))
         this.groups = R.dissoc(String(instanceId), this.groups)
     }
 
     private onSceneUpdate = (groupId: number, scene: Scene) => {
-        logger.info('Updating scene [%d] in group [%d]', scene.instanceId, groupId)
+        logger.info('Updating scene [%d:%s] in group [%d:%s]',
+            scene.instanceId, scene.name, groupId, R.path([groupId, 'group', 'name'], this.groups))
         this.groups = R.assocPath([groupId, 'scenes', scene.instanceId], scene.clone(), this.groups)
     }
 
     private onSceneRemove = (groupId: number, instanceId: number) => {
-        logger.info('Removing scene [%d] from group [%d]', instanceId, groupId)
+        logger.info('Removing scene [%d:%s] from group [%d:%s]',
+            instanceId, R.path([groupId, 'scenes', instanceId, 'name'], this.groups),
+            groupId, R.path([groupId, 'group', 'name'], this.groups))
         this.groups = R.dissocPath([groupId, 'scenes', instanceId], this.groups)
     }
 
