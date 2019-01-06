@@ -9,10 +9,10 @@ import GatewayWizardForm, {
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 
-const GATEWAY__WIZARD_FORM = 'GATEWAY_WIZARD'
+export const GATEWAY_WIZARD_FORM = 'GATEWAY_WIZARD'
 
-const valueSelector = formValueSelector<IAppState>(GATEWAY__WIZARD_FORM)
-const validationErrorSelector = getFormSyncErrors(GATEWAY__WIZARD_FORM)
+const valueSelector = formValueSelector<IAppState>(GATEWAY_WIZARD_FORM)
+const validationErrorSelector = getFormSyncErrors(GATEWAY_WIZARD_FORM)
 
 const mapStateToProps = (state: IAppState) => ({
     connectionTestInProgress: state.modules.gateway.connectionTestInProgress,
@@ -37,7 +37,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 })
 
 const ReduxForm = reduxForm<IGatewayWizardFormValues, IGatewayWizardFormProps>(
-    { form: GATEWAY__WIZARD_FORM, destroyOnUnmount: false })(GatewayWizardForm)
+    { form: GATEWAY_WIZARD_FORM, destroyOnUnmount: false })(GatewayWizardForm)
 
 const GatewayWizardFormContainer = connect(
     mapStateToProps,
