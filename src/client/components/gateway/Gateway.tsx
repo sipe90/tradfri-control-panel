@@ -18,6 +18,7 @@ interface IGatewayProps {
     dispatchDeleteGateway: () => void
     dispatchSubmitEditGatewayForm: () => void
     dispatchRebootGateway: () => void
+    dispatchResetGateway: () => void
 }
 
 interface IGatewayState {
@@ -76,7 +77,7 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
             <a onClick={this.showRebootConfirm}>Reboot gateway</a>
           </Menu.Item>
           <Menu.Item>
-            <a>Factory reset</a>
+            <a onClick={this.showResetConfirm} style={{ color: 'red'}}>Factory reset</a>
           </Menu.Item>
         </Menu>
       )
@@ -135,6 +136,18 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
         })
     }
 
+    private showResetConfirm = () => {
+        Modal.confirm({
+            title: 'Reset gateway',
+            content: 'Are you sure you want to reset the gateway? ' +
+                ' This wipes everything from the gateway, including paired devices, groups and moods! ' +
+                ' You will also have to generate new credentials to authenticate with the gateway.',
+            maskClosable: true,
+            iconType: 'warning',
+            onOk: this.handleReset
+        })
+    }
+
     private handleSubmit = (gateway: Partial<IGateway>) => {
         this.props.dispatchUpdateGateway(gateway)
         this.setEditModalVisible(false)
@@ -146,6 +159,10 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private handleReboot = () => {
         this.props.dispatchRebootGateway()
+    }
+
+    private handleReset = () => {
+        this.props.dispatchResetGateway()
     }
 }
 

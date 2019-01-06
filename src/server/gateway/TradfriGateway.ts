@@ -73,7 +73,14 @@ export default class TradfriGateway {
     public rebootGateway = async () => {
         logger.info('Rebooting gateway')
         const started = await this.client.rebootGateway()
-        !started && logger.info('Gateway could not be rebooted')
+        !started && logger.error('Gateway could not be rebooted')
+        return started
+    }
+
+    public factoryReset = async () => {
+        logger.warn('Initiating factory reset on the gateway')
+        const started = await this.client.resetGateway()
+        !started && logger.error('Gateway could not be reset')
         return started
     }
 
