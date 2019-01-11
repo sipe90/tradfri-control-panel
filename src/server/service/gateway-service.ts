@@ -2,7 +2,7 @@ import { Accessory, GroupInfo, TradfriErrorCodes } from 'node-tradfri-client'
 import R from 'ramda'
 
 import { normalizeGateway } from '#/data/tradfri'
-import * as db from '#/db/gateway'
+import * as db from '#/db/settings'
 import { ValidationError } from '#/error'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
