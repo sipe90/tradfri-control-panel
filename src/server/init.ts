@@ -16,6 +16,7 @@ export default async (env: string) => {
 
         logger.info('Successfully connected to SQLite database')
 
+        logger.info('Fetching gateway from database')
         const gateway = await fetchGateway()
 
         if (!gateway) {
