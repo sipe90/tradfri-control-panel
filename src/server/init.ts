@@ -1,5 +1,6 @@
 import * as db from '#/db'
 import logger from '#/logger'
+import { setupFlux } from '#/service/flux-service'
 import { connectToGateway } from '#/service/gateway-connection-manager'
 import { fetchGateway } from '#/service/gateway-service'
 
@@ -29,6 +30,10 @@ export default async (env: string) => {
         await connectToGateway(gateway).catch(logError('Failed to connect to Gateway'))
 
         logger.info('Finished connecting to gateway')
+
+        logger.info('Setting up flux')
+
+        await setupFlux()
 
         return true
     } catch (err) {
