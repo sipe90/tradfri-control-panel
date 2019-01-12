@@ -13,6 +13,10 @@ import { IUpdateFluxSettingsRequest } from 'shared/types'
 
 const updateInterval = 1000 * 60
 const locDecimals = 2
+const warmthAtSunrise = 15
+const warmthAtSunset = 80
+const sunriseAdjustTime = 1000 * 60 * 60 * 2
+const sunsetAdjustTime = 1000 * 60 * 60 * 2
 
 let intervalHandle: number | null = null
 
@@ -107,8 +111,8 @@ const updateLights = (latitude: number, longitude: number, groupIds: string[]) =
     const now = new Date()
     const currentTemp = getTemperature(now, latitude, longitude)
 
-    logger.info('Setting color temperature of all lights in groups [%s] to %d% (%f lat, %f lon)',
-        groupIds.join(', '), currentTemp, latitude, longitude)
+    logger.info('Setting color temperature of all lights in groups [%s] to %d%',
+        groupIds.join(', '), currentTemp)
 
     const connection = getConnection()
     const groups = connection.getGroups()
@@ -134,26 +138,27 @@ const getTemperature = (date: Date, latitude: number, longitude: number) => {
     const sunriseTime = sunrise.getTime()
     const sunsetTime = sunset.getTime()
 
-    const warmthAtSunrise = 15
-    const warmthAtSunset = 80
-    const sunriseStartAdjust = 1000 * 60 * 60 * 2
-    const sunsetStartAdjust = 1000 * 60 * 60 * 2
+    logger.debug('Configured location is %f lat, %f lon', latitude, longitude)
+    logger.debug('Sunrise temperature adjust timeframe is %d minutes', sunriseAdjustTime / (60 * 1000))
+    logger.debug('Sunset temperature adjust timeframe is %d minutes', sunsetAdjustTime / (60 * 1000))
+    logger.debug('Sun rises today at %s', sunrise.toTimeString())
+    logger.debug('Sun sets today at %s', sunset.toTimeString())
 
     // Time between 00:00 and sunrise
     if (time < sunriseTime) {
         const timeDifference = sunriseTime - time
-        if (timeDifference > sunriseStartAdjust) {
+        if (timeDifference > sunriseAdjustTime) {
             return warmthAtSunset
         }
-        const scaleFactor = timeDifference / sunriseStartAdjust
+        const scaleFactor = timeDifference / sunriseAdjustTime
         return warmthAtSunrise + scaleFactor * (warmthAtSunset - warmthAtSunrise)
     // Time between sunrise and sunset
     } else if (time < sunsetTime) {
         const timeDifference = sunsetTime - time
-        if (timeDifference > sunsetStartAdjust) {
+        if (timeDifference > sunsetAdjustTime) {
             return warmthAtSunrise
         }
-        const scaleFactor = (sunsetStartAdjust - timeDifference) / sunsetStartAdjust
+        const scaleFactor = (sunsetAdjustTime - timeDifference) / sunsetAdjustTime
         return warmthAtSunrise + scaleFactor * (warmthAtSunset - warmthAtSunrise)
     }
     // Time between sunset and 23:59
