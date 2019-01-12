@@ -2,7 +2,7 @@ import { Accessory, GroupInfo, TradfriErrorCodes } from 'node-tradfri-client'
 import R from 'ramda'
 
 import { normalizeGateway } from '#/data/tradfri'
-import * as db from '#/db/settings'
+import * as db from '#/db/gateway'
 import { ValidationError } from '#/error'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
@@ -10,12 +10,19 @@ import {
     connectToGateway, disconnectFromGateway,
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
+import { isAnyValueNil } from '#/utils'
 import {
     GatewayConnectionState, ICreateGatewayRequest,
     IGateway, IGenerateIdentityRequest, ITestConnectionRequest, IUpdateGatewayRequest
 } from 'shared/types'
 
-export const fetchGateway = db.selectGateway
+export const fetchGateway = async () => {
+    const gateway = await db.getGateway()
+    if (isAnyValueNil(gateway)) {
+        logger.debug('One or more gateway settings were not set, returning null')
+    }
+    return gateway as db.IGatewayEntity
+}
 
 export const createTradfriGateway = async ({ name, hostname, identity, psk }: ICreateGatewayRequest) => {
     if (!name) {

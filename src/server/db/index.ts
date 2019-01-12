@@ -13,8 +13,8 @@ const dbConfig: IDbConfig = config.get('database')
 
 let dbConnection: Database
 
-export const all = async <T = any> (sql: SQLStatement) => getConnection().all<T>(sql)
-export const get = async <T = any> (sql: SQLStatement) =>  getConnection().get<T>(sql)
+export const all = async <T = any> (sql: SQLStatement) => getConnection().all<T | undefined>(sql)
+export const get = async <T = any> (sql: SQLStatement) =>  getConnection().get<T | undefined>(sql)
 export const run = async (sql: SQLStatement) => getConnection().run(sql)
 
 export const ins = async (sql: SQLStatement) => (await run(sql)).lastID

@@ -19,6 +19,7 @@
     "shared": "./src/shared"
   },
   "dependencies": {
+    "@types/suncalc": "^1.8.0",
     "antd": "^3.9.2",
     "body-parser": "^1.18.3",
     "config": "^2.0.1",
@@ -42,6 +43,7 @@
     "redux-thunk": "^2.3.0",
     "sql-template-strings": "^2.2.2",
     "sqlite": "^3.0.0",
+    "suncalc": "^1.8.0",
     "winston": "^3.1.0"
   },
   "devDependencies": {

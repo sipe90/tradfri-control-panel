@@ -1,4 +1,4 @@
-import { all, del, get, ins, transactional } from '#/db'
+import { del, get, ins, transactional } from '#/db'
 import R from 'ramda'
 import SQL from 'sql-template-strings'
 
@@ -7,66 +7,27 @@ interface ISettingEntity {
     value: string
 }
 
-interface IGatewayEntity {
-    name: string
-    hostname: string
-    identity: string
-    psk: string
-}
-
-export const KEY_GATEWAY_NAME = 'gateway.name'
-export const KEY_GATEWAY_HOSTNAME = 'gateway.hostname'
-export const KEY_GATEWAY_IDENTITY = 'gateway.identity'
-export const KEY_GATEWAY_PSK = 'gateway.psk'
-
-export const getAllSettings = async () =>
-    get<ISettingEntity>(SQL`SELECT key, value FROM setting`)
-
-export const getSetting = async (key: string) =>
+export const getSetting = (key: string) =>
     get<ISettingEntity>(SQL`SELECT key, value FROM setting WHERE key = ${key}`)
 
-export const setSetting = async ({ key, value }: ISettingEntity) =>
+export const setSettingValue = (key: string, value: string) =>
     ins(SQL`INSERT OR REPLACE INTO setting (key, value) VALUES (${key}, ${value})`)
 
-export const deleteSetting = async (key: string) =>
+export const deleteSetting = (key: string) =>
     del(SQL`DELETE FROM setting WHERE key = ${key}`)
 
-const findByKey = (key: string, settings: ISettingEntity[]) =>
-    R.propOr<null, ISettingEntity | undefined, string>(null, 'value', R.find(R.propEq('key', key), settings))
+export const getSettingValue = async (key: string) => getValue(await getSetting(key))
 
-export const selectGateway: () => Promise<IGatewayEntity | null> = async () => {
-    const gatewaySettings = await all<ISettingEntity>(SQL`SELECT key, value FROM setting WHERE key LIKE 'gateway.%'`)
-    const name = findByKey(KEY_GATEWAY_NAME, gatewaySettings)
-    const hostname = findByKey(KEY_GATEWAY_HOSTNAME, gatewaySettings)
-    const identity = findByKey(KEY_GATEWAY_IDENTITY, gatewaySettings)
-    const psk = findByKey(KEY_GATEWAY_PSK, gatewaySettings)
-    if (!name || !hostname || !identity || !psk) return null
-    return {
-        name,
-        hostname,
-        identity,
-        psk
-    }
+export const getBooleanSettingValue = async (key: string) => {
+    const valueStr = await getSettingValue(key)
+    if (valueStr === 'true') return true
+    if (valueStr === 'false') return false
+    if (R.isNil(valueStr)) return null
+    throw new Error(`Invalid value for key ${key}: ${valueStr}`)
 }
 
-export const insertGateway = async ({ name, hostname, identity, psk }: IGatewayEntity) =>
-    transactional(async () => {
-        await setSetting({ key: KEY_GATEWAY_NAME, value: name})
-        await setSetting({ key: KEY_GATEWAY_HOSTNAME, value: hostname})
-        await setSetting({ key: KEY_GATEWAY_IDENTITY, value: identity})
-        await setSetting({ key: KEY_GATEWAY_PSK, value: psk})
-    })
+export const setBooleanSettingValue = (key: string, value: boolean) =>
+    transactional(() => setSettingValue(key, value ? 'true' : 'false'))
 
-export const updateGateway = async ({ name, hostname }: Partial<IGatewayEntity>) =>
-    transactional(async () => {
-        name && await setSetting({ key: KEY_GATEWAY_NAME, value: name})
-        hostname && await setSetting({ key: KEY_GATEWAY_HOSTNAME, value: hostname})
-    })
-
-export const deleteGateway = async () =>
-    transactional(async () =>
-        await deleteSetting(KEY_GATEWAY_NAME) &&
-        await deleteSetting(KEY_GATEWAY_HOSTNAME) &&
-        await deleteSetting(KEY_GATEWAY_IDENTITY) &&
-        await deleteSetting(KEY_GATEWAY_PSK)
-    )
+const getValue = (setting?: ISettingEntity) =>
+    R.propOr<null, ISettingEntity | undefined, string | null>(null, 'value', setting)
