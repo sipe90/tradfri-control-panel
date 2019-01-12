@@ -11,6 +11,9 @@ import { isAnyValueNil } from '#/utils'
 import { Accessory, Group } from 'node-tradfri-client'
 import { IUpdateFluxSettingsRequest } from 'shared/types'
 
+const updateInterval = 1000 * 60
+const locDecimals = 2
+
 let intervalHandle: number | null = null
 
 export const isFluxEnabled = db.getFluxEnabled
@@ -59,8 +62,8 @@ export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsReques
         throw new ValidationError('groups', `One or more invalid groups ids given: ${invalidGroupIds.join(', ')}`)
     }
 
-    const fixedLatitude = parsedLatitude.toFixed(6)
-    const fixedLongitude = parsedLongitude.toFixed(6)
+    const fixedLatitude = parsedLatitude.toFixed(locDecimals)
+    const fixedLongitude = parsedLongitude.toFixed(locDecimals)
 
     db.setFluxSettings({
         ...fluxSettings,
@@ -70,8 +73,9 @@ export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsReques
 
     if (fluxSettings.enabled) {
         intervalHandle && clearInterval(intervalHandle)
+        updateLights(parsedLatitude, parsedLongitude, groupIds)
         intervalHandle = setInterval(
-            updateLights, 1000 * 60, parseFloat(fixedLatitude), parseFloat(fixedLongitude), groupIds)
+            updateLights, updateInterval, parseFloat(fixedLatitude), parseFloat(fixedLongitude), groupIds)
     } else if (intervalHandle) {
         clearInterval(intervalHandle)
         intervalHandle = null
@@ -86,7 +90,7 @@ export const setupFlux = async () => {
     }
     const { enabled, latitude, longitude, groupIds } = fluxSettings as db.IFluxEntity
     if (!enabled) {
-        logger.info('Flux mode is disabeld, skiping setup')
+        logger.info('Flux mode is disabeld, skipping setup')
         return
     }
 
@@ -94,14 +98,17 @@ export const setupFlux = async () => {
     const parsedLongitude = parseFloat(longitude)
 
     updateLights(parsedLatitude, parsedLongitude, groupIds)
-    intervalHandle = setInterval(updateLights, 1000 * 60, parsedLatitude, parsedLongitude, groupIds)
+    intervalHandle = setInterval(updateLights, updateInterval, parsedLatitude, parsedLongitude, groupIds)
+
+    logger.info('Flux setup finished. Updating lights with %dms interval', updateInterval)
 }
 
 const updateLights = (latitude: number, longitude: number, groupIds: string[]) => {
     const now = new Date()
-    const currentWarmth = getWarmth(now, latitude, longitude)
+    const currentTemp = getTemperature(now, latitude, longitude)
 
-    logger.info('Setting color temperature of all lights in groups [%s] to %d', groupIds.join(', '), currentWarmth)
+    logger.info('Setting color temperature of all lights in groups [%s] to %d% (%f lat, %f lon)',
+        groupIds.join(', '), currentTemp, latitude, longitude)
 
     const connection = getConnection()
     const groups = connection.getGroups()
@@ -115,12 +122,12 @@ const updateLights = (latitude: number, longitude: number, groupIds: string[]) =
         }
         const groupLightIds = getLightsForGroup(groupInfo.group, lights)
         for (const lightId of groupLightIds) {
-            connection.operateLight(lightId, { colorTemperature: currentWarmth })
+            connection.operateLight(lightId, { colorTemperature: currentTemp })
         }
     }
 }
 
-const getWarmth = (date: Date, latitude: number, longitude: number) => {
+const getTemperature = (date: Date, latitude: number, longitude: number) => {
     const { sunrise, sunset } = sunCalc.getTimes(date, latitude, longitude)
 
     const time = date.getTime()
