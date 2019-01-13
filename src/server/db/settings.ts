@@ -1,33 +1,15 @@
-import { del, get, ins, transactional } from '#/db'
-import R from 'ramda'
-import SQL from 'sql-template-strings'
+import { getCollection, getConnection } from '#/db'
 
-interface ISettingEntity {
-    key: string
-    value: string
-}
+export const getSettingsCollection = () => getCollection('settings')
 
-export const getSetting = (key: string) =>
-    get<ISettingEntity>(SQL`SELECT key, value FROM setting WHERE key = ${key}`)
+export const collectionExists = () => getSettingsCollection() !== null
 
-export const setSettingValue = (key: string, value: string) =>
-    ins(SQL`INSERT OR REPLACE INTO setting (key, value) VALUES (${key}, ${value})`)
+export const createCollection = () => getConnection().addCollection('settings', { unique: [ 'key' ]})
 
-export const deleteSetting = (key: string) =>
-    del(SQL`DELETE FROM setting WHERE key = ${key}`)
+export const findSettings = (key: string) => getSettingsCollection().findOne({ key: { $eq: key }})
 
-export const getSettingValue = async (key: string) => getValue(await getSetting(key))
+export const insert = (key: string, object: any) => getSettingsCollection().insert({ ...object, key })
 
-export const getBooleanSettingValue = async (key: string) => {
-    const valueStr = await getSettingValue(key)
-    if (valueStr === 'true') return true
-    if (valueStr === 'false') return false
-    if (R.isNil(valueStr)) return null
-    throw new Error(`Invalid value for key ${key}: ${valueStr}`)
-}
+export const update = (object: any) => getSettingsCollection().update(object)
 
-export const setBooleanSettingValue = (key: string, value: boolean) =>
-    transactional(() => setSettingValue(key, value ? 'true' : 'false'))
-
-const getValue = (setting?: ISettingEntity) =>
-    R.propOr<null, ISettingEntity | undefined, string | null>(null, 'value', setting)
+export const remove = (object: any) => getSettingsCollection().remove(object)

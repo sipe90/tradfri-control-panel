@@ -7,7 +7,6 @@ import logger from '#/logger'
 import {
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
-import { isAnyValueNil } from '#/utils'
 import { Accessory, Group } from 'node-tradfri-client'
 import { IUpdateFluxSettingsRequest } from 'shared/types'
 
@@ -20,7 +19,11 @@ const sunsetAdjustTime = 1000 * 60 * 60 * 2
 
 let intervalHandle: number | null = null
 
-export const isFluxEnabled = db.getFluxEnabled
+export const isFluxEnabled = () => {
+    const fluxSettings = db.getFluxSettings()
+    if (!fluxSettings) return false
+    return fluxSettings.enabled
+}
 
 export const getFluxSettings = db.getFluxSettings
 
@@ -88,8 +91,8 @@ export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsReques
 
 export const setupFlux = async () => {
     const fluxSettings = await getFluxSettings()
-    if (isAnyValueNil(fluxSettings)) {
-        logger.info('One or more flux settings were not set, skipping setup')
+    if (!fluxSettings) {
+        logger.info('Flux settings were not set, skipping setup')
         return
     }
     const { enabled, latitude, longitude, groupIds } = fluxSettings as db.IFluxEntity

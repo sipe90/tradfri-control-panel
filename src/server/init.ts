@@ -13,9 +13,9 @@ export default async (env: string) => {
     try {
         logger.info('Initializing application')
 
-        await db.init(env).catch(logError('Failed to connect to SQLite database.'))
+        await db.init(env).catch(logError('Failed to connect to LokiJS database.'))
 
-        logger.info('Successfully connected to SQLite database')
+        logger.info('Successfully connected to LokiJS database')
 
         logger.info('Fetching gateway from database')
         const gateway = await fetchGateway()
