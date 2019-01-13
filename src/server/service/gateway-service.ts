@@ -10,19 +10,12 @@ import {
     connectToGateway, disconnectFromGateway,
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
-import { isAnyValueNil } from '#/utils'
 import {
     GatewayConnectionState, ICreateGatewayRequest,
     IGateway, IGenerateIdentityRequest, ITestConnectionRequest, IUpdateGatewayRequest
 } from 'shared/types'
 
-export const fetchGateway = async () => {
-    const gateway = await db.getGateway()
-    if (isAnyValueNil(gateway)) {
-        logger.debug('One or more gateway settings were not set, returning null')
-    }
-    return gateway as db.IGatewayEntity
-}
+export const fetchGateway = db.getGateway
 
 export const createTradfriGateway = async ({ name, hostname, identity, psk }: ICreateGatewayRequest) => {
     if (!name) {
