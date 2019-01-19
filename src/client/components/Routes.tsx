@@ -1,8 +1,9 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
 
-import ModuleWrapper from '@/components/ModuleWrapper'
 import { IRouteDefinition } from '@/routeDefs'
+
+import './Routes.css'
 
 interface IRoutesProps {
     routes: IRouteDefinition[]
@@ -17,7 +18,7 @@ const Routes: React.FunctionComponent<IRoutesProps> = (props) => {
                 component={() => <Redirect to={props.routes[0].path} />}
             />
             {renderRoutes(props.routes)}
-            <ModuleWrapper module={<div>404</div>} />
+            {renderModule(<div>404</div>)}
         </Switch>
     )
 }
@@ -28,8 +29,10 @@ const renderRoutes = (routes: IRouteDefinition[]) =>
             key={index}
             path={path}
             exact={exact}
-            component={() => <ModuleWrapper module={container} />}
+            component={() => renderModule(container)}
         />
     ))
+
+const renderModule = (module: JSX.Element) => <div className='content-wrap'>{module}</div>
 
 export default Routes
