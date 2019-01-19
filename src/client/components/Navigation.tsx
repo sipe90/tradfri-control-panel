@@ -12,20 +12,26 @@ interface INavigationProps {
 const Navigation: React.FunctionComponent<INavigationProps> = (props) => {
     return (
         <div className='nav-menu'>
-            {
-                props.routes.map((route, index) => (
-                    <NavLink key={index} to={route.path} exact className='nav-menu__item' activeClassName='nav-menu__item--active'>
-                        <div>
-                            {route.icon}
-                        </div>
-                        <div>
-                            {route.text}
-                        </div>
-                    </NavLink>
-                ))
-            }
+            {props.routes.map(renderNavigationLink)}
         </div>
     )
 }
+
+const renderNavigationLink = (route: IRouteDefinition, index: number) => (
+    <NavLink
+        className='nav-menu__item'
+        activeClassName='nav-menu__item--active'
+        key={index}
+        to={route.path}
+        exact={true}
+    >
+        <div>
+            {route.icon}
+        </div>
+        <div>
+            {route.text}
+        </div>
+    </NavLink>
+)
 
 export default Navigation
