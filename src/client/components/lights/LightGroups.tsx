@@ -1,19 +1,14 @@
 import { Card, List, Slider, Switch } from 'antd'
 import * as R from 'ramda'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 
-import { updateGroup } from '@/actions/groups'
-import { lightStateChanged } from '@/actions/lights'
 import StatusIndicator from '@/components/StatusIndicator'
 import { Dictionary, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
-import { IAppState } from '@/reducers'
-import { AppDispatch } from '@/types'
-import './LightGroupsTab.css'
+import './LightGroups.css'
 
 const Item = List.Item
 
@@ -122,15 +117,4 @@ const status = R.cond([
     [R.T, R.always('offline')]
 ])
 
-const mapStateToProps = (state: IAppState) => ({
-    groups: state.entities.groups,
-    initialDataLoading: state.modules.lights.initialDataLoading,
-    lights: state.entities.lights,
-})
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
-    updateGroup: (group: IGroupUpdateRequest) => dispatch(updateGroup(group)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(LightGroups)
+export default LightGroups
