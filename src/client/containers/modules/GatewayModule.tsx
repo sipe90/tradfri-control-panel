@@ -51,20 +51,14 @@ class GatewayModule extends Component<IGatewayModuleProps> {
 
     private renderGateway = (gateway: IGateway) => {
         const {
-            initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway,
-            dispatchUpdateGateway, dispatchSubmitEditGatewayForm, dispatchRebootGateway,
-            dispatchResetGateway
+            initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway, dispatchUpdateGateway,
+            dispatchSubmitEditGatewayForm, dispatchRebootGateway, dispatchResetGateway
         } = this.props
-        return (
-            <GatewayComponent
-                {...{
-                        gateway, initialDataLoading, dispatchSaveGateway,
-                        dispatchUpdateGateway, dispatchSubmitEditGatewayForm, dispatchDeleteGateway,
-                        dispatchRebootGateway, dispatchResetGateway
-                    }
-                }
-            />
-        )
+        const componentProps = {
+            gateway, initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway,
+            dispatchUpdateGateway, dispatchSubmitEditGatewayForm, dispatchRebootGateway, dispatchResetGateway
+        }
+        return <GatewayComponent {...componentProps} />
     }
 
 }

@@ -1,19 +1,15 @@
 import { Card, List } from 'antd'
 import * as R from 'ramda'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
-import { lightStateChanged, updateLight } from '@/actions/lights'
 import LightItem from '@/components/lights/LightItem'
 import Spinner from '@/components/Spinner'
 import { devicesForGroup } from '@/utils'
 import { Dictionary, IGroup, ILight } from 'shared/types'
 
-import { IAppState } from '@/reducers'
-import { AppDispatch } from '@/types'
-import './LightsTab.css'
+import './Lights.css'
 
-interface ILightsTabProps {
+interface ILightsProps {
     groups: Dictionary<IGroup>
     lights: Dictionary<ILight>
     initialDataLoading: boolean
@@ -21,7 +17,7 @@ interface ILightsTabProps {
     updateLight: (light: ILight) => void
 }
 
-class LightsTab extends Component<ILightsTabProps> {
+class Lights extends Component<ILightsProps> {
 
     public render = () => (
         R.values(this.props.groups).map((group, idx) => (
@@ -49,15 +45,4 @@ class LightsTab extends Component<ILightsTabProps> {
     )
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    groups: state.entities.groups,
-    initialDataLoading: state.modules.lights.initialDataLoading,
-    lights: state.entities.lights,
-})
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
-    updateLight: (light: ILight) => dispatch(updateLight(light)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(LightsTab)
+export default Lights
