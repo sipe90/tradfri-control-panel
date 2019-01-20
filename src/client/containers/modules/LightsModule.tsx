@@ -7,12 +7,11 @@ import { updateGroup } from '@/actions/groups'
 import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, updateLight } from '@/actions/lights'
 import LightGroups from '@/components/lights/LightGroups'
 import Lights from '@/components/lights/Lights'
+import Tabbed from '@/components/Tabbed'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 import { TabsProps } from 'antd/lib/tabs'
 import { Dictionary, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
-
-const TabPane = Tabs.TabPane
 
 interface ILightModuleProps {
     groups: Dictionary<IGroup>
@@ -38,42 +37,32 @@ class LightsModule extends Component<ILightModuleProps> {
     }
 
     public render() {
-        return (
-            <StickyContainer>
-                <Tabs
-                    style={{ textAlign: 'center' }}
-                    animated={{ inkBar: true, tabPane: false }}
-                    renderTabBar={renderTabBar}
-                >
-                    <TabPane key='1' tab='Lights'>
-                        <Lights
-                            groups={this.props.groups}
-                            lights={this.props.lights}
-                            initialDataLoading={this.props.initialDataLoading}
-                            lightStateChanged={this.props.lightStateChanged}
-                            updateLight={this.props.updateLight}
-                        />
-                    </TabPane>
-                    <TabPane key='2' tab='Groups'>
-                        <LightGroups
-                            groups={this.props.groups}
-                            lights={this.props.lights}
-                            initialDataLoading={this.props.initialDataLoading}
-                            lightStateChanged={this.props.lightStateChanged}
-                            updateGroup={this.props.updateGroup}
-                        />
-                    </TabPane>
-                </Tabs>
-            </StickyContainer>
-        )
+        const tabs = [{
+            title: 'Lights',
+            component: (
+                <Lights
+                    groups={this.props.groups}
+                    lights={this.props.lights}
+                    initialDataLoading={this.props.initialDataLoading}
+                    lightStateChanged={this.props.lightStateChanged}
+                    updateLight={this.props.updateLight}
+                />
+            )
+        }, {
+            title: 'Groups',
+            component: (
+                <LightGroups
+                    groups={this.props.groups}
+                    lights={this.props.lights}
+                    initialDataLoading={this.props.initialDataLoading}
+                    lightStateChanged={this.props.lightStateChanged}
+                    updateGroup={this.props.updateGroup}
+                />
+            )
+        }]
+        return <Tabbed tabs={tabs}/>
     }
 }
-
-const renderTabBar = (props: TabsProps, DefaultTabBar: any) => (
-    <Sticky bottomOffset={80}>
-        {({ style }) => <DefaultTabBar {...props} style={{ ...style, zIndex: 1, background: '#fff' }} />}
-    </Sticky>
-)
 
 const mapStateToProps = (state: IAppState) => ({
     groups: state.entities.groups,
