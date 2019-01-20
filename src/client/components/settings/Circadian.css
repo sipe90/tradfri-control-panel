@@ -1,0 +1,16 @@
+
+.circadian__settings {
+    text-align: left;
+}
+
+.circadian__settings > div {
+    margin-bottom: 12px;
+}
+
+.circadian__settings > div:nth-child(odd) {
+    font-weight: bold;
+}
+
+.circadian__settings > div:nth-child(even) {
+    margin-left: 12px;
+}
