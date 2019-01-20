@@ -8,6 +8,7 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import GatewayModule from '@/containers/modules/GatewayModule'
 import LightsModule from '@/containers/modules/LightsModule'
 import SensorsModule from '@/containers/modules/SensorsModule'
+import SettingsModule from './containers/modules/SettingsModule'
 
 export interface IRouteDefinition {
     path: string
@@ -40,7 +41,7 @@ const routes: IRouteDefinition[] = [
         text: 'Sensors',
     },
     {
-        container: <div>Settings</div>,
+        container: <SettingsModule />,
         exact: true,
         icon: <SettingsIcon size={28} />,
         path: '/settings',
