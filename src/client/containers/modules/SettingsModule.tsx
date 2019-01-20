@@ -1,5 +1,5 @@
 
-import Flux from '@/components/settings/Flux'
+import Circadian from '@/components/settings/Circadian'
 import Tabbed from '@/components/Tabbed'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
@@ -9,8 +9,8 @@ import { connect } from 'react-redux'
 class SettingsModule extends Component {
     public render = () => {
         const tabs = [{
-            title: 'Flux',
-            component: <Flux/>
+            title: 'Circadian',
+            component: <Circadian/>
         }]
         return <Tabbed tabs={tabs}/>
     }

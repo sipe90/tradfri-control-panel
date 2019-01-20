@@ -2,18 +2,18 @@ import { Button, Card, List, Switch } from 'antd'
 import React, { Component } from 'react'
 import { IGroup } from 'shared/types'
 
-import './Flux.css'
+import './Circadian.css'
 
 const { Item } = List
 
-class Flux extends Component {
+class Circadian extends Component {
     public render = () => {
         return (
             <Card >
                 <div style={{ textAlign: 'left' }}>
                     {description}
                 </div>
-                <div className='flux__settings'>
+                <div className='circadian__settings'>
                     <div>
                         Status
                     </div>
@@ -48,20 +48,23 @@ const description = (
     <>
         <p>
             {
-                'Flux is an automated system designed to control the color temperature ' +
-                'of smart lamps according to the time of day.'
+                'Circadian lighting is a type of lighting that changes it\'s the color temperature ' +
+                'according to the time of day.'
             }
         </p>
         <p>
             {
                 'In the morning it lowers the color temperature to match the bright morning sunlight. ' +
-                'And when the sun sets, the temperature is adjusted to a warmer color.'
+                'And when the sun sets, the temperature is adjusted to a more warm color.'
             }
         </p>
         <p>
-            {'This feature could be called '}
-            <a target='_blank' href='https://justgetflux.com/'>f.lux</a>
-            {' for smart lighting.'}
+            {
+                'The point of this is to avoid blue light during late hours. Your circadian rhythm is affected by ' +
+                'the surrounding ambient lighting. Blue light signals us that it is daytime ' +
+                'and it can mess with your rhythm. By adjusting the lighting to be warmer at late hours ' +
+                'can help you sleep better.'
+            }
         </p>
     </>
 )
@@ -72,4 +75,4 @@ const renderGroup = (name: string) => (
     </Item>
 )
 
-export default Flux
+export default Circadian
