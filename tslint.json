@@ -15,6 +15,7 @@
         "trailing-comma": false,
         "object-literal-sort-keys": false,
         "curly": [true, "ignore-same-line"],
-        "jsx-no-lambda": false
+        "jsx-no-lambda": false,
+        "jsx-no-multiline-js": false
     }
 }
