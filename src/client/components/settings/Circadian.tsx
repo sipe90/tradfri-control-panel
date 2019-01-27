@@ -1,10 +1,8 @@
-import { Button, Card, List, Switch } from 'antd'
+import CircadianSettingsFormContainer from '@/containers/settings/CircadianSettingsFormContainer'
+import { Card } from 'antd'
 import React, { Component } from 'react'
-import { IGroup } from 'shared/types'
 
 import './Circadian.css'
-
-const { Item } = List
 
 class Circadian extends Component {
     public render = () => {
@@ -13,32 +11,7 @@ class Circadian extends Component {
                 <div style={{ textAlign: 'left' }}>
                     {description}
                 </div>
-                <div className='circadian__settings'>
-                    <div>
-                        Status
-                    </div>
-                    <div>
-                        Enabled <Switch /> <Button type='primary'>Set up</Button>
-                    </div>
-                    <div>
-                        Location
-                    </div>
-                    <div>
-                        12.578 Lat -21.354 Lon
-                    </div>
-                    <div>
-                        Groups
-                    </div>
-                    <div>
-                        <List
-                            dataSource={['Group1', 'Group2']}
-                            renderItem={renderGroup}
-                            bordered={true}
-                            size='small'
-                            locale={{ emptyText: 'No groups'}}
-                        />
-                    </div>
-                </div>
+                <CircadianSettingsFormContainer />
             </Card>
         )
     }
@@ -67,12 +40,6 @@ const description = (
             }
         </p>
     </>
-)
-
-const renderGroup = (name: string) => (
-    <Item>
-        {name}
-    </Item>
 )
 
 export default Circadian
