@@ -1,6 +1,4 @@
-
 import * as R from 'ramda'
-import { Reducer } from 'redux'
 
 import { LIGHT_STATE_CHANGED, LOAD_LIGHTS_SUCCESS } from '@/actions/lights'
 import schemas from '@/schemas'
@@ -27,7 +25,7 @@ const updateLight = (state: LightEntitiesState, light: ILight): LightEntitiesSta
     },
 })
 
-const reducer = createReducer<LightEntitiesState>([
+export default createReducer<LightEntitiesState>([
     [LOAD_LIGHTS_SUCCESS, (_state, { payload }) => ({
         ...mapLights(payload as ILight[]),
     })],
@@ -35,8 +33,4 @@ const reducer = createReducer<LightEntitiesState>([
         ...state,
         ...updateLight(state, payload as ILight),
     })],
-])
-
-const lightEntitiesReducer: Reducer<LightEntitiesState> = (state = initialState, action) => reducer(state, action)
-
-export default lightEntitiesReducer
+], initialState)

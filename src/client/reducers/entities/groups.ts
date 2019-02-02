@@ -1,5 +1,4 @@
 import * as R from 'ramda'
-import { Reducer } from 'redux'
 
 import { LOAD_GROUPS_SUCCESS } from '@/actions/groups'
 import schemas from '@/schemas'
@@ -18,12 +17,8 @@ const mapLights = R.pipe<IGroup[], INormalizeResult, Dictionary<IGroup> | undefi
     R.path(['entities', 'groups']),
 )
 
-const reducer = createReducer<GroupEntitiesState>([
+export default createReducer<GroupEntitiesState>([
     [LOAD_GROUPS_SUCCESS, (_state, { payload }) => ({
         ...mapLights(payload as IGroup[]),
     })],
-])
-
-const groupEntitiesReducer: Reducer<GroupEntitiesState> = (state = initialState, action) => reducer(state, action)
-
-export default groupEntitiesReducer
+], initialState)
