@@ -1,6 +1,4 @@
-
 import * as R from 'ramda'
-import { Reducer } from 'redux'
 
 import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from '@/actions/sensors'
 import schemas from '@/schemas'
@@ -27,7 +25,7 @@ const updateSensor = (previousState: SensorEntitiesState, sensor: ISensor): Sens
     },
 })
 
-const reducer = createReducer<SensorEntitiesState>([
+export default createReducer<SensorEntitiesState>([
     [LOAD_SENSORS_SUCCESS, (_state, { payload }) => ({
         ...mapSensors(payload as ISensor[]),
     })],
@@ -35,8 +33,4 @@ const reducer = createReducer<SensorEntitiesState>([
         ...state,
         ...updateSensor(state, payload as ISensor),
     })],
-])
-
-const sensorEntitiesReducer: Reducer<SensorEntitiesState> = (state = initialState, action) => reducer(state, action)
-
-export default sensorEntitiesReducer
+], initialState)

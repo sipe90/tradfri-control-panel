@@ -1,7 +1,7 @@
 import { INormalizeResult, IPayloadAction } from '@/types'
 import { normalize, Schema } from 'normalizr'
 import * as R from 'ramda'
-import { Action } from 'redux'
+import { Action, Reducer } from 'redux'
 
 import { Dictionary, IDevice, IGroup } from 'shared/types'
 
@@ -13,12 +13,13 @@ export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R
 type ActionReducePair<S, A> = [string, (state: S, action: A) => S]
 type ActionPredicateReducePair<S> = [(action: string) => boolean, () => S]
 
-export const createReducer = <S, A extends Action = IPayloadAction> (cases: Array<ActionReducePair<S, A>>) =>
-    (state: S, action: A) =>
+export const createReducer = <S, A extends Action = IPayloadAction>
+(cases: Array<ActionReducePair<S, A>>, initialState: S): Reducer<S, A> =>
+    (state: S | undefined, action: A) =>
         R.cond(
             R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(([act, reduce]) =>
-                [R.equals(act), () => reduce(state, action)], cases)
-            .concat([[R.T, R.always(state)]]),
+                [R.equals(act), () => reduce(state || initialState, action)], cases)
+            .concat([[R.T, R.always(state || initialState)]]),
         )(action.type)
 
 type JsonResponse<E> = ({

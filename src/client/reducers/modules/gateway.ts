@@ -1,5 +1,3 @@
-import { Reducer } from 'redux'
-
 import {
     DISCOVER_GATEWAY_FAILURE, DISCOVER_GATEWAY_REQUEST, DISCOVER_GATEWAY_SUCCESS,
     GENERATE_IDENTITY_FAILURE, GENERATE_IDENTITY_REQUEST, GENERATE_IDENTITY_SUCCESS,
@@ -30,7 +28,7 @@ const initialState = {
     initialDataLoading: true,
 }
 
-const reducer = createReducer<IGatewayModuleState>([
+export default createReducer<IGatewayModuleState>([
     [LOAD_GATEWAY_REQUEST, (state) => ({
         ...state
     })],
@@ -85,8 +83,4 @@ const reducer = createReducer<IGatewayModuleState>([
         connectionTestInProgress: false,
         connectionTestResult: payload,
     })],
-])
-
-const gatewayReducer: Reducer<IGatewayModuleState> = (state = initialState, action) => reducer(state, action)
-
-export default gatewayReducer
+], initialState)
