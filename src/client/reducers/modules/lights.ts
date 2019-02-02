@@ -1,7 +1,7 @@
 import {
     LOAD_LIGHTS_FAILURE, LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS,
 } from '@/actions/lights'
-import { createReducer } from '@/utils'
+import { ActionReducers, createReducer } from '@/utils'
 
 export interface ILightsModuleState {
     initialDataLoading: boolean
@@ -10,7 +10,8 @@ export interface ILightsModuleState {
 const initialState = {
     initialDataLoading: true,
 }
-export default createReducer<ILightsModuleState>([
+
+const reducers: ActionReducers<ILightsModuleState> = [
     [LOAD_LIGHTS_REQUEST, (state) => ({
         ...state,
     })],
@@ -22,4 +23,6 @@ export default createReducer<ILightsModuleState>([
         ...state,
         initialDataLoading: false,
     })],
-], initialState)
+]
+
+export default createReducer(reducers, initialState)

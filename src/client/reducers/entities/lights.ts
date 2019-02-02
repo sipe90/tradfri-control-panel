@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import { LIGHT_STATE_CHANGED, LOAD_LIGHTS_SUCCESS } from '@/actions/lights'
 import schemas from '@/schemas'
 import { INormalizeResult } from '@/types'
-import { createReducer, normalizer } from '@/utils'
+import { ActionReducers, createReducer, normalizer } from '@/utils'
 import { Dictionary, ILight } from 'shared/types'
 
 export type LightEntitiesState = Dictionary<ILight>
@@ -25,7 +25,7 @@ const updateLight = (state: LightEntitiesState, light: ILight): LightEntitiesSta
     },
 })
 
-export default createReducer<LightEntitiesState>([
+const reducers: ActionReducers<LightEntitiesState> = [
     [LOAD_LIGHTS_SUCCESS, (_state, { payload }) => ({
         ...mapLights(payload as ILight[]),
     })],
@@ -33,4 +33,6 @@ export default createReducer<LightEntitiesState>([
         ...state,
         ...updateLight(state, payload as ILight),
     })],
-], initialState)
+]
+
+export default createReducer(reducers, initialState)

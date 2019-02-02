@@ -10,15 +10,24 @@ export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
 
 export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R.curry(R.flip(normalize))(schema)
 
-type ActionReducePair<S, A> = [string, (state: S, action: A) => S]
-type ActionPredicateReducePair<S> = [(action: string) => boolean, () => S]
+type ReduceFn<S, A> = (state: S, action: A) => S
+type ActionPredicate = (action: string) => boolean
 
-export const createReducer = <S, A extends Action = IPayloadAction>
-(cases: Array<ActionReducePair<S, A>>, initialState: S): Reducer<S, A> =>
+type ActionReducePair<S, A> = [string, ReduceFn<S, A>]
+type ActionPredicateReducePair<S> = [ActionPredicate, () => S]
+
+export type ActionReducers<S, A extends Action = IPayloadAction> = Array<ActionReducePair<S, A>>
+
+export const createReducer = <S, A extends Action = IPayloadAction>(
+    actionReducers: ActionReducers<S, A>,
+    initialState: S
+): Reducer<S, A> =>
     (state: S | undefined, action: A) =>
         R.cond(
-            R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(([act, reduce]) =>
-                [R.equals(act), () => reduce(state || initialState, action)], cases)
+            R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(
+                ([act, reduce]) => [R.equals(act), () => reduce(state || initialState, action)],
+                actionReducers
+            )
             .concat([[R.T, R.always(state || initialState)]]),
         )(action.type)
 
