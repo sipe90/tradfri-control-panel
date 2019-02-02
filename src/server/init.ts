@@ -1,6 +1,6 @@
 import * as db from '#/db'
 import logger from '#/logger'
-import { setupFlux } from '#/service/flux-service'
+import { setupCircadian } from '#/service/circadian-service'
 import { connectToGateway } from '#/service/gateway-connection-manager'
 import { fetchGateway } from '#/service/gateway-service'
 
@@ -31,9 +31,9 @@ export default async (env: string) => {
 
         logger.info('Finished connecting to gateway')
 
-        logger.info('Setting up flux')
+        logger.info('Setting up circadian')
 
-        await setupFlux()
+        await setupCircadian()
 
         return true
     } catch (err) {
