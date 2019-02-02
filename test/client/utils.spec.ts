@@ -7,7 +7,7 @@ describe('Create reducer', () => {
         const action = {
             type: '1'
         }
-        const reducer = utils.createReducer([])
+        const reducer = utils.createReducer([], {})
 
         expect(reducer({}, action)).toEqual({})
     })
