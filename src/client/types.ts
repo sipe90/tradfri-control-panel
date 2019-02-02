@@ -7,7 +7,9 @@ export interface IPayloadAction<P = any, T = any> extends Action<T> {
 }
 
 export type AppDispatch = ThunkDispatch<IAppState, undefined, AnyAction>
-export type ThunkResult<R = void, A extends Action<any> = AnyAction> = ThunkAction<R, IAppState, undefined, A>
+
+export type ThunkResult<R = void, A extends Action = IPayloadAction> = ThunkAction<R, IAppState, undefined, A>
+export type AsyncThunkResult<R = void, A extends Action = IPayloadAction> = ThunkResult<Promise<R>, A>
 
 export interface INormalizeResult {
     result: any
