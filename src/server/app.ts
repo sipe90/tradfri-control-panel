@@ -10,7 +10,7 @@ import httpLogger from 'morgan'
 import { ValidationError } from '#/error'
 import init from '#/init'
 import logger from '#/logger'
-import { gateway, groups, lights, sensors } from '#/routes'
+import { gateway, groups, lights, sensors, settings } from '#/routes'
 
 const HOST = process.env.HOST || 'localhost'
 const PORT = parseInt(process.env.PORT || '8080', 10)
@@ -42,6 +42,7 @@ app.use('/api/gateway', gateway)
 app.use('/api/lights', lights)
 app.use('/api/sensors', sensors)
 app.use('/api/groups', groups)
+app.use('/api/settings', settings)
 
 app.use('/api/*', (_req, res) =>
     res.status(404).json({

@@ -95,10 +95,8 @@ export interface IUpdateGatewayRequest {
 }
 
 export interface IUpdateCircadianSettingsRequest {
-    enabled: boolean
     latitude: string
     longitude: string
-    groupIds: string[]
 }
 
 export interface IGenerateIdentityRequest {
@@ -113,7 +111,6 @@ export interface ITestConnectionRequest {
 }
 
 export interface ICircadianSettings {
-    enabled: boolean
     latitude: string
     longitude: string
     groupIds: string[]
