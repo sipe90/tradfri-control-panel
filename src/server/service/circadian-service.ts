@@ -1,14 +1,14 @@
 import R from 'ramda'
 import sunCalc from 'suncalc'
 
-import * as db from '#/db/flux'
+import * as db from '#/db/circadian'
 import { ValidationError } from '#/error'
 import logger from '#/logger'
 import {
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
 import { Accessory, Group } from 'node-tradfri-client'
-import { IUpdateFluxSettingsRequest } from 'shared/types'
+import { ICircadianSettings, IUpdateCircadianSettingsRequest } from 'shared/types'
 
 const updateInterval = 1000 * 60
 const locDecimals = 2
@@ -19,19 +19,19 @@ const sunsetAdjustTime = 1000 * 60 * 60 * 2
 
 let intervalHandle: number | null = null
 
-export const isFluxEnabled = () => {
-    const fluxSettings = db.getFluxSettings()
-    if (!fluxSettings) return false
-    return fluxSettings.enabled
+export const isCircadianEnabled = () => {
+    const circadianSettings = db.getCircadianSettings()
+    if (!circadianSettings) return false
+    return circadianSettings.enabled
 }
 
-export const getFluxSettings = db.getFluxSettings
+export const getCircadianSettings = (): ICircadianSettings | null => db.getCircadianSettings()
 
-export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsRequest) => {
-    const { enabled, latitude, longitude, groupIds } = fluxSettings
+export const updateCircadianSettings = async (circadianSettings: IUpdateCircadianSettingsRequest) => {
+    const { enabled, latitude, longitude, groupIds } = circadianSettings
 
     if (!isGatewayConnected()) {
-        throw new Error('Could not update flux settings: Not connected to gateway')
+        throw new Error('Could not update circadian settings: Not connected to gateway')
     }
 
     if (R.isNil(enabled)) {
@@ -72,13 +72,13 @@ export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsReques
     const fixedLatitude = parsedLatitude.toFixed(locDecimals)
     const fixedLongitude = parsedLongitude.toFixed(locDecimals)
 
-    db.setFluxSettings({
-        ...fluxSettings,
+    db.setCircadianSettings({
+        ...circadianSettings,
         latitude: fixedLatitude,
         longitude: fixedLongitude
     })
 
-    if (fluxSettings.enabled) {
+    if (circadianSettings.enabled) {
         intervalHandle && clearInterval(intervalHandle)
         updateLights(parsedLatitude, parsedLongitude, groupIds)
         intervalHandle = setInterval(
@@ -89,15 +89,15 @@ export const updateFluxSettings = async (fluxSettings: IUpdateFluxSettingsReques
     }
 }
 
-export const setupFlux = async () => {
-    const fluxSettings = await getFluxSettings()
-    if (!fluxSettings) {
-        logger.info('Flux settings were not set, skipping setup')
+export const setupCircadian = async () => {
+    const circadianSettings = await getCircadianSettings()
+    if (!circadianSettings) {
+        logger.info('Circadian settings were not set, skipping setup')
         return
     }
-    const { enabled, latitude, longitude, groupIds } = fluxSettings as db.IFluxEntity
+    const { enabled, latitude, longitude, groupIds } = circadianSettings as db.ICircadianEntity
     if (!enabled) {
-        logger.info('Flux mode is disabeld, skipping setup')
+        logger.info('Circadian mode is disabeld, skipping setup')
         return
     }
 
@@ -107,7 +107,7 @@ export const setupFlux = async () => {
     updateLights(parsedLatitude, parsedLongitude, groupIds)
     intervalHandle = setInterval(updateLights, updateInterval, parsedLatitude, parsedLongitude, groupIds)
 
-    logger.info('Flux setup finished. Updating lights with %dms interval', updateInterval)
+    logger.info('Circadian setup finished. Updating lights with %dms interval', updateInterval)
 }
 
 const updateLights = (latitude: number, longitude: number, groupIds: string[]) => {
@@ -124,7 +124,7 @@ const updateLights = (latitude: number, longitude: number, groupIds: string[]) =
     for (const groupId of groupIds) {
         const groupInfo = groups[groupId]
         if (!groupInfo) {
-            logger.error(`Flux settings contained an unknown group id: ${groupId}`)
+            logger.error(`Circadian settings contained an unknown group id: ${groupId}`)
             continue
         }
         const groupLightIds = getLightsForGroup(groupInfo.group, lights)

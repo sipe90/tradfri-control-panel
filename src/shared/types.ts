@@ -94,7 +94,7 @@ export interface IUpdateGatewayRequest {
     hostname: string
 }
 
-export interface IUpdateFluxSettingsRequest {
+export interface IUpdateCircadianSettingsRequest {
     enabled: boolean
     latitude: string
     longitude: string
@@ -110,4 +110,11 @@ export interface ITestConnectionRequest {
     hostname: string
     identity: string
     psk: string
+}
+
+export interface ICircadianSettings {
+    enabled: boolean
+    latitude: string
+    longitude: string
+    groupIds: string[]
 }
