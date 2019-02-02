@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from '@/actions/sensors'
 import schemas from '@/schemas'
 import { INormalizeResult } from '@/types'
-import { createReducer, normalizer } from '@/utils'
+import { ActionReducers, createReducer, normalizer } from '@/utils'
 import { Dictionary, ISensor } from 'shared/types'
 
 export type SensorEntitiesState = Dictionary<ISensor>
@@ -25,7 +25,7 @@ const updateSensor = (previousState: SensorEntitiesState, sensor: ISensor): Sens
     },
 })
 
-export default createReducer<SensorEntitiesState>([
+const reducers: ActionReducers<SensorEntitiesState> = [
     [LOAD_SENSORS_SUCCESS, (_state, { payload }) => ({
         ...mapSensors(payload as ISensor[]),
     })],
@@ -33,4 +33,6 @@ export default createReducer<SensorEntitiesState>([
         ...state,
         ...updateSensor(state, payload as ISensor),
     })],
-], initialState)
+]
+
+export default createReducer(reducers, initialState)

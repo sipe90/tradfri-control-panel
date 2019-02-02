@@ -5,7 +5,7 @@ import {
     TEST_CONNECTION_FAILURE, TEST_CONNECTION_REQUEST, TEST_CONNECTION_SUCCESS,
 } from '@/actions/gateway'
 import { IConnectionTestResult, IErrorResponse } from '@/types'
-import { createReducer } from '@/utils'
+import { ActionReducers, createReducer } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
 
 export interface IGatewayModuleState {
@@ -28,7 +28,7 @@ const initialState = {
     initialDataLoading: true,
 }
 
-export default createReducer<IGatewayModuleState>([
+const reducers: ActionReducers<IGatewayModuleState> = [
     [LOAD_GATEWAY_REQUEST, (state) => ({
         ...state
     })],
@@ -83,4 +83,6 @@ export default createReducer<IGatewayModuleState>([
         connectionTestInProgress: false,
         connectionTestResult: payload,
     })],
-], initialState)
+]
+
+export default createReducer(reducers, initialState)

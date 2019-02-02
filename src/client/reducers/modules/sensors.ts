@@ -1,7 +1,7 @@
 import {
     LOAD_SENSORS_FAILURE, LOAD_SENSORS_REQUEST, LOAD_SENSORS_SUCCESS,
 } from '@/actions/sensors'
-import { createReducer } from '@/utils'
+import { ActionReducers, createReducer } from '@/utils'
 
 export interface ISensorsModuleState {
     initialDataLoading: boolean
@@ -11,7 +11,7 @@ const initialState = {
     initialDataLoading: true,
 }
 
-export default createReducer<ISensorsModuleState>([
+const reducers: ActionReducers<ISensorsModuleState> = [
     [LOAD_SENSORS_REQUEST, (state) => ({
         ...state,
     })],
@@ -23,4 +23,6 @@ export default createReducer<ISensorsModuleState>([
         ...state,
         initialDataLoading: false,
     })],
-], initialState)
+]
+
+export default createReducer(reducers, initialState)
