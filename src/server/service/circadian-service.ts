@@ -9,7 +9,7 @@ import {
 } from '#/service/gateway-connection-manager'
 import { ICircadianSettings, IUpdateCircadianSettingsRequest } from 'shared/types'
 
-const locDecimals = 2
+const locDecimals = 3
 
 export const getCircadianSettings = async (): Promise<Readonly<ICircadianSettings> | null> => db.getCircadianSettings()
 
