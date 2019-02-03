@@ -3,11 +3,15 @@ import { ActionReducers, createReducer } from '@/utils'
 import { ICircadianSettings } from 'shared/types'
 
 export interface ISettingsEntitiesState {
-    circadian: ICircadianSettings | null
+    circadian: ICircadianSettings
 }
 
-const initialState = {
-    circadian: null
+const initialState: ISettingsEntitiesState = {
+    circadian: {
+        latitude: '',
+        longitude: '',
+        groupIds: []
+    }
 }
 
 const reducers: ActionReducers<ISettingsEntitiesState> = [

@@ -1,17 +1,34 @@
 import CircadianSettingsFormContainer from '@/containers/settings/CircadianSettingsFormContainer'
-import { Card } from 'antd'
+import { Button, Card } from 'antd'
 import React, { Component } from 'react'
 
+import { FormAction } from 'redux-form'
 import './Circadian.css'
+import { ICircadianSettingsFormValues } from './CircadianSettingsForm'
 
-class Circadian extends Component {
+interface ICircadianProps {
+    dispatchUpdateCircadianSettings: (settings: ICircadianSettingsFormValues) => Promise<void>
+    dispatchSubmitCircadianSettingsForm: () => FormAction
+}
+
+class Circadian extends Component<ICircadianProps> {
     public render = () => {
         return (
             <Card >
                 <div style={{ textAlign: 'left' }}>
                     {description}
                 </div>
-                <CircadianSettingsFormContainer />
+                <CircadianSettingsFormContainer
+                    onSubmit={this.props.dispatchUpdateCircadianSettings}
+                />
+                <div style={{ float: 'right'}}>
+                    <Button
+                        type='primary'
+                        onClick={this.props.dispatchSubmitCircadianSettingsForm}
+                    >
+                        Save
+                    </Button>
+                </div>
             </Card>
         )
     }
