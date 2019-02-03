@@ -27,6 +27,7 @@ router.post('/circadian/groups', (req, res) => {
         ...circadianSettings,
         groupIds: circadianSettings.groupIds.concat(groupId)
     }
+    res.sendStatus(204)
 })
 
 router.delete('/circadian/groups', (req, res) => {
@@ -38,6 +39,7 @@ router.delete('/circadian/groups', (req, res) => {
         ...circadianSettings,
         groupIds: circadianSettings.groupIds.filter((id) => id !== groupId)
     }
+    res.sendStatus(204)
 })
 
 export default router
