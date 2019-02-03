@@ -44,6 +44,7 @@ class LightsModule extends Component<ILightModuleProps> {
                 <Lights
                     groups={this.props.groups}
                     lights={this.props.lights}
+                    circadianSettings={this.props.circadianSettings}
                     initialDataLoading={this.props.initialDataLoading}
                     lightStateChanged={this.props.lightStateChanged}
                     updateLight={this.props.updateLight}

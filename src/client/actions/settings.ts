@@ -105,6 +105,7 @@ export const saveCircadianSettings = (settings: IUpdateCircadianSettingsRequest)
             message.error(`Failed to save circadian settings: ${error.message}`)
             dispatch(saveCircadionSettingsFailure(error))
         }
+        dispatch(fetchCircadianSettings())
 }
 
 export const addCircadianSettingsGroup = (groupId: string): AsyncThunkResult =>
