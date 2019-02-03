@@ -10,8 +10,8 @@ import { IAppState } from '@/reducers'
 export const CIRCADIAN_SETTINGS_FORM = 'CIRCADIAN_SETTINGS_FORM'
 
 const mapStateToProps = (state: IAppState) => ({
-    groups: R.values(R.pick(R.prop('groupIds', state.entities.settings.circadian), state.entities.groups)),
-    initialValues: R.pick(['latitude', 'longitude'], state.entities.settings.circadian || {})
+    groups: R.values(R.pick(state.entities.settings.circadian.groupIds, state.entities.groups)),
+    initialValues: R.pick(['latitude', 'longitude'], state.entities.settings.circadian)
 })
 
 const ReduxForm = reduxForm<ICircadianSettingsFormValues, ICircadianSettingsFormProps>(
