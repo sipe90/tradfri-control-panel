@@ -17,7 +17,7 @@ const initialState: ISettingsEntitiesState = {
 const reducers: ActionReducers<ISettingsEntitiesState> = [
     [LOAD_CIRCADIAN_SETTINGS_SUCCESS, (state, { payload }) => ({
         ...state,
-        circadian: payload
+        circadian: payload || state.circadian
     })],
 ]
 
