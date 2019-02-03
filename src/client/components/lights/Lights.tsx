@@ -5,13 +5,14 @@ import React, { Component } from 'react'
 import LightItem from '@/components/lights/LightItem'
 import Spinner from '@/components/Spinner'
 import { devicesForGroup } from '@/utils'
-import { Dictionary, IGroup, ILight } from 'shared/types'
+import { Dictionary, ICircadianSettings, IGroup, ILight } from 'shared/types'
 
 import './Lights.css'
 
 interface ILightsProps {
     groups: Dictionary<IGroup>
     lights: Dictionary<ILight>
+    circadianSettings: ICircadianSettings
     initialDataLoading: boolean
     lightStateChanged: (light: ILight) => void
     updateLight: (light: ILight) => void
@@ -26,7 +27,7 @@ class Lights extends Component<ILightsProps> {
                     <List
                         itemLayout='vertical'
                         dataSource={devicesForGroup(group, this.props.lights)}
-                        renderItem={this.renderItem}
+                        renderItem={(light: ILight) => this.renderItem(group, light)}
                         locale={{ emptyText: 'No lights'}}
                     />
                 </Spinner>
@@ -35,14 +36,18 @@ class Lights extends Component<ILightsProps> {
         )
     )
 
-    private renderItem = (light: ILight) => (
+    private renderItem = (group: IGroup, light: ILight) => (
         <LightItem
             key={light.id}
             light={light}
+            circadianEnabled={this.circadianEnabled(group)}
             lightStateChanged={this.props.lightStateChanged}
             updateLight={this.props.updateLight}
         />
     )
+
+    private circadianEnabled = (group: IGroup) =>
+        R.includes(String(group.id), this.props.circadianSettings.groupIds)
 }
 
 export default Lights
