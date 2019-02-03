@@ -1,31 +1,33 @@
 import { NumberInput } from '@/components/form'
 import { required } from '@/validators'
-import { List, Switch } from 'antd'
 import React from 'react'
 import { Field, InjectedFormProps } from 'redux-form'
 
+import { List } from 'antd'
+import { IGroup } from 'shared/types'
 import './CircadianSettingsForm.css'
 
 const { Item } = List
 
 export interface ICircadianSettingsFormValues {
-    enabled: boolean
     latitude: string
     longitude: string
-    groupIds: string[]
 }
 
-type AllProps = InjectedFormProps<ICircadianSettingsFormValues>
+export interface ICircadianSettingsFormProps {
+    groups: IGroup[]
+}
+
+type AllProps = InjectedFormProps<ICircadianSettingsFormValues, ICircadianSettingsFormProps>
+    & ICircadianSettingsFormProps
 
 const fieldProps = {
-    enabled: {
-    },
     latitude: {
         colon: false,
         label: 'Latitude',
         max: 90,
         min: -90,
-        precision: 6
+        precision: 3
     },
     longitude: {
         colon: false,
@@ -33,9 +35,7 @@ const fieldProps = {
         align: 'vertical',
         max: 180,
         min: -180,
-        precision: 6
-    },
-    groupIds: {
+        precision: 3
     }
 }
 
@@ -44,12 +44,6 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className='circadian__settings'>
-                <div>
-                    Status
-                </div>
-                <div>
-                    Enabled <Switch />
-                </div>
                 <div>
                     Location
                 </div>
@@ -78,8 +72,8 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
                 </div>
                 <div>
                     <List
-                        dataSource={['Group1', 'Group2']}
-                        renderItem={renderGroup}
+                        dataSource={props.groups}
+                        renderItem={({name}: IGroup) => <Item>{name}</Item>}
                         bordered={true}
                         size='small'
                         locale={{ emptyText: 'No groups'}}
@@ -89,11 +83,5 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
         </form>
     )
 }
-
-const renderGroup = (name: string) => (
-    <Item>
-        {name}
-    </Item>
-)
 
 export default CircadianSettingsForm
