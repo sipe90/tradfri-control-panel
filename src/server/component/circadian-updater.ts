@@ -14,6 +14,7 @@ const sunriseAdjustTime = 1000 * 60 * 60 * 2
 const sunsetAdjustTime = 1000 * 60 * 60 * 2
 
 let intervalHandle: number | null = null
+let previousTemp: number | null = null
 
 export const update = () => {
     const settings = db.getCircadianSettings()
@@ -51,6 +52,10 @@ const updateLights = (latitude: number, longitude: number, groupIds: string[]) =
     const now = new Date()
     const currentTemp = getTemperature(now, latitude, longitude)
 
+    if (currentTemp === previousTemp) {
+        logger.info('New calculated temperature is same as the previous one (%d%), skipping light updates', currentTemp)
+    }
+
     logger.info('Setting color temperature of all lights in groups [%s] to %d%',
         groupIds.join(', '), currentTemp)
 
@@ -69,6 +74,7 @@ const updateLights = (latitude: number, longitude: number, groupIds: string[]) =
             connection.operateLight(lightId, { colorTemperature: currentTemp })
         }
     }
+    previousTemp = currentTemp
 }
 
 const getTemperature = (date: Date, latitude: number, longitude: number) => {
