@@ -1,7 +1,7 @@
 import { INormalizeResult, IPayloadAction } from '@/types'
 import { normalize, Schema } from 'normalizr'
 import * as R from 'ramda'
-import { Action, Reducer } from 'redux'
+import { Action, AnyAction, Reducer } from 'redux'
 
 import { Dictionary, IDevice, IGroup } from 'shared/types'
 
@@ -10,22 +10,19 @@ export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
 
 export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R.curry(R.flip(normalize))(schema)
 
-type ReduceFn<S, A> = (state: S, action: A) => S
-type ActionPredicate = (action: string) => boolean
-
-type ActionReducePair<S, A> = [string, ReduceFn<S, A>]
-type ActionPredicateReducePair<S> = [ActionPredicate, () => S]
+type ActionReducePair<S, A extends Action> = [A['type'], (state: S, action: A) => S]
+type ActionPredicateReducePair<S, A extends Action> = [(type: A['type']) => boolean, () => S]
 
 export type ActionReducers<S, A extends Action = IPayloadAction> = Array<ActionReducePair<S, A>>
 
-export const createReducer = <S, A extends Action = IPayloadAction>(
+export const createReducer = <S, A extends Action = AnyAction>(
     actionReducers: ActionReducers<S, A>,
     initialState: S
 ): Reducer<S, A> =>
     (state: S | undefined, action: A) =>
-        R.cond(
-            R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S>>(
-                ([act, reduce]) => [R.equals(act), () => reduce(state || initialState, action)],
+        R.cond<A['type'], S>(
+            R.map<ActionReducePair<S, A>, ActionPredicateReducePair<S, A>>(
+                ([type, reduce]) => [R.equals(type), () => reduce(state || initialState, action)],
                 actionReducers
             )
             .concat([[R.T, R.always(state || initialState)]]),
