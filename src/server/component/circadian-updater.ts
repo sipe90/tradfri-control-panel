@@ -6,7 +6,7 @@ import * as db from '#/db/circadian'
 import logger from '#/logger'
 import { getConnection } from '#/service/gateway-connection-manager'
 
-const updateInterval = 1000 * 60
+const updateInterval = 1000 * 60 * 10
 
 const warmthAtSunrise = 15
 const warmthAtSunset = 80
@@ -28,7 +28,8 @@ export const update = () => {
 
     if (groupIds && groupIds.length) {
         if (!intervalHandle) {
-            logger.info('Setting up circadian light updates. Updating lights with %dms interval', updateInterval)
+            logger.info('Setting up circadian light updates. Updating lights with %d minute interval',
+                updateInterval / 60000)
         } else {
             clearInterval(intervalHandle)
         }
