@@ -31,7 +31,7 @@ export const updateCircadianSettings = async (circadianSettings: IUpdateCircadia
     if (Number.isNaN(parsedLatitude)) {
         throw new ValidationError('latitude', 'Latitude value is invalid')
     }
-    if (parsedLatitude < 90 || parsedLatitude > 90) {
+    if (parsedLatitude < -90 || parsedLatitude > 90) {
         throw new ValidationError('latitude', 'Latitude value range is [-90, 90]')
     }
 
@@ -49,7 +49,7 @@ export const updateCircadianSettings = async (circadianSettings: IUpdateCircadia
     const currentSettings = await getCircadianSettings()
 
     db.setCircadianSettings({
-        ...(currentSettings ? currentSettings : { groupIds: [] }),
+        ...(currentSettings || { groupIds: [] }),
         latitude: fixedLatitude,
         longitude: fixedLongitude
     })
