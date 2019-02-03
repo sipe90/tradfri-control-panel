@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation'
 import Routes from '@/components/Routes'
 import routeDefs from '@/routeDefs'
 
+import { fetchCircadianSettings } from '@/actions/settings'
 import { AppDispatch } from '@/types'
 import './App.css'
 
@@ -20,12 +21,14 @@ interface IAppProps {
     startGroupPolling: () => void
     stopGroupPolling: () => void
     fetchGroups: () => void
+    fetchCircadianSettings: () => void
 }
 
 class App extends Component<IAppProps> {
 
     public componentDidMount() {
         this.props.fetchGroups()
+        this.props.fetchCircadianSettings()
         this.props.startGroupPolling()
     }
 
@@ -56,6 +59,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     fetchGroups: () => dispatch(fetchGroups()),
     startGroupPolling: () => dispatch(startGroupPolling()),
     stopGroupPolling: () => dispatch(stopGroupPolling()),
+    fetchCircadianSettings: () => dispatch(fetchCircadianSettings())
 })
 
 export default connect(null, mapDispatchToProps)(App)

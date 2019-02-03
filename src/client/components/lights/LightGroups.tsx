@@ -4,9 +4,10 @@ import React, { Component } from 'react'
 
 import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
+import ThemeLightDarkIcon from 'mdi-react/ThemeLightDarkIcon'
 
 import StatusIndicator from '@/components/StatusIndicator'
-import { Dictionary, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
+import { Dictionary, ICircadianSettings, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
 import './LightGroups.css'
 
@@ -21,8 +22,11 @@ interface ILightGroupsProps {
     groups: Dictionary<IGroup>
     lights: Dictionary<ILight>
     initialDataLoading: boolean
-    lightStateChanged: (light: ILight) => void,
-    updateGroup: (groupUpdate: IGroupUpdateRequest) => void,
+    circadianSettings: ICircadianSettings
+    lightStateChanged: (light: ILight) => void
+    updateGroup: (groupUpdate: IGroupUpdateRequest) => void
+    enableCircadian: (groupId: string) => void
+    disableCircadian: (groupId: string) => void
 }
 
 class LightGroups extends Component<ILightGroupsProps> {
@@ -68,6 +72,22 @@ class LightGroups extends Component<ILightGroupsProps> {
                         </td>
                     </tr>
                     <tr>
+                        <td><ThemeLightDarkIcon size={18} /></td>
+                        <td><span>Circadian</span></td>
+                        <td>
+                            <Switch
+                                disabled={!groupLights.length || !this.areCircadianSettingsValid()}
+                                checked={this.isCircadianEnabled(group)}
+                                size='small'
+                                onChange={
+                                    (newValue) => newValue ?
+                                        this.props.enableCircadian(String(group.id)) :
+                                        this.props.disableCircadian(String(group.id))
+                                }
+                            />
+                        </td>
+                    </tr>
+                    <tr>
                         <td><Brightness5Icon size={18} /></td>
                         <td><span>Brightness</span></td>
                         <td>
@@ -101,6 +121,15 @@ class LightGroups extends Component<ILightGroupsProps> {
             const newLightState = { ...light, on: newValue }
             this.props.lightStateChanged(newLightState)
         }
+    }
+
+    private areCircadianSettingsValid() {
+        const { latitude, longitude } = this.props.circadianSettings
+        return !R.isEmpty(latitude) && !R.isEmpty(longitude)
+    }
+
+    private isCircadianEnabled({ id }: IGroup) {
+        return this.props.circadianSettings.groupIds.includes(String(id))
     }
 }
 

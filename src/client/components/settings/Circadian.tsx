@@ -36,6 +36,7 @@ class Circadian extends Component<ICircadianProps> {
 
 const description = (
     <>
+        <div style={{fontWeight: 'bold', marginBottom: 12 }}>Description</div>
         <p>
             {
                 'Circadian lighting is a type of lighting that changes it\'s the color temperature ' +
