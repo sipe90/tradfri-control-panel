@@ -28,7 +28,7 @@ export const updateCircadianSettings = async (circadianSettings: IUpdateCircadia
     }
 
     const parsedLatitude = parseFloat(latitude)
-    if (R.isNaN(parsedLatitude)) {
+    if (Number.isNaN(parsedLatitude)) {
         throw new ValidationError('latitude', 'Latitude value is invalid')
     }
     if (parsedLatitude < 90 || parsedLatitude > 90) {
@@ -36,7 +36,7 @@ export const updateCircadianSettings = async (circadianSettings: IUpdateCircadia
     }
 
     const parsedLongitude = parseFloat(longitude)
-    if (R.isNaN(parsedLongitude)) {
+    if (Number.isNaN(parsedLongitude)) {
         throw new ValidationError('longitude', 'Longitude value is invalid')
     }
     if (parsedLongitude < -180 || parsedLongitude > 180) {
