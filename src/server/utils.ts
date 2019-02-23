@@ -11,3 +11,12 @@ export const filterObj = (pred: ObjPred) => R.pickBy(R.apply(pred))
  * @param obj The object to check
  */
 export const isAnyValueNil = (obj: object) => R.any(R.isNil, R.values(obj))
+
+/**
+ * Returns a function which returns null if the given object/array/string is empty. Otherwise returns the object.
+ */
+export const nullIfEmpty = R.ifElse(
+    R.isEmpty,
+    R.always(null),
+    R.identity
+)

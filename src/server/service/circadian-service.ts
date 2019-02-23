@@ -1,15 +1,18 @@
 import R from 'ramda'
 
-import * as circadianUpdater from '#/component/circadian-updater'
+import CircadianUpdater from '#/component/CircadianUpdater'
 import * as db from '#/db/circadian'
 import { ValidationError } from '#/error'
 import logger from '#/logger'
 import {
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
+import { Accessory, Group } from 'node-tradfri-client'
 import { ICircadianSettings, IUpdateCircadianSettingsRequest } from 'shared/types'
 
 const locDecimals = 3
+
+let updater: CircadianUpdater | null
 
 export const getCircadianSettings = async (): Promise<Readonly<ICircadianSettings> | null> => db.getCircadianSettings()
 
@@ -46,14 +49,14 @@ export const updateCircadianSettings = async (circadianSettings: IUpdateCircadia
     const fixedLatitude = parsedLatitude.toFixed(locDecimals)
     const fixedLongitude = parsedLongitude.toFixed(locDecimals)
 
-    const currentSettings = await getCircadianSettings()
+    const currentSettings = db.getCircadianSettings()
 
     db.setCircadianSettings({
         ...(currentSettings || { groupIds: [] }),
         latitude: fixedLatitude,
         longitude: fixedLongitude
     })
-    circadianUpdater.update()
+    updateCicadian()
 }
 
 export const addGroup = async (groupId: string) => {
@@ -73,7 +76,7 @@ export const addGroup = async (groupId: string) => {
         groupIds: currentSettings.groupIds.concat(groupId)
     })
     logger.info(`Group id ${groupId} added to settings`)
-    circadianUpdater.update()
+    updateCicadian()
 }
 
 export const removeGroup = async (groupId: string) => {
@@ -89,19 +92,68 @@ export const removeGroup = async (groupId: string) => {
         groupIds: currentSettings.groupIds.filter((id) => id !== groupId)
     })
     logger.info(`Group id ${groupId} removed from settings`)
-    circadianUpdater.update()
+    updateCicadian()
 }
 
-export const setupCircadian = async () => {
-    const circadianSettings = await getCircadianSettings()
-    if (!circadianSettings) {
-        logger.info('Circadian settings were not set, skipping setup')
+const updateCicadian = () => {
+    const settings = db.getCircadianSettings()
+    if (!settings) {
+        logger.info('Circadian settings were not set')
         return
     }
-    const { groupIds } = circadianSettings as db.ICircadianEntity
+    const { latitude, longitude, groupIds } = settings
     if (!groupIds.length) {
-        logger.info('No groups enabled for circadian, skipping setup')
+        logger.info('No groups enabled for circadian')
+        if (updater && updater.isRunning()) {
+            logger.info('Stopping circadian updater')
+            updater.stop()
+        }
         return
     }
-    circadianUpdater.update()
+
+    const parsedLatitude = parseFloat(latitude)
+    const parsedLongitude = parseFloat(longitude)
+
+    if (!updater) {
+        updater = new CircadianUpdater(parsedLongitude, parsedLatitude)
+        updater.start(updateLights)
+    } else {
+        updater.setLatitude(parsedLatitude)
+        updater.setLongitude(parsedLongitude)
+    }
 }
+
+const updateLights = (temperature: number) => {
+
+    const settings = db.getCircadianSettings()
+    if (!settings) {
+        logger.error('Circadian were not found during light temperature update!')
+        return
+    }
+
+    const { groupIds } = settings
+
+    logger.info('Setting color temperature of all lights in groups [%s] to %d%',
+    groupIds.join(', '), temperature)
+
+    const connection = getConnection()
+    const groups = connection.getGroups()
+    const lights = connection.getLights()
+
+    for (const groupId of groupIds) {
+        const groupInfo = groups[groupId]
+        if (!groupInfo) {
+            logger.error(`Circadian settings contained an unknown group id: ${groupId}`)
+            continue
+        }
+        const groupLightIds = getLightsForGroup(groupInfo.group, lights)
+        for (const lightId of groupLightIds) {
+            connection.operateLight(lightId, { colorTemperature: temperature })
+        }
+    }
+}
+
+const getLightsForGroup = (group: Group, lights: Record<string, Accessory>) =>
+    R.keys(R.pick(R.map(String, group.deviceIDs), lights))
+
+export const setupCircadian = updateCicadian
