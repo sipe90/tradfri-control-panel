@@ -1,5 +1,8 @@
+import R from 'ramda'
+
 import { findSettings, insert, update } from '#/db/settings'
-import { Omit } from 'shared/types'
+import { nullIfEmpty } from '#/utils'
+import { ICircadianSettings } from 'shared/types'
 
 export interface ICircadianEntity {
     key: 'circadian'
@@ -8,10 +11,10 @@ export interface ICircadianEntity {
     groupIds: string[]
 }
 
-export const getCircadianSettings: () => Readonly<ICircadianEntity> | null = () =>
-    findSettings('circadian')
+export const getCircadianSettings: () => Readonly<ICircadianSettings> | null = () =>
+    nullIfEmpty(R.omit<ICircadianEntity, 'key'>(['key'], findSettings('circadian')))
 
-export const setCircadianSettings = (circadianSettings: Omit<ICircadianEntity, 'key'>) => {
+export const setCircadianSettings = (circadianSettings: ICircadianSettings) => {
     const currentSettings = findSettings('circadian')
     if (!currentSettings) {
         insert('circadian', circadianSettings)
