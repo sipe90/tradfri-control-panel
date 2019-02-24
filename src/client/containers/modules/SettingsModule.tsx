@@ -3,7 +3,6 @@ import { fetchCircadianSettings, saveCircadianSettings } from '@/actions/setting
 import Circadian from '@/components/settings/Circadian'
 import { ICircadianSettingsFormValues } from '@/components/settings/CircadianSettingsForm'
 import Tabbed from '@/components/Tabbed'
-import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -36,10 +35,6 @@ class SettingsModule extends Component<ISettingsModuleProps> {
     }
 }
 
-const mapStateToProps = (state: IAppState) => ({
-
-})
-
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     dispatchFetchCircadianSettings: () => dispatch(fetchCircadianSettings()),
     dispatchSubmitCircadianSettingsForm: () => dispatch(submit(CIRCADIAN_SETTINGS_FORM)),
@@ -47,7 +42,4 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
         dispatch(saveCircadianSettings(settings))
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SettingsModule)
+export default connect(null, mapDispatchToProps)(SettingsModule)
