@@ -27,6 +27,7 @@ whitelist: &whitelist
     - test/*
     - public/*
     - package.json
+    - package-lock.json
     - tslint.json
     - webpack.config.ts
     - tsconfig.json
@@ -70,7 +71,7 @@ jobs:
           at: *workdir_node10
       - run: echo $DEPLOY_FILE | base64 --decode > ecosystem.deploy.json
       - run: sudo npm install -g pm2
-      - run: pm2 deploy ecosystem.deploy.json production ref $CIRCLE_TAG --force
+      - run: pm2 deploy ecosystem.deploy.json production ref origin/$CIRCLE_TAG --force
 workflows:
   version: 2
   test_build_deploy:
