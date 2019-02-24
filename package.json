@@ -42,8 +42,6 @@
     "redux-form": "^8.1.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sql-template-strings": "^2.2.2",
-    "sqlite": "^3.0.0",
     "suncalc": "^1.8.0",
     "winston": "^3.1.0"
   },
