@@ -115,7 +115,7 @@ const updateCicadian = () => {
     const parsedLongitude = parseFloat(longitude)
 
     if (!updater) {
-        updater = new CircadianUpdater(parsedLongitude, parsedLatitude)
+        updater = new CircadianUpdater(parsedLatitude, parsedLongitude)
         updater.start(updateLights)
     } else {
         updater.setLatitude(parsedLatitude)
