@@ -12,7 +12,7 @@ interface ICircadianOptions {
 
 type UpdateCallback = (temperature: number) => void
 
-const defaultOptions: ICircadianOptions = {
+export const defaultOptions: Readonly<ICircadianOptions> = {
     warmthAtSunrise: 15,
     warmthAtSunset: 80,
     sunriseAdjustTime: 1000 * 60 * 60 * 2,
@@ -90,7 +90,7 @@ export default class CircadianUpdater {
     }
 }
 
-const calculateTemperature = (date: Date, latitude: number, longitude: number, options: ICircadianOptions) => {
+export const calculateTemperature = (date: Date, latitude: number, longitude: number, options: ICircadianOptions) => {
     const { warmthAtSunrise, warmthAtSunset,  sunriseAdjustTime, sunsetAdjustTime } = options
     const { sunrise, sunset } = sunCalc.getTimes(date, latitude, longitude)
 
