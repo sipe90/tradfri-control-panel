@@ -18,7 +18,7 @@ module.exports = {
       ref: process.env.DEPLOY_BRANCH,
       path: "/var/tradfri-control-panel",
       ssh_options: "StrictHostKeyChecking=no",
-      "post-deploy": "npm i && npm run build && pm2 startOrRestart"
+      "post-deploy": "npm i && npm run build && pm2 startOrRestart ecosystem.config.js"
     }
   }
 }
