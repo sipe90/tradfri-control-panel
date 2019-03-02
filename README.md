@@ -46,7 +46,7 @@ pm2 deploy production setup
 pm2 deploy production
 ```
 
-The env variables `DPELOY_BRANCH` and `DEPLOY_HOST` need to be set before deploying.
+The env variables `DEPLOY_BRANCH` and `DEPLOY_HOST` need to be set before deploying.
 
 To deploy a specific branch use:
 
