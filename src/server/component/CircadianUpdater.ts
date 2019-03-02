@@ -29,7 +29,6 @@ export default class CircadianUpdater {
     private options: ICircadianOptions
 
     private intervalHandle: number | null = null
-    private previousTemp: number | null = null
 
     constructor(
         latitude: number,
@@ -78,15 +77,7 @@ export default class CircadianUpdater {
         const currentTemp = calculateTemperature(now, this.latitude, this.longitude, this.options)
         const roundedTemp = Math.round(currentTemp)
 
-        if (roundedTemp === this.previousTemp) {
-            logger.info('New calculated temperature is same as the previous one (%d%), skipping update',
-            roundedTemp)
-            return
-        }
-
         callback(roundedTemp)
-
-        this.previousTemp = roundedTemp
     }
 }
 
