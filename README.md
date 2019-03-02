@@ -37,21 +37,21 @@ PM2 also has to be installed on the computer where you run the deployment.
 
 Webpack is required for now since the bundle is built during deployment. This might change in the future.
 
-I have created a PM2 deployment template called `ecosystem.deploy.json.template`. You can use it as a base for creating your deployment configuration.
-
 The deployment is done over SSH so make sure you have a public key installed to your server to allow easier deployments without the need for passwords. More information about this can be found [from PM2 deploy documentation](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
 
 When you have created the deploy configuration, you can deploy the app with:
 
 ```
-pm2 deploy ecosystem.deploy.json production setup
-pm2 deploy ecosystem.deploy.json production
+pm2 deploy production setup
+pm2 deploy production
 ```
+
+The env variables `DPELOY_BRANCH` and `DEPLOY_HOST` need to be set before deploying.
 
 To deploy a specific branch use:
 
 ```
-pm2 deploy ecosystem.deploy.json production ref origin/<BRANCH>
+pm2 deploy production ref origin/<BRANCH>
 ```
 
 ## Development
