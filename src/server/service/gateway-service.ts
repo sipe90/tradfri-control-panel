@@ -8,7 +8,7 @@ import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
 import {
     connectToGateway, disconnectFromGateway,
-    getConnection, isGatewayConnected
+    getConnection, isGatewayConnected, observeGateway
 } from '#/service/gateway-connection-manager'
 import {
     GatewayConnectionState, ICreateGatewayRequest,
@@ -35,7 +35,8 @@ export const createTradfriGateway = async ({ name, hostname, identity, psk }: IC
     await gateway.connect(identity, psk)
     await db.insertGateway({ name, hostname, identity, psk })
     logger.info('Successfully saved gateway to database')
-    await connectToGateway({ hostname, identity, psk })
+    await connectToGateway(hostname, identity, psk)
+    observeGateway()
 }
 
 export const updateTradfriGateway = async ({ name, hostname }: IUpdateGatewayRequest) => {
@@ -56,7 +57,7 @@ export const updateTradfriGateway = async ({ name, hostname }: IUpdateGatewayReq
     if (gateway.hostname !== hostname) {
         logger.info('Gateway hostname changed, reconnecting to gateway using new address')
         disconnectFromGateway(true)
-        connectToGateway({ ...gateway, hostname })
+        connectToGateway(hostname, gateway.identity, gateway.psk)
     }
 }
 

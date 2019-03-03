@@ -5,7 +5,9 @@ import 'module-alias/register'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import express, { NextFunction, Request, Response } from 'express'
+import http from 'http'
 import httpLogger from 'morgan'
+import WebSocket from 'ws'
 
 import { ValidationError } from '#/error'
 import init from '#/init'
@@ -16,6 +18,8 @@ const HOST = process.env.HOST || 'localhost'
 const PORT = parseInt(process.env.PORT || '8080', 10)
 
 const app = express()
+const server = http.createServer(app)
+const wss = new WebSocket.Server({ server })
 
 const env = app.get('env')
 const isDevEnv = env === 'development'
@@ -29,11 +33,10 @@ if (isDevEnv) {
     app.set('json spaces', 2)
 }
 
-init(env).then((success) => {
-    if (!success) {
-        logger.error('Failed to initialize application. The process will now exit')
-        process.exit(1)
-    }
+init(wss, env).catch((err) => {
+    logger.error(err)
+    logger.error('Failed to initialize application. The process will now exit')
+    process.exit(1)
 })
 
 app.use(express.static('dist'))
@@ -72,4 +75,4 @@ app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     })
 })
 
-app.listen(PORT, HOST, () => logger.info(`Listening on ${HOST}:${PORT}`))
+server.listen(PORT, HOST, () => logger.info(`Listening on ${HOST}:${PORT}`))

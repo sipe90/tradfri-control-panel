@@ -1,6 +1,8 @@
 import {
-    Accessory, AccessoryTypes, discoverGateway,
-    GatewayDetails, Group, GroupInfo, GroupOperation, LightOperation, LoggerFunction, Scene, TradfriClient
+    Accessory, AccessoryTypes, AllEventCallbacks,
+    discoverGateway, GatewayDetails,
+    Group, GroupInfo, GroupOperation,
+    LightOperation, LoggerFunction, Scene, TradfriClient
 } from 'node-tradfri-client'
 import R from 'ramda'
 
@@ -48,21 +50,7 @@ export default class TradfriGateway {
         await this.client.connect(identity, psk)
         logger.info('Connected to gateway')
         this.connectionState = GatewayConnectionState.CONNECTED
-        if (observe) {
-            this.registerObservers()
-            logger.info('Fetching and registering gateway resources...')
-            await this.client.observeGateway()
-            await this.client.observeDevices()
-            await this.client.observeGroupsAndScenes()
-
-            const groups = R.keys(this.getGroups()).length
-            const lights = R.keys(this.getLights()).length
-            const sensors = R.keys(this.getSensors()).length
-            const plugs = R.keys(this.getPlugs()).length
-
-            logger.info('Finished registering resources. Recieved %d groups, %d lights, %d sensors and %d plugs',
-                groups, lights, sensors, plugs)
-        }
+        observe && await this.setupInternalObservers()
     }
 
     public disconnect() {
@@ -157,7 +145,28 @@ export default class TradfriGateway {
         return this.client.operateGroup(group, groupOperation)
     }
 
-    private registerObservers() {
+    public registerObservers = async (observers: Partial<AllEventCallbacks>) => {
+        logger.info('Registering external observers')
+        R.keys(observers).forEach((event) => this.client.on(event, observers[event]))
+    }
+
+    private setupInternalObservers = async () => {
+        this.registerInternalObservers()
+        logger.info('Fetching and registering gateway resources...')
+        await this.client.observeGateway()
+        await this.client.observeDevices()
+        await this.client.observeGroupsAndScenes()
+
+        const groups = R.keys(this.getGroups()).length
+        const lights = R.keys(this.getLights()).length
+        const sensors = R.keys(this.getSensors()).length
+        const plugs = R.keys(this.getPlugs()).length
+
+        logger.info('Finished registering resources. Recieved %d groups, %d lights, %d sensors and %d plugs',
+            groups, lights, sensors, plugs)
+    }
+
+    private registerInternalObservers = () => {
         this.client.on('gateway updated',  this.onGatewayUpdate)
         this.client.on('device updated',   this.onDeviceUpdate)
         this.client.on('device removed',   this.onDeviceRemove)
@@ -172,7 +181,7 @@ export default class TradfriGateway {
     }
 
     private onGatewayUpdate = (gateway: GatewayDetails) => {
-        this.gateway ? logger.info('Initializing gateway details') : logger.info('Updating gateway details')
+        this.gateway ? logger.info('Updating gateway details') : logger.info('Initializing gateway details')
         this.gateway = gateway
     }
 
