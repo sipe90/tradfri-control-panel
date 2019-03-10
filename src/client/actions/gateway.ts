@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import { change } from 'redux-form'
 
 import { GATEWAY_WIZARD_FORM } from '@/containers/gateway/GatewayWizardFormContainer'
-import { START_TIMER, STOP_TIMER } from '@/redux-timers'
+import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { IConnectionTestResult, ThunkResult } from '@/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'

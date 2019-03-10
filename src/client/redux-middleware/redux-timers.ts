@@ -15,9 +15,10 @@ const timerMiddleware: Middleware = ({ dispatch }) => {
     const timers: Dictionary<ITimer> = {}
 
     return (next) => (action: AnyAction) => {
+        const { type, payload } = action
         R.cond([
             [R.equals(START_TIMER), () => {
-                const { timerName, dispatchFunc, timerInterval = 1000 } = action.payload
+                const { timerName, dispatchFunc, timerInterval = 1000 } = payload
 
                 if (timers[timerName]) {
                     clearInterval(timers[timerName].intervalId)
@@ -28,13 +29,13 @@ const timerMiddleware: Middleware = ({ dispatch }) => {
                 }
             }],
             [R.equals(STOP_TIMER), () => {
-                const { timerName } = action.payload
+                const { timerName } = payload
                 if (timers[timerName]) {
                     clearInterval(timers[timerName].intervalId)
                 }
             }],
             [R.T, () => next(action)],
-        ])(action.type)
+        ])(type)
     }
 }
 

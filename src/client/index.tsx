@@ -8,7 +8,8 @@ import thunkMiddleware from 'redux-thunk'
 
 import App from '@/containers/App'
 import reducers from '@/reducers'
-import timerMiddleware from '@/redux-timers'
+import timerMiddleware from '@/redux-middleware/redux-timers'
+import webSocketMiddleware from '@/redux-middleware/redux-websocket'
 
 message.config({
     duration: 3,
@@ -22,6 +23,7 @@ const store = createStore(
     reducers,
     applyMiddleware(
         thunkMiddleware,
+        webSocketMiddleware,
         timerMiddleware,
         loggerMiddleware,
     ),
