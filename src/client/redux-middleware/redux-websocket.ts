@@ -24,11 +24,13 @@ const websocketMiddleware: Middleware = ({ dispatch }) => {
                 websocket.addEventListener('open', () => dispatch({ type: WEBSOCKET_OPEN }))
                 websocket.addEventListener('error', () => dispatch({ type: WEBSOCKET_ERROR }))
                 websocket.addEventListener('close',
-                    ({ code, reason, wasClean }) =>
+                    ({ code, reason, wasClean }) => {
                         dispatch({
                             type: WEBSOCKET_CLOSE,
                             payload: { code, reason, wasClean }
                         })
+                        websocket = null
+                    }
                 )
 
                 websocket.addEventListener('message', (event) => {
