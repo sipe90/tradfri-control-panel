@@ -39,7 +39,7 @@ const websocketMiddleware: Middleware = ({ dispatch }) => {
 
                     const { entity, type, data }: IWSPayload = JSON.parse(event.data)
 
-                    if (!entity || !type) return
+                    if (typeof entity !== 'string' || typeof type !== 'string') return
 
                     dispatch({
                         type: `${WEBSOCKET_MESSAGE}_${entity.toUpperCase()}_${type.toUpperCase()}`,
