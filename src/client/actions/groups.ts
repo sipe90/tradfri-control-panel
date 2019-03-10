@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { START_TIMER, STOP_TIMER } from '@/redux-timers'
+import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { ActionCreator } from 'redux'
