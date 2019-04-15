@@ -3,7 +3,6 @@ import { message } from 'antd'
 import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
-import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { Dictionary, ISensor } from 'shared/types'
@@ -50,24 +49,6 @@ export const sensorStateChanged = (sensorProps: ISensor) => ({
     payload: sensorProps
 })
 
-export const startSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: START_TIMER,
-        payload: {
-            timerName: 'pollSensors',
-            dispatchFunc: fetchSensors(),
-            timerInterval: 30000
-        }
-    })
-
-export const stopSensorPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: STOP_TIMER,
-        payload: {
-            timerName: 'pollSensors'
-        }
-    })
-
 export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         await dispatch(loadSensorsRequest())
@@ -79,7 +60,6 @@ export const fetchSensors: ActionCreator<ThunkResult> = () => async (dispatch) =
     } catch (error) {
         message.error(`Failed to fetch sensors: ${error.message}`)
         dispatch(loadSensorsFailure(error))
-        dispatch(stopSensorPolling())
     }
 }
 

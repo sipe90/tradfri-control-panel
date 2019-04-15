@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 
 import {
     deleteGateway, fetchGateway, rebootGateway,
-    resetGateway, saveGateway,  startGatewayPolling,
-    stopGatewayPolling, updateGateway
+    resetGateway, saveGateway, updateGateway
 } from '@/actions/gateway'
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
@@ -24,8 +23,6 @@ interface IGatewayModuleProps {
     dispatchDeleteGateway: () => void
     dispatchRebootGateway: () => void
     dispatchResetGateway: () => void
-    dispatchStartGatewayPolling: () => void
-    dispatchStopGatewayPolling: () => void
     dispatchSubmitEditGatewayForm: () => void
 }
 
@@ -33,11 +30,6 @@ class GatewayModule extends Component<IGatewayModuleProps> {
 
     public componentDidMount() {
         this.props.dispatchLoadGateway()
-        this.props.dispatchStartGatewayPolling()
-    }
-
-    public componentWillUnmount() {
-        this.props.dispatchStopGatewayPolling()
     }
 
     public render = () => {
@@ -75,8 +67,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     dispatchDeleteGateway: () => dispatch(deleteGateway()),
     dispatchRebootGateway: () => dispatch(rebootGateway()),
     dispatchResetGateway: () => dispatch(resetGateway()),
-    dispatchStartGatewayPolling: () => dispatch(startGatewayPolling()),
-    dispatchStopGatewayPolling: () => dispatch(stopGatewayPolling()),
     dispatchSubmitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))
 })
 

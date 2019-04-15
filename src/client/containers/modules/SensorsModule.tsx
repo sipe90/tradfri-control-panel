@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import {
-    fetchSensors, sensorStateChanged, startSensorPolling,
-    stopSensorPolling, updateSensor,
+    fetchSensors, sensorStateChanged, updateSensor,
 } from '@/actions/sensors'
 import SensorList from '@/components/sensors/SensorList'
 import { IAppState } from '@/reducers'
@@ -16,19 +15,12 @@ interface ISensorsModuleProps {
     loadSensors: () => void
     sensorStateChanged: (sensor: ISensor) => void
     updateSensor: (sensor: ISensor) => void
-    startSensorPolling: () => void
-    stopSensorPolling: () => void
 }
 
 class SensorsModule extends Component<ISensorsModuleProps> {
 
     public componentDidMount() {
         this.props.loadSensors()
-        this.props.startSensorPolling()
-    }
-
-    public componentWillUnmount() {
-        this.props.stopSensorPolling()
     }
 
     public render() {
@@ -51,8 +43,6 @@ const mapStateToProps = (state: IAppState) => ({
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     loadSensors: () => dispatch(fetchSensors()),
     sensorStateChanged: (sensor: ISensor) => dispatch(sensorStateChanged(sensor)),
-    startSensorPolling: () => dispatch(startSensorPolling()),
-    stopSensorPolling: () => dispatch(stopSensorPolling()),
     updateSensor: (sensor: ISensor) => dispatch(updateSensor(sensor)),
 })
 

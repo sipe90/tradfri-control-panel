@@ -3,7 +3,6 @@ import { message } from 'antd'
 import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
-import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { Dictionary, ILight } from 'shared/types'
@@ -50,24 +49,6 @@ export const lightStateChanged = (lightProps: ILight) => ({
     payload: lightProps
 })
 
-export const startLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: START_TIMER,
-        payload: {
-            timerName: 'pollLights',
-            dispatchFunc: fetchLights(),
-            timerInterval: 30000
-        }
-    })
-
-export const stopLightPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: STOP_TIMER,
-        payload: {
-            timerName: 'pollLights'
-        }
-    })
-
 export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadLightsRequest())
@@ -79,7 +60,6 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
     } catch (error) {
         message.error(`Failed to fetch lights: ${error.message}`)
         dispatch(loadLightsFailure(error))
-        dispatch(stopLightPolling())
     }
 }
 

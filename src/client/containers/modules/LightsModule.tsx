@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { updateGroup } from '@/actions/groups'
-import { fetchLights, lightStateChanged, startLightPolling, stopLightPolling, updateLight } from '@/actions/lights'
+import { fetchLights, lightStateChanged, updateLight } from '@/actions/lights'
 import { addCircadianSettingsGroup, removeCircadianSettingsGroup } from '@/actions/settings'
 import LightGroups from '@/components/lights/LightGroups'
 import Lights from '@/components/lights/Lights'
@@ -18,8 +18,6 @@ interface ILightModuleProps {
     circadianSettings: ICircadianSettings
     updateLight: (light: ILight) => void
     loadLights: () => void
-    startLightPolling: () => void
-    stopLightPolling: () => void
     lightStateChanged: (light: ILight) => void
     updateGroup: (groupUpdate: IGroupUpdateRequest) => void
     enableCircadian: (groupId: string) => void
@@ -30,11 +28,6 @@ class LightsModule extends Component<ILightModuleProps> {
 
     public componentDidMount() {
         this.props.loadLights()
-        this.props.startLightPolling()
-    }
-
-    public componentWillUnmount() {
-        this.props.stopLightPolling()
     }
 
     public render() {
@@ -78,8 +71,6 @@ const mapStateToProps = (state: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     loadLights: () => dispatch(fetchLights()),
-    startLightPolling: () => dispatch(startLightPolling()),
-    stopLightPolling: () => dispatch(stopLightPolling()),
     lightStateChanged: (light: ILight) => dispatch(lightStateChanged(light)),
     updateGroup: (group: IGroupUpdateRequest) => dispatch(updateGroup(group)),
     updateLight: (light: ILight) => dispatch(updateLight(light)),

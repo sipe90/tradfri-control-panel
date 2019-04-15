@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import { fetchGroups, startGroupPolling, stopGroupPolling } from '@/actions/groups'
+import { fetchGroups } from '@/actions/groups'
 import Navigation from '@/components/Navigation'
 import Routes from '@/components/Routes'
 import routeDefs from '@/routeDefs'
@@ -22,8 +22,6 @@ interface IAppProps {
     connectWebhook: (url: string) => void
     disconnectWebhook: () => void
 
-    startGroupPolling: () => void
-    stopGroupPolling: () => void
     fetchGroups: () => void
     fetchCircadianSettings: () => void
 }
@@ -39,11 +37,6 @@ class App extends Component<IAppProps> {
 
         this.props.fetchGroups()
         this.props.fetchCircadianSettings()
-        this.props.startGroupPolling()
-    }
-
-    public componentWillUnmount() {
-        this.props.stopGroupPolling()
     }
 
     public render() {
@@ -69,8 +62,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     connectWebhook: (url: string) => dispatch(connectHook(url)),
     disconnectWebhook: () => dispatch(disconnect()),
     fetchGroups: () => dispatch(fetchGroups()),
-    startGroupPolling: () => dispatch(startGroupPolling()),
-    stopGroupPolling: () => dispatch(stopGroupPolling()),
     fetchCircadianSettings: () => dispatch(fetchCircadianSettings())
 })
 
