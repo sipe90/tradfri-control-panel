@@ -1,7 +1,7 @@
 import WebSocketBroker from '#/component/WebSocketBroker'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
-import { Accessory, AllEventCallbacks, GatewayDetails, Group, Scene } from 'node-tradfri-client'
+import { Accessory, AccessoryTypes, AllEventCallbacks, GatewayDetails, Group, Scene } from 'node-tradfri-client'
 
 let _connection: TradfriGateway | null = null
 let _broker: WebSocketBroker | null = null
@@ -61,12 +61,12 @@ export const observeGateway = () => {
         }),
         'device updated': (device: Accessory) => broker.broadcast({
              type: 'update',
-             entity: 'device',
+             entity: getDeviceType(device.type),
              data: { id: device.instanceId }
         }),
         'device removed': (deviceId: number) => broker.broadcast({
             type: 'remove',
-            entity: 'device',
+            entity: getDeviceType(connection.getDevices()[deviceId].type),
             data: { id: deviceId }
         }),
         'scene updated': (groupId: number, scene: Scene) => broker.broadcast({
@@ -82,6 +82,17 @@ export const observeGateway = () => {
     }
 
     connection.registerObservers(observers)
+}
+
+const getDeviceType = (type: AccessoryTypes) => {
+    switch (type) {
+        case AccessoryTypes.lightbulb:
+            return 'light'
+        case AccessoryTypes.motionSensor:
+            return 'sensor'
+        default:
+            return 'unknown'
+    }
 }
 
 export const disconnectFromGateway = (clear: boolean) => {
