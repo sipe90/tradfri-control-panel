@@ -1,7 +1,7 @@
 import WebSocket, { OPEN } from 'ws'
 
 import logger from '#/logger'
-import { IWSPayload } from 'shared/types'
+import { IPayload } from 'shared/types/websocket'
 
 export default class WebSocketBroker {
 
@@ -12,7 +12,7 @@ export default class WebSocketBroker {
         this.setupInternalObservers()
     }
 
-    public broadcast(data: IWSPayload) {
+    public broadcast(data: IPayload) {
         this.server.clients.forEach((client) =>
             client.readyState === OPEN && client.send(JSON.stringify(data), sendCallback(data)))
     }
@@ -47,9 +47,9 @@ export default class WebSocketBroker {
     }
 }
 
-const sendCallback = ({type, entity, data}: IWSPayload) => (err: Error | undefined) => {
-    if (err) {
-        logger.error('Failed to send websocket data type: %s, entity: %s, data: %s', type, entity, data)
-        logger.error(err)
+const sendCallback = ({type, entity, data}: IPayload) => (err: Error | undefined) => {
+        if (err) {
+            logger.error('Failed to send websocket data type: %s, entity: %s, data: %s', type, entity, data)
+            logger.error(err)
+        }
     }
-}
