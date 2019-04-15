@@ -23,8 +23,8 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
             [R.equals(WEBSOCKET_CONNECT), () => {
                 websocket = new WebSocket(payload.url)
 
-                websocket.addEventListener('open', () => dispatch({ type: WEBSOCKET_OPEN }))
-                websocket.addEventListener('error', () => dispatch({ type: WEBSOCKET_ERROR }))
+                websocket.addEventListener('open', (_event) => dispatch(open()))
+                websocket.addEventListener('error', (_event) => dispatch(error()))
                 websocket.addEventListener('close', (event) => {
                     dispatch(close(event))
                     websocket = null
@@ -57,6 +57,19 @@ export const connect = (url: string) => ({
 export const disconnect = (code?: number) => ({
     type: WEBSOCKET_DISCONNECT,
     payload: { code }
+})
+
+export const send = (data: any) => ({
+    type: WEBSOCKET_SEND,
+    payload: data
+})
+
+const open = () => ({
+    type: WEBSOCKET_OPEN
+})
+
+const error = () => ({
+    type: WEBSOCKET_ERROR
 })
 
 const message = (event: MessageEvent) => ({
