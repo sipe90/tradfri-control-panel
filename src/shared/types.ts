@@ -10,15 +10,6 @@ export type Diff<T extends string, U extends string> = ({[P in T]: P} &
 // tslint:disable-next-line:interface-over-type-literal
 export type Dictionary<T> = {[key: string]: T}
 
-export type PayloadTypes = 'update' | 'remove'
-export type Entities = 'gateway' | 'device' | 'group' | 'scene'
-
-export interface IWSPayload {
-    type: PayloadTypes
-    entity: Entities
-    data?: any
-}
-
 export enum GatewayConnectionState {
     CONNECTED = 1,
     DISCONNECTED = 2,

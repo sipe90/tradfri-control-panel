@@ -2,7 +2,6 @@ import WebSocketBroker from '#/component/WebSocketBroker'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
 import { Accessory, AllEventCallbacks, GatewayDetails, Group, Scene } from 'node-tradfri-client'
-import { Entities, PayloadTypes } from 'shared/types'
 
 let _connection: TradfriGateway | null = null
 let _broker: WebSocketBroker | null = null
@@ -45,23 +44,45 @@ export const observeGateway = () => {
     const connection = getConnection()
     const broker = getBroker()
 
-    const sendData = dataSender(broker)
-
     const observers: Partial<AllEventCallbacks> = {
-        'gateway updated': (gateway: GatewayDetails) => sendData('update', 'gateway', gateway.clone()),
-        'group updated': (group: Group) => sendData('update', 'group', group.clone()),
-        'group removed': (groupId: number) => sendData('remove', 'group', groupId),
-        'device updated': (device: Accessory) => sendData('update', 'device', device.clone()),
-        'device removed': (deviceId: number) => sendData('remove', 'device', deviceId),
-        'scene updated': (groupId: number, scene: Scene) => sendData('update', 'scene', { ...scene.clone(), groupId }),
-        'scene removed': (groupId: number, sceneId: number) => sendData('remove', 'scene', { groupId, sceneId }),
+        'gateway updated': (_gateway: GatewayDetails) => broker.broadcast({
+            type: 'update',
+            entity: 'gateway'
+        }),
+        'group updated': (group: Group) => broker.broadcast({
+            type: 'update',
+            entity: 'group',
+            data: { id: group.instanceId }
+        }),
+        'group removed': (groupId: number) => broker.broadcast({
+            type: 'remove',
+            entity: 'group',
+            data: { id: groupId }
+        }),
+        'device updated': (device: Accessory) => broker.broadcast({
+             type: 'update',
+             entity: 'device',
+             data: { id: device.instanceId }
+        }),
+        'device removed': (deviceId: number) => broker.broadcast({
+            type: 'remove',
+            entity: 'device',
+            data: { id: deviceId }
+        }),
+        'scene updated': (groupId: number, scene: Scene) => broker.broadcast({
+            type: 'update',
+            entity: 'scene',
+            data: { groupId, id: scene.instanceId }
+        }),
+        'scene removed': (groupId: number, id: number) => broker.broadcast({
+            type: 'remove',
+            entity: 'scene',
+            data: { groupId, id }
+        })
     }
 
     connection.registerObservers(observers)
 }
-
-const dataSender = (broker: WebSocketBroker) => (type: PayloadTypes, entity: Entities, data: any) =>
-    broker.broadcast({ type, entity, data })
 
 export const disconnectFromGateway = (clear: boolean) => {
     logger.info('Disconnecting from gateway [clear=%b]', clear)
