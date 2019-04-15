@@ -1,3 +1,4 @@
+import { connect as connectHook, disconnect } from '@/redux-middleware/redux-websocket'
 import { Layout } from 'antd'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -18,6 +19,9 @@ const { Header, Content, Footer } = Layout
 declare var VERSION: string | void
 
 interface IAppProps {
+    connectWebhook: (url: string) => void
+    disconnectWebhook: () => void
+
     startGroupPolling: () => void
     stopGroupPolling: () => void
     fetchGroups: () => void
@@ -27,6 +31,12 @@ interface IAppProps {
 class App extends Component<IAppProps> {
 
     public componentDidMount() {
+        this.props.connectWebhook(`ws://${window.location.hostname}:${window.location.port}/ws`)
+
+        window.addEventListener('beforeunload', (_event) => {
+            this.props.disconnectWebhook()
+        })
+
         this.props.fetchGroups()
         this.props.fetchCircadianSettings()
         this.props.startGroupPolling()
@@ -56,6 +66,8 @@ class App extends Component<IAppProps> {
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    connectWebhook: (url: string) => dispatch(connectHook(url)),
+    disconnectWebhook: () => dispatch(disconnect()),
     fetchGroups: () => dispatch(fetchGroups()),
     startGroupPolling: () => dispatch(startGroupPolling()),
     stopGroupPolling: () => dispatch(stopGroupPolling()),

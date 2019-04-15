@@ -19,7 +19,7 @@ const PORT = parseInt(process.env.PORT || '8080', 10)
 
 const app = express()
 const server = http.createServer(app)
-const wss = new WebSocket.Server({ server })
+const wss = new WebSocket.Server({ server, path: '/ws' })
 
 const env = app.get('env')
 const isDevEnv = env === 'development'

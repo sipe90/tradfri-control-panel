@@ -1,6 +1,5 @@
 import * as R from 'ramda'
-import { AnyAction, Middleware } from 'redux'
-import { IWSPayload } from 'shared/types'
+import { AnyAction, Dispatch, Middleware } from 'redux'
 
 export const WEBSOCKET_CONNECT = 'WEBSOCKET_CONNECT'
 export const WEBSOCKET_SEND = 'WEBSOCKET_SEND'
@@ -11,7 +10,10 @@ export const WEBSOCKET_CLOSE = 'WEBSOCKET_CLOSE'
 export const WEBSOCKET_MESSAGE = 'WEBSOCKET_MESSAGE'
 export const WEBSOCKET_ERROR = 'WEBSOCKET_ERROR'
 
-const websocketMiddleware: Middleware = ({ dispatch }) => {
+export type MessageHandler<D extends Dispatch<AnyAction>> = (dispatch: D, event: MessageEvent) => void
+
+const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyAction>>
+    (handler: MessageHandler<D>): Middleware<{}, any, D> => ({ dispatch }) => {
 
     let websocket: WebSocket | null = null
 
@@ -23,30 +25,14 @@ const websocketMiddleware: Middleware = ({ dispatch }) => {
 
                 websocket.addEventListener('open', () => dispatch({ type: WEBSOCKET_OPEN }))
                 websocket.addEventListener('error', () => dispatch({ type: WEBSOCKET_ERROR }))
-                websocket.addEventListener('close',
-                    ({ code, reason, wasClean }) => {
-                        dispatch({
-                            type: WEBSOCKET_CLOSE,
-                            payload: { code, reason, wasClean }
-                        })
-                        websocket = null
-                    }
-                )
+                websocket.addEventListener('close', (event) => {
+                    dispatch(close(event))
+                    websocket = null
+                })
 
                 websocket.addEventListener('message', (event) => {
-                    dispatch({type: WEBSOCKET_MESSAGE, payload: event})
-
-                    const eventData = event.data
-                    if (!eventData) return
-
-                    const { entity, type, data }: IWSPayload = JSON.parse(event.data)
-
-                    if (typeof entity !== 'string' || typeof type !== 'string') return
-
-                    dispatch({
-                        type: `${WEBSOCKET_MESSAGE}_${entity.toUpperCase()}_${type.toUpperCase()}`,
-                        payload: data
-                    })
+                    dispatch(message(event))
+                    handler(dispatch, event)
                 })
             }],
             [R.equals(WEBSOCKET_SEND), () => {
@@ -55,7 +41,7 @@ const websocketMiddleware: Middleware = ({ dispatch }) => {
             }],
             [R.equals(WEBSOCKET_DISCONNECT), () => {
                 if (!websocket) return
-                websocket.close(payload || 1000)
+                websocket.close(payload.code || 1000)
                 websocket = null
             }],
             [R.T, () => next(action)],
@@ -63,4 +49,24 @@ const websocketMiddleware: Middleware = ({ dispatch }) => {
     }
 }
 
-export default websocketMiddleware
+export const connect = (url: string) => ({
+    type: WEBSOCKET_CONNECT,
+    payload: { url }
+})
+
+export const disconnect = (code?: number) => ({
+    type: WEBSOCKET_DISCONNECT,
+    payload: { code }
+})
+
+const message = (event: MessageEvent) => ({
+    type: WEBSOCKET_MESSAGE,
+    payload: event
+})
+
+const close = (event: CloseEvent) => ({
+    type: WEBSOCKET_CLOSE,
+    payload: event
+})
+
+export default createWebsocketMiddleware
