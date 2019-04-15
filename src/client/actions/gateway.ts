@@ -5,7 +5,6 @@ import * as R from 'ramda'
 import { change } from 'redux-form'
 
 import { GATEWAY_WIZARD_FORM } from '@/containers/gateway/GatewayWizardFormContainer'
-import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { IConnectionTestResult, ThunkResult } from '@/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
@@ -167,24 +166,6 @@ const testConnectionFailure = (error: Error) => ({
     payload: error
 })
 
-export const startGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: START_TIMER,
-        payload: {
-            timerName: 'pollGateway',
-            dispatchFunc: fetchGateway(),
-            timerInterval: 30000
-        }
-    })
-
-export const stopGatewayPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: STOP_TIMER,
-        payload: {
-            timerName: 'pollGateway'
-        }
-    })
-
 export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadGatewayRequest())
@@ -192,7 +173,6 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
 
         if (res.status === 404) {
             dispatch(loadGatewaySuccess(null))
-            dispatch(stopGatewayPolling())
             return
         }
 
@@ -202,7 +182,6 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
     } catch (error) {
         message.error(`Failed to fetch gateway: ${error.message}`)
         dispatch(loadGatewayFailure(error))
-        dispatch(stopGatewayPolling())
     }
 }
 

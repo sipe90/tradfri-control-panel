@@ -1,7 +1,6 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { START_TIMER, STOP_TIMER } from '@/redux-middleware/redux-timers'
 import { ThunkResult } from '@/types'
 import { fetchGetJson, fetchPostJson } from '@/utils'
 import { ActionCreator } from 'redux'
@@ -42,24 +41,6 @@ const updateGroupFailure = (error: Error) => ({
     payload: error
 })
 
-export const startGroupPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: START_TIMER,
-        payload: {
-            timerName: 'pollGroups',
-            dispatchFunc: fetchGroups(),
-            timerInterval: 30000
-        }
-    })
-
-export const stopGroupPolling: ActionCreator<ThunkResult> = () => (dispatch) =>
-    dispatch({
-        type: STOP_TIMER,
-        payload: {
-            timerName: 'pollGroups'
-        }
-    })
-
 export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) => {
     try {
         await dispatch(loadGroupsRequest())
@@ -71,7 +52,6 @@ export const fetchGroups: ActionCreator<ThunkResult> = () => async (dispatch) =>
     } catch (error) {
         message.error(`Failed to fetch groups: ${error.message}`)
         dispatch(loadGroupsFailure(error))
-        dispatch(stopGroupPolling())
     }
 }
 
