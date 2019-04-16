@@ -106,13 +106,11 @@ class LightItem extends Component<ILightItemProps, IState> {
     private brightnessChanged = (newValue: number) => {
         const newLightState = { ...this.props.light, brightness: newValue }
         this.props.lightStateChanged(newLightState)
-        this.props.updateLight(newLightState)
     }
 
     private temperatureChanged = (newValue: number) => {
         const newLightState = { ...this.props.light, colorTemperature: newValue }
         this.props.lightStateChanged(newLightState)
-        this.props.updateLight(newLightState)
     }
 
     private controlTable = (light: ILight) => {
@@ -141,7 +139,7 @@ class LightItem extends Component<ILightItemProps, IState> {
                                 value={light.brightness}
                                 disabled={!light.dimmable || !light.alive}
                                 onChange={(value) => this.brightnessChanged(value as number)}
-                                onAfterChange={() => null}
+                                onAfterChange={() => this.props.updateLight(this.props.light)}
                                 tipFormatter={percentFormatter}
                             />
                         </td>
@@ -170,6 +168,7 @@ class LightItem extends Component<ILightItemProps, IState> {
                                             this.props.circadianEnabled
                                         }
                                         onChange={(value) => this.temperatureChanged(value as number)}
+                                        onAfterChange={() => this.props.updateLight(this.props.light)}
                                         tipFormatter={percentFormatter}
                                     />
                                 </div>

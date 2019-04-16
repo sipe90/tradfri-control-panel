@@ -96,8 +96,9 @@ class LightGroups extends Component<ILightGroupsProps> {
                                 value={groupLights.length && avgBrightness(groupLights)}
                                 min={1}
                                 max={100}
-                                onChange={(newValue) => this.brightnessChanged(group, groupLights, newValue as number)}
-                                onAfterChange={() => null}
+                                onChange={(newValue) => this.brightnessChanged(groupLights, newValue as number)}
+                                onAfterChange={(newValue) =>
+                                    this.props.updateGroup({ id: group.id, brightness: newValue as number})}
                                 tipFormatter={percentFormatter}
                             />
                         </td>
@@ -107,8 +108,7 @@ class LightGroups extends Component<ILightGroupsProps> {
         )
     }
 
-    private brightnessChanged({ id }: IGroup, groupLights: ILight[], newValue: number) {
-        this.props.updateGroup({ id, brightness: newValue})
+    private brightnessChanged(groupLights: ILight[], newValue: number) {
         for (const light of groupLights) {
             const newLightState = { ...light, brightness: newValue }
             this.props.lightStateChanged(newLightState)
