@@ -1,19 +1,22 @@
 import * as R from 'ramda'
-import { AnyAction, Dispatch, Middleware } from 'redux'
+import { Action, AnyAction, Dispatch, Middleware } from 'redux'
 
-export const WEBSOCKET_CONNECT = 'WEBSOCKET_CONNECT'
-export const WEBSOCKET_SEND = 'WEBSOCKET_SEND'
-export const WEBSOCKET_DISCONNECT = 'WEBSOCKET_DISCONNECT'
+const WEBSOCKET_CONNECT = 'WEBSOCKET_CONNECT'
+const WEBSOCKET_SEND = 'WEBSOCKET_SEND'
+const WEBSOCKET_DISCONNECT = 'WEBSOCKET_DISCONNECT'
 
-export const WEBSOCKET_OPEN = 'WEBSOCKET_OPEN'
-export const WEBSOCKET_CLOSE = 'WEBSOCKET_CLOSE'
-export const WEBSOCKET_MESSAGE = 'WEBSOCKET_MESSAGE'
-export const WEBSOCKET_ERROR = 'WEBSOCKET_ERROR'
+const WEBSOCKET_OPEN = 'WEBSOCKET_OPEN'
+const WEBSOCKET_CLOSE = 'WEBSOCKET_CLOSE'
+const WEBSOCKET_MESSAGE = 'WEBSOCKET_MESSAGE'
+const WEBSOCKET_ERROR = 'WEBSOCKET_ERROR'
 
-export type MessageHandler<D extends Dispatch<AnyAction>> = (dispatch: D, event: MessageEvent) => void
+type EventHandler<D extends Dispatch<AnyAction>, E extends Event> = (dispatch: D, event: E) => void
+
+export type MessageHandler<D extends Dispatch<AnyAction>> = EventHandler<D, MessageEvent>
+export type CloseHandler<D extends Dispatch<AnyAction>> = EventHandler<D, CloseEvent>
 
 const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyAction>>
-    (handler: MessageHandler<D>): Middleware<{}, any, D> => ({ dispatch }) => {
+    (handler: MessageHandler<D>, closeHandler?: CloseHandler<D>): Middleware<{}, any, D> => ({ dispatch }) => {
 
     let websocket: WebSocket | null = null
 
@@ -28,6 +31,7 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
                 websocket.addEventListener('close', (event) => {
                     dispatch(close(event))
                     websocket = null
+                    typeof closeHandler === 'function' && closeHandler(dispatch, event)
                 })
 
                 websocket.addEventListener('message', (event) => {
@@ -49,35 +53,53 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
     }
 }
 
-export const connect = (url: string) => ({
+interface IConnectAction extends Action<typeof WEBSOCKET_CONNECT> {
+    payload: { url: string }
+}
+interface IDisconnectAction extends Action<typeof WEBSOCKET_DISCONNECT> {
+    payload: { code?: number }
+}
+interface ISendAction extends Action<typeof WEBSOCKET_SEND> {
+    payload: { data: any }
+}
+type OpenAction = Action<typeof WEBSOCKET_OPEN>
+type ErrorAction = Action<typeof WEBSOCKET_ERROR>
+interface IMessageAction extends Action<typeof WEBSOCKET_MESSAGE> {
+    payload: MessageEvent
+}
+interface ICloseAction extends Action<typeof WEBSOCKET_CLOSE> {
+    payload: CloseEvent
+}
+
+export const connect = (url: string): IConnectAction => ({
     type: WEBSOCKET_CONNECT,
     payload: { url }
 })
 
-export const disconnect = (code?: number) => ({
+export const disconnect = (code?: number): IDisconnectAction => ({
     type: WEBSOCKET_DISCONNECT,
     payload: { code }
 })
 
-export const send = (data: any) => ({
+export const send = (data: any): ISendAction => ({
     type: WEBSOCKET_SEND,
     payload: data
 })
 
-const open = () => ({
+const open = (): OpenAction => ({
     type: WEBSOCKET_OPEN
 })
 
-const error = () => ({
+const error = (): ErrorAction => ({
     type: WEBSOCKET_ERROR
 })
 
-const message = (event: MessageEvent) => ({
+const message = (event: MessageEvent): IMessageAction => ({
     type: WEBSOCKET_MESSAGE,
     payload: event
 })
 
-const close = (event: CloseEvent) => ({
+const close = (event: CloseEvent): ICloseAction => ({
     type: WEBSOCKET_CLOSE,
     payload: event
 })
