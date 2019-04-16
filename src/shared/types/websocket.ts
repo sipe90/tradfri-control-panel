@@ -1,4 +1,4 @@
-export type PayloadTypes = 'update' | 'remove'
+export type PayloadTypes = 'update' | 'remove' | 'connection_state'
 export type Entities = 'gateway' | 'light' | 'sensor' | 'group' | 'scene'
 export type Payloads =
     GatewayUpdate |
@@ -27,3 +27,4 @@ export type SensorUpdate = EntityPayload<'update', 'sensor', IIdContainer>
 export type SensorRemove = EntityPayload<'remove', 'sensor', IIdContainer>
 export type SceneUpdate = EntityPayload<'update', 'scene', IIdContainer & IGroupIdContainer>
 export type SceneRemove = EntityPayload<'remove', 'scene', IIdContainer & IGroupIdContainer>
+export type GatewayConnectionState = EntityPayload<'connection_state', 'gateway', { state: GatewayConnectionState }>
