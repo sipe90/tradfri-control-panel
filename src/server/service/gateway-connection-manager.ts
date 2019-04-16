@@ -2,6 +2,7 @@ import WebSocketBroker from '#/component/WebSocketBroker'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
 import { Accessory, AccessoryTypes, AllEventCallbacks, GatewayDetails, Group, Scene } from 'node-tradfri-client'
+import { GatewayConnectionState } from 'shared/types'
 
 let _connection: TradfriGateway | null = null
 let _broker: WebSocketBroker | null = null
@@ -78,6 +79,21 @@ export const observeGateway = () => {
             type: 'remove',
             entity: 'scene',
             data: { groupId, id }
+        }),
+        'connection lost': () => broker.broadcast({
+            type: 'connection_state',
+            entity: 'gateway',
+            data: { state: GatewayConnectionState.DISCONNECTED }
+        }),
+        'gateway offline': () => broker.broadcast({
+            type: 'connection_state',
+            entity: 'gateway',
+            data: { state: GatewayConnectionState.OFFLINE }
+        }),
+        'connection alive': () => broker.broadcast({
+            type: 'connection_state',
+            entity: 'gateway',
+            data: { state: GatewayConnectionState.CONNECTED }
         })
     }
 
