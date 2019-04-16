@@ -33,6 +33,7 @@ const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>((dispatch, ev
 
     if (typeof entity !== 'string' || typeof type !== 'string') return
 
+    // TODO: More sophisticated handling for individual device updates
     switch (entity) {
         case 'gateway':
             return dispatch(fetchGateway())
@@ -45,6 +46,8 @@ const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>((dispatch, ev
         case 'scene':
             return dispatch(fetchGroups())
     }
+}, (dispatch, event) => {
+    // TODO: Handle server disconnect
 })
 
 const store = createStore(
