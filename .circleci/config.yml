@@ -91,6 +91,7 @@ workflows:
           type: approval
           requires:
            - build
+           - test
       - deploy:
           <<: *only_tags
           requires:
