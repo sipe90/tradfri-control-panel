@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk'
 import App from '@/containers/App'
 import reducers from '@/reducers'
 import timerMiddleware from '@/redux-middleware/redux-timers'
-import createWebSocketMiddleware from '@/redux-middleware/redux-websocket'
+import createWebSocketMiddleware, { connect } from '@/redux-middleware/redux-websocket'
 import { Payloads } from 'shared/types/websocket'
 import { fetchGateway } from './actions/gateway'
 import { fetchGroups } from './actions/groups'
@@ -47,7 +47,12 @@ const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>((dispatch, ev
             return dispatch(fetchGroups())
     }
 }, (dispatch, event) => {
-    // TODO: Handle server disconnect
+    if (!event.wasClean) {
+        message.warning({
+            message: 'Server connection lost. Attempting to reconnect...'
+        })
+        dispatch(connect(`ws://${window.location.hostname}:${window.location.port}/ws`))
+    }
 })
 
 const store = createStore(
