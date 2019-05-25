@@ -1,5 +1,4 @@
-import { INormalizeResult, IPayloadAction } from '@/types'
-import { normalize, Schema } from 'normalizr'
+import { IPayloadAction } from '@/types'
 import * as R from 'ramda'
 import { Action, AnyAction, Reducer } from 'redux'
 
@@ -7,8 +6,6 @@ import { Dictionary, IDevice, IGroup } from 'shared/types'
 
 export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
     R.values(R.pick(R.map(String, group.devices), devices))
-
-export const normalizer = (schema: Schema): (data: any) => INormalizeResult => R.curry(R.flip(normalize))(schema)
 
 type ActionReducePair<S, A extends Action> = [A['type'], (state: S, action: A) => S]
 type ActionPredicateReducePair<S, A extends Action> = [(type: A['type']) => boolean, () => S]

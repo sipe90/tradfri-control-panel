@@ -30,7 +30,6 @@
     "module-alias": "^2.1.0",
     "morgan": "^1.9.1",
     "node-tradfri-client": "^1.5.0",
-    "normalizr": "^3.2.4",
     "ramda": "^0.26.1",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

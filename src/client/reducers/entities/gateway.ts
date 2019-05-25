@@ -7,9 +7,7 @@ const initialState = null
 export type GatewayEntityState = IGateway | null
 
 const reducers: ActionReducers<GatewayEntityState> = [
-    [LOAD_GATEWAY_SUCCESS, (_state, { payload }) => (payload ? {
-        ...payload,
-    } : null)],
+    [LOAD_GATEWAY_SUCCESS, (_state, { payload }) => payload || null],
 ]
 
 export default createReducer(reducers, initialState)

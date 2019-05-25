@@ -11,11 +11,6 @@ export type AppDispatch = ThunkDispatch<IAppState, undefined, AnyAction>
 export type ThunkResult<R = void, A extends Action = IPayloadAction> = ThunkAction<R, IAppState, undefined, A>
 export type AsyncThunkResult<R = void, A extends Action = IPayloadAction> = ThunkResult<Promise<R>, A>
 
-export interface INormalizeResult {
-    result: any
-    entities: any
-}
-
 export interface IErrorResponse {
     message: string
 }
