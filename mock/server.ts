@@ -4,24 +4,48 @@ import 'module-alias/register'
 
 import jsonServer from 'json-server'
 import path from 'path'
+import WebSocket from 'ws'
+import http from 'http'
+
 import gateway from './routes/gateway'
 import settings from './routes/settings'
 
-const server = jsonServer.create()
+
+const app = jsonServer.create()
 const router = jsonServer.router(path.join(__dirname, 'db.json'))
 const middlewares = jsonServer.defaults()
 
-server.use(middlewares)
-server.use(jsonServer.bodyParser)
+const server = http.createServer(app)
 
-server.use(jsonServer.rewriter({
+const wss = new WebSocket.Server({ server, path: '/ws' })
+
+wss.on('connection', (ws, req) => {
+    const { localAddress, localPort } = req.connection
+    const address = `${localAddress}:${localPort}`
+
+    console.log('WebSocket client connected from %s', address)
+
+    ws.on('close', (code, reason) => {
+        console.log('WebSocket client disconnected from %s. Code: %d, Reason: %s', address, code, reason)
+    })
+
+    ws.on('error', (error) => {
+        console.log('WebSocket client from %s received an error', address)
+        console.log(error)
+    })
+})
+
+app.use(middlewares)
+app.use(jsonServer.bodyParser)
+
+app.use(jsonServer.rewriter({
     '/api/*': '/$1'
 }))
 
-server.use('/gateway', gateway)
-server.use('/settings', settings)
+app.use('/gateway', gateway)
+app.use('/settings', settings)
 
-server.use(router)
+app.use(router)
 
 server.listen(8080, () => {
     // tslint:disable-next-line:no-console
