@@ -1,17 +1,15 @@
-import CleanWebpackPlugin from 'clean-webpack-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import path from 'path'
 import tsImportPluginFactory from 'ts-import-plugin'
 import { Configuration, DefinePlugin } from 'webpack'
-
-const outputDirectory = 'dist'
 
 const config: Configuration = {
     entry: {
         main: './src/client/index.tsx'
     },
     output: {
-        path: path.join(__dirname, outputDirectory),
+        path: path.join(__dirname, 'dist'),
         filename: '[name].[hash].bundle.js',
         publicPath: '/'
     },
@@ -55,7 +53,7 @@ const config: Configuration = {
         }
     },
     plugins: [
-        new CleanWebpackPlugin([outputDirectory]),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: './public/index.html',
             favicon: './public/favicon.ico'
