@@ -11,22 +11,3 @@
 .gateway__actions>button {
     margin-right: 4px;
 }
-
-/* Gateway details table */
-
-.gateway__table {
-    border-spacing: 120px;
-}
-
-.gateway__table td {
-    vertical-align: middle;
-    height: 30px;
-}
-
-.gateway__table td:nth-of-type(1) {
-    font-weight: bold;
-}
-
-.gateway__table td:nth-of-type(2) {
-    padding-left: 12px
-}
