@@ -1,14 +1,15 @@
 import * as R from 'ramda'
 import React from 'react'
 
-import { Card, Divider, Dropdown, Icon, Menu, Modal } from 'antd'
-
+import { Card, Divider, Dropdown, Icon, Menu, Modal, Descriptions } from 'antd'
 import { GatewayConnectionState, IGateway } from 'shared/types'
 
-import StatusIndicator from '@/components/StatusIndicator'
+import StatusIndicator, { Status } from '@/components/StatusIndicator'
 import GatewayEditFormContainer from '@/containers/gateway/GatewayEditFormContainer'
 
 import './Gateway.css'
+
+const { Item } = Descriptions
 
 interface IGatewayProps {
     gateway: IGateway
@@ -39,7 +40,17 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
     public render = () => (
         <>
             <Card title={this.title()} extra={this.actionButtons()}>
-                {this.gatewayDetails()}
+                <Descriptions size='small' column={1}>
+                    <Item label='Connection status'>
+                        {statusTitle(this.props.gateway.connectionState)}
+                    </Item>
+                    <Item label='Hostname'>
+                        {this.props.gateway.hostname}
+                    </Item>
+                    <Item label='Firmware version'>
+                        {this.props.gateway.version}
+                    </Item>
+                </Descriptions>
             </Card>
             <Modal
                 title='Edit gateway information'
@@ -54,7 +65,10 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
 
     private title = () => (
         <>
-            <StatusIndicator title={statusTitle(this.props.gateway)} status={status(this.props.gateway)}/>
+            <StatusIndicator
+                title={statusTitle(this.props.gateway.connectionState)}
+                status={status(this.props.gateway.connectionState)}
+            />
             {this.props.gateway.name}
         </>
     )
@@ -81,40 +95,6 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
           </Menu.Item>
         </Menu>
       )
-
-    private gatewayDetails = () => {
-        const gateway = this.props.gateway
-        return (
-            <table className='gateway__table'>
-                <tbody>
-                    <tr>
-                        <td>
-                            Connection status
-                        </td>
-                        <td>
-                            {statusTitle(gateway)}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Hostname
-                        </td>
-                        <td>
-                            {gateway.hostname}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Firmware version
-                        </td>
-                        <td>
-                            {gateway.version}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        )
-    }
 
     private setEditModalVisible = (visible: boolean) => this.setState({ editModalVisible: visible })
 
@@ -166,16 +146,16 @@ class Gateway extends React.Component<IGatewayProps, IGatewayState> {
     }
 }
 
-const statusTitle = R.cond([
-    [R.propEq('connectionState', GatewayConnectionState.CONNECTED), R.always('Connected to gateway')],
-    [R.propEq('connectionState', GatewayConnectionState.DISCONNECTED), R.always('Gateway connection lost')],
-    [R.propEq('connectionState', GatewayConnectionState.OFFLINE), R.always('Gateway is offline')],
+const statusTitle = R.cond<number, string>([
+    [R.equals(GatewayConnectionState.CONNECTED), R.always('Connected to gateway')],
+    [R.equals(GatewayConnectionState.DISCONNECTED), R.always('Gateway connection lost')],
+    [R.equals(GatewayConnectionState.OFFLINE), R.always('Gateway is offline')],
     [R.T, R.always('Gateway is offline')]
 ])
 
-const status = R.cond([
-    [R.propEq('connectionState', GatewayConnectionState.CONNECTED), R.always('online')],
-    [R.propEq('connectionState', GatewayConnectionState.DISCONNECTED), R.always('disconnected')],
+const status = R.cond<number, Status>([
+    [R.equals(GatewayConnectionState.CONNECTED), R.always('online')],
+    [R.equals(GatewayConnectionState.DISCONNECTED), R.always('disconnected')],
     [R.T, R.always('offline')]
 ])
 

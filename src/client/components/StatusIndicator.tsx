@@ -11,7 +11,7 @@ interface IStatusIndicatorProps {
     size?: number
 }
 
-type Status = 'online' | 'disconnected' | 'offline'
+export type Status = 'online' | 'disconnected' | 'offline'
 
 const statusColors: { [key in Status]: string } = {
     online: '#00CC00',
