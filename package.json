@@ -19,7 +19,7 @@
     "shared": "./src/shared"
   },
   "dependencies": {
-    "antd": "^3.9.2",
+    "antd": "^3.20.0",
     "body-parser": "^1.19.0",
     "config": "^2.0.1",
     "cookie-parser": "^1.4.4",
