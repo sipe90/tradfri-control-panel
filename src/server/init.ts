@@ -22,6 +22,8 @@ export default async (wss: WebSocket.Server, env: string) => {
     logger.info('Fetching gateway from database')
     const gateway = await fetchGateway()
 
+    manager.setBroker(new WebSocketBroker(wss))
+
     if (!gateway) {
         logger.info('No gateway found from database')
         return
@@ -31,7 +33,6 @@ export default async (wss: WebSocket.Server, env: string) => {
 
     const { hostname, identity, psk } = gateway
     await manager.connectToGateway(hostname, identity, psk).catch(logError('Failed to connect to Gateway'))
-    manager.setBroker(new WebSocketBroker(wss))
 
     logger.info('Setting up gateway observers')
 

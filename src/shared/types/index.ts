@@ -45,13 +45,13 @@ export interface IGatewayDevices extends IGateway {
 }
 
 export interface ILight extends IDevice {
-    color: string
-    colorTemperature: number
-    brightness: number
-    spectrum: string
-    dimmable: boolean
-    switchable: boolean
-    on: boolean
+    color: string | null
+    colorTemperature: number | null
+    brightness: number | null
+    spectrum: string | null
+    dimmable: boolean | null
+    switchable: boolean | null
+    on: boolean | null
 }
 
 export type ISensor = IDevice

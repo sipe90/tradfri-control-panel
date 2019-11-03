@@ -147,7 +147,7 @@ export default class TradfriGateway {
 
     public registerObservers = async (observers: Partial<AllEventCallbacks>) => {
         logger.info('Registering external observers')
-        R.keys(observers).forEach((event) => this.client.on(event, observers[event]))
+        R.forEachObjIndexed((callback, event) => this.client.on(event, callback as any), observers)
     }
 
     private setupInternalObservers = async () => {

@@ -31,7 +31,7 @@ const toLightUpdate = (light: ILight) => ({
 })
 
 const toLightOperation = (light: ILight) => ({
-    onOff: light.on,
-    dimmer: light.brightness,
-    colorTemperature: light.colorTemperature
+    onOff:  light.on !== null ? light.on : undefined,
+    dimmer: light.brightness !== null ? light.brightness : undefined,
+    colorTemperature: light.colorTemperature !== null ? light.colorTemperature : undefined
 })

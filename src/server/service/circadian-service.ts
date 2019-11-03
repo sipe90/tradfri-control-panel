@@ -120,6 +120,9 @@ const updateCicadian = () => {
     } else {
         updater.setLatitude(parsedLatitude)
         updater.setLongitude(parsedLongitude)
+        if (!updater.isRunning()) {
+            updater.start(updateLights)
+        }
     }
 }
 

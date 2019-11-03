@@ -34,7 +34,7 @@ export default class CircadianUpdater {
         latitude: number,
         longitude: number,
         updateInterval = defaultUpdateInterval,
-        options?: Partial<ICircadianOptions>
+        options: Partial<ICircadianOptions> = {}
     ) {
         this.latitude = latitude
         this.longitude = longitude
