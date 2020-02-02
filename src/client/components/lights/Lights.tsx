@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 
 import LightItem from '@/components/lights/LightItem'
 import Spinner from '@/components/Spinner'
-import { devicesForGroup } from '@/utils'
+import { lightsForGroup } from '@/utils'
 import { Dictionary, ICircadianSettings, IGroup, ILight } from 'shared/types'
 
 import './Lights.css'
@@ -22,7 +22,7 @@ class Lights extends Component<ILightsProps> {
 
     public render = () => (
         R.values(this.props.groups).map((group, idx) => {
-            const groupLights = devicesForGroup(group, this.props.lights)
+            const groupLights = lightsForGroup(group, this.props.lights)
             if (group.default && !groupLights.length) return
 
             return <Card key={idx} className='lights-tab__card' title={group.name}>

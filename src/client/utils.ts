@@ -2,10 +2,13 @@ import { IPayloadAction } from '@/types'
 import * as R from 'ramda'
 import { Action, AnyAction, Reducer } from 'redux'
 
-import { Dictionary, IDevice, IGroup } from 'shared/types'
+import { Dictionary, IDevice, IGroup, ILight } from 'shared/types'
 
 export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
     R.values(R.pick(R.map(String, group.devices), devices))
+
+export const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
+    R.values(R.pick(R.map(String, group.devices), lights))
 
 type ActionReducePair<S, A extends Action> = [A['type'], (state: S, action: A) => S]
 type ActionPredicateReducePair<S, A extends Action> = [(type: A['type']) => boolean, () => S]

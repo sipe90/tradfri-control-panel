@@ -10,12 +10,13 @@ import StatusIndicator from '@/components/StatusIndicator'
 import { Dictionary, ICircadianSettings, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
 import './LightGroups.css'
+import { lightsForGroup } from '@/utils'
 
 const Item = List.Item
 
 const percentFormatter = (v: number) => `${v}%`
-const anyLightIsOn = R.any<ILight>(R.prop('on'))
-const lightBrightnesses = R.map<ILight, number>(R.prop('brightness'))
+const anyLightIsOn = R.any<ILight>(R.propOr(false, 'on'))
+const lightBrightnesses = R.map<ILight, number[]>(R.prop('brightness'))
 const avgBrightness = R.converge(R.divide, [R.pipe(lightBrightnesses, R.sum), R.length])
 
 interface ILightGroupsProps {
@@ -133,9 +134,6 @@ class LightGroups extends Component<ILightGroupsProps> {
         return this.props.circadianSettings.groupIds.includes(String(id))
     }
 }
-
-const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
-    R.values(R.pick(R.map(String, group.devices), lights))
 
 const statusTitle = R.cond([
     [R.propEq('alive', true), R.always('Light is connected')],
