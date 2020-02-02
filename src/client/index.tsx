@@ -49,9 +49,7 @@ const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>((dispatch, ev
     }
 }, (dispatch, event) => {
     if (!event.wasClean) {
-        message.warning({
-            message: 'Server connection lost. Attempting to reconnect...'
-        })
+        message.warning('Server connection lost. Attempting to reconnect...')
         dispatch(connect(`ws://${window.location.hostname}:${window.location.port}/ws`))
     }
 })
