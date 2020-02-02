@@ -10,13 +10,21 @@ const WEBSOCKET_CLOSE = 'WEBSOCKET_CLOSE'
 const WEBSOCKET_MESSAGE = 'WEBSOCKET_MESSAGE'
 const WEBSOCKET_ERROR = 'WEBSOCKET_ERROR'
 
-type EventHandler<D extends Dispatch<AnyAction>, E extends Event> = (dispatch: D, event: E) => void
+type Handler<D> = (dispatch: D) => void
+type EventHandler<D, E extends Event> = (dispatch: D, event: E) => void
 
-export type MessageHandler<D extends Dispatch<AnyAction>> = EventHandler<D, MessageEvent>
-export type CloseHandler<D extends Dispatch<AnyAction>> = EventHandler<D, CloseEvent>
+export interface IEventHandlers<D> {
+  onConnect?: Handler<D>
+  onClose?: CloseHandler<D>
+  onError?: Handler<D>
+  onMessage: MessageHandler<D>
+}
+
+export type MessageHandler<D> = EventHandler<D, MessageEvent>
+export type CloseHandler<D> = EventHandler<D, CloseEvent>
 
 const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyAction>>
-    (handler: MessageHandler<D>, closeHandler?: CloseHandler<D>): Middleware<{}, any, D> => ({ dispatch }) => {
+    ({ onConnect, onClose, onError, onMessage }: IEventHandlers<D>): Middleware<{}, any, D> => ({ dispatch }) => {
 
     let websocket: WebSocket | null = null
 
@@ -26,17 +34,23 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
             [R.equals(WEBSOCKET_CONNECT), () => {
                 websocket = new WebSocket(payload.url)
 
-                websocket.addEventListener('open', (_event) => dispatch(open()))
-                websocket.addEventListener('error', (_event) => dispatch(error()))
+                websocket.addEventListener('open', (_event) => {
+                    dispatch(open())
+                    onConnect && onConnect(dispatch)
+                })
+                websocket.addEventListener('error', (_event) => {
+                    dispatch(error())
+                    onError && onError(dispatch)
+                })
                 websocket.addEventListener('close', (event) => {
                     dispatch(close(event))
                     websocket = null
-                    typeof closeHandler === 'function' && closeHandler(dispatch, event)
+                    onClose && onClose(dispatch, event)
                 })
 
                 websocket.addEventListener('message', (event) => {
                     dispatch(message(event))
-                    handler(dispatch, event)
+                    onMessage(dispatch, event)
                 })
             }],
             [R.equals(WEBSOCKET_SEND), () => {

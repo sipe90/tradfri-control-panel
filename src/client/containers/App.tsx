@@ -1,5 +1,5 @@
-import { connect as connectHook, disconnect } from '@/redux-middleware/redux-websocket'
-import { Layout } from 'antd'
+import { connect as connectSocket, disconnect } from '@/redux-middleware/redux-websocket'
+import { Layout, Alert } from 'antd'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -12,6 +12,8 @@ import routeDefs from '@/routeDefs'
 import { fetchCircadianSettings } from '@/actions/settings'
 import { AppDispatch } from '@/types'
 import './App.css'
+import { IAppState } from '@/reducers'
+import { WebsocketConnectionState } from '@/reducers/common'
 
 const { Header, Content, Footer } = Layout
 
@@ -19,20 +21,22 @@ const { Header, Content, Footer } = Layout
 declare var VERSION: string | void
 
 interface IAppProps {
-    connectWebhook: (url: string) => void
-    disconnectWebhook: () => void
+    connectWebsocket: (url: string) => void
+    disconnectWebsocket: () => void
 
     fetchGroups: () => void
     fetchCircadianSettings: () => void
+
+    websocketConnectionState: WebsocketConnectionState;
 }
 
 class App extends Component<IAppProps> {
 
     public componentDidMount() {
-        this.props.connectWebhook(`ws://${window.location.hostname}:${window.location.port}/ws`)
+        this.props.connectWebsocket(`ws://${window.location.hostname}:${window.location.port}/ws`)
 
         window.addEventListener('beforeunload', (_event) => {
-            this.props.disconnectWebhook()
+            this.props.disconnectWebsocket()
         })
 
         this.props.fetchGroups()
@@ -48,6 +52,14 @@ class App extends Component<IAppProps> {
                             <Navigation routes={routeDefs} />
                         </Header>
                         <Content>
+                            {this.props.websocketConnectionState == WebsocketConnectionState.CONNECTION_LOST &&
+                                <Alert
+                                    className='app__alert'
+                                    type='warning'
+                                    showIcon
+                                    message='Server connection lost. Attempting to reconnect...'
+                                /> 
+                            }
                             <Routes routes={routeDefs} />
                         </Content>
                         <Footer className='app__footer'>Trådfri Control Panel {VERSION ? `v${VERSION}` : ''}</Footer>
@@ -58,11 +70,15 @@ class App extends Component<IAppProps> {
     }
 }
 
+const mapStateToProps = (state: IAppState) => ({
+    websocketConnectionState: state.common.websocketConnectionState
+})
+
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    connectWebhook: (url: string) => dispatch(connectHook(url)),
-    disconnectWebhook: () => dispatch(disconnect()),
+    connectWebsocket: (url: string) => dispatch(connectSocket(url)),
+    disconnectWebsocket: () => dispatch(disconnect()),
     fetchGroups: () => dispatch(fetchGroups()),
     fetchCircadianSettings: () => dispatch(fetchCircadianSettings())
 })
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

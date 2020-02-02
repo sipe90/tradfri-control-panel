@@ -17,6 +17,8 @@ import { fetchGroups } from './actions/groups'
 import { fetchLights } from './actions/lights'
 import { fetchSensors } from './actions/sensors'
 import { AppDispatch } from './types'
+import { setWebsocketConnectionState } from './actions/common'
+import { WebsocketConnectionState } from './reducers/common'
 
 message.config({
     duration: 3,
@@ -26,31 +28,39 @@ message.config({
 
 const loggerMiddleware = createLogger()
 
-const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>((dispatch, event) => {
-    const eventData = event.data
-    if (!eventData) return
+const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>({
+    onMessage: (dispatch, event) => {
+        const eventData = event.data
+        if (!eventData) return
 
-    const { entity, type }: Payloads = JSON.parse(event.data)
+        const { entity, type }: Payloads = JSON.parse(event.data)
 
-    if (typeof entity !== 'string' || typeof type !== 'string') return
+        if (typeof entity !== 'string' || typeof type !== 'string') return
 
-    // TODO: More sophisticated handling for individual device updates
-    switch (entity) {
-        case 'gateway':
-            return dispatch(fetchGateway())
-        case 'group':
-            return dispatch(fetchGroups())
-        case 'light':
-            return dispatch(fetchLights())
-        case 'sensor':
-            return dispatch(fetchSensors())
-        case 'scene':
-            return dispatch(fetchGroups())
-    }
-}, (dispatch, event) => {
-    if (!event.wasClean) {
-        message.warning('Server connection lost. Attempting to reconnect...')
-        dispatch(connect(`ws://${window.location.hostname}:${window.location.port}/ws`))
+        // TODO: More sophisticated handling for individual device updates
+        switch (entity) {
+            case 'gateway':
+                return dispatch(fetchGateway())
+            case 'group':
+                return dispatch(fetchGroups())
+            case 'light':
+                return dispatch(fetchLights())
+            case 'sensor':
+                return dispatch(fetchSensors())
+            case 'scene':
+                return dispatch(fetchGroups())
+        }
+    },
+    onConnect: (dispatch) => {
+        dispatch(setWebsocketConnectionState(WebsocketConnectionState.CONNECTED))
+    },
+    onClose: (dispatch, event) => {
+        if (!event.wasClean) {
+            dispatch(setWebsocketConnectionState(WebsocketConnectionState.CONNECTION_LOST))
+            dispatch(connect(`ws://${window.location.hostname}:${window.location.port}/ws`))
+        } else {
+            dispatch(setWebsocketConnectionState(WebsocketConnectionState.DISCONNECTED))
+        }
     }
 })
 
