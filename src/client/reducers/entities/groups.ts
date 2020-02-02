@@ -8,10 +8,10 @@ export type GroupEntitiesState = Dictionary<IGroup>
 
 const initialState = {}
 
-const mapLights = R.indexBy<IGroup>(R.pipe(R.prop('id'), R.toString))
+const mapGroups = R.indexBy<IGroup>(R.pipe(R.prop('id'), R.toString))
 
 const reducers: ActionReducers<GroupEntitiesState> = [
-    [LOAD_GROUPS_SUCCESS, (_state, { payload }) => mapLights(payload)],
+    [LOAD_GROUPS_SUCCESS, (_state, { payload }) => mapGroups(payload)],
 ]
 
 export default createReducer(reducers, initialState)

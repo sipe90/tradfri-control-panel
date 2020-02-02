@@ -34,6 +34,7 @@ class LightGroups extends Component<ILightGroupsProps> {
     public render = () =>
         R.values(this.props.groups).map((group, idx) => {
             const groupLights = lightsForGroup(group, this.props.lights)
+            if (group.default && !groupLights.length) return
             return (
                 <Card key={idx} className='light-group__card' title={group.name}>
                     {this.lightGroupControls(group, groupLights)}

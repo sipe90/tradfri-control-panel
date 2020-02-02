@@ -21,19 +21,21 @@ interface ILightsProps {
 class Lights extends Component<ILightsProps> {
 
     public render = () => (
-        R.values(this.props.groups).map((group, idx) => (
-            <Card key={idx} className='lights-tab__card' title={group.name}>
+        R.values(this.props.groups).map((group, idx) => {
+            const groupLights = devicesForGroup(group, this.props.lights)
+            if (group.default && !groupLights.length) return
+
+            return <Card key={idx} className='lights-tab__card' title={group.name}>
                 <Spinner spinning={this.props.initialDataLoading}>
                     <List
                         itemLayout='vertical'
-                        dataSource={devicesForGroup(group, this.props.lights)}
+                        dataSource={groupLights}
                         renderItem={(light: ILight) => this.renderItem(group, light)}
                         locale={{ emptyText: 'No lights'}}
                     />
                 </Spinner>
             </Card>
-            ),
-        )
+        })
     )
 
     private renderItem = (group: IGroup, light: ILight) => (
