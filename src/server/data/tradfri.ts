@@ -1,7 +1,7 @@
-import { Accessory, GroupInfo, Light as TLight, Scene as TScene } from 'node-tradfri-client'
+import { Accessory, GroupInfo, Light as TLight, Scene as TScene, LightSetting as TLightSetting } from 'node-tradfri-client'
 import R from 'ramda'
 
-import { IGateway, IGatewayDevices, IGroup, ILight, IScene, ISensor } from 'shared/types'
+import { IGateway, IGatewayDevices, IGroup, ILight, IScene, ISensor, ILightSetting } from 'shared/types'
 
 type DeviceRecord = Record<string, Accessory>
 type GroupRecord = Record<string, GroupInfo>
@@ -37,6 +37,7 @@ const normalizeLight = (light: Accessory): ILight => ({
     power: light.deviceInfo.power,
     battery: light.deviceInfo.battery,
     color: lightProp('color', light),
+    saturation: lightProp('saturation', light),
     colorTemperature: lightProp('colorTemperature', light),
     brightness: lightProp('dimmer', light),
     spectrum: lightProp('spectrum', light),
@@ -57,6 +58,7 @@ const normalizeSensor = (sensor: Accessory): ISensor => ({
 
 const normalizeGroup = ({ group, scenes }: GroupInfo): IGroup => ({
     id: group.instanceId,
+    default: group.name == "TRADFRI group",
     name: group.name,
     devices: group.deviceIDs,
     moods: R.map(normalizeScene, R.values(scenes)),
@@ -65,5 +67,17 @@ const normalizeGroup = ({ group, scenes }: GroupInfo): IGroup => ({
 const normalizeScene = (scene: TScene): IScene => ({
     id: scene.instanceId,
     name: scene.name,
-    active: scene.isActive
+    active: scene.isActive,
+    predefined: scene.isPredefined,
+    lightSettings: R.map(normalizeLightSetting, scene.lightSettings)
+})
+
+const normalizeLightSetting = (lightSetting: TLightSetting): ILightSetting => ({
+  id: lightSetting.instanceId,
+  color: lightSetting.color,
+  saturation: lightSetting.saturation,
+  colorTemperature: lightSetting.saturation,
+  brightness: lightSetting.dimmer,
+  on: lightSetting.onOff,
+  hue: lightSetting.hue
 })

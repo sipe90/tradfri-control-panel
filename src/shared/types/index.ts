@@ -46,6 +46,7 @@ export interface IGatewayDevices extends IGateway {
 
 export interface ILight extends IDevice {
     color: string | null
+    saturation: number | null;
     colorTemperature: number | null
     brightness: number | null
     spectrum: string | null
@@ -58,15 +59,28 @@ export type ISensor = IDevice
 
 export interface IGroup {
     id: number
+    default: boolean
     name: string
     devices: number[]
     moods: IScene[]
 }
 
+export interface ILightSetting {
+    id: number
+    color: string;
+    saturation: number;
+    colorTemperature: number;
+    brightness: number | null
+    on: boolean | null
+    hue: number;
+}
+
 export interface IScene {
     id: number
+    predefined: boolean
     name: string
     active: boolean
+    lightSettings: ILightSetting[]
 }
 
 export interface IDeviceIDs {
