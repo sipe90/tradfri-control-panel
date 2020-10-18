@@ -18,13 +18,13 @@ router.post('/circadian', (req, res, next) =>
 )
 
 router.post('/circadian/groups', (req, res, next) =>
-    addGroup(req.query.groupId)
+    addGroup(req.query.groupId as string)
         .then(noContent(res))
         .catch(next)
 )
 
 router.delete('/circadian/groups', (req, res, next) =>
-    removeGroup(req.query.groupId)
+    removeGroup(req.query.groupId as string)
         .then(noContent(res))
         .catch(next)
 )

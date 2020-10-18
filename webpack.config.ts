@@ -22,7 +22,7 @@ const config: Configuration = {
                 options: {
                     transpileOnly: true,
                     getCustomTransformers: () => ({
-                      before: [ tsImportPluginFactory({ libraryName: 'antd', style: 'css', libraryDirectory: 'es' }) ]
+                        before: [tsImportPluginFactory({ libraryName: 'antd', style: 'css', libraryDirectory: 'es' })]
                     }),
                     compilerOptions: {
                         module: 'es2015'
@@ -35,7 +35,10 @@ const config: Configuration = {
             },
             {
                 test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=100000'
+                loader: 'url-loader',
+                options: {
+                    limit: 100000
+                }
             }
         ]
     },
