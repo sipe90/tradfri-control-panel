@@ -1,3 +1,4 @@
+import { promises as fs } from 'fs'
 import config from 'config'
 import Loki from 'lokijs'
 
@@ -19,6 +20,8 @@ export const init = async (_env: string) => {
 
 export const connect = async () => {
     const dbFilePath = `${dbConfig.dbFolder}/${dbConfig.dbName}`
+
+    await fs.mkdir(dbConfig.dbFolder, { recursive: true })
 
     logger.info(`Connecting to low database at ${dbFilePath}`)
 
