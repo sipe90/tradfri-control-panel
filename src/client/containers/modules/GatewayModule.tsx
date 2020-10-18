@@ -17,19 +17,19 @@ import { IGateway } from 'shared/types'
 interface IGatewayModuleProps {
     gateway: IGateway | null
     initialDataLoading: boolean
-    dispatchLoadGateway: () => void
-    dispatchSaveGateway: (gateway: IGateway) => void
-    dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
-    dispatchDeleteGateway: () => void
-    dispatchRebootGateway: () => void
-    dispatchResetGateway: () => void
-    dispatchSubmitEditGatewayForm: () => void
+    loadGateway: () => void
+    saveGateway: (gateway: IGateway) => void
+    updateGateway: (gateway: Partial<IGateway>) => void
+    deleteGateway: () => void
+    rebootGateway: () => void
+    resetGateway: () => void
+    submitEditGatewayForm: () => void
 }
 
 class GatewayModule extends Component<IGatewayModuleProps> {
 
     public componentDidMount() {
-        this.props.dispatchLoadGateway()
+        this.props.loadGateway()
     }
 
     public render = () => {
@@ -43,12 +43,12 @@ class GatewayModule extends Component<IGatewayModuleProps> {
 
     private renderGateway = (gateway: IGateway) => {
         const {
-            initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway, dispatchUpdateGateway,
-            dispatchSubmitEditGatewayForm, dispatchRebootGateway, dispatchResetGateway
+            initialDataLoading, deleteGateway, saveGateway, updateGateway,
+            submitEditGatewayForm, rebootGateway, resetGateway
         } = this.props
         const componentProps = {
-            gateway, initialDataLoading, dispatchDeleteGateway, dispatchSaveGateway,
-            dispatchUpdateGateway, dispatchSubmitEditGatewayForm, dispatchRebootGateway, dispatchResetGateway
+            gateway, initialDataLoading, deleteGateway, saveGateway,
+            updateGateway, submitEditGatewayForm, rebootGateway, resetGateway
         }
         return <GatewayComponent {...componentProps} />
     }
@@ -61,13 +61,13 @@ const mapStateToProps = (state: IAppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    dispatchLoadGateway: () => dispatch(fetchGateway()),
-    dispatchSaveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
-    dispatchUpdateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
-    dispatchDeleteGateway: () => dispatch(deleteGateway()),
-    dispatchRebootGateway: () => dispatch(rebootGateway()),
-    dispatchResetGateway: () => dispatch(resetGateway()),
-    dispatchSubmitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))
+    loadGateway: () => dispatch(fetchGateway()),
+    saveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
+    updateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
+    deleteGateway: () => dispatch(deleteGateway()),
+    rebootGateway: () => dispatch(rebootGateway()),
+    resetGateway: () => dispatch(resetGateway()),
+    submitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))
 })
 
 export default connect(

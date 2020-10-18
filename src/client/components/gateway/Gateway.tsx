@@ -1,7 +1,8 @@
 import * as R from 'ramda'
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Card, Divider, Dropdown, Icon, Menu, Modal, Descriptions } from 'antd'
+import { Card, Divider, Dropdown, Menu, Modal, Descriptions } from 'antd'
+import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { GatewayConnectionState, IGateway } from 'shared/types'
 
 import StatusIndicator, { Status } from '@/components/StatusIndicator'
@@ -11,139 +12,107 @@ import './Gateway.css'
 
 const { Item } = Descriptions
 
-interface IGatewayProps {
+interface GatewayProps {
     gateway: IGateway
     initialDataLoading: boolean
-    dispatchSaveGateway: (gateway: IGateway) => void
-    dispatchUpdateGateway: (gateway: Partial<IGateway>) => void
-    dispatchDeleteGateway: () => void
-    dispatchSubmitEditGatewayForm: () => void
-    dispatchRebootGateway: () => void
-    dispatchResetGateway: () => void
+    saveGateway: (gateway: IGateway) => void
+    updateGateway: (gateway: Partial<IGateway>) => void
+    deleteGateway: () => void
+    submitEditGatewayForm: () => void
+    rebootGateway: () => void
+    resetGateway: () => void
 }
 
-interface IGatewayState {
-    editModalVisible: boolean
-}
+const Gateway: React.FC<GatewayProps> = (props) => {
 
-const initialState = {
-    editModalVisible: false,
-}
+    const { gateway } = props
 
-class Gateway extends React.Component<IGatewayProps, IGatewayState> {
+    const [editModalVisible, setEditModalVisible] = useState(false)
 
-    constructor(props: Readonly<IGatewayProps>) {
-        super(props)
-        this.state = initialState
-    }
-
-    public render = () => (
+    return (
         <>
-            <Card title={this.title()} extra={this.actionButtons()}>
+            <Card title={
+                <>
+                    <StatusIndicator
+                        title={statusTitle(gateway.connectionState)}
+                        status={status(gateway.connectionState)}
+                    />
+                    {props.gateway.name}
+                </>
+            } extra={
+                <div className='gateway__actions'>
+                    <a onClick={() => setEditModalVisible(true)}>Edit</a>
+                    <Divider type='vertical' />
+                    <a onClick={() => showDeleteConfirm(props.deleteGateway)}>Delete</a>
+                    <Divider type='vertical' />
+                    <Dropdown trigger={['click']} overlay={<Menu>
+                        <Menu.Item>
+                            <a onClick={() => showRebootConfirm(props.rebootGateway)}>Reboot gateway</a>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <a onClick={() => showResetConfirm(props.rebootGateway)} style={{ color: 'red' }}>Factory reset</a>
+                        </Menu.Item>
+                    </Menu>}>
+                        <a>More <DownOutlined /></a>
+                    </Dropdown>
+                </div>
+            }>
                 <Descriptions size='small' column={1}>
                     <Item label='Connection status'>
-                        {statusTitle(this.props.gateway.connectionState)}
+                        {statusTitle(gateway.connectionState)}
                     </Item>
                     <Item label='Hostname'>
-                        {this.props.gateway.hostname}
+                        {gateway.hostname}
                     </Item>
                     <Item label='Firmware version'>
-                        {this.props.gateway.version}
+                        {gateway.version}
                     </Item>
                 </Descriptions>
             </Card>
             <Modal
                 title='Edit gateway information'
-                visible={this.state.editModalVisible}
-                onOk={this.props.dispatchSubmitEditGatewayForm}
-                onCancel={() => this.setEditModalVisible(false)}
+                visible={editModalVisible}
+                onOk={props.submitEditGatewayForm}
+                onCancel={() => setEditModalVisible(false)}
             >
-                <GatewayEditFormContainer onSubmit={this.handleSubmit} />
+                <GatewayEditFormContainer onSubmit={(gateway: Partial<IGateway>) => {
+                    props.updateGateway(gateway)
+                    setEditModalVisible(false)
+                }}
+                />
             </Modal>
         </>
     )
+}
 
-    private title = () => (
-        <>
-            <StatusIndicator
-                title={statusTitle(this.props.gateway.connectionState)}
-                status={status(this.props.gateway.connectionState)}
-            />
-            {this.props.gateway.name}
-        </>
-    )
+const showDeleteConfirm = (handleDelete: () => void) => {
+    Modal.confirm({
+        title: 'Delete gateway',
+        content: 'Are you sure you want to delete the gateway?',
+        maskClosable: true,
+        onOk: handleDelete
+    })
+}
 
-    private actionButtons = () => (
-        <div className='gateway__actions'>
-            <a onClick={() => this.setEditModalVisible(true)}>Edit</a>
-            <Divider type='vertical' />
-            <a onClick={this.showDeleteConfirm}>Delete</a>
-            <Divider type='vertical' />
-            <Dropdown trigger={['click']} overlay={this.dropdown()}>
-                <a>More <Icon type='down' /></a>
-            </Dropdown>
-        </div>
-    )
+const showRebootConfirm = (handleReboot: () => void) => {
+    Modal.confirm({
+        title: 'Reboot gateway',
+        content: 'Are you sure you want to reboot the gateway?',
+        maskClosable: true,
+        onOk: handleReboot
+    })
+}
 
-    private dropdown = () => (
-        <Menu>
-          <Menu.Item>
-            <a onClick={this.showRebootConfirm}>Reboot gateway</a>
-          </Menu.Item>
-          <Menu.Item>
-            <a onClick={this.showResetConfirm} style={{ color: 'red'}}>Factory reset</a>
-          </Menu.Item>
-        </Menu>
-      )
-
-    private setEditModalVisible = (visible: boolean) => this.setState({ editModalVisible: visible })
-
-    private showDeleteConfirm = () => {
-        Modal.confirm({
-            title: 'Delete gateway',
-            content: 'Are you sure you want to delete the gateway?',
-            maskClosable: true,
-            onOk: this.handleDelete
-        })
-    }
-
-    private showRebootConfirm = () => {
-        Modal.confirm({
-            title: 'Reboot gateway',
-            content: 'Are you sure you want to reboot the gateway?',
-            maskClosable: true,
-            onOk: this.handleReboot
-        })
-    }
-
-    private showResetConfirm = () => {
-        Modal.confirm({
-            title: 'Reset gateway',
-            content: 'Are you sure you want to reset the gateway? ' +
-                ' This wipes everything from the gateway, including paired devices, groups and moods! ' +
-                ' You will also have to generate new credentials to authenticate with the gateway.',
-            maskClosable: true,
-            iconType: 'warning',
-            onOk: this.handleReset
-        })
-    }
-
-    private handleSubmit = (gateway: Partial<IGateway>) => {
-        this.props.dispatchUpdateGateway(gateway)
-        this.setEditModalVisible(false)
-    }
-
-    private handleDelete = () => {
-        this.props.dispatchDeleteGateway()
-    }
-
-    private handleReboot = () => {
-        this.props.dispatchRebootGateway()
-    }
-
-    private handleReset = () => {
-        this.props.dispatchResetGateway()
-    }
+const showResetConfirm = (handleReset: () => void) => {
+    Modal.confirm({
+        title: 'Reset gateway',
+        content: 'Are you sure you want to reset the gateway? ' +
+            ' This wipes everything from the gateway, including paired devices, groups and moods! ' +
+            ' You will also have to generate new credentials to authenticate with the gateway.',
+        maskClosable: true,
+        icon: <ExclamationCircleOutlined />,
+        onOk: handleReset
+    })
 }
 
 const statusTitle = R.cond<number, string>([
