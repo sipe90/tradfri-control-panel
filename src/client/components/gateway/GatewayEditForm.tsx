@@ -23,32 +23,29 @@ const fieldProps = {
     }
 }
 
-const GatewayEditForm: React.FunctionComponent<AllProps> = (props) => {
-    const { handleSubmit } = props
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className='discovery__input'>
-                <div>
-                    <Field
-                        name='name'
-                        validate={required}
-                        component={Input as any}
-                        type='text'
-                        props={fieldProps.name as any}
-                    />
-                </div>
-                <div>
-                    <Field
-                        name='hostname'
-                        validate={required}
-                        component={Input as any}
-                        type='text'
-                        props={fieldProps.hostname as any}
-                    />
-                </div>
+const GatewayEditForm: React.FC<AllProps> = (props) => (
+    <form onSubmit={props.handleSubmit}>
+        <div className='discovery__input'>
+            <div>
+                <Field
+                    name='name'
+                    validate={required}
+                    component={Input}
+                    type='text'
+                    props={fieldProps.name}
+                />
             </div>
-        </form>
-    )
-}
+            <div>
+                <Field
+                    name='hostname'
+                    validate={required}
+                    component={Input}
+                    type='text'
+                    props={fieldProps.hostname}
+                />
+            </div>
+        </div>
+    </form>
+)
 
 export default GatewayEditForm
