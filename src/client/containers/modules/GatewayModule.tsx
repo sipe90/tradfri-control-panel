@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
     deleteGateway, fetchGateway, rebootGateway,
@@ -12,65 +12,32 @@ import { GATEWAY_EDIT_FORM } from '@/containers/gateway/GatewayEditFormContainer
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 import { submit } from 'redux-form'
-import { IGateway } from 'shared/types'
 
-interface IGatewayModuleProps {
-    gateway: IGateway | null
-    initialDataLoading: boolean
-    loadGateway: () => void
-    saveGateway: (gateway: IGateway) => void
-    updateGateway: (gateway: Partial<IGateway>) => void
-    deleteGateway: () => void
-    rebootGateway: () => void
-    resetGateway: () => void
-    submitEditGatewayForm: () => void
+const GatewayModule: React.FC = () => {
+
+    const initialDataLoading = useSelector((state: IAppState) => state.modules.gateway.initialDataLoading)
+    const gateway = useSelector((state: IAppState) => state.entities.gateway)
+
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        dispatch(fetchGateway())
+    }, [])
+
+    return (
+        <Spinner spinning={initialDataLoading}>
+            {!initialDataLoading && (!gateway ? <GatewayWizard /> : <GatewayComponent
+                initialDataLoading={initialDataLoading}
+                gateway={gateway}
+                saveGateway={(gateway) => dispatch(saveGateway(gateway))}
+                updateGateway={(gateway) => dispatch(updateGateway(gateway))}
+                deleteGateway={() => dispatch(deleteGateway())}
+                rebootGateway={() => dispatch(rebootGateway())}
+                resetGateway={() => dispatch(resetGateway())}
+                submitEditGatewayForm={() => dispatch(submit(GATEWAY_EDIT_FORM))}
+            />)}
+        </Spinner>
+    )
 }
 
-class GatewayModule extends Component<IGatewayModuleProps> {
-
-    public componentDidMount() {
-        this.props.loadGateway()
-    }
-
-    public render = () => {
-        const { gateway, initialDataLoading } = this.props
-        return (
-            <Spinner spinning={initialDataLoading}>
-                {!initialDataLoading && (!gateway ? <GatewayWizard /> : this.renderGateway(gateway))}
-            </Spinner>
-        )
-    }
-
-    private renderGateway = (gateway: IGateway) => {
-        const {
-            initialDataLoading, deleteGateway, saveGateway, updateGateway,
-            submitEditGatewayForm, rebootGateway, resetGateway
-        } = this.props
-        const componentProps = {
-            gateway, initialDataLoading, deleteGateway, saveGateway,
-            updateGateway, submitEditGatewayForm, rebootGateway, resetGateway
-        }
-        return <GatewayComponent {...componentProps} />
-    }
-
-}
-
-const mapStateToProps = (state: IAppState) => ({
-    gateway: state.entities.gateway,
-    initialDataLoading: state.modules.gateway.initialDataLoading,
-})
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    loadGateway: () => dispatch(fetchGateway()),
-    saveGateway: (gateway: IGateway) => dispatch(saveGateway(gateway)),
-    updateGateway: (gateway: Partial<IGateway>) => dispatch(updateGateway(gateway)),
-    deleteGateway: () => dispatch(deleteGateway()),
-    rebootGateway: () => dispatch(rebootGateway()),
-    resetGateway: () => dispatch(resetGateway()),
-    submitEditGatewayForm: () => dispatch(submit(GATEWAY_EDIT_FORM))
-})
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(GatewayModule)
+export default GatewayModule
