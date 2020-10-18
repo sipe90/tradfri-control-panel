@@ -1,4 +1,5 @@
-import { Button, Icon, Spin, Table } from 'antd'
+import { Button, Spin, Table } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 import { DiscoveredGateway } from 'node-tradfri-client'
 import * as R from 'ramda'
 import React from 'react'
@@ -85,9 +86,7 @@ const columns: Array<ColumnProps<DiscoveredGateway>> = [{
     title: 'Version',
 }]
 
-const Spinner = <Icon type='loading' className='spinner-icon' spin={true} />
-
-const renderDiscoveryStep = (props: AllProps) => (
+const DiscoveryStep: React.FC<AllProps> = (props) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -108,7 +107,7 @@ const renderDiscoveryStep = (props: AllProps) => (
                 </div>
                 {props.discoveryInProgress &&
                     <div className='discovery__status'>
-                        <Spin indicator={Spinner} />
+                        <Spin indicator={<LoadingOutlined spin />} />
                         <span className='status-text'>Looking for a gateway...</span>
                     </div>
                 }
@@ -128,18 +127,18 @@ const renderDiscoveryStep = (props: AllProps) => (
                     <Field
                         name='name'
                         validate={required}
-                        component={Input as any}
+                        component={Input}
                         type='text'
-                        props={fieldProps.name as any}
+                        props={fieldProps.name}
                     />
                 </div>
                 <div>
                     <Field
                         name='hostname'
                         validate={required}
-                        component={Input as any}
+                        component={Input}
                         type='text'
-                        props={fieldProps.hostname as any}
+                        props={fieldProps.hostname}
                     />
                 </div>
             </div>
@@ -155,9 +154,9 @@ const renderDiscoveryStep = (props: AllProps) => (
             </div>
         </div>
     </div>
-    )
+)
 
-const renderAuthenticationStep = (props: AllProps) => (
+const AuthenticationStep: React.FC<AllProps> = (props) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -173,19 +172,19 @@ const renderAuthenticationStep = (props: AllProps) => (
                 <div>
                     <Field
                         name='securityCode'
-                        component={Search as any}
+                        component={Search}
                         type='text'
                         props={{
                             validateStatus: props.identityGenerationError ? 'error' : null,
                             help: props.identityGenerationError ? props.identityGenerationError.message : null,
                             onSearch: () => props.generateIdentity(props.hostnameValue, props.securityCodeValue),
                             ...fieldProps.securityCode,
-                        } as any}
+                        }}
                     />
                 </div>
                 {props.identityGenerationInProgress &&
                     <div className='auth__status'>
-                        <Spin indicator={Spinner} />
+                        <Spin indicator={<LoadingOutlined spin />} />
                         <span className='status-text'>Generating identity...</span>
                     </div>
                 }
@@ -195,18 +194,18 @@ const renderAuthenticationStep = (props: AllProps) => (
                     <Field
                         name='identity'
                         validate={required}
-                        component={Input as any}
+                        component={Input}
                         type='text'
-                        props={fieldProps.identity as any}
+                        props={fieldProps.identity}
                     />
                 </div>
                 <div>
                     <Field
                         name='psk'
                         validate={required}
-                        component={Input as any}
+                        component={Input}
                         type='text'
-                        props={fieldProps.psk as any}
+                        props={fieldProps.psk}
                     />
                 </div>
             </div>
@@ -232,7 +231,7 @@ const renderAuthenticationStep = (props: AllProps) => (
     </div>
 )
 
-const renderTestConnectionStep = (props: AllProps) => (
+const TestConnectionStep: React.FC<AllProps> = (props) => (
     <div>
         <div className='form-section__content'>
             <div>
@@ -251,7 +250,7 @@ const renderTestConnectionStep = (props: AllProps) => (
                 </div>
                 {props.connectionTestInProgress &&
                     <div>
-                        <Spin indicator={Spinner} />
+                        <Spin indicator={<LoadingOutlined spin />} />
                         <span className='status-text'>Connecting to gateway...</span>
                     </div>
                 }
@@ -259,7 +258,7 @@ const renderTestConnectionStep = (props: AllProps) => (
                     <div>
                         {props.connectionTestResult.success ?
                             <span className='test__status--success'>Successfully connected to gateway!</span>
-                                : <span className='test__status--failure'>Failed to connect to gateway</span>
+                            : <span className='test__status--failure'>Failed to connect to gateway</span>
                         }
                     </div>
                 }
@@ -291,9 +290,9 @@ const GatewayWizardForm: React.FunctionComponent<AllProps> = (props) => {
     const { handleSubmit, step } = props
     return (
         <form onSubmit={handleSubmit}>
-            {step === 0 && renderDiscoveryStep(props)}
-            {step === 1 && renderAuthenticationStep(props)}
-            {step === 2 && renderTestConnectionStep(props)}
+            {step === 0 && <DiscoveryStep {...props} />}
+            {step === 1 && <AuthenticationStep {...props} />}
+            {step === 2 && <TestConnectionStep {...props} />}
         </form>
     )
 }

@@ -1,19 +1,11 @@
 import { Steps } from 'antd'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
 import GatewayWizardFormContainer from '@/containers/gateway/GatewayWizardFormContainer'
 
 import './GatewayWizard.css'
 
 const { Step } = Steps
-
-interface IGatewayWizardState {
-    step: number
-}
-
-const initialState = {
-    step: 0,
-}
 
 const steps = [{
     stepName: 'Discover',
@@ -26,48 +18,42 @@ const steps = [{
     title: 'Test gateway connection',
 }]
 
-class GatewayWizard extends Component<{}, IGatewayWizardState> {
+const GatewayWizard: React.FC = () => {
 
-    public scrollAnchor: HTMLDivElement | null
+    const [scrollAnchor, setScrollAnchor] = useState<HTMLDivElement | null>(null)
+    const [step, setStep] = useState(0)
 
-    constructor(props: {}) {
-        super(props)
-        this.state = initialState
-        this.scrollAnchor = null
+    const { title } = steps[step]
+
+    const nextStep = () => {
+        setStep(Math.min(step + 1, 2))
+        scrollAnchor && scrollAnchor.scrollIntoView(true)
     }
 
-    public render() {
-        const { title } = steps[this.state.step]
-        return (
-            <div className='gateway-wizard' ref={(e) => this.scrollAnchor = e} >
-                <div className='gateway-wizard__steps'>
-                    <Steps size='small' current={this.state.step}>
-                        {steps.map(({ stepName }, idx) => <Step key={idx} title={stepName} />)}
-                    </Steps>
-                </div>
-                <div className='gateway-wizard__title'>
-                    {title}
-                </div>
-                <div>
-                    <GatewayWizardFormContainer
-                        step={this.state.step}
-                        nextStep={() => this.nextStep()}
-                        previousStep={() => this.previousStep()}
-                    />
-                </div>
+    const previousStep = () => {
+        setStep(Math.max(step - 1, 0))
+        scrollAnchor && scrollAnchor.scrollIntoView(true)
+    }
+
+    return (
+        <div className='gateway-wizard' ref={setScrollAnchor} >
+            <div className='gateway-wizard__steps'>
+                <Steps size='small' current={step}>
+                    {steps.map(({ stepName }, idx) => <Step key={idx} title={stepName} />)}
+                </Steps>
             </div>
-        )
-    }
-
-    private nextStep() {
-        this.setState({ step: Math.min(this.state.step + 1, 2) })
-        this.scrollAnchor && this.scrollAnchor.scrollIntoView(true)
-    }
-
-    private previousStep() {
-        this.setState({ step: Math.max(this.state.step - 1, 0) })
-        this.scrollAnchor && this.scrollAnchor.scrollIntoView(true)
-    }
+            <div className='gateway-wizard__title'>
+                {title}
+            </div>
+            <div>
+                <GatewayWizardFormContainer
+                    step={step}
+                    nextStep={nextStep}
+                    previousStep={previousStep}
+                />
+            </div>
+        </div>
+    )
 }
 
 export default GatewayWizard
