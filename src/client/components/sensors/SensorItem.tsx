@@ -1,99 +1,70 @@
 import { Button, Input, List, Popover } from 'antd'
 import PencilIcon from 'mdi-react/PencilIcon'
 import * as R from 'ramda'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
-import StatusIndicator from '@/components/StatusIndicator'
-import { ISensor } from 'shared/types'
+import StatusIndicator, { Status } from '@/components/StatusIndicator'
+import { IDevice, ISensor } from 'shared/types'
 
 import './SensorItem.css'
 
-interface ISensorItemProps {
+interface SensorItemProps {
     sensor: ISensor
-    sensorStateChanged: (sensor: ISensor) => void
     updateSensor: (sensor: ISensor) => void
 }
 
-interface ISensorItemState {
-    editNameVisible: boolean
-    editNameText: string
+const SensorItem: React.FC<SensorItemProps> = (props) => {
+
+    const { sensor, updateSensor } = props
+
+    const [editNameVisible, setEditNameVisible] = useState(false)
+    const [editNameText, setEditNameText] = useState('')
+
+    return (
+        <List.Item>
+            <List.Item.Meta
+                title={
+                    <div className='sensor-item__title'>
+                        <StatusIndicator title={statusTitle(sensor)} status={status(sensor)} />
+                        <span>{sensor.name}</span>
+                        <Popover
+                            title='Edit name'
+                            trigger='click'
+                            visible={editNameVisible}
+                            onVisibleChange={(visible) => {
+                                visible && setEditNameText(sensor.name)
+                                setEditNameVisible(visible)
+                            }}
+                            content={
+                                <div className='sensor-item__popover'>
+                                    <Input value={editNameText} onChange={(event) => setEditNameText(event.target.value)} />
+                                    <Button
+                                        type='primary' size='small' onClick={() => {
+                                            updateSensor({ ...sensor, name: editNameText })
+                                            setEditNameVisible(false)
+                                        }}
+                                    >Update</Button>
+                                </div>
+                            }
+                        >
+                            <span className='sensor-item__name-edit'>
+                                <PencilIcon size={12} />
+                            </span>
+                        </Popover>
+                    </div>
+                }
+                description='Motion sensor'
+            />
+        </List.Item>
+    )
 }
 
-const initialState = {
-    editNameText: '',
-    editNameVisible: false,
-}
-
-class SensorItem extends Component<ISensorItemProps, ISensorItemState> {
-
-    constructor(props: Readonly<ISensorItemProps>) {
-        super(props)
-        this.state = initialState
-    }
-
-    public render() {
-        return (
-            <List.Item>
-                <List.Item.Meta
-                    title={this.title(this.props.sensor)}
-                    description='Motion sensor'
-                />
-            </List.Item>
-        )
-    }
-
-    private title(sensor: ISensor) {
-        return (
-            <div className='sensor-item__title'>
-                <StatusIndicator title={statusTitle(sensor)} status={status(sensor)} />
-                <span>{sensor.name}</span>
-                <Popover
-                    title='Edit name'
-                    trigger='click'
-                    visible={this.state.editNameVisible}
-                    onVisibleChange={this.onEditNameVisibleChanged.bind(this)}
-                    content={this.editName()}
-                >
-                    <span className='sensor-item__name-edit'>
-                        <PencilIcon size={12} />
-                    </span>
-                </Popover>
-            </div>
-        )
-    }
-
-    private editName() {
-        return (
-            <div className='sensor-item__popover'>
-                <Input value={this.state.editNameText} onChange={this.editNameChanged.bind(this)} />
-                <Button type='primary' size='small' onClick={this.updateName.bind(this)} >Update</Button>
-            </div>
-        )
-    }
-
-    private onEditNameVisibleChanged(visible: boolean) {
-        visible && this.setState({ editNameText: this.props.sensor.name })
-        this.setState({ editNameVisible: visible })
-    }
-
-    private editNameChanged(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ editNameText: event.target.value })
-    }
-
-    private updateName() {
-        const newSensorState = { ...this.props.sensor, name: this.state.editNameText }
-        this.props.updateSensor(newSensorState)
-        this.props.sensorStateChanged(newSensorState)
-        this.setState({ editNameVisible: false })
-    }
-}
-
-const statusTitle = R.cond([
+const statusTitle = R.cond<IDevice, string>([
     [R.propEq('alive', true), R.always('Sensor is connected')],
     [R.T, R.always('Sensor is disconnected')]
 ])
 
-const status = R.cond([
+const status = R.cond<IDevice, Status>([
     [R.propEq('alive', true), R.always('online')],
     [R.T, R.always('offline')]
 ])
