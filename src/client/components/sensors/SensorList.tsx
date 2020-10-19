@@ -8,30 +8,25 @@ import { Dictionary, ISensor } from 'shared/types'
 
 import './SensorList.css'
 
-interface ISensorListProps {
+interface SensorListProps {
     sensors: Dictionary<ISensor>
     initialDataLoading: boolean
-    sensorStateChanged: (sensor: ISensor) => void
     updateSensor: (sensor: ISensor) => void
 }
 
-const SensorList: React.FunctionComponent<ISensorListProps> = (props) => (
+const SensorList: React.FC<SensorListProps> = (props) => (
     <Spinner spinning={props.initialDataLoading}>
         <List
             itemLayout='vertical'
             dataSource={R.values(props.sensors)}
-            renderItem={(item: ISensor) => renderItem(item, props)}
+            renderItem={(sensor) =>
+                <SensorItem
+                    key={sensor.id}
+                    sensor={sensor}
+                    updateSensor={props.updateSensor}
+                />}
         />
     </Spinner>
-)
-
-const renderItem = (sensor: ISensor, { sensorStateChanged, updateSensor }: ISensorListProps) => (
-    <SensorItem
-        key={sensor.id}
-        sensor={sensor}
-        sensorStateChanged={sensorStateChanged}
-        updateSensor={updateSensor}
-    />
 )
 
 export default SensorList
