@@ -5,11 +5,11 @@ import { IRouteDefinition } from '@/routeDefs'
 
 import './Routes.css'
 
-interface IRoutesProps {
+interface RoutesProps {
     routes: IRouteDefinition[]
 }
 
-const Routes: React.FunctionComponent<IRoutesProps> = (props) => {
+const Routes: React.FC<RoutesProps> = (props) => {
     return (
         <Switch>
             <Route

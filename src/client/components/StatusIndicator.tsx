@@ -5,7 +5,7 @@ import CircleIcon from 'mdi-react/CircleIcon'
 
 import './StatusIndicator.css'
 
-interface IStatusIndicatorProps {
+interface StatusIndicatorProps {
     title: string
     status: Status
     size?: number
@@ -19,7 +19,7 @@ const statusColors: { [key in Status]: string } = {
     offline: '#CC0000'
 }
 
-const StatusIndicator: React.FunctionComponent<IStatusIndicatorProps> = (props) =>  (
+const StatusIndicator: React.FC<StatusIndicatorProps> = (props) => (
     <span className='status'>
         <Tooltip title={props.title}>
             <CircleIcon

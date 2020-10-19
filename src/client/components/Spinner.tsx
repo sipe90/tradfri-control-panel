@@ -1,18 +1,18 @@
-import { Icon, Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 import React from 'react'
 
 import './Spinner.css'
 
-interface ISpinnerProps {
-    children: React.ReactNode
+interface SpinnerProps {
     spinning: boolean
 }
 
-const Spinner: React.FunctionComponent<ISpinnerProps> = (props) => (
+const Spinner: React.FC<SpinnerProps> = (props) => (
     <Spin
         className='spinner'
         spinning={props.spinning}
-        indicator={<Icon type='loading' className='spinner__icon' spin={true} />}
+        indicator={<LoadingOutlined className='spinner__icon' spin />}
     >
         {props.children}
     </Spin>

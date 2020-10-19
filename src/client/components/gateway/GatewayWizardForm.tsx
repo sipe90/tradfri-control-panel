@@ -12,6 +12,7 @@ import { IConnectionTestResult } from '@/types'
 import { ColumnProps } from 'antd/lib/table'
 
 import './GatewayWizardForm.css'
+import Spinner from '../Spinner'
 
 export interface IGatewayWizardFormValues {
     name: string
@@ -107,7 +108,7 @@ const DiscoveryStep: React.FC<AllProps> = (props) => (
                 </div>
                 {props.discoveryInProgress &&
                     <div className='discovery__status'>
-                        <Spin indicator={<LoadingOutlined spin />} />
+                        <Spinner spinning />
                         <span className='status-text'>Looking for a gateway...</span>
                     </div>
                 }
@@ -184,7 +185,7 @@ const AuthenticationStep: React.FC<AllProps> = (props) => (
                 </div>
                 {props.identityGenerationInProgress &&
                     <div className='auth__status'>
-                        <Spin indicator={<LoadingOutlined spin />} />
+                        <Spinner spinning />
                         <span className='status-text'>Generating identity...</span>
                     </div>
                 }
@@ -250,7 +251,7 @@ const TestConnectionStep: React.FC<AllProps> = (props) => (
                 </div>
                 {props.connectionTestInProgress &&
                     <div>
-                        <Spin indicator={<LoadingOutlined spin />} />
+                        <Spinner spinning />
                         <span className='status-text'>Connecting to gateway...</span>
                     </div>
                 }
