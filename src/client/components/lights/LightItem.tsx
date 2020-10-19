@@ -4,189 +4,159 @@ import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import PencilIcon from 'mdi-react/PencilIcon'
 import ThermometerIcon from 'mdi-react/ThermometerIcon'
 import * as R from 'ramda'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
 import ConditionalWrap from '@/components/ConditionalWrap'
-import StatusIndicator from '@/components/StatusIndicator'
+import StatusIndicator, { Status } from '@/components/StatusIndicator'
 import { ILight } from 'shared/types'
 
 import './LightItem.css'
+import { percentFormatter } from '@/utils'
 
-interface ILightItemProps {
+interface LightItemProps {
     light: ILight
     circadianEnabled: boolean
-    lightStateChanged: (light: ILight) => void
-    updateLight: (light: ILight) => void
+    updateLight: (light: ILight, sync: boolean) => void
 }
 
-interface IState {
-    editNameVisible: boolean
-    editNameText: string
+const LightItem: React.FC<LightItemProps> = (props) => {
+
+    const { light, circadianEnabled, updateLight } = props
+
+    const [editNameVisible, setEditNameVisible] = useState(false)
+    const [editNameText, setEditNameText] = useState('')
+
+    return (
+        <List.Item>
+            <List.Item.Meta
+                className='light-item__meta'
+                title={
+                    <div className='light-item__title'>
+                        <StatusIndicator title={statusTitle(light)} status={status(light)} />
+                        <span>{light.name}</span>
+                        <Popover
+                            title='Edit name'
+                            trigger='click'
+                            visible={editNameVisible}
+                            onVisibleChange={(visible) => {
+                                visible && setEditNameText(light.name)
+                                setEditNameVisible(visible)
+                            }}
+                            content={
+                                <div className='light-item__popover'>
+                                    <Input value={editNameText} onChange={(event) => setEditNameText(event.target.value)} />
+                                    <Button type='primary' size='small' onClick={() => {
+                                        updateLight({ ...light, name: editNameText }, true)
+                                        setEditNameVisible(false)
+                                    }} >Update</Button>
+                                </div>
+                            }
+                        >
+                            <span className='light-item__name-edit'>
+                                <PencilIcon size={12} />
+                            </span>
+                        </Popover>
+                    </div>
+                }
+                description={getDescription(light)}
+            />
+            <ControlTable
+                light={light}
+                circadianEnabled={circadianEnabled}
+                updateLight={updateLight}
+            />
+        </List.Item>
+    )
 }
 
-const getDescription = R.cond([
+interface ControlTableProps {
+    light: ILight
+    circadianEnabled: boolean
+    updateLight: (light: ILight, sync: boolean) => void
+}
+
+const ControlTable: React.FC<ControlTableProps> = (props) => {
+
+    const { light, circadianEnabled, updateLight } = props
+
+    return (
+        <table className='light-item__table'>
+            <tbody>
+                <tr>
+                    <td><LightbulbOnOutlineIcon size={18} /></td>
+                    <td><span>Power</span></td>
+                    <td>
+                        <Switch
+                            size='small'
+                            defaultChecked={light.on || undefined}
+                            disabled={!light.switchable || !light.alive}
+                            onChange={(on) => updateLight({ ...light, on }, true)}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td><Brightness5Icon size={18} /></td>
+                    <td><span>Brightness</span></td>
+                    <td>
+                        <Slider
+                            min={1}
+                            max={100}
+                            defaultValue={light.brightness || undefined}
+                            disabled={!light.dimmable || !light.alive}
+                            onChange={(brightness: number) => updateLight({ ...light, brightness }, false)}
+                            onAfterChange={(brightness: number) => updateLight({ ...light, brightness }, true)}
+                            tipFormatter={percentFormatter}
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td><ThermometerIcon size={18} /></td>
+                    <td><span>Temperature</span></td>
+                    <td>
+                        <ConditionalWrap
+                            condition={circadianEnabled}
+                            wrap={(children) =>
+                                <Tooltip
+                                    title="Disable circadian feature for this light's group to adjust temperature"
+                                >
+                                    {children}
+                                </Tooltip>}
+                        >
+                            <div>
+                                <Slider
+                                    min={1}
+                                    max={100}
+                                    defaultValue={light.colorTemperature || undefined}
+                                    disabled={
+                                        light.spectrum === 'none' ||
+                                        !light.alive ||
+                                        circadianEnabled
+                                    }
+                                    onChange={(colorTemperature: number) => updateLight({ ...light, colorTemperature }, false)}
+                                    onAfterChange={(colorTemperature: number) => updateLight({ ...light, colorTemperature }, true)}
+                                    tipFormatter={percentFormatter}
+                                />
+                            </div>
+                        </ConditionalWrap>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    )
+}
+
+const getDescription = R.cond<ILight, string>([
     [R.propEq('spectrum', 'white'), R.always('White spectrum light bulb')],
     [R.propEq('spectrum', 'rgb'), R.always('RGB spectrum light bulb')],
     [R.T, R.always('Light bulb')],
 ])
 
-const percentFormatter = (v: number) => `${v}%`
-
-class LightItem extends Component<ILightItemProps, IState> {
-
-    public readonly state: IState = {
-        editNameText: '',
-        editNameVisible: false,
-    }
-
-    public render() {
-        return (
-            <List.Item>
-                <List.Item.Meta
-                    className='light-item__meta'
-                    title={this.title(this.props.light)}
-                    description={getDescription(this.props.light)}
-                />
-                {this.controlTable(this.props.light)}
-            </List.Item>
-        )
-    }
-
-    private title(light: ILight) {
-        return (
-            <div className='light-item__title'>
-                <StatusIndicator title={statusTitle(light)} status={status(light)}/>
-                <span>{light.name}</span>
-                <Popover
-                    title='Edit name'
-                    trigger='click'
-                    visible={this.state.editNameVisible}
-                    onVisibleChange={this.onEditNameVisibleChanged}
-                    content={this.editName()}
-                >
-                    <span className='light-item__name-edit'>
-                        <PencilIcon size={12} />
-                    </span>
-                </Popover>
-            </div>
-        )
-    }
-
-    private editName() {
-        return (
-            <div className='light-item__popover'>
-                <Input value={this.state.editNameText} onChange={this.editNameChanged} />
-                <Button type='primary' size='small' onClick={this.updateName} >Update</Button>
-            </div>
-        )
-    }
-
-    private onEditNameVisibleChanged = (visible: boolean) => {
-        visible && this.setState({ editNameText: this.props.light.name })
-        this.setState({ editNameVisible: visible })
-    }
-
-    private editNameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ editNameText: event.target.value })
-    }
-
-    private updateName = () => {
-        const newLightState = { ...this.props.light, name: this.state.editNameText }
-        this.props.updateLight(newLightState)
-        this.props.lightStateChanged(newLightState)
-        this.setState({ editNameVisible: false })
-    }
-
-    private powerSwitched = (newValue: boolean) => {
-        const newLightState = { ...this.props.light, on: newValue }
-        this.props.lightStateChanged(newLightState)
-        this.props.updateLight(newLightState)
-    }
-
-    private brightnessChanged = (newValue: number) => {
-        const newLightState = { ...this.props.light, brightness: newValue }
-        this.props.lightStateChanged(newLightState)
-    }
-
-    private temperatureChanged = (newValue: number) => {
-        const newLightState = { ...this.props.light, colorTemperature: newValue }
-        this.props.lightStateChanged(newLightState)
-    }
-
-    private controlTable = (light: ILight) => {
-        return (
-            <table className='light-item__table'>
-                <tbody>
-                    <tr>
-                        <td><LightbulbOnOutlineIcon size={18} /></td>
-                        <td><span>Power</span></td>
-                        <td>
-                            <Switch
-                                size='small'
-                                checked={light.on}
-                                disabled={!light.switchable || !light.alive}
-                                onChange={this.powerSwitched}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><Brightness5Icon size={18} /></td>
-                        <td><span>Brightness</span></td>
-                        <td>
-                            <Slider
-                                min={1}
-                                max={100}
-                                value={light.brightness}
-                                disabled={!light.dimmable || !light.alive}
-                                onChange={(value) => this.brightnessChanged(value as number)}
-                                onAfterChange={() => this.props.updateLight(this.props.light)}
-                                tipFormatter={percentFormatter}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><ThermometerIcon size={18} /></td>
-                        <td><span>Temperature</span></td>
-                        <td>
-                            <ConditionalWrap
-                                condition={this.props.circadianEnabled}
-                                wrap={(children) =>
-                                    <Tooltip
-                                        title="Disable circadian feature for this light's group to adjust temperature"
-                                    >
-                                        {children}
-                                    </Tooltip>}
-                            >
-                                <div>
-                                    <Slider
-                                        min={1}
-                                        max={100}
-                                        value={light.colorTemperature}
-                                        disabled={
-                                            light.spectrum === 'none' ||
-                                            !light.alive ||
-                                            this.props.circadianEnabled
-                                        }
-                                        onChange={(value) => this.temperatureChanged(value as number)}
-                                        onAfterChange={() => this.props.updateLight(this.props.light)}
-                                        tipFormatter={percentFormatter}
-                                    />
-                                </div>
-                            </ConditionalWrap>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        )
-    }
-}
-
-const statusTitle = R.cond([
+const statusTitle = R.cond<ILight, string>([
     [R.propEq('alive', true), R.always('Light is connected')],
     [R.T, R.always('Light is disconnected')]
 ])
 
-const status = R.cond([
+const status = R.cond<ILight, Status>([
     [R.propEq('alive', true), R.always('online')],
     [R.T, R.always('offline')]
 ])

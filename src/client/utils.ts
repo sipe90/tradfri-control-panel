@@ -10,6 +10,8 @@ export const devicesForGroup = (group: IGroup, devices: Dictionary<IDevice>) =>
 export const lightsForGroup = (group: IGroup, lights: Dictionary<ILight>) =>
     R.values(R.pick(R.map(String, group.devices), lights))
 
+export const percentFormatter = (v: number | undefined) => `${v !== undefined ? v : '?'}%`
+
 type ActionReducePair<S, A extends Action> = [A['type'], (state: S, action: A) => S]
 type ActionPredicateReducePair<S, A extends Action> = [(type: A['type']) => boolean, () => S]
 
@@ -25,7 +27,7 @@ export const createReducer = <S, A extends Action = AnyAction>(
                 ([type, reduce]) => [R.equals(type), () => reduce(state || initialState, action)],
                 actionReducers
             )
-            .concat([[R.T, R.always(state || initialState)]]),
+                .concat([[R.T, R.always(state || initialState)]]),
         )(action.type)
 
 type JsonResponse<E> = ({
@@ -33,12 +35,12 @@ type JsonResponse<E> = ({
     status: number
     statusText: string
 } & ({
-        ok: true
-        json: E
-    } | {
-        ok: false
-        json: IErrorResponse | null
-    })
+    ok: true
+    json: E
+} | {
+    ok: false
+    json: IErrorResponse | null
+})
 )
 
 interface IErrorResponse {
@@ -49,7 +51,7 @@ interface IErrorResponse {
 
 const isJsonResponse = (headers: Headers) => (headers.get('content-type') || '').includes('application/json')
 
-const fetchJson = async <E> (url: string, init?: RequestInit): Promise<JsonResponse<E>> => {
+const fetchJson = async <E>(url: string, init?: RequestInit): Promise<JsonResponse<E>> => {
     const res = await fetch(url, init)
     const { headers, json, ok, status, statusText } = res
 
@@ -62,21 +64,21 @@ const fetchJson = async <E> (url: string, init?: RequestInit): Promise<JsonRespo
         status,
         statusText,
     } : {
-        headers,
-        json: resJson as IErrorResponse,
-        ok,
-        status,
-        statusText,
-    }
+            headers,
+            json: resJson as IErrorResponse,
+            ok,
+            status,
+            statusText,
+        }
 }
 
-export const fetchGetJson = <E = any> (url: string) => fetchJson<E>(url)
+export const fetchGetJson = <E = any>(url: string) => fetchJson<E>(url)
 
-export const fetchPostJson = <E = any> (url: string, body?: object | string) =>
+export const fetchPostJson = <E = any>(url: string, body?: object | string) =>
     fetchJson<E>(url, {
         body: typeof body === 'string' ? body : JSON.stringify(body),
         headers: typeof body === 'undefined' ? undefined : { 'content-type': 'application/json' },
         method: 'POST',
     })
 
-export const fetchDeleteJson = <E = any> (url: string) => fetchJson<E>(url, { method: 'DELETE' })
+export const fetchDeleteJson = <E = any>(url: string) => fetchJson<E>(url, { method: 'DELETE' })
