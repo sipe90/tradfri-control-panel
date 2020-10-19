@@ -10,11 +10,10 @@ import StatusIndicator, { Status } from '@/components/StatusIndicator'
 import { Dictionary, ICircadianSettings, IGroup, IGroupUpdateRequest, ILight } from 'shared/types'
 
 import './LightGroups.css'
-import { lightsForGroup } from '@/utils'
+import { lightsForGroup, percentFormatter } from '@/utils'
 
 const Item = List.Item
 
-const percentFormatter = (v: number | undefined) => `${v}%`
 const anyLightIsOn = R.any<ILight>(R.propOr(false, 'on'))
 const lightBrightnesses = R.reduce<ILight, number[]>((acc, light) => (!!light.brightness && acc.push(light.brightness), acc), [])
 const avgBrightness = R.converge(R.divide, [R.pipe(lightBrightnesses, R.sum), R.length])
@@ -24,7 +23,7 @@ interface LightGroupsProps {
     lights: Dictionary<ILight>
     initialDataLoading: boolean
     circadianSettings: ICircadianSettings
-    lightStateChanged: (light: ILight) => void
+    updateLight: (light: ILight, sync: boolean) => void
     updateGroup: (groupUpdate: IGroupUpdateRequest) => void
     enableCircadian: (groupId: string) => void
     disableCircadian: (groupId: string) => void
@@ -32,31 +31,33 @@ interface LightGroupsProps {
 
 const LightGroups: React.FC<LightGroupsProps> = (props) => {
 
+    const { groups, lights, circadianSettings, updateGroup, updateLight, enableCircadian, disableCircadian } = props
+
     const isCircadianEnabled = (group: IGroup) =>
-        props.circadianSettings.groupIds.includes(String(group.id))
+        circadianSettings.groupIds.includes(String(group.id))
 
     const areCircadianSettingsValid = () => {
-        const { latitude, longitude } = props.circadianSettings
+        const { latitude, longitude } = circadianSettings
         return !R.isEmpty(latitude) && !R.isEmpty(longitude)
     }
 
     const powerSwitched = ({ id }: IGroup, groupLights: ILight[]) => (on: boolean) => {
-        props.updateGroup({ id, on })
+        updateGroup({ id, on })
         for (const light of groupLights) {
-            props.lightStateChanged({ ...light, on })
+            updateLight({ ...light, on }, false)
         }
     }
 
     const brightnessChanged = (groupLights: ILight[]) => (brightness: number) => {
         for (const light of groupLights) {
-            props.lightStateChanged({ ...light, brightness })
+            updateLight({ ...light, brightness }, false)
         }
     }
 
     return (
         <>
-            {R.values(props.groups).map((group, idx) => {
-                const groupLights = lightsForGroup(group, props.lights)
+            {R.values(groups).map((group, idx) => {
+                const groupLights = lightsForGroup(group, lights)
                 if (group.default && !groupLights.length) return
                 return (
                     <Card key={idx} className='light-group__card' title={group.name}>
@@ -84,8 +85,8 @@ const LightGroups: React.FC<LightGroupsProps> = (props) => {
                                             size='small'
                                             onChange={
                                                 (newValue) => newValue ?
-                                                    props.enableCircadian(String(group.id)) :
-                                                    props.disableCircadian(String(group.id))
+                                                    enableCircadian(String(group.id)) :
+                                                    disableCircadian(String(group.id))
                                             }
                                         />
                                     </td>
@@ -101,7 +102,7 @@ const LightGroups: React.FC<LightGroupsProps> = (props) => {
                                             max={100}
                                             onChange={brightnessChanged(groupLights)}
                                             onAfterChange={(newValue: number) =>
-                                                props.updateGroup({ id: group.id, brightness: newValue })}
+                                                updateGroup({ id: group.id, brightness: newValue })}
                                             tipFormatter={percentFormatter}
                                         />
                                     </td>

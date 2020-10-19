@@ -44,7 +44,7 @@ const updateLightFailure = (error: Error) => ({
     payload: error
 })
 
-export const lightStateChanged = (lightProps: ILight) => ({
+const lightStateChanged = (lightProps: ILight) => ({
     type: LIGHT_STATE_CHANGED,
     payload: lightProps
 })
@@ -63,7 +63,11 @@ export const fetchLights: ActionCreator<ThunkResult> = () => async (dispatch) =>
     }
 }
 
-export const updateLight: ActionCreator<ThunkResult> = (light: ILight) => async (dispatch) => {
+export const updateLight: ActionCreator<ThunkResult> = (light: ILight, sync: boolean) => async (dispatch) => {
+    if (!sync) {
+        dispatch(lightStateChanged(light))
+        return
+    }
     try {
         dispatch(updateLightRequest())
         const res = await fetchPostJson<void>(`/api/lights/${light.id}`, light)
