@@ -1,42 +1,44 @@
 import CircadianSettingsFormContainer from '@/containers/settings/CircadianSettingsFormContainer'
 import { Button, Card } from 'antd'
-import React, { Component } from 'react'
-
+import React from 'react'
 import { FormAction } from 'redux-form'
-import './Circadian.css'
+
 import { ICircadianSettingsFormValues } from './CircadianSettingsForm'
 
-interface ICircadianProps {
-    dispatchUpdateCircadianSettings: (settings: ICircadianSettingsFormValues) => Promise<void>
-    dispatchSubmitCircadianSettingsForm: () => FormAction
+import './Circadian.css'
+
+interface CircadianProps {
+    updateCircadianSettings: (settings: ICircadianSettingsFormValues) => Promise<void>
+    submitCircadianSettingsForm: () => FormAction
 }
 
-class Circadian extends Component<ICircadianProps> {
-    public render = () => {
-        return (
-            <Card >
-                <div style={{ textAlign: 'left' }}>
-                    {description}
-                </div>
-                <CircadianSettingsFormContainer
-                    onSubmit={this.props.dispatchUpdateCircadianSettings}
-                />
-                <div style={{ float: 'right'}}>
-                    <Button
-                        type='primary'
-                        onClick={this.props.dispatchSubmitCircadianSettingsForm}
-                    >
-                        Save
+const Circadian: React.FC<CircadianProps> = (props) => {
+
+    const { submitCircadianSettingsForm, updateCircadianSettings } = props
+
+    return (
+        <Card>
+            <div style={{ textAlign: 'left' }}>
+                {description}
+            </div>
+            <CircadianSettingsFormContainer
+                onSubmit={updateCircadianSettings}
+            />
+            <div style={{ float: 'right' }}>
+                <Button
+                    type='primary'
+                    onClick={submitCircadianSettingsForm}
+                >
+                    Save
                     </Button>
-                </div>
-            </Card>
-        )
-    }
+            </div>
+        </Card>
+    )
 }
 
 const description = (
     <>
-        <div style={{fontWeight: 'bold', marginBottom: 12 }}>Description</div>
+        <div style={{ fontWeight: 'bold', marginBottom: 12 }}>Description</div>
         <p>
             {
                 'Circadian lighting is a type of lighting that changes it\'s the color temperature ' +
