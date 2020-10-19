@@ -1,45 +1,32 @@
 
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { submit } from 'redux-form'
+
 import { fetchCircadianSettings, saveCircadianSettings } from '@/actions/settings'
 import Circadian from '@/components/settings/Circadian'
-import { ICircadianSettingsFormValues } from '@/components/settings/CircadianSettingsForm'
 import Tabbed from '@/components/Tabbed'
 import { AppDispatch } from '@/types'
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { FormAction, submit } from 'redux-form'
-import { CIRCADIAN_SETTINGS_FORM } from '../settings/CircadianSettingsFormContainer'
+import { CIRCADIAN_SETTINGS_FORM } from '@/containers/settings/CircadianSettingsFormContainer'
 
-interface ISettingsModuleProps {
-    dispatchFetchCircadianSettings: () => void
-    dispatchUpdateCircadianSettings: (settings: ICircadianSettingsFormValues) => Promise<void>
-    dispatchSubmitCircadianSettingsForm: () => FormAction
+const SettingsModule: React.FC = () => {
+
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        dispatch(fetchCircadianSettings())
+    }, [])
+
+    const tabs = [{
+        title: 'Circadian',
+        component: (
+            <Circadian
+                updateCircadianSettings={(settings) => dispatch(saveCircadianSettings(settings))}
+                submitCircadianSettingsForm={() => dispatch(submit(CIRCADIAN_SETTINGS_FORM))}
+            />
+        )
+    }]
+    return <Tabbed tabs={tabs} />
 }
 
-class SettingsModule extends Component<ISettingsModuleProps> {
-
-    public componentDidMount = () => {
-        this.props.dispatchFetchCircadianSettings()
-    }
-
-    public render = () => {
-        const tabs = [{
-            title: 'Circadian',
-            component: (
-                <Circadian
-                    dispatchUpdateCircadianSettings={this.props.dispatchUpdateCircadianSettings}
-                    dispatchSubmitCircadianSettingsForm={this.props.dispatchSubmitCircadianSettingsForm}
-                />
-            )
-        }]
-        return <Tabbed tabs={tabs}/>
-    }
-}
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    dispatchFetchCircadianSettings: () => dispatch(fetchCircadianSettings()),
-    dispatchSubmitCircadianSettingsForm: () => dispatch(submit(CIRCADIAN_SETTINGS_FORM)),
-    dispatchUpdateCircadianSettings: (settings: ICircadianSettingsFormValues) =>
-        dispatch(saveCircadianSettings(settings))
-})
-
-export default connect(null, mapDispatchToProps)(SettingsModule)
+export default SettingsModule

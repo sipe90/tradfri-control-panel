@@ -47,14 +47,14 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
                 <div>
                     Location
                 </div>
-                <div style={{ display: 'flex'}}>
+                <div style={{ display: 'flex' }}>
                     <div style={{ marginRight: 24 }}>
                         <Field
                             name='latitude'
                             type='text'
                             validate={required}
-                            component={NumberInput as any}
-                            props={fieldProps.latitude as any}
+                            component={NumberInput}
+                            props={fieldProps.latitude}
                         />
                     </div>
                     <div>
@@ -62,8 +62,8 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
                             name='longitude'
                             type='text'
                             validate={required}
-                            component={NumberInput as any}
-                            props={fieldProps.longitude as any}
+                            component={NumberInput}
+                            props={fieldProps.longitude}
                         />
                     </div>
                 </div>
@@ -73,10 +73,10 @@ const CircadianSettingsForm: React.FunctionComponent<AllProps> = (props) => {
                 <div>
                     <List
                         dataSource={props.groups}
-                        renderItem={({name}: IGroup) => <Item>{name}</Item>}
+                        renderItem={({ name }) => <Item>{name}</Item>}
                         bordered={true}
                         size='small'
-                        locale={{ emptyText: 'No groups'}}
+                        locale={{ emptyText: 'No groups' }}
                     />
                 </div>
             </div>
