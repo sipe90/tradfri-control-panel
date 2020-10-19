@@ -5,11 +5,11 @@ import { IRouteDefinition } from '@/routeDefs'
 
 import './Navigation.css'
 
-interface INavigationProps {
+interface NavigationProps {
     routes: IRouteDefinition[]
 }
 
-const Navigation: React.FunctionComponent<INavigationProps> = (props) => {
+const Navigation: React.FC<NavigationProps> = (props) => {
     return (
         <div className='nav-menu'>
             {props.routes.map(renderNavigationLink)}
