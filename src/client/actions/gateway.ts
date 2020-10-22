@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import { change } from 'redux-form'
 
 import { GATEWAY_WIZARD_FORM } from '@/containers/gateway/GatewayWizardFormContainer'
-import { IConnectionTestResult, ThunkResult } from '@/types'
+import { AsyncThunkResult, IConnectionTestResult } from '@/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
 import { DiscoveredGateway } from 'node-tradfri-client'
 import { ActionCreator } from 'redux'
@@ -166,7 +166,7 @@ const testConnectionFailure = (error: Error) => ({
     payload: error
 })
 
-export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+export const fetchGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
     try {
         dispatch(loadGatewayRequest())
         const res = await fetchGetJson<IGateway>('/api/gateway')
@@ -185,7 +185,7 @@ export const fetchGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
     }
 }
 
-export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => async (dispatch) => {
+export const saveGateway: ActionCreator<AsyncThunkResult> = (gateway: IGateway) => async (dispatch) => {
     try {
         dispatch(saveGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway', gateway)
@@ -200,7 +200,7 @@ export const saveGateway: ActionCreator<ThunkResult> = (gateway: IGateway) => as
     }
 }
 
-export const updateGateway: ActionCreator<ThunkResult> = (gateway: Partial<IGateway>) => async (dispatch) => {
+export const updateGateway: ActionCreator<AsyncThunkResult> = (gateway: Partial<IGateway>) => async (dispatch) => {
     try {
         dispatch(updateGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway/update', gateway)
@@ -215,7 +215,7 @@ export const updateGateway: ActionCreator<ThunkResult> = (gateway: Partial<IGate
     }
 }
 
-export const deleteGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+export const deleteGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
     try {
         dispatch(deleteGatewayRequest())
         const res = await fetchDeleteJson<void>('/api/gateway')
@@ -230,7 +230,7 @@ export const deleteGateway: ActionCreator<ThunkResult> = () => async (dispatch) 
     }
 }
 
-export const rebootGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+export const rebootGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
     try {
         dispatch(rebootGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway/reboot')
@@ -244,7 +244,7 @@ export const rebootGateway: ActionCreator<ThunkResult> = () => async (dispatch) 
     }
 }
 
-export const resetGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+export const resetGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
     try {
         dispatch(resetGatewayRequest())
         const res = await fetchPostJson<void>('/api/gateway/reset')
@@ -259,7 +259,7 @@ export const resetGateway: ActionCreator<ThunkResult> = () => async (dispatch) =
     }
 }
 
-export const discoverGateway: ActionCreator<ThunkResult> = () => async (dispatch) => {
+export const discoverGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
     try {
         dispatch(discoverGatewayRequest())
         const res = await fetchGetJson<DiscoveredGateway>('api/gateway/discover')
@@ -287,7 +287,7 @@ interface IGenerateIdentityResponse {
     psk: string
 }
 
-export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, securityCode: string) =>
+export const generateIdentity: ActionCreator<AsyncThunkResult> = (hostname: string, securityCode: string) =>
     async (dispatch) => {
         try {
             dispatch(generateIdentityRequest())
@@ -305,9 +305,9 @@ export const generateIdentity: ActionCreator<ThunkResult> = (hostname: string, s
             message.error(`Failed to generate identity: ${error.message}`)
             dispatch(generateIdentityFailure(error))
         }
-}
+    }
 
-export const testConnection: ActionCreator<ThunkResult> = (hostname: string, identity: string, psk: string) =>
+export const testConnection: ActionCreator<AsyncThunkResult> = (hostname: string, identity: string, psk: string) =>
     async (dispatch) => {
         try {
             dispatch(testConnectionRequest())
@@ -320,4 +320,4 @@ export const testConnection: ActionCreator<ThunkResult> = (hostname: string, ide
             message.error(`Failed to test connection: ${error.message}`)
             dispatch(testConnectionFailure(error))
         }
-}
+    }
