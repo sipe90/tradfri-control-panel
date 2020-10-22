@@ -1,12 +1,11 @@
 import * as R from 'ramda'
 import React, { useState } from 'react'
 
-import { Card, Divider, Dropdown, Menu, Modal, Descriptions } from 'antd'
+import { Card, Divider, Dropdown, Menu, Modal, Descriptions, Form, Input } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { GatewayConnectionState, IGateway } from 'shared/types'
 
 import StatusIndicator, { Status } from '@/components/StatusIndicator'
-import GatewayEditFormContainer from '@/containers/gateway/GatewayEditFormContainer'
 
 import './Gateway.css'
 
@@ -15,12 +14,11 @@ const { Item } = Descriptions
 interface GatewayProps {
     gateway: IGateway
     initialDataLoading: boolean
-    saveGateway: (gateway: IGateway) => void
-    updateGateway: (gateway: Partial<IGateway>) => void
-    deleteGateway: () => void
-    submitEditGatewayForm: () => void
-    rebootGateway: () => void
-    resetGateway: () => void
+    saveGateway: (gateway: IGateway) => Promise<void>
+    updateGateway: (gateway: Partial<IGateway>) => Promise<void>
+    deleteGateway: () => Promise<void>
+    rebootGateway: () => Promise<void>
+    resetGateway: () => Promise<void>
 }
 
 const Gateway: React.FC<GatewayProps> = (props) => {
@@ -28,6 +26,8 @@ const Gateway: React.FC<GatewayProps> = (props) => {
     const { gateway } = props
 
     const [editModalVisible, setEditModalVisible] = useState(false)
+
+    const [form] = Form.useForm()
 
     return (
         <>
@@ -72,14 +72,36 @@ const Gateway: React.FC<GatewayProps> = (props) => {
             <Modal
                 title='Edit gateway information'
                 visible={editModalVisible}
-                onOk={props.submitEditGatewayForm}
+                onOk={form.submit}
                 onCancel={() => setEditModalVisible(false)}
             >
-                <GatewayEditFormContainer onSubmit={(gateway: Partial<IGateway>) => {
-                    props.updateGateway(gateway)
-                    setEditModalVisible(false)
-                }}
-                />
+                <Form
+                    form={form}
+                    initialValues={gateway}
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                    onFinish={(values) => {
+                        props.updateGateway(values)
+                            .then(() => setEditModalVisible(false))
+                    }}
+                >
+                    <Form.Item
+                        name='name'
+                        label='Gateway name'
+                        required
+                        rules={[{ required: true, message: 'Name is required' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name='hostname'
+                        label='Gateway address'
+                        required
+                        rules={[{ required: true, message: 'Address is required' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
             </Modal>
         </>
     )

@@ -8,10 +8,8 @@ import {
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/GatewayWizard'
 import Spinner from '@/components/Spinner'
-import { GATEWAY_EDIT_FORM } from '@/containers/gateway/GatewayEditFormContainer'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
-import { submit } from 'redux-form'
 
 const GatewayModule: React.FC = () => {
 
@@ -34,7 +32,6 @@ const GatewayModule: React.FC = () => {
                 deleteGateway={() => dispatch(deleteGateway())}
                 rebootGateway={() => dispatch(rebootGateway())}
                 resetGateway={() => dispatch(resetGateway())}
-                submitEditGatewayForm={() => dispatch(submit(GATEWAY_EDIT_FORM))}
             />)}
         </Spinner>
     )
