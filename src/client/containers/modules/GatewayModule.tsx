@@ -6,7 +6,7 @@ import {
     resetGateway, saveGateway, updateGateway
 } from '@/actions/gateway'
 import GatewayComponent from '@/components/gateway/Gateway'
-import GatewayWizard from '@/components/gateway/GatewayWizard'
+import GatewayWizard from '@/components/gateway/wizard/GatewayWizard'
 import Spinner from '@/components/Spinner'
 import { IAppState } from '@/reducers'
 import { AppDispatch } from '@/types'
@@ -24,15 +24,21 @@ const GatewayModule: React.FC = () => {
 
     return (
         <Spinner spinning={initialDataLoading}>
-            {!initialDataLoading && (!gateway ? <GatewayWizard /> : <GatewayComponent
-                initialDataLoading={initialDataLoading}
-                gateway={gateway}
-                saveGateway={(gateway) => dispatch(saveGateway(gateway))}
-                updateGateway={(gateway) => dispatch(updateGateway(gateway))}
-                deleteGateway={() => dispatch(deleteGateway())}
-                rebootGateway={() => dispatch(rebootGateway())}
-                resetGateway={() => dispatch(resetGateway())}
-            />)}
+            {!initialDataLoading &&
+                (!gateway ?
+                    <GatewayWizard
+                        saveGateway={(gateway) => dispatch(saveGateway(gateway))}
+                    /> :
+                    <GatewayComponent
+                        initialDataLoading={initialDataLoading}
+                        gateway={gateway}
+                        saveGateway={(gateway) => dispatch(saveGateway(gateway))}
+                        updateGateway={(gateway) => dispatch(updateGateway(gateway))}
+                        deleteGateway={() => dispatch(deleteGateway())}
+                        rebootGateway={() => dispatch(rebootGateway())}
+                        resetGateway={() => dispatch(resetGateway())}
+                    />
+                )}
         </Spinner>
     )
 }

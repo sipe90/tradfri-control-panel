@@ -2,13 +2,13 @@ import { UpdatePriority } from 'node-tradfri-client'
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
-export type Nullable<T> = {[P in keyof T]: T[P] | null}
+export type Nullable<T> = { [P in keyof T]: T[P] | null }
 
-export type Diff<T extends string, U extends string> = ({[P in T]: P} &
-    {[P in U]: never} & {[x: string]: never})[T]
+export type Diff<T extends string, U extends string> = ({ [P in T]: P } &
+    { [P in U]: never } & { [x: string]: never })[T]
 
 // tslint:disable-next-line:interface-over-type-literal
-export type Dictionary<T> = {[key: string]: T}
+export type Dictionary<T> = { [key: string]: T }
 
 export enum GatewayConnectionState {
     CONNECTED = 1,
@@ -46,7 +46,7 @@ export interface IGatewayDevices extends IGateway {
 
 export interface ILight extends IDevice {
     color: string | null
-    saturation: number | null;
+    saturation: number | null
     colorTemperature: number | null
     brightness: number | null
     spectrum: string | null
@@ -67,12 +67,12 @@ export interface IGroup {
 
 export interface ILightSetting {
     id: number
-    color: string;
-    saturation: number;
-    colorTemperature: number;
+    color: string
+    saturation: number
+    colorTemperature: number
     brightness: number | null
     on: boolean | null
-    hue: number;
+    hue: number
 }
 
 export interface IScene {
