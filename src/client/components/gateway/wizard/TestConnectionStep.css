@@ -1,0 +1,41 @@
+.form-section__content>div {
+    margin-top: 16px;
+}
+
+.form-section__button-row {
+    text-align: right;
+}
+
+.form-section__button-row>div {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.spinner-icon {
+    font-size: 24;
+}
+
+.status-text {
+    margin-left: 16px;
+    color: #1890ff;
+}
+
+.test__content {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.test__content>div {
+    margin-top: 16px;
+}
+
+.test__status--success {
+    color: #48c300;
+}
+
+.test__status--failure {
+    color: #f5222d;
+}

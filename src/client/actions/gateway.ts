@@ -2,12 +2,8 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { change } from 'redux-form'
-
-import { GATEWAY_WIZARD_FORM } from '@/containers/gateway/GatewayWizardFormContainer'
-import { AsyncThunkResult, IConnectionTestResult } from '@/types'
+import { AsyncThunkResult } from '@/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
-import { DiscoveredGateway } from 'node-tradfri-client'
 import { ActionCreator } from 'redux'
 import { IGateway } from 'shared/types'
 
@@ -34,18 +30,6 @@ export const REBOOT_GATEWAY_FAILURE = 'REBOOT_GATEWAY_FAILURE'
 export const RESET_GATEWAY_SUCCESS = 'RESET_GATEWAY_SUCCESS'
 export const RESET_GATEWAY_REQUEST = 'RESET_GATEWAY_REQUEST'
 export const RESET_GATEWAY_FAILURE = 'RESET_GATEWAY_FAILURE'
-
-export const DISCOVER_GATEWAY_REQUEST = 'DISCOVER_GATEWAY_REQUEST'
-export const DISCOVER_GATEWAY_SUCCESS = 'DISCOVER_GATEWAY_SUCCESS'
-export const DISCOVER_GATEWAY_FAILURE = 'DISCOVER_GATEWAY_FAILURE'
-
-export const GENERATE_IDENTITY_REQUEST = 'GENERATE_IDENTITY_REQUEST'
-export const GENERATE_IDENTITY_SUCCESS = 'GENERATE_IDENTITY_SUCCESS'
-export const GENERATE_IDENTITY_FAILURE = 'GENERATE_IDENTITY_FAILURE'
-
-export const TEST_CONNECTION_REQUEST = 'TEST_CONNECTION_REQUEST'
-export const TEST_CONNECTION_SUCCESS = 'TEST_CONNECTION_SUCCESS'
-export const TEST_CONNECTION_FAILURE = 'TEST_CONNECTION_FAILURE'
 
 const loadGatewayRequest = () => ({
     type: LOAD_GATEWAY_REQUEST
@@ -123,46 +107,6 @@ const resetGatewaySuccess = () => ({
 
 const resetGatewayFailure = (error: Error) => ({
     type: RESET_GATEWAY_FAILURE,
-    payload: error
-})
-
-const discoverGatewayRequest = () => ({
-    type: DISCOVER_GATEWAY_REQUEST
-})
-
-const discoverGatewaySuccess = (discoveredGateway: DiscoveredGateway | null) => ({
-    type: DISCOVER_GATEWAY_SUCCESS,
-    payload: discoveredGateway
-})
-
-const discoverGatewayFailure = () => ({
-    type: DISCOVER_GATEWAY_FAILURE
-})
-
-const generateIdentityRequest = () => ({
-    type: GENERATE_IDENTITY_REQUEST
-})
-
-const generateIdentitySuccess = () => ({
-    type: GENERATE_IDENTITY_SUCCESS
-})
-
-const generateIdentityFailure = (error: Error) => ({
-    type: GENERATE_IDENTITY_FAILURE,
-    payload: error
-})
-
-const testConnectionRequest = () => ({
-    type: TEST_CONNECTION_REQUEST
-})
-
-const testConnectionSuccess = (testResult: IConnectionTestResult) => ({
-    type: TEST_CONNECTION_SUCCESS,
-    payload: testResult
-})
-
-const testConnectionFailure = (error: Error) => ({
-    type: TEST_CONNECTION_FAILURE,
     payload: error
 })
 
@@ -258,66 +202,3 @@ export const resetGateway: ActionCreator<AsyncThunkResult> = () => async (dispat
         dispatch(resetGatewayFailure(error))
     }
 }
-
-export const discoverGateway: ActionCreator<AsyncThunkResult> = () => async (dispatch) => {
-    try {
-        dispatch(discoverGatewayRequest())
-        const res = await fetchGetJson<DiscoveredGateway>('api/gateway/discover')
-
-        if (res.status === 404) {
-            dispatch(discoverGatewaySuccess(null))
-            return
-        }
-
-        if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
-
-        const { name, addresses } = res.json
-
-        dispatch(change(GATEWAY_WIZARD_FORM, 'name', name))
-        dispatch(change(GATEWAY_WIZARD_FORM, 'hostname', addresses[0]))
-        dispatch(discoverGatewaySuccess(res.json))
-    } catch (error) {
-        message.error(`Failed to discover gateway: ${error.message}`)
-        dispatch(discoverGatewayFailure())
-    }
-}
-
-interface IGenerateIdentityResponse {
-    identity: string
-    psk: string
-}
-
-export const generateIdentity: ActionCreator<AsyncThunkResult> = (hostname: string, securityCode: string) =>
-    async (dispatch) => {
-        try {
-            dispatch(generateIdentityRequest())
-            const res = await fetchPostJson<IGenerateIdentityResponse>(
-                'api/gateway/identity', { hostname, securityCode })
-
-            if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
-
-            const { identity, psk } = res.json
-
-            dispatch(change(GATEWAY_WIZARD_FORM, 'identity', identity))
-            dispatch(change(GATEWAY_WIZARD_FORM, 'psk', psk))
-            dispatch(generateIdentitySuccess())
-        } catch (error) {
-            message.error(`Failed to generate identity: ${error.message}`)
-            dispatch(generateIdentityFailure(error))
-        }
-    }
-
-export const testConnection: ActionCreator<AsyncThunkResult> = (hostname: string, identity: string, psk: string) =>
-    async (dispatch) => {
-        try {
-            dispatch(testConnectionRequest())
-            const res = await fetchPostJson<IConnectionTestResult>('/api/gateway/test', { hostname, identity, psk })
-
-            if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
-
-            dispatch(testConnectionSuccess(res.json))
-        } catch (error) {
-            message.error(`Failed to test connection: ${error.message}`)
-            dispatch(testConnectionFailure(error))
-        }
-    }

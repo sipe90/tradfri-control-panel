@@ -1,0 +1,32 @@
+.form-section__content>div {
+    margin-top: 16px;
+}
+
+.form-section__button-row {
+    text-align: right;
+}
+
+.form-section__button-row>div {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.status-text {
+    margin-left: 16px;
+    color: #1890ff;
+}
+
+.discovery__discover {
+    display: flex;
+}
+
+.discovery__status {
+    margin-left: 16px;
+    margin-top: 4px;
+}
+
+.discovery__table-header {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    margin-bottom: 16px;
+}

@@ -1,0 +1,18 @@
+.form-section__content>div {
+    margin-top: 16px;
+}
+
+.form-section__button-row {
+    text-align: right;
+}
+
+.form-section__button-row>div {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.status-text {
+    margin-left: 16px;
+    color: #1890ff;
+}
+
