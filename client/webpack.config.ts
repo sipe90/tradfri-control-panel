@@ -9,7 +9,7 @@ const config: Configuration = {
         main: './src/index.tsx'
     },
     output: {
-        path: path.join(__dirname, '..', 'server', 'dist'),
+        path: path.join(__dirname, '..', 'server', 'public'),
         filename: '[name].[hash].bundle.js',
         publicPath: '/'
     },
@@ -58,8 +58,8 @@ const config: Configuration = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: '../server/public/index.html',
-            favicon: '../server/public/favicon.ico'
+            template: 'template/index.html',
+            favicon: 'template/favicon.ico'
         }),
         new DefinePlugin({
             VERSION: JSON.stringify(process.env.npm_package_version)
