@@ -19,21 +19,25 @@ const generate = async (hostname: string, securityCode: string) => {
     return res.json
 }
 
-type FormValues = IGenerateIdentityResponse
+interface IdGenFormValues {
+    securityCode: string
+}
+
+type AuthFormValues = IGenerateIdentityResponse
 
 interface AuthenticationStepProps {
     hostname: string
-    initialValues: Partial<FormValues>
+    initialValues: Partial<AuthFormValues>
     previousStep: () => void
-    nextStep: (values: FormValues) => void
+    nextStep: (values: AuthFormValues) => void
 }
 
 const AuthenticationStep: React.FC<AuthenticationStepProps> = (props) => {
 
     const { hostname, initialValues, nextStep, previousStep } = props
 
-    const [idGenForm] = Form.useForm()
-    const [authForm] = Form.useForm()
+    const [idGenForm] = Form.useForm<IdGenFormValues>()
+    const [authForm] = Form.useForm<AuthFormValues>()
 
     const [generatingIdentity, setGeneratingIdentity] = useState(false)
     const [generationError, setGenerationError] = useState<string | null>(null)
@@ -45,7 +49,7 @@ const AuthenticationStep: React.FC<AuthenticationStepProps> = (props) => {
             if (result) {
                 setGenerationError(null)
                 const { identity, psk } = result
-                idGenForm.setFieldsValue({
+                authForm.setFieldsValue({
                     identity,
                     psk
                 })
@@ -71,7 +75,7 @@ const AuthenticationStep: React.FC<AuthenticationStepProps> = (props) => {
                 </div>
                 <div className='auth__security-code'>
                     <div>
-                        <Form
+                        <Form<IdGenFormValues>
                             form={idGenForm}
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
@@ -93,7 +97,7 @@ const AuthenticationStep: React.FC<AuthenticationStepProps> = (props) => {
                     </div>
                 </div>
                 <div className='auth__input'>
-                    <Form<FormValues>
+                    <Form<AuthFormValues>
                         form={authForm}
                         labelCol={{ span: 8 }}
                         wrapperCol={{ span: 16 }}
