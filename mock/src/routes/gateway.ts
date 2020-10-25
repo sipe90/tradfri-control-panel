@@ -1,5 +1,5 @@
 import express from 'express'
-import { GatewayConnectionState, ICreateGatewayRequest, Gateway, IUpdateGatewayRequest } from '@tradfri-control-panel/shared'
+import { GatewayConnectionState, CreateGatewayRequest, Gateway, UpdateGatewayRequest } from '@tradfri-control-panel/shared'
 
 const router = express.Router()
 
@@ -11,7 +11,7 @@ router.get('/', (_req, res) =>
 
 router.post('/', (req, res) => {
     gateway = {
-        ...req.body as ICreateGatewayRequest,
+        ...req.body as CreateGatewayRequest,
         connectionState: GatewayConnectionState.CONNECTED,
         alexaPairStatus: false,
         googleHomePairStatus: false,
@@ -30,7 +30,7 @@ router.post('/update', (req, res) => {
     }
     gateway = {
         ...gateway,
-        ...req.body as IUpdateGatewayRequest,
+        ...req.body as UpdateGatewayRequest,
     }
     res.sendStatus(204)
 })
