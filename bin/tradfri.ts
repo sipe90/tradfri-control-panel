@@ -1,8 +1,6 @@
 #!/usr/bin/env ts-node
 
-import 'module-alias/register'
-
-import TradfriGateway from '#/gateway/TradfriGateway'
+import { TradfriClient, discoverGateway } from 'node-tradfri-client'
 
 // tslint:disable:no-console
 
@@ -43,13 +41,13 @@ async function authenticate(args: string[]) {
 
     const [hostname, securityCode] = args
 
-    const gateway = new TradfriGateway(hostname, false)
+    const client = new TradfriClient(hostname)
 
     try {
         const {
             identity,
             psk
-        } = await gateway.authenticate(securityCode)
+        } = await client.authenticate(securityCode)
 
         console.log(`Identity: ${identity}`)
         console.log(`PSK: ${psk}`)
@@ -67,7 +65,7 @@ async function discover() {
     console.log('Looking for Trådfri gateways in the network...')
 
     try {
-        const discoverResult = await TradfriGateway.discover()
+        const discoverResult = await discoverGateway()
 
         if (discoverResult) {
             console.log(JSON.stringify(discoverResult, null, 2))
