@@ -53,7 +53,7 @@ app.use('/api/*', (_req, res) =>
     })
 )
 
-app.use('*', express.static('dist/index.html'))
+app.use('*', express.static('public/index.html'))
 
 app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     if (res.headersSent) {
