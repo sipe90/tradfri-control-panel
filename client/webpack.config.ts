@@ -9,7 +9,7 @@ const config: Configuration = {
         main: './src/index.tsx'
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, '..', 'server', 'dist'),
         filename: '[name].[hash].bundle.js',
         publicPath: '/'
     },
