@@ -19,7 +19,7 @@ router.post('/circadian', (req, res) => {
 })
 
 router.post('/circadian/groups', (req, res) => {
-    const groupId = req.query.groupId
+    const groupId = req.query.groupId as string
     if (!circadianSettings || !groupId || circadianSettings.groupIds.includes(groupId)) {
         return res.sendStatus(500)
     }
@@ -31,7 +31,7 @@ router.post('/circadian/groups', (req, res) => {
 })
 
 router.delete('/circadian/groups', (req, res) => {
-    const groupId = req.query.groupId
+    const groupId = req.query.groupId as string
     if (!circadianSettings || !groupId || !circadianSettings.groupIds.includes(groupId)) {
         return res.sendStatus(500)
     }

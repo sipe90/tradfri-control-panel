@@ -1,9 +1,6 @@
 #!/usr/bin/env ts-node
 
-import 'module-alias/register'
-
 import jsonServer from 'json-server'
-import path from 'path'
 import WebSocket from 'ws'
 import http from 'http'
 
@@ -12,7 +9,7 @@ import settings from './routes/settings'
 
 
 const app = jsonServer.create()
-const router = jsonServer.router(path.join(__dirname, 'db.json'))
+const router = jsonServer.router('db.json')
 const middlewares = jsonServer.defaults()
 
 const server = http.createServer(app)
