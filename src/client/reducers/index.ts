@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { FormStateMap, reducer as formReducer } from 'redux-form'
 
 import common, { ICommonState } from '@/reducers/common'
 
@@ -32,7 +31,6 @@ interface IModulesState {
 export interface IAppState {
     common: ICommonState
     entities: IEntitiesState
-    form: FormStateMap
     modules: IModulesState
 }
 
@@ -45,7 +43,6 @@ export default combineReducers<IAppState>({
         sensors: entitySensors,
         settings: entitySettings
     }),
-    form: formReducer,
     modules: combineReducers({
         gateway: moduleGateway,
         lights: moduleLights,
