@@ -167,16 +167,16 @@ export default class TradfriGateway {
     }
 
     private registerInternalObservers = () => {
-        this.client.on('gateway updated', this.onGatewayUpdate)
-        this.client.on('device updated', this.onDeviceUpdate)
-        this.client.on('device removed', this.onDeviceRemove)
-        this.client.on('group updated', this.onGroupUpdate)
-        this.client.on('group removed', this.onGroupRemove)
-        this.client.on('scene updated', this.onSceneUpdate)
-        this.client.on('scene removed', this.onSceneRemove)
-        this.client.on('connection lost', this.onConnectionLost)
-        this.client.on('gateway offline', this.onGatewayOffline)
-        this.client.on('connection alive', this.onConnectionAlive)
+        this.client.on('gateway updated', this.onGatewayUpdate.bind(this))
+        this.client.on('device updated', this.onDeviceUpdate.bind(this))
+        this.client.on('device removed', this.onDeviceRemove.bind(this))
+        this.client.on('group updated', this.onGroupUpdate.bind(this))
+        this.client.on('group removed', this.onGroupRemove.bind(this))
+        this.client.on('scene updated', this.onSceneUpdate.bind(this))
+        this.client.on('scene removed', this.onSceneRemove.bind(this))
+        this.client.on('connection lost', this.onConnectionLost.bind(this))
+        this.client.on('gateway offline', this.onGatewayOffline.bind(this))
+        this.client.on('connection alive', this.onConnectionAlive.bind(this))
         this.client.on('error', logger.error)
     }
 
