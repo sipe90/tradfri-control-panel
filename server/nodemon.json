@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ext": "ts",
+  "exec": "ts-node --project tsconfig.json ./src/app.ts",
+  "env": {
+    "HOST": "0.0.0.0",
+    "PORT": "8080"
+  }
+}

@@ -4,16 +4,16 @@
 /.vscode
 
 # dependencies
-/node_modules
+node_modules
 
 # testing
 */coverage
 
 # production
-/dist
+dist
 
 # data
-/data/*
+/server/data/*
 
 # pm2 deployment
 ecosystem.deploy.json

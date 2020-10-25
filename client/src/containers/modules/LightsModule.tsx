@@ -1,0 +1,56 @@
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { updateGroup } from '@/actions/groups'
+import { fetchLights, updateLight } from '@/actions/lights'
+import { addCircadianSettingsGroup, removeCircadianSettingsGroup } from '@/actions/settings'
+import LightGroups from '@/components/lights/LightGroups'
+import Lights from '@/components/lights/Lights'
+import Tabbed from '@/components/Tabbed'
+import { IAppState } from '@/reducers'
+import { AppDispatch } from '@/types'
+import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
+
+const LightsModule: React.FC = () => {
+
+    const groups = useSelector<IAppState, Dictionary<Group>>((state) => state.entities.groups)
+    const lights = useSelector<IAppState, Dictionary<Light>>((state) => state.entities.lights)
+    const circadianSettings = useSelector<IAppState, CircadianSettings>((state) => state.entities.settings.circadian)
+    const initialDataLoading = useSelector<IAppState, boolean>((state) => state.modules.lights.initialDataLoading)
+
+    const dispatch = useDispatch<AppDispatch>()
+
+    useEffect(() => {
+        dispatch(fetchLights())
+    }, [])
+
+    const tabs = [{
+        title: 'Lights',
+        component: (
+            <Lights
+                groups={groups}
+                lights={lights}
+                circadianSettings={circadianSettings}
+                initialDataLoading={initialDataLoading}
+                updateLight={(light, sync) => dispatch(updateLight(light, sync))}
+            />
+        )
+    }, {
+        title: 'Groups',
+        component: (
+            <LightGroups
+                groups={groups}
+                lights={lights}
+                circadianSettings={circadianSettings}
+                initialDataLoading={initialDataLoading}
+                updateGroup={(group) => dispatch(updateGroup(group))}
+                updateLight={(light, sync) => dispatch(updateLight(light, sync))}
+                enableCircadian={(groupId) => dispatch(addCircadianSettingsGroup(groupId))}
+                disableCircadian={(groupId) => dispatch(removeCircadianSettingsGroup(groupId))}
+            />
+        )
+    }]
+    return <Tabbed tabs={tabs} />
+}
+
+export default LightsModule
