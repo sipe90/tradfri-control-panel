@@ -11,12 +11,16 @@ node_modules
 
 # production
 dist
+/server/public
 
 # data
 /server/data/*
 
 # pm2 deployment
 ecosystem.deploy.json
+
+# TS build info
+.tsbuildinfo
 
 # misc
 .DS_Store
