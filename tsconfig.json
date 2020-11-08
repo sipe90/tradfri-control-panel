@@ -6,5 +6,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tradfri-control-panel/*": [
+        "*/src"
+      ]
+    }
   }
 }
