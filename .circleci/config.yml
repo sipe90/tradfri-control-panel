@@ -52,12 +52,18 @@ jobs:
       - persist_to_workspace:
           root: *workdir_node10
           <<: *whitelist
-  test:
+  test_client:
     <<: *node10
     steps:
       - attach_workspace:
           at: *workdir_node10
-      - run: yarn test
+      - run: yarn run test:client
+  test_server:
+    <<: *node10
+    steps:
+      - attach_workspace:
+          at: *workdir_node10
+      - run: yarn run test:server
   build:
     <<: *node10
     steps:
