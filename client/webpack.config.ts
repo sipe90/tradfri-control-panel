@@ -20,14 +20,10 @@ const config: Configuration = {
                 exclude: /node_modules/,
                 loader: 'ts-loader',
                 options: {
-
-                    transpileOnly: true,
+                    projectReferences: true,
                     getCustomTransformers: () => ({
                         before: [tsImportPluginFactory({ libraryName: 'antd', style: 'css', libraryDirectory: 'es' })]
                     }),
-                    compilerOptions: {
-                        module: 'es2015'
-                    }
                 }
             },
             {
