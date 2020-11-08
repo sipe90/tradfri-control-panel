@@ -1,7 +1,7 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2020",
-    "module": "commonjs",
     "lib": [],
     "declaration": true,
     "declarationMap": true,
@@ -9,11 +9,6 @@
     "composite": true,
     "outDir": "dist",
     "rootDir": "src",
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "baseUrl": "src",
-    "esModuleInterop": true
+    "baseUrl": "src"
   }
 }
