@@ -6,25 +6,24 @@ This repository contains the source code for my latest hobby project: The Trådf
 
 ## Running the app
 
-First install dependencies with `npm install`
+First install dependencies with `yarn install`
 
 To run the application in development mode:
 
 ```
-npm run dev
+yarn run dev
 ```
 
 Or in production mode:
 
 ```
-npm build
-npm start
+yarn build
+yarn start
 ```
 
-The client application runs on port 3000 by default. You can run the app in a different port by launching the app like this: `PORT=<PORT_NUMBER> npm start`.
-In development mode all fetch-requests to `/api` are proxied to `localhost:8080` where the express server is hosted.
+The client application runs on port `3000` when running the dev server. In development mode all fetch-requests to `/api` are proxied to `localhost:8080` where the express server is hosted.
 
-In production mode, the `dist` folder contents built by webpack will be served by the back-end server at `localhost:8080`
+In production mode, the `dist` folder contents built by webpack will be served by the back-end server at `localhost:8080`. You can run the app in a different port in production by launching the app by setting the `PORT` environment variable.
 
 ### Registering gateways
 
@@ -32,12 +31,10 @@ When you launch the application the first time, you will be prompted with a setu
 
 ## Deploying to a remote server (like Raspberry Pi)
 
-First make sure you have `git`, `node` (tested working with version `10.14`), `webpack@^4.x.x`, `webpack-cli` and `pm2` installed on your server.
+First make sure you have `git`, `node` (tested working with version `10.14`), `yarn` and `pm2` installed on your server.
 PM2 also has to be installed on the computer where you run the deployment.
 
-Webpack is required for now since the bundle is built during deployment. This might change in the future.
-
-The deployment is done over SSH so make sure you have a public key installed to your server to allow easier deployments without the need for passwords. More information about this can be found [from PM2 deploy documentation](https://pm2.io/doc/en/runtime/guide/easy-deploy-with-ssh/)
+The deployment is done over SSH so make sure you have a public key installed to your server to allow easier deployments without the need for passwords. More information about this can be found [from PM2 deploy documentation](https://pm2.keymetrics.io/docs/usage/deployment/)
 
 When you have created the deploy configuration, you can deploy the app with:
 
