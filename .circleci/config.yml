@@ -44,7 +44,7 @@ jobs:
           - dependencies-node_10.14-{{ .Branch }}-{{ checksum "package.json" }}
           - dependencies-node_10.14-{{ .Branch }}
           - dependencies-node_10.14
-      - run: npm install
+      - run: yarn install
       - save_cache:
           paths:
             - node_modules
@@ -57,19 +57,19 @@ jobs:
     steps:
       - attach_workspace:
           at: *workdir_node10
-      - run: npm test
+      - run: yarn test
   build:
     <<: *node10
     steps:
       - attach_workspace:
           at: *workdir_node10
-      - run: npm run build
+      - run: yarn run build
   deploy:
     <<: *node10
     steps:
       - attach_workspace:
           at: *workdir_node10
-      - run: sudo npm install -g pm2
+      - run: sudo yarn add -g pm2
       - run: DEPLOY_BRANCH=$CIRCLE_TAG pm2 deploy production --force
 workflows:
   version: 2
