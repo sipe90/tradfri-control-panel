@@ -1,7 +1,7 @@
 import {
     LOAD_CIRCADIAN_SETTINGS_FAILURE, LOAD_CIRCADIAN_SETTINGS_REQUEST, LOAD_CIRCADIAN_SETTINGS_SUCCESS
-} from '@/actions/settings'
-import { ActionReducers, createReducer } from '@/utils'
+} from '#/actions/settings'
+import { ActionReducers, createReducer } from '#/utils'
 
 export interface SettingsModuleState {
     circadianSettingsLoading: boolean

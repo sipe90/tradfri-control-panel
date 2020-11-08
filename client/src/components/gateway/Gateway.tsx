@@ -5,7 +5,7 @@ import { Card, Divider, Dropdown, Menu, Modal, Descriptions, Form, Input } from 
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { GatewayConnectionState, Gateway } from '@tradfri-control-panel/shared'
 
-import StatusIndicator, { Status } from '@/components/StatusIndicator'
+import StatusIndicator, { Status } from '#/components/StatusIndicator'
 
 import './Gateway.css'
 

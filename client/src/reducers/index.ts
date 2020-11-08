@@ -1,17 +1,17 @@
 import { combineReducers } from 'redux'
 
-import common, { CommonState } from '@/reducers/common'
+import common, { CommonState } from '#/reducers/common'
 
-import entityGateway, { GatewayEntityState } from '@/reducers/entities/gateway'
-import entityGroups, { GroupEntitiesState } from '@/reducers/entities/groups'
-import entityLights, { LightEntitiesState } from '@/reducers/entities/lights'
-import entitySensors, { SensorEntitiesState } from '@/reducers/entities/sensors'
-import entitySettings, { SettingsEntitiesState } from '@/reducers/entities/settings'
+import entityGateway, { GatewayEntityState } from '#/reducers/entities/gateway'
+import entityGroups, { GroupEntitiesState } from '#/reducers/entities/groups'
+import entityLights, { LightEntitiesState } from '#/reducers/entities/lights'
+import entitySensors, { SensorEntitiesState } from '#/reducers/entities/sensors'
+import entitySettings, { SettingsEntitiesState } from '#/reducers/entities/settings'
 
-import moduleGateway, { GatewayModuleState } from '@/reducers/modules/gateway'
-import moduleLights, { LightsModuleState } from '@/reducers/modules/lights'
-import moduleSensors, { SensorsModuleState } from '@/reducers/modules/sensors'
-import moduleSettings, { SettingsModuleState } from '@/reducers/modules/settings'
+import moduleGateway, { GatewayModuleState } from '#/reducers/modules/gateway'
+import moduleLights, { LightsModuleState } from '#/reducers/modules/lights'
+import moduleSensors, { SensorsModuleState } from '#/reducers/modules/sensors'
+import moduleSettings, { SettingsModuleState } from '#/reducers/modules/settings'
 
 interface EntitiesState {
     gateway: GatewayEntityState

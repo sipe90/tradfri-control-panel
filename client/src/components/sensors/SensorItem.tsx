@@ -3,7 +3,7 @@ import PencilIcon from 'mdi-react/PencilIcon'
 import * as R from 'ramda'
 import React, { useState } from 'react'
 
-import StatusIndicator, { Status } from '@/components/StatusIndicator'
+import StatusIndicator, { Status } from '#/components/StatusIndicator'
 import { Device, Sensor } from '@tradfri-control-panel/shared'
 
 import './SensorItem.css'

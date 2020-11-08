@@ -1,5 +1,5 @@
-import { LOAD_GATEWAY_SUCCESS } from '@/actions/gateway'
-import { ActionReducers, createReducer } from '@/utils'
+import { LOAD_GATEWAY_SUCCESS } from '#/actions/gateway'
+import { ActionReducers, createReducer } from '#/utils'
 import { Gateway } from '@tradfri-control-panel/shared'
 
 const initialState = null

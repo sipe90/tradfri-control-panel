@@ -3,22 +3,23 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
-import { composeWithDevTools   } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { createLogger } from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 
-import App from '@/containers/App'
-import reducers from '@/reducers'
-import timerMiddleware from '@/redux-middleware/redux-timers'
-import createWebSocketMiddleware, { connect } from '@/redux-middleware/redux-websocket'
-import { Payloads } from 'shared/types/websocket'
-import { fetchGateway } from './actions/gateway'
-import { fetchGroups } from './actions/groups'
-import { fetchLights } from './actions/lights'
-import { fetchSensors } from './actions/sensors'
-import { AppDispatch } from './types'
-import { setWebsocketConnectionState } from './actions/common'
-import { WebsocketConnectionState } from './reducers/common'
+import { Payloads } from '@tradfri-control-panel/shared'
+import App from '#/containers/App'
+import reducers from '#/reducers'
+import timerMiddleware from '#/redux-middleware/redux-timers'
+import createWebSocketMiddleware, { connect } from '#/redux-middleware/redux-websocket'
+import { fetchGateway } from '#/actions/gateway'
+import { fetchGroups } from '#/actions/groups'
+import { fetchLights } from '#/actions/lights'
+import { fetchSensors } from '#/actions/sensors'
+import { AppDispatch } from '#/types'
+import { setWebsocketConnectionState } from '#/actions/common'
+import { WebsocketConnectionState } from '#/reducers/common'
+
 
 message.config({
     duration: 3,
@@ -66,13 +67,13 @@ const webSocketMiddleware = createWebSocketMiddleware<AppDispatch>({
 
 const store = createStore(
     reducers,
-    composeWithDevTools (
-    applyMiddleware(
-        thunkMiddleware,
-        webSocketMiddleware,
-        timerMiddleware,
-        loggerMiddleware,
-    )),
+    composeWithDevTools(
+        applyMiddleware(
+            thunkMiddleware,
+            webSocketMiddleware,
+            timerMiddleware,
+            loggerMiddleware,
+        )),
 )
 
 ReactDOM.render(

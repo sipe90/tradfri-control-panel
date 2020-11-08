@@ -1,4 +1,4 @@
-import { PayloadAction } from '@/types'
+import { PayloadAction } from '#/types'
 import * as R from 'ramda'
 import { Action, AnyAction, Reducer } from 'redux'
 

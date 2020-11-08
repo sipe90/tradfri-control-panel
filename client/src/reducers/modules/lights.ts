@@ -1,7 +1,7 @@
 import {
     LOAD_LIGHTS_FAILURE, LOAD_LIGHTS_REQUEST, LOAD_LIGHTS_SUCCESS,
-} from '@/actions/lights'
-import { ActionReducers, createReducer } from '@/utils'
+} from '#/actions/lights'
+import { ActionReducers, createReducer } from '#/utils'
 
 export interface LightsModuleState {
     initialDataLoading: boolean

@@ -1,4 +1,4 @@
-import { WebsocketConnectionState } from "@/reducers/common"
+import { WebsocketConnectionState } from "#/reducers/common"
 
 export const SET_WEBSOCKET_CONNECTION_STATE = "SET_WEBSOCKET_CONNECTION_STATE"
 

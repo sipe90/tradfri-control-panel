@@ -1,5 +1,5 @@
-import { AsyncThunkResult } from '@/types'
-import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
+import { AsyncThunkResult } from '#/types'
+import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '#/utils'
 import { message } from 'antd'
 import * as R from 'ramda'
 import { CircadianSettings, UpdateCircadianSettingsRequest } from '@tradfri-control-panel/shared'

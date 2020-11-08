@@ -1,7 +1,7 @@
 import * as R from 'ramda'
 
-import { LIGHT_STATE_CHANGED, LOAD_LIGHTS_SUCCESS } from '@/actions/lights'
-import { ActionReducers, createReducer } from '@/utils'
+import { LIGHT_STATE_CHANGED, LOAD_LIGHTS_SUCCESS } from '#/actions/lights'
+import { ActionReducers, createReducer } from '#/utils'
 import { Dictionary, Light } from '@tradfri-control-panel/shared'
 
 export type LightEntitiesState = Dictionary<Light>

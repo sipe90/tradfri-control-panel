@@ -1,6 +1,6 @@
 
-import { ActionReducers, createReducer } from '@/utils'
-import { SET_WEBSOCKET_CONNECTION_STATE } from '@/actions/common'
+import { ActionReducers, createReducer } from '#/utils'
+import { SET_WEBSOCKET_CONNECTION_STATE } from '#/actions/common'
 
 export enum WebsocketConnectionState {
     DISCONNECTED = 0,

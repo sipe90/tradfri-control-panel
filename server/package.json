@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "start": "node dist/src/app.js",
     "dev": "nodemon",
     "test": "jest"

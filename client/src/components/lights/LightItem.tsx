@@ -6,12 +6,12 @@ import ThermometerIcon from 'mdi-react/ThermometerIcon'
 import * as R from 'ramda'
 import React, { useState } from 'react'
 
-import ConditionalWrap from '@/components/ConditionalWrap'
-import StatusIndicator, { Status } from '@/components/StatusIndicator'
+import ConditionalWrap from '#/components/ConditionalWrap'
+import StatusIndicator, { Status } from '#/components/StatusIndicator'
 import { Light } from '@tradfri-control-panel/shared'
 
 import './LightItem.css'
-import { percentFormatter } from '@/utils'
+import { percentFormatter } from '#/utils'
 
 interface LightItemProps {
     light: Light

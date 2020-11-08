@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { updateGroup } from '@/actions/groups'
-import { fetchLights, updateLight } from '@/actions/lights'
-import { addCircadianSettingsGroup, removeCircadianSettingsGroup } from '@/actions/settings'
-import LightGroups from '@/components/lights/LightGroups'
-import Lights from '@/components/lights/Lights'
-import Tabbed from '@/components/Tabbed'
-import { AppState } from '@/reducers'
-import { AppDispatch } from '@/types'
+import { updateGroup } from '#/actions/groups'
+import { fetchLights, updateLight } from '#/actions/lights'
+import { addCircadianSettingsGroup, removeCircadianSettingsGroup } from '#/actions/settings'
+import LightGroups from '#/components/lights/LightGroups'
+import Lights from '#/components/lights/Lights'
+import Tabbed from '#/components/Tabbed'
+import { AppState } from '#/reducers'
+import { AppDispatch } from '#/types'
 import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
 
 const LightsModule: React.FC = () => {

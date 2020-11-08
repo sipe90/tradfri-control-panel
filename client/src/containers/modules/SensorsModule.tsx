@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchSensors, updateSensor } from '@/actions/sensors'
-import SensorList from '@/components/sensors/SensorList'
-import { AppState } from '@/reducers'
-import { AppDispatch } from '@/types'
+import { fetchSensors, updateSensor } from '#/actions/sensors'
+import SensorList from '#/components/sensors/SensorList'
+import { AppState } from '#/reducers'
+import { AppDispatch } from '#/types'
 import { Dictionary, Device } from '@tradfri-control-panel/shared'
 
 const SensorsModule: React.FC = () => {

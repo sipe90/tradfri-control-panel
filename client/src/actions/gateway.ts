@@ -2,8 +2,8 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { AsyncThunkResult } from '@/types'
-import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '@/utils'
+import { AsyncThunkResult } from '#/types'
+import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '#/utils'
 import { ActionCreator } from 'redux'
 import { Gateway } from '@tradfri-control-panel/shared'
 

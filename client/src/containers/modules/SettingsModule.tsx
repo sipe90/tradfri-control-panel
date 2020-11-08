@@ -3,11 +3,11 @@ import React, { useEffect } from 'react'
 import * as R from 'ramda'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchCircadianSettings, saveCircadianSettings } from '@/actions/settings'
-import Circadian from '@/components/settings/Circadian'
-import Tabbed from '@/components/Tabbed'
-import { AppDispatch } from '@/types'
-import { AppState } from '@/reducers'
+import { fetchCircadianSettings, saveCircadianSettings } from '#/actions/settings'
+import Circadian from '#/components/settings/Circadian'
+import Tabbed from '#/components/Tabbed'
+import { AppDispatch } from '#/types'
+import { AppState } from '#/reducers'
 import { CircadianSettings, Group } from '@tradfri-control-panel/shared'
 
 const SettingsModule: React.FC = () => {

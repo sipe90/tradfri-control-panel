@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { RouteDefinition } from '@/routeDefs'
+import { RouteDefinition } from '#/routeDefs'
 
 import './Navigation.css'
 

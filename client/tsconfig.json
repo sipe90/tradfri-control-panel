@@ -8,10 +8,13 @@
     "jsx": "react",
     "outDir": "dist",
     "rootDir": ".",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
+      "#/*": [
+        "./src/*"
+      ],
+      "@tradfri-control-panel/shared": [
+        "../shared/src"
       ]
     }
   },

@@ -2,9 +2,9 @@ import { Card, List } from 'antd'
 import * as R from 'ramda'
 import React from 'react'
 
-import LightItem from '@/components/lights/LightItem'
-import Spinner from '@/components/Spinner'
-import { lightsForGroup } from '@/utils'
+import LightItem from '#/components/lights/LightItem'
+import Spinner from '#/components/Spinner'
+import { lightsForGroup } from '#/utils'
 import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
 
 import './Lights.css'

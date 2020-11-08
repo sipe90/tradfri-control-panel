@@ -5,10 +5,10 @@ import LightbulbOutlineIcon from 'mdi-react/LightbulbOutlineIcon'
 import RssIcon from 'mdi-react/RssIcon'
 import SettingsIcon from 'mdi-react/SettingsIcon'
 
-import GatewayModule from '@/containers/modules/GatewayModule'
-import LightsModule from '@/containers/modules/LightsModule'
-import SensorsModule from '@/containers/modules/SensorsModule'
-import SettingsModule from './containers/modules/SettingsModule'
+import GatewayModule from '#/containers/modules/GatewayModule'
+import LightsModule from '#/containers/modules/LightsModule'
+import SensorsModule from '#/containers/modules/SensorsModule'
+import SettingsModule from '#/containers/modules/SettingsModule'
 
 export interface RouteDefinition {
     path: string

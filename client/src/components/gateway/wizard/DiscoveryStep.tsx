@@ -4,8 +4,8 @@ import { DiscoveredGateway } from 'node-tradfri-client'
 import { Button, Form, Input, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 
-import Spinner from '@/components/Spinner'
-import { fetchGetJson } from '@/utils'
+import Spinner from '#/components/Spinner'
+import { fetchGetJson } from '#/utils'
 
 import './DiscoveryStep.css'
 

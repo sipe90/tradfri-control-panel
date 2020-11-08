@@ -3,8 +3,8 @@ import { message } from 'antd'
 import * as R from 'ramda'
 import { ActionCreator } from 'redux'
 
-import { ThunkResult } from '@/types'
-import { fetchGetJson, fetchPostJson } from '@/utils'
+import { ThunkResult } from '#/types'
+import { fetchGetJson, fetchPostJson } from '#/utils'
 import { Dictionary, Sensor } from '@tradfri-control-panel/shared'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'

@@ -1,19 +1,19 @@
-import { connect as connectSocket, disconnect } from '@/redux-middleware/redux-websocket'
+import { connect as connectSocket, disconnect } from '#/redux-middleware/redux-websocket'
 import { Layout, Alert } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import { fetchGroups } from '@/actions/groups'
-import Navigation from '@/components/Navigation'
-import Routes from '@/components/Routes'
-import routeDefs from '@/routeDefs'
+import { fetchGroups } from '#/actions/groups'
+import Navigation from '#/components/Navigation'
+import Routes from '#/components/Routes'
+import routeDefs from '#/routeDefs'
 
-import { fetchCircadianSettings } from '@/actions/settings'
-import { AppDispatch } from '@/types'
+import { fetchCircadianSettings } from '#/actions/settings'
+import { AppDispatch } from '#/types'
 import './App.css'
-import { AppState } from '@/reducers'
-import { WebsocketConnectionState } from '@/reducers/common'
+import { AppState } from '#/reducers'
+import { WebsocketConnectionState } from '#/reducers/common'
 
 const { Header, Content, Footer } = Layout
 

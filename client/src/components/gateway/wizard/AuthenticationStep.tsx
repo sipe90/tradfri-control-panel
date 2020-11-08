@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as R from 'ramda'
 import { Button, Form, Input } from 'antd'
-import { fetchPostJson } from '@/utils'
+import { fetchPostJson } from '#/utils'
 
 import './AuthenticationStep.css'
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
 
-import { RouteDefinition } from '@/routeDefs'
+import { RouteDefinition } from '#/routeDefs'
 
 import './Routes.css'
 

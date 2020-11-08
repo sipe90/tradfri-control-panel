@@ -6,11 +6,11 @@ import Brightness5Icon from 'mdi-react/Brightness5Icon'
 import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import ThemeLightDarkIcon from 'mdi-react/ThemeLightDarkIcon'
 
-import StatusIndicator, { Status } from '@/components/StatusIndicator'
+import StatusIndicator, { Status } from '#/components/StatusIndicator'
 import { Dictionary, CircadianSettings, Group, GroupUpdateRequest, Light } from '@tradfri-control-panel/shared'
 
 import './LightGroups.css'
-import { lightsForGroup, percentFormatter } from '@/utils'
+import { lightsForGroup, percentFormatter } from '#/utils'
 
 const Item = List.Item
 

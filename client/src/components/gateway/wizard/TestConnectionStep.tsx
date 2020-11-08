@@ -3,8 +3,8 @@ import * as R from 'ramda'
 import { Button } from 'antd'
 
 import { ConnectionTestResponse } from '@tradfri-control-panel/shared'
-import { fetchPostJson } from '@/utils'
-import Spinner from '@/components/Spinner'
+import { fetchPostJson } from '#/utils'
+import Spinner from '#/components/Spinner'
 
 import './TestConnectionStep.css'
 

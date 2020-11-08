@@ -1,7 +1,7 @@
 import {
     LOAD_GATEWAY_FAILURE, LOAD_GATEWAY_REQUEST, LOAD_GATEWAY_SUCCESS,
-} from '@/actions/gateway'
-import { ActionReducers, createReducer } from '@/utils'
+} from '#/actions/gateway'
+import { ActionReducers, createReducer } from '#/utils'
 
 export interface GatewayModuleState {
     initialDataLoading: boolean

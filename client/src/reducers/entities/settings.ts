@@ -1,5 +1,5 @@
-import { LOAD_CIRCADIAN_SETTINGS_SUCCESS } from '@/actions/settings'
-import { ActionReducers, createReducer } from '@/utils'
+import { LOAD_CIRCADIAN_SETTINGS_SUCCESS } from '#/actions/settings'
+import { ActionReducers, createReducer } from '#/utils'
 import { CircadianSettings } from '@tradfri-control-panel/shared'
 
 export interface SettingsEntitiesState {

@@ -20,6 +20,7 @@ const config: Configuration = {
                 exclude: /node_modules/,
                 loader: 'ts-loader',
                 options: {
+
                     transpileOnly: true,
                     getCustomTransformers: () => ({
                         before: [tsImportPluginFactory({ libraryName: 'antd', style: 'css', libraryDirectory: 'es' })]
@@ -67,7 +68,7 @@ const config: Configuration = {
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src')
+            '#': path.resolve(__dirname, 'src')
         },
         extensions: ['.tsx', '.ts', '.js'],
         modules: [path.resolve(__dirname, 'public'), 'node_modules']

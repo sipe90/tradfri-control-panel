@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     deleteGateway, fetchGateway, rebootGateway,
     resetGateway, saveGateway, updateGateway
-} from '@/actions/gateway'
-import GatewayComponent from '@/components/gateway/Gateway'
-import GatewayWizard from '@/components/gateway/wizard/GatewayWizard'
-import Spinner from '@/components/Spinner'
-import { AppState } from '@/reducers'
-import { AppDispatch } from '@/types'
+} from '#/actions/gateway'
+import GatewayComponent from '#/components/gateway/Gateway'
+import GatewayWizard from '#/components/gateway/wizard/GatewayWizard'
+import Spinner from '#/components/Spinner'
+import { AppState } from '#/reducers'
+import { AppDispatch } from '#/types'
 
 const GatewayModule: React.FC = () => {
 

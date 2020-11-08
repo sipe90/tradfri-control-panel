@@ -1,8 +1,8 @@
 import { message } from 'antd'
 import * as R from 'ramda'
 
-import { ThunkResult } from '@/types'
-import { fetchGetJson, fetchPostJson } from '@/utils'
+import { ThunkResult } from '#/types'
+import { fetchGetJson, fetchPostJson } from '#/utils'
 import { ActionCreator } from 'redux'
 import { Dictionary, Group, GroupUpdateRequest, Omit } from '@tradfri-control-panel/shared'
 

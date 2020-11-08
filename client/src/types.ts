@@ -1,4 +1,4 @@
-import { AppState } from '@/reducers'
+import { AppState } from '#/reducers'
 import { Action, AnyAction } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 

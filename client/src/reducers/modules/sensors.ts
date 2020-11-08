@@ -1,7 +1,7 @@
 import {
     LOAD_SENSORS_FAILURE, LOAD_SENSORS_REQUEST, LOAD_SENSORS_SUCCESS,
-} from '@/actions/sensors'
-import { ActionReducers, createReducer } from '@/utils'
+} from '#/actions/sensors'
+import { ActionReducers, createReducer } from '#/utils'
 
 export interface SensorsModuleState {
     initialDataLoading: boolean
