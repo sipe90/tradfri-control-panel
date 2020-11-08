@@ -39,7 +39,7 @@ init(wss, env).catch((err) => {
     process.exit(1)
 })
 
-app.use(express.static('dist'))
+app.use(express.static('public'))
 
 app.use('/api/gateway', gateway)
 app.use('/api/lights', lights)
