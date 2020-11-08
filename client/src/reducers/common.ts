@@ -8,7 +8,7 @@ export enum WebsocketConnectionState {
     CONNECTION_LOST = 2
 }
 
-export interface ICommonState {
+export interface CommonState {
     websocketConnectionState: WebsocketConnectionState
 }
 
@@ -16,7 +16,7 @@ const initialState = {
     websocketConnectionState: WebsocketConnectionState.DISCONNECTED,
 }
 
-const reducers: ActionReducers<ICommonState> = [
+const reducers: ActionReducers<CommonState> = [
     [SET_WEBSOCKET_CONNECTION_STATE, (state, { payload }) => ({
         ...state,
         websocketConnectionState: payload

@@ -8,11 +8,11 @@ export const STOP_TIMER = 'STOP_TIMER'
 
 const timerMiddleware: Middleware = ({ dispatch }) => {
 
-    interface ITimer {
+    interface Timer {
         intervalId: number
     }
 
-    const timers: Dictionary<ITimer> = {}
+    const timers: Dictionary<Timer> = {}
 
     return (next) => (action: AnyAction) => {
         const { type, payload } = action

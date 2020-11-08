@@ -7,7 +7,7 @@ import { fetchCircadianSettings, saveCircadianSettings } from '@/actions/setting
 import Circadian from '@/components/settings/Circadian'
 import Tabbed from '@/components/Tabbed'
 import { AppDispatch } from '@/types'
-import { IAppState } from '@/reducers'
+import { AppState } from '@/reducers'
 import { CircadianSettings, Group } from '@tradfri-control-panel/shared'
 
 const SettingsModule: React.FC = () => {
@@ -18,8 +18,8 @@ const SettingsModule: React.FC = () => {
         dispatch(fetchCircadianSettings())
     }, [])
 
-    const circadianGroups = useSelector<IAppState, Group[]>((state) => R.values(R.pick(state.entities.settings.circadian.groupIds, state.entities.groups)))
-    const settings = useSelector<IAppState, CircadianSettings>((state) => state.entities.settings.circadian)
+    const circadianGroups = useSelector<AppState, Group[]>((state) => R.values(R.pick(state.entities.settings.circadian.groupIds, state.entities.groups)))
+    const settings = useSelector<AppState, CircadianSettings>((state) => state.entities.settings.circadian)
 
     const tabs = [{
         title: 'Circadian',

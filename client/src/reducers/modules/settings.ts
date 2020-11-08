@@ -3,7 +3,7 @@ import {
 } from '@/actions/settings'
 import { ActionReducers, createReducer } from '@/utils'
 
-export interface ISettingsModuleState {
+export interface SettingsModuleState {
     circadianSettingsLoading: boolean
 }
 
@@ -11,7 +11,7 @@ const initialState = {
     circadianSettingsLoading: false,
 }
 
-const reducers: ActionReducers<ISettingsModuleState> = [
+const reducers: ActionReducers<SettingsModuleState> = [
     [LOAD_CIRCADIAN_SETTINGS_REQUEST, (state) => ({
         ...state,
         circadianSettingsLoading: true

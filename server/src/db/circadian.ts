@@ -4,7 +4,7 @@ import { findSettings, insert, update } from '#/db/settings'
 import { nullIfEmpty } from '#/utils'
 import { CircadianSettings } from '@tradfri-control-panel/shared'
 
-export interface ICircadianEntity {
+export interface CircadianEntity {
     key: 'circadian'
     latitude: string
     longitude: string
@@ -12,7 +12,7 @@ export interface ICircadianEntity {
 }
 
 export const getCircadianSettings: () => Readonly<CircadianSettings> | null = () =>
-    nullIfEmpty(R.omit<ICircadianEntity, 'key'>(['key'], findSettings('circadian')))
+    nullIfEmpty(R.omit<CircadianEntity, 'key'>(['key'], findSettings('circadian')))
 
 export const setCircadianSettings = (circadianSettings: CircadianSettings) => {
     const currentSettings = findSettings('circadian')

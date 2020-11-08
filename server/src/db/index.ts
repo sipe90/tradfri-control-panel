@@ -5,12 +5,12 @@ import Loki from 'lokijs'
 import * as settings from '#/db/settings'
 import logger from '#/logger'
 
-interface IDbConfig {
+interface DbConfig {
     dbFolder: string
     dbName: string
 }
 
-const dbConfig: IDbConfig = config.get('database')
+const dbConfig: DbConfig = config.get('database')
 
 let db: Loki
 

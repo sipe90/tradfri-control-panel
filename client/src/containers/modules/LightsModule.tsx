@@ -7,16 +7,16 @@ import { addCircadianSettingsGroup, removeCircadianSettingsGroup } from '@/actio
 import LightGroups from '@/components/lights/LightGroups'
 import Lights from '@/components/lights/Lights'
 import Tabbed from '@/components/Tabbed'
-import { IAppState } from '@/reducers'
+import { AppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
 
 const LightsModule: React.FC = () => {
 
-    const groups = useSelector<IAppState, Dictionary<Group>>((state) => state.entities.groups)
-    const lights = useSelector<IAppState, Dictionary<Light>>((state) => state.entities.lights)
-    const circadianSettings = useSelector<IAppState, CircadianSettings>((state) => state.entities.settings.circadian)
-    const initialDataLoading = useSelector<IAppState, boolean>((state) => state.modules.lights.initialDataLoading)
+    const groups = useSelector<AppState, Dictionary<Group>>((state) => state.entities.groups)
+    const lights = useSelector<AppState, Dictionary<Light>>((state) => state.entities.lights)
+    const circadianSettings = useSelector<AppState, CircadianSettings>((state) => state.entities.settings.circadian)
+    const initialDataLoading = useSelector<AppState, boolean>((state) => state.modules.lights.initialDataLoading)
 
     const dispatch = useDispatch<AppDispatch>()
 
