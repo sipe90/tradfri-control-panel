@@ -2,8 +2,6 @@
 
 import { TradfriClient, discoverGateway } from 'node-tradfri-client'
 
-// tslint:disable:no-console
-
 const argv = process.argv.slice(2)
 
 if (!argv.length) {
@@ -78,5 +76,3 @@ async function discover() {
 
     process.exit()
 }
-
-// tslint:enable:no-console
