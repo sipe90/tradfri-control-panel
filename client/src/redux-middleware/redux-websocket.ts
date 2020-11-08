@@ -29,8 +29,8 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
         let websocket: WebSocket | null = null
 
         return (next) => (action: AnyAction) => {
-            const { type: actionType, payload } = action
-            R.cond([
+            const { type, payload } = action
+            R.cond<any, void>([
                 [R.equals(WEBSOCKET_CONNECT), () => {
                     websocket = new WebSocket(payload.url)
 
@@ -63,7 +63,7 @@ const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyA
                     websocket = null
                 }],
                 [R.T, () => next(action)],
-            ])(actionType)
+            ])(type)
         }
     }
 
