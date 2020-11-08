@@ -1,4 +1,4 @@
-import { IPayloadAction } from '@/types'
+import { PayloadAction } from '@/types'
 import * as R from 'ramda'
 import { Action, AnyAction, Reducer } from 'redux'
 
@@ -15,7 +15,7 @@ export const percentFormatter = (v: number | undefined) => `${v !== undefined ? 
 type ActionReducePair<S, A extends Action> = [A['type'], (state: S, action: A) => S]
 type ActionPredicateReducePair<S, A extends Action> = [(type: A['type']) => boolean, () => S]
 
-export type ActionReducers<S, A extends Action = IPayloadAction> = Array<ActionReducePair<S, A>>
+export type ActionReducers<S, A extends Action = PayloadAction> = Array<ActionReducePair<S, A>>
 
 export const createReducer = <S, A extends Action = AnyAction>(
     actionReducers: ActionReducers<S, A>,
@@ -39,11 +39,11 @@ type JsonResponse<E> = ({
     json: E
 } | {
     ok: false
-    json: IErrorResponse | null
+    json: ErrorResponse | null
 })
 )
 
-interface IErrorResponse {
+interface ErrorResponse {
     field: string
     message: string
     stack?: string
@@ -65,7 +65,7 @@ const fetchJson = async <E>(url: string, init?: RequestInit): Promise<JsonRespon
         statusText,
     } : {
             headers,
-            json: resJson as IErrorResponse,
+            json: resJson as ErrorResponse,
             ok,
             status,
             statusText,

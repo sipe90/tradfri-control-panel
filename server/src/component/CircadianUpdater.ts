@@ -3,7 +3,7 @@ import sunCalc from 'suncalc'
 
 import logger from '#/logger'
 
-interface ICircadianOptions {
+interface CircadianOptions {
     warmthAtSunrise: number
     warmthAtSunset: number
     sunriseAdjustTime: number
@@ -12,7 +12,7 @@ interface ICircadianOptions {
 
 type UpdateCallback = (temperature: number) => void
 
-export const defaultOptions: Readonly<ICircadianOptions> = {
+export const defaultOptions: Readonly<CircadianOptions> = {
     warmthAtSunrise: 15,
     warmthAtSunset: 80,
     sunriseAdjustTime: 1000 * 60 * 60 * 2,
@@ -26,7 +26,7 @@ export default class CircadianUpdater {
     private latitude: number
     private longitude: number
     private updateInterval: number
-    private options: ICircadianOptions
+    private options: CircadianOptions
 
     private intervalHandle: NodeJS.Timeout | null = null
 
@@ -34,7 +34,7 @@ export default class CircadianUpdater {
         latitude: number,
         longitude: number,
         updateInterval = defaultUpdateInterval,
-        options: Partial<ICircadianOptions> = {}
+        options: Partial<CircadianOptions> = {}
     ) {
         this.latitude = latitude
         this.longitude = longitude
@@ -81,7 +81,7 @@ export default class CircadianUpdater {
     }
 }
 
-export const calculateTemperature = (date: Date, latitude: number, longitude: number, options: ICircadianOptions) => {
+export const calculateTemperature = (date: Date, latitude: number, longitude: number, options: CircadianOptions) => {
     const { warmthAtSunrise, warmthAtSunset, sunriseAdjustTime, sunsetAdjustTime } = options
     const { sunrise, sunset } = sunCalc.getTimes(date, latitude, longitude)
 

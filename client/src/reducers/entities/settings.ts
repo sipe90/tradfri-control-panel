@@ -2,11 +2,11 @@ import { LOAD_CIRCADIAN_SETTINGS_SUCCESS } from '@/actions/settings'
 import { ActionReducers, createReducer } from '@/utils'
 import { CircadianSettings } from '@tradfri-control-panel/shared'
 
-export interface ISettingsEntitiesState {
+export interface SettingsEntitiesState {
     circadian: CircadianSettings
 }
 
-const initialState: ISettingsEntitiesState = {
+const initialState: SettingsEntitiesState = {
     circadian: {
         latitude: '',
         longitude: '',
@@ -14,7 +14,7 @@ const initialState: ISettingsEntitiesState = {
     }
 }
 
-const reducers: ActionReducers<ISettingsEntitiesState> = [
+const reducers: ActionReducers<SettingsEntitiesState> = [
     [LOAD_CIRCADIAN_SETTINGS_SUCCESS, (state, { payload }) => ({
         ...state,
         circadian: payload || state.circadian

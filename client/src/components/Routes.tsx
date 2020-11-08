@@ -1,12 +1,12 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router'
 
-import { IRouteDefinition } from '@/routeDefs'
+import { RouteDefinition } from '@/routeDefs'
 
 import './Routes.css'
 
 interface RoutesProps {
-    routes: IRouteDefinition[]
+    routes: RouteDefinition[]
 }
 
 const Routes: React.FC<RoutesProps> = (props) => {
@@ -23,7 +23,7 @@ const Routes: React.FC<RoutesProps> = (props) => {
     )
 }
 
-const renderRoutes = (routes: IRouteDefinition[]) =>
+const renderRoutes = (routes: RouteDefinition[]) =>
     routes.map(({ path, exact, container }, index) => (
         <Route
             key={index}

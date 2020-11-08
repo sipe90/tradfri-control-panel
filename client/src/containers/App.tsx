@@ -12,7 +12,7 @@ import routeDefs from '@/routeDefs'
 import { fetchCircadianSettings } from '@/actions/settings'
 import { AppDispatch } from '@/types'
 import './App.css'
-import { IAppState } from '@/reducers'
+import { AppState } from '@/reducers'
 import { WebsocketConnectionState } from '@/reducers/common'
 
 const { Header, Content, Footer } = Layout
@@ -22,7 +22,7 @@ declare var VERSION: string | void
 
 const App: React.FC = () => {
 
-    const websocketConnectionState = useSelector<IAppState>((state) => state.common.websocketConnectionState)
+    const websocketConnectionState = useSelector<AppState>((state) => state.common.websocketConnectionState)
 
     const dispatch = useDispatch<AppDispatch>()
 

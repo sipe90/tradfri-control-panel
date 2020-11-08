@@ -1,12 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { IRouteDefinition } from '@/routeDefs'
+import { RouteDefinition } from '@/routeDefs'
 
 import './Navigation.css'
 
 interface NavigationProps {
-    routes: IRouteDefinition[]
+    routes: RouteDefinition[]
 }
 
 const Navigation: React.FC<NavigationProps> = (props) => {
@@ -17,7 +17,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
     )
 }
 
-const renderNavigationLink = (route: IRouteDefinition, index: number) => (
+const renderNavigationLink = (route: RouteDefinition, index: number) => (
     <NavLink
         className='nav-menu__item'
         activeClassName='nav-menu__item--active'

@@ -13,89 +13,89 @@ const WEBSOCKET_ERROR = 'WEBSOCKET_ERROR'
 type Handler<D> = (dispatch: D) => void
 type EventHandler<D, E extends Event> = (dispatch: D, event: E) => void
 
-export interface IEventHandlers<D> {
-  onConnect?: Handler<D>
-  onClose?: CloseHandler<D>
-  onError?: Handler<D>
-  onMessage: MessageHandler<D>
+export interface EventHandlers<D> {
+    onConnect?: Handler<D>
+    onClose?: CloseHandler<D>
+    onError?: Handler<D>
+    onMessage: MessageHandler<D>
 }
 
 export type MessageHandler<D> = EventHandler<D, MessageEvent>
 export type CloseHandler<D> = EventHandler<D, CloseEvent>
 
 const createWebsocketMiddleware = <D extends Dispatch<AnyAction> = Dispatch<AnyAction>>
-    ({ onConnect, onClose, onError, onMessage }: IEventHandlers<D>): Middleware<{}, any, D> => ({ dispatch }) => {
+    ({ onConnect, onClose, onError, onMessage }: EventHandlers<D>): Middleware<{}, any, D> => ({ dispatch }) => {
 
-    let websocket: WebSocket | null = null
+        let websocket: WebSocket | null = null
 
-    return (next) => (action: AnyAction) => {
-        const { type: actionType, payload } = action
-        R.cond([
-            [R.equals(WEBSOCKET_CONNECT), () => {
-                websocket = new WebSocket(payload.url)
+        return (next) => (action: AnyAction) => {
+            const { type: actionType, payload } = action
+            R.cond([
+                [R.equals(WEBSOCKET_CONNECT), () => {
+                    websocket = new WebSocket(payload.url)
 
-                websocket.addEventListener('open', (_event) => {
-                    dispatch(open())
-                    onConnect && onConnect(dispatch)
-                })
-                websocket.addEventListener('error', (_event) => {
-                    dispatch(error())
-                    onError && onError(dispatch)
-                })
-                websocket.addEventListener('close', (event) => {
-                    dispatch(close(event))
+                    websocket.addEventListener('open', (_event) => {
+                        dispatch(open())
+                        onConnect && onConnect(dispatch)
+                    })
+                    websocket.addEventListener('error', (_event) => {
+                        dispatch(error())
+                        onError && onError(dispatch)
+                    })
+                    websocket.addEventListener('close', (event) => {
+                        dispatch(close(event))
+                        websocket = null
+                        onClose && onClose(dispatch, event)
+                    })
+
+                    websocket.addEventListener('message', (event) => {
+                        dispatch(message(event))
+                        onMessage(dispatch, event)
+                    })
+                }],
+                [R.equals(WEBSOCKET_SEND), () => {
+                    if (!websocket) return
+                    websocket.send(JSON.stringify(payload))
+                }],
+                [R.equals(WEBSOCKET_DISCONNECT), () => {
+                    if (!websocket) return
+                    websocket.close(payload.code || 1000)
                     websocket = null
-                    onClose && onClose(dispatch, event)
-                })
-
-                websocket.addEventListener('message', (event) => {
-                    dispatch(message(event))
-                    onMessage(dispatch, event)
-                })
-            }],
-            [R.equals(WEBSOCKET_SEND), () => {
-                if (!websocket) return
-                websocket.send(JSON.stringify(payload))
-            }],
-            [R.equals(WEBSOCKET_DISCONNECT), () => {
-                if (!websocket) return
-                websocket.close(payload.code || 1000)
-                websocket = null
-            }],
-            [R.T, () => next(action)],
-        ])(actionType)
+                }],
+                [R.T, () => next(action)],
+            ])(actionType)
+        }
     }
-}
 
-interface IConnectAction extends Action<typeof WEBSOCKET_CONNECT> {
+interface ConnectAction extends Action<typeof WEBSOCKET_CONNECT> {
     payload: { url: string }
 }
-interface IDisconnectAction extends Action<typeof WEBSOCKET_DISCONNECT> {
+interface DisconnectAction extends Action<typeof WEBSOCKET_DISCONNECT> {
     payload: { code?: number }
 }
-interface ISendAction extends Action<typeof WEBSOCKET_SEND> {
+interface SendAction extends Action<typeof WEBSOCKET_SEND> {
     payload: { data: any }
 }
 type OpenAction = Action<typeof WEBSOCKET_OPEN>
 type ErrorAction = Action<typeof WEBSOCKET_ERROR>
-interface IMessageAction extends Action<typeof WEBSOCKET_MESSAGE> {
+interface MessageAction extends Action<typeof WEBSOCKET_MESSAGE> {
     payload: MessageEvent
 }
-interface ICloseAction extends Action<typeof WEBSOCKET_CLOSE> {
+interface CloseAction extends Action<typeof WEBSOCKET_CLOSE> {
     payload: CloseEvent
 }
 
-export const connect = (url: string): IConnectAction => ({
+export const connect = (url: string): ConnectAction => ({
     type: WEBSOCKET_CONNECT,
     payload: { url }
 })
 
-export const disconnect = (code?: number): IDisconnectAction => ({
+export const disconnect = (code?: number): DisconnectAction => ({
     type: WEBSOCKET_DISCONNECT,
     payload: { code }
 })
 
-export const send = (data: any): ISendAction => ({
+export const send = (data: any): SendAction => ({
     type: WEBSOCKET_SEND,
     payload: data
 })
@@ -108,12 +108,12 @@ const error = (): ErrorAction => ({
     type: WEBSOCKET_ERROR
 })
 
-const message = (event: MessageEvent): IMessageAction => ({
+const message = (event: MessageEvent): MessageAction => ({
     type: WEBSOCKET_MESSAGE,
     payload: event
 })
 
-const close = (event: CloseEvent): ICloseAction => ({
+const close = (event: CloseEvent): CloseAction => ({
     type: WEBSOCKET_CLOSE,
     payload: event
 })

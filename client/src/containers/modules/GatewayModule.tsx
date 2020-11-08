@@ -8,13 +8,13 @@ import {
 import GatewayComponent from '@/components/gateway/Gateway'
 import GatewayWizard from '@/components/gateway/wizard/GatewayWizard'
 import Spinner from '@/components/Spinner'
-import { IAppState } from '@/reducers'
+import { AppState } from '@/reducers'
 import { AppDispatch } from '@/types'
 
 const GatewayModule: React.FC = () => {
 
-    const initialDataLoading = useSelector((state: IAppState) => state.modules.gateway.initialDataLoading)
-    const gateway = useSelector((state: IAppState) => state.entities.gateway)
+    const initialDataLoading = useSelector((state: AppState) => state.modules.gateway.initialDataLoading)
+    const gateway = useSelector((state: AppState) => state.entities.gateway)
 
     const dispatch = useDispatch<AppDispatch>()
 

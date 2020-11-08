@@ -10,7 +10,7 @@ import LightsModule from '@/containers/modules/LightsModule'
 import SensorsModule from '@/containers/modules/SensorsModule'
 import SettingsModule from './containers/modules/SettingsModule'
 
-export interface IRouteDefinition {
+export interface RouteDefinition {
     path: string
     exact: boolean
     icon: JSX.Element
@@ -18,7 +18,7 @@ export interface IRouteDefinition {
     container: JSX.Element
 }
 
-const routes: IRouteDefinition[] = [
+const routes: RouteDefinition[] = [
     {
         container: <GatewayModule />,
         exact: true,

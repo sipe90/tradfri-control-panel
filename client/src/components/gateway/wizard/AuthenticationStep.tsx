@@ -5,13 +5,13 @@ import { fetchPostJson } from '@/utils'
 
 import './AuthenticationStep.css'
 
-interface IGenerateIdentityResponse {
+interface GenerateIdentityResponse {
     identity: string
     psk: string
 }
 
 const generate = async (hostname: string, securityCode: string) => {
-    const res = await fetchPostJson<IGenerateIdentityResponse>(
+    const res = await fetchPostJson<GenerateIdentityResponse>(
         'api/gateway/identity', { hostname, securityCode })
 
     if (!res.ok) throw new Error(R.path(['json', 'message'], res) || res.statusText)
@@ -23,7 +23,7 @@ interface IdGenFormValues {
     securityCode: string
 }
 
-type AuthFormValues = IGenerateIdentityResponse
+type AuthFormValues = GenerateIdentityResponse
 
 interface AuthenticationStepProps {
     hostname: string
