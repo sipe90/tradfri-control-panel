@@ -83,7 +83,11 @@ workflows:
     jobs:
       - install:
           <<: *tags_and_branches
-      - test:
+      - test_client:
+          <<: *tags_and_branches
+          requires:
+            - install
+      - test_server:
           <<: *tags_and_branches
           requires:
             - install
@@ -96,7 +100,8 @@ workflows:
           type: approval
           requires:
            - build
-           - test
+           - test_client
+           - test_server
       - deploy:
           <<: *only_tags
           requires:
