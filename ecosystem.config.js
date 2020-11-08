@@ -15,9 +15,8 @@ module.exports = {
       key: "~/.ssh/id_rsa",
       host: process.env.DEPLOY_HOST,
       repo: "https://github.com/sipe90/tradfri-control-panel.git",
-      ref: process.env.DEPLOY_BRANCH,
+      ref: process.env.DEPLOY_REF,
       path: "/var/tradfri-control-panel",
-      ssh_options: "StrictHostKeyChecking=no",
       "post-deploy": "yarn install && yarn build && pm2 startOrRestart ecosystem.config.js"
     }
   }
