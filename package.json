@@ -14,8 +14,10 @@
     ]
   },
   "scripts": {
+    "build": "yarn run build:client && yarn run build:server",
+    "build:client": "yarn --cwd client build",
+    "build:server": "yarn --cwd server build",
     "start": "yarn --cwd server start",
-    "build": "yarn --cwd client build",
     "dev": "concurrently 'yarn --cwd server run dev' 'yarn --cwd client run dev'",
     "dev:mock": "concurrently 'yarn --cwd mock run dev' 'yarn --cwd client run dev'",
     "tradfri-auth": "ts-node bin/tradfri.ts authenticate",

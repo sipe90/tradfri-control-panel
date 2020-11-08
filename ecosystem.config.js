@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: "tradfri-control-panel",
-    script: "npm start",
+    script: "yarn start",
     watch: false,
     env: {
       NODE_ENV: "production",
@@ -18,7 +18,7 @@ module.exports = {
       ref: process.env.DEPLOY_BRANCH,
       path: "/var/tradfri-control-panel",
       ssh_options: "StrictHostKeyChecking=no",
-      "post-deploy": "npm ci && npm run build && pm2 startOrRestart ecosystem.config.js"
+      "post-deploy": "yarn install && yarn build && pm2 startOrRestart ecosystem.config.js"
     }
   }
 }
