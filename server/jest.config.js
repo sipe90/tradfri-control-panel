@@ -8,6 +8,6 @@ module.exports = {
     testEnvironment: 'node',
     rootDir: '.',
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
+        '^#/(.*)$': '<rootDir>/src/$1',
     }
 }
