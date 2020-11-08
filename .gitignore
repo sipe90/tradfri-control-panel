@@ -20,7 +20,7 @@ dist
 ecosystem.deploy.json
 
 # TS build info
-.tsbuildinfo
+*.tsbuildinfo
 
 # misc
 .DS_Store
