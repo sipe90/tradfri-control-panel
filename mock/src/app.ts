@@ -45,6 +45,5 @@ app.use('/settings', settings)
 app.use(router)
 
 server.listen(8080, () => {
-    // tslint:disable-next-line:no-console
     console.log('JSON Server is running on port 8080')
 })

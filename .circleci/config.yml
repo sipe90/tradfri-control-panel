@@ -28,7 +28,6 @@ whitelist: &whitelist
     - public/*
     - package.json
     - package-lock.json
-    - tslint.json
     - webpack.config.ts
     - tsconfig.json
     - jest.config.js
