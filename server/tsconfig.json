@@ -1,21 +1,17 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2020",
-    "module": "commonjs",
     "lib": [],
+    "module": "commonjs",
     "outDir": "dist",
     "rootDir": ".",
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "baseUrl": "src",
     "paths": {
       "#/*": [
         "./*"
       ]
-    },
-    "esModuleInterop": true
+    }
   },
   "references": [
     {

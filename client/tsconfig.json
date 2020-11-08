@@ -1,24 +1,19 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2018",
-    "module": "commonjs",
     "lib": [
       "dom"
     ],
     "jsx": "react",
     "outDir": "dist",
     "rootDir": ".",
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "baseUrl": "src",
     "paths": {
       "@/*": [
         "./*"
       ]
-    },
-    "esModuleInterop": true,
+    }
   },
   "references": [
     {
