@@ -25,6 +25,14 @@ The client application runs on port `3000` when running the dev server. In devel
 
 In production mode, the `dist` folder contents built by webpack will be served by the back-end server at `localhost:8080`. You can run the app in a different port in production by launching the app by setting the `PORT` environment variable.
 
+### Running in Docker
+
+The Docker image can be build by running `docker build` with the project root as the build context.
+
+The app can be run in Docker, but the container needs a way to access the network where the Trådfri gateway is connected to. In Linux hosts this can be achieved by running the container in the host machine's network with `--network=host`, given that the host machine is connected to the gateway's network.
+
+The logs (`/home/node/app/server/logs`) and database (`/home/node/app/server/data`) folders can be mounted for peristence.
+
 ### Registering gateways
 
 When you launch the application the first time, you will be prompted with a setup wizard for registering your gateway.
