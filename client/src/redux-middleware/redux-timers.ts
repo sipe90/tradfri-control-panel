@@ -16,7 +16,7 @@ const timerMiddleware: Middleware = ({ dispatch }) => {
 
     return (next) => (action: AnyAction) => {
         const { type, payload } = action
-        R.cond([
+        R.cond<any, void>([
             [R.equals(START_TIMER), () => {
                 const { timerName, dispatchFunc, timerInterval = 1000 } = payload
 
