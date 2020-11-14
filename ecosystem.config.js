@@ -16,7 +16,7 @@ module.exports = {
       host: process.env.DEPLOY_HOST,
       repo: "https://github.com/sipe90/tradfri-control-panel.git",
       ref: process.env.DEPLOY_REF,
-      path: "/var/tradfri-control-panel",
+      path: process.env.DEPLOY_PATH || "/var/tradfri-control-panel",
       "post-deploy": "yarn install && yarn build && pm2 startOrRestart ecosystem.config.js"
     }
   }
