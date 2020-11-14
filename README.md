@@ -4,6 +4,11 @@ This repository contains the source code for my latest hobby project: The Trådf
 
 *TODO: Description*
 
+## Requirements
+
+- Node 14.x
+- yarn
+
 ## Running the app
 
 First install dependencies with `yarn install`
