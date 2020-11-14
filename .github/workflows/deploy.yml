@@ -18,6 +18,8 @@ jobs:
           name: id_rsa
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Deploy
+        env:
+          DEPLOY_USER: pi
         run: |
           yarn global add pm2
           DEPLOY_REF=$GITHUB_REF pm2 deploy production

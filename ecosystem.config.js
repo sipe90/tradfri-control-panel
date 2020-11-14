@@ -5,14 +5,14 @@ module.exports = {
     watch: false,
     env: {
       NODE_ENV: "production",
-      HOST: "0.0.0.0",
-      PORT: 8080
+      HOST: process.env.HOST || "0.0.0.0",
+      PORT: process.env.PORT || 8080
     }
   }],
   deploy: {
     production: {
-      user: "pi",
-      key: "~/.ssh/id_rsa",
+      user: process.env.DEPLOY_USER,
+      key: process.env.DEPLOY_KEY || undefined,
       host: process.env.DEPLOY_HOST,
       repo: "https://github.com/sipe90/tradfri-control-panel.git",
       ref: process.env.DEPLOY_REF,
