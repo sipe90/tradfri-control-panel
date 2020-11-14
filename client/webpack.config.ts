@@ -24,7 +24,11 @@ const config: Configuration = {
                     getCustomTransformers: () => ({
                         before: [tsImportPluginFactory({ libraryName: 'antd', style: 'css', libraryDirectory: 'es' })]
                     }),
-                }
+                    compilerOptions: {
+                        module: 'es2015',
+                        moduleResolution: 'node'
+                    }
+                },
             },
             {
                 test: /\.css$/,
