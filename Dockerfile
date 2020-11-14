@@ -1,26 +1,19 @@
-FROM node:12-alpine as builder
+FROM node:14-alpine as builder
 
 WORKDIR /home/node/app
 
 COPY package.json .
 COPY yarn.lock .
+COPY tsconfig.json .
 
 COPY client ./client
 COPY server ./server
 COPY shared ./shared
 
 RUN yarn install --pure-lockfile --non-interactive
-
-WORKDIR /home/node/app/shared
 RUN yarn build
 
-WORKDIR /home/node/app/packages/server
-RUN yarn build
-
-WORKDIR /home/node/app/packages/client
-RUN yarn build
-
-FROM node:12-alpine
+FROM node:14-alpine
 
 WORKDIR /home/node/app
 
