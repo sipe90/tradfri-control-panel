@@ -3,7 +3,7 @@ import R from 'ramda'
 import { normalizeLights } from '#/data/tradfri'
 import { getConnection, isGatewayConnected } from '#/service/gateway-connection-manager'
 import { getGateway } from '#/service/gateway-service'
-import { Light } from '@tradfri-control-panel/shared'
+import { Light } from 'shared'
 
 export const getLights = async () => {
     const gateway = await getGateway()

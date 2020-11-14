@@ -1,7 +1,7 @@
 
 import * as R from 'ramda'
 import { AnyAction, Middleware } from 'redux'
-import { Dictionary } from '@tradfri-control-panel/shared'
+import { Dictionary } from 'shared'
 
 export const START_TIMER = 'START_TIMER'
 export const STOP_TIMER = 'STOP_TIMER'

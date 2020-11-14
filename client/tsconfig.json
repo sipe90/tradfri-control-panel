@@ -13,7 +13,7 @@
       "#/*": [
         "./src/*"
       ],
-      "@tradfri-control-panel/shared": [
+      "shared": [
         "../shared/src"
       ]
     }

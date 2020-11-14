@@ -2,7 +2,7 @@ import * as R from 'ramda'
 
 import { LOAD_GROUPS_SUCCESS } from '#/actions/groups'
 import { ActionReducers, createReducer } from '#/utils'
-import { Dictionary, Group } from '@tradfri-control-panel/shared'
+import { Dictionary, Group } from 'shared'
 
 export type GroupEntitiesState = Dictionary<Group>
 

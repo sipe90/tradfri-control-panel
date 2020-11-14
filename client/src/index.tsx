@@ -7,7 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { createLogger } from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 
-import { Payloads } from '@tradfri-control-panel/shared'
+import { Payloads } from 'shared'
 import App from '#/containers/App'
 import reducers from '#/reducers'
 import timerMiddleware from '#/redux-middleware/redux-timers'

@@ -1,5 +1,5 @@
 import { findSettings, insert, remove, update } from '#/db/settings'
-import { Omit } from '@tradfri-control-panel/shared'
+import { Omit } from 'shared'
 
 export interface GatewayEntity {
     key: 'gateway'

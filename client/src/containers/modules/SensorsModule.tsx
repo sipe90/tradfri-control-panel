@@ -5,7 +5,7 @@ import { fetchSensors, updateSensor } from '#/actions/sensors'
 import SensorList from '#/components/sensors/SensorList'
 import { AppState } from '#/reducers'
 import { AppDispatch } from '#/types'
-import { Dictionary, Device } from '@tradfri-control-panel/shared'
+import { Dictionary, Device } from 'shared'
 
 const SensorsModule: React.FC = () => {
 

@@ -7,7 +7,7 @@ import LightbulbOnOutlineIcon from 'mdi-react/LightbulbOnOutlineIcon'
 import ThemeLightDarkIcon from 'mdi-react/ThemeLightDarkIcon'
 
 import StatusIndicator, { Status } from '#/components/StatusIndicator'
-import { Dictionary, CircadianSettings, Group, GroupUpdateRequest, Light } from '@tradfri-control-panel/shared'
+import { Dictionary, CircadianSettings, Group, GroupUpdateRequest, Light } from 'shared'
 
 import './LightGroups.css'
 import { lightsForGroup, percentFormatter } from '#/utils'

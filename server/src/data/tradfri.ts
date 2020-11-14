@@ -1,7 +1,7 @@
 import { Accessory, GroupInfo, Light as TLight, Scene as TScene, LightSetting as TLightSetting } from 'node-tradfri-client'
 import R from 'ramda'
 
-import { Gateway, GatewayDevices, Group, Light, Scene, Sensor, LightSetting } from '@tradfri-control-panel/shared'
+import { Gateway, GatewayDevices, Group, Light, Scene, Sensor, LightSetting } from 'shared'
 
 type DeviceRecord = Record<string, Accessory>
 type GroupRecord = Record<string, GroupInfo>

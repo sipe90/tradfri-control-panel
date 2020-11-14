@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { Card, Divider, Dropdown, Menu, Modal, Descriptions, Form, Input } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { GatewayConnectionState, Gateway } from '@tradfri-control-panel/shared'
+import { GatewayConnectionState, Gateway } from 'shared'
 
 import StatusIndicator, { Status } from '#/components/StatusIndicator'
 

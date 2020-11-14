@@ -2,7 +2,7 @@ import { AsyncThunkResult } from '#/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '#/utils'
 import { message } from 'antd'
 import * as R from 'ramda'
-import { CircadianSettings, UpdateCircadianSettingsRequest } from '@tradfri-control-panel/shared'
+import { CircadianSettings, UpdateCircadianSettingsRequest } from 'shared'
 
 export const LOAD_CIRCADIAN_SETTINGS_REQUEST = 'LOAD_CIRCADIAN_SETTINGS_REQUEST'
 export const LOAD_CIRCADIAN_SETTINGS_SUCCESS = 'LOAD_CIRCADIAN_SETTINGS_SUCCESS'

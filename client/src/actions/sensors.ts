@@ -5,7 +5,7 @@ import { ActionCreator } from 'redux'
 
 import { ThunkResult } from '#/types'
 import { fetchGetJson, fetchPostJson } from '#/utils'
-import { Dictionary, Sensor } from '@tradfri-control-panel/shared'
+import { Dictionary, Sensor } from 'shared'
 
 export const LOAD_SENSORS_REQUEST = 'LOAD_SENSORS_REQUEST'
 export const LOAD_SENSORS_SUCCESS = 'LOAD_SENSORS_SUCCESS'

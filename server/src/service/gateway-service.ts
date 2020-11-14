@@ -13,7 +13,7 @@ import {
 import {
     GatewayConnectionState, CreateGatewayRequest,
     Gateway, GenerateIdentityRequest, TestConnectionRequest, UpdateGatewayRequest
-} from '@tradfri-control-panel/shared'
+} from 'shared'
 
 export const fetchGateway = db.getGateway
 

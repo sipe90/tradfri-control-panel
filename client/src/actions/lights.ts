@@ -5,7 +5,7 @@ import { ActionCreator } from 'redux'
 
 import { ThunkResult } from '#/types'
 import { fetchGetJson, fetchPostJson } from '#/utils'
-import { Dictionary, Light } from '@tradfri-control-panel/shared'
+import { Dictionary, Light } from 'shared'
 
 export const LOAD_LIGHTS_REQUEST = 'LOAD_LIGHTS_REQUEST'
 export const LOAD_LIGHTS_SUCCESS = 'LOAD_LIGHTS_SUCCESS'

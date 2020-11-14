@@ -2,7 +2,7 @@ import WebSocketBroker from '#/component/WebSocketBroker'
 import TradfriGateway from '#/gateway/TradfriGateway'
 import logger from '#/logger'
 import { Accessory, AccessoryTypes, AllEventCallbacks, GatewayDetails, Group, Scene } from 'node-tradfri-client'
-import { GatewayConnectionState } from '@tradfri-control-panel/shared'
+import { GatewayConnectionState } from 'shared'
 
 let _connection: TradfriGateway | null = null
 let _broker: WebSocketBroker | null = null

@@ -1,6 +1,6 @@
 import { Button, Card, Form, InputNumber, List } from 'antd'
 import React, { useEffect } from 'react'
-import { CircadianSettings, Group } from '@tradfri-control-panel/shared'
+import { CircadianSettings, Group } from 'shared'
 
 import './Circadian.css'
 

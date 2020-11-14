@@ -2,7 +2,7 @@ import { PayloadAction } from '#/types'
 import * as R from 'ramda'
 import { Action, AnyAction, Reducer } from 'redux'
 
-import { Dictionary, Device, Group, Light } from '@tradfri-control-panel/shared'
+import { Dictionary, Device, Group, Light } from 'shared'
 
 export const devicesForGroup = (group: Group, devices: Dictionary<Device>) =>
     R.values(R.pick(R.map(String, group.devices), devices))

@@ -1,7 +1,7 @@
 import WebSocket, { OPEN } from 'ws'
 
 import logger from '#/logger'
-import { Payload } from '@tradfri-control-panel/shared'
+import { Payload } from 'shared'
 
 export default class WebSocketBroker {
 

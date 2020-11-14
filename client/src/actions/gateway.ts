@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import { AsyncThunkResult } from '#/types'
 import { fetchDeleteJson, fetchGetJson, fetchPostJson } from '#/utils'
 import { ActionCreator } from 'redux'
-import { Gateway } from '@tradfri-control-panel/shared'
+import { Gateway } from 'shared'
 
 export const LOAD_GATEWAY_REQUEST = 'LOAD_GATEWAY_REQUEST'
 export const LOAD_GATEWAY_SUCCESS = 'LOAD_GATEWAY_SUCCESS'

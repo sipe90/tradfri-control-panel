@@ -8,7 +8,7 @@ import Circadian from '#/components/settings/Circadian'
 import Tabbed from '#/components/Tabbed'
 import { AppDispatch } from '#/types'
 import { AppState } from '#/reducers'
-import { CircadianSettings, Group } from '@tradfri-control-panel/shared'
+import { CircadianSettings, Group } from 'shared'
 
 const SettingsModule: React.FC = () => {
 

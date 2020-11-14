@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 
 import ConditionalWrap from '#/components/ConditionalWrap'
 import StatusIndicator, { Status } from '#/components/StatusIndicator'
-import { Light } from '@tradfri-control-panel/shared'
+import { Light } from 'shared'
 
 import './LightItem.css'
 import { percentFormatter } from '#/utils'

@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import { ThunkResult } from '#/types'
 import { fetchGetJson, fetchPostJson } from '#/utils'
 import { ActionCreator } from 'redux'
-import { Dictionary, Group, GroupUpdateRequest, Omit } from '@tradfri-control-panel/shared'
+import { Dictionary, Group, GroupUpdateRequest, Omit } from 'shared'
 
 export const LOAD_GROUPS_REQUEST = 'LOAD_GROUPS_REQUEST'
 export const LOAD_GROUPS_SUCCESS = 'LOAD_GROUPS_SUCCESS'

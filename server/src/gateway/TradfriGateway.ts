@@ -7,7 +7,7 @@ import {
 import R from 'ramda'
 
 import logger from '#/logger'
-import { GatewayConnectionState } from '@tradfri-control-panel/shared'
+import { GatewayConnectionState } from 'shared'
 
 type DeviceTypeFilter = (type: AccessoryTypes) => (devices: Record<string, Accessory>) => Record<string, Accessory>
 

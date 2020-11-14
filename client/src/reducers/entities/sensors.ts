@@ -2,7 +2,7 @@ import * as R from 'ramda'
 
 import { LOAD_SENSORS_SUCCESS, SENSOR_STATE_CHANGED } from '#/actions/sensors'
 import { ActionReducers, createReducer } from '#/utils'
-import { Dictionary, Sensor } from '@tradfri-control-panel/shared'
+import { Dictionary, Sensor } from 'shared'
 
 export type SensorEntitiesState = Dictionary<Sensor>
 

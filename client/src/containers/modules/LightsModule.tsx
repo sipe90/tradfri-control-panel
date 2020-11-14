@@ -9,7 +9,7 @@ import Lights from '#/components/lights/Lights'
 import Tabbed from '#/components/Tabbed'
 import { AppState } from '#/reducers'
 import { AppDispatch } from '#/types'
-import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
+import { Dictionary, CircadianSettings, Group, Light } from 'shared'
 
 const LightsModule: React.FC = () => {
 

@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import React, { useState } from 'react'
 
 import StatusIndicator, { Status } from '#/components/StatusIndicator'
-import { Device, Sensor } from '@tradfri-control-panel/shared'
+import { Device, Sensor } from 'shared'
 
 import './SensorItem.css'
 

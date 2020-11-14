@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import * as R from 'ramda'
 import { Button } from 'antd'
 
-import { ConnectionTestResponse } from '@tradfri-control-panel/shared'
+import { ConnectionTestResponse } from 'shared'
 import { fetchPostJson } from '#/utils'
 import Spinner from '#/components/Spinner'
 

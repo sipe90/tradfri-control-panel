@@ -1,6 +1,6 @@
 import { LOAD_CIRCADIAN_SETTINGS_SUCCESS } from '#/actions/settings'
 import { ActionReducers, createReducer } from '#/utils'
-import { CircadianSettings } from '@tradfri-control-panel/shared'
+import { CircadianSettings } from 'shared'
 
 export interface SettingsEntitiesState {
     circadian: CircadianSettings

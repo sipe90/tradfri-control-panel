@@ -8,7 +8,7 @@ import {
     getConnection, isGatewayConnected
 } from '#/service/gateway-connection-manager'
 import { Accessory, Group } from 'node-tradfri-client'
-import { CircadianSettings, UpdateCircadianSettingsRequest } from '@tradfri-control-panel/shared'
+import { CircadianSettings, UpdateCircadianSettingsRequest } from 'shared'
 
 const locDecimals = 3
 

@@ -5,7 +5,7 @@ import React from 'react'
 import LightItem from '#/components/lights/LightItem'
 import Spinner from '#/components/Spinner'
 import { lightsForGroup } from '#/utils'
-import { Dictionary, CircadianSettings, Group, Light } from '@tradfri-control-panel/shared'
+import { Dictionary, CircadianSettings, Group, Light } from 'shared'
 
 import './Lights.css'
 

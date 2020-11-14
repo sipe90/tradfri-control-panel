@@ -2,7 +2,7 @@ import R from 'ramda'
 
 import { findSettings, insert, update } from '#/db/settings'
 import { nullIfEmpty } from '#/utils'
-import { CircadianSettings } from '@tradfri-control-panel/shared'
+import { CircadianSettings } from 'shared'
 
 export interface CircadianEntity {
     key: 'circadian'

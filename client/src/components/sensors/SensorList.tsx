@@ -4,7 +4,7 @@ import React from 'react'
 
 import SensorItem from '#/components/sensors/SensorItem'
 import Spinner from '#/components/Spinner'
-import { Dictionary, Sensor } from '@tradfri-control-panel/shared'
+import { Dictionary, Sensor } from 'shared'
 
 import './SensorList.css'
 

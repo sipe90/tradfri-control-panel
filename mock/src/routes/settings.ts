@@ -1,5 +1,5 @@
 import express from 'express'
-import { CircadianSettings } from '@tradfri-control-panel/shared'
+import { CircadianSettings } from 'shared'
 
 const router = express.Router()
 

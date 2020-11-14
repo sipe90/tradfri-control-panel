@@ -1,5 +1,5 @@
 import express from 'express'
-import { GatewayConnectionState, CreateGatewayRequest, Gateway, UpdateGatewayRequest } from '@tradfri-control-panel/shared'
+import { GatewayConnectionState, CreateGatewayRequest, Gateway, UpdateGatewayRequest } from 'shared'
 
 const router = express.Router()
 
