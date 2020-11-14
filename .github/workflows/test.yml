@@ -19,7 +19,11 @@ jobs:
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --non-interactive
+      - name: Build client
+        run: yarn run build:client
       - name: Test client
         run: yarn run test:client
+      - name: Build server
+        run: yarn run build:server
       - name: Test server
         run: yarn run test:server
